@@ -22,7 +22,11 @@ install_requires = ['aiohttp',
                     'aiodns',
                     'ujson',
                     'trafaret-config',
-                    'pytz']
+                    'pytz',
+                    'aiohttp_jinja2',
+                    'GeoIP',
+                    'asyncpg'
+                    ]
 
 setup(
     name="X-Project-Adv-Worker",

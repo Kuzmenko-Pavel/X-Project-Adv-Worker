@@ -1,8 +1,7 @@
-#from .views import BlockView, OfferView
+from .views import IframesView, BlocksView, StylesView
 
 
 def setup_routes(app):
-	pass
-#    app.router.add_route('GET', '/bl.js', BlockView)
-#    app.router.add_route('POST', '/bl.js', BlockView)
-#    app.router.add_route('POST', '/logger.json', OfferView)
+    app.router.add_route('GET', '/iframe', IframesView)
+    app.router.add_route('GET', '/blocks', BlocksView)
+    app.router.add_route('POST', '/styles.json', StylesView)

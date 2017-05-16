@@ -1,3 +1,5 @@
+from .iframes import IframesView
+from .styles import StylesView
+from .block import BlocksView
 
-
-__all__ = []
+__all__ = (IframesView, StylesView, BlocksView)
