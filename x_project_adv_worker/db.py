@@ -2,8 +2,8 @@ import asyncpg
 
 
 async def init_db(app):
-    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=15, max_size=15,
-                                         max_cacheable_statement_size=15 * 1024)
+    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=15, max_size=30,
+                                         max_cacheable_statement_size=150 * 1024)
     app.query = Query()
 
 
@@ -14,7 +14,10 @@ class Query(object):
             async with connection.transaction():
                 stmt = await connection.prepare('''SELECT * FROM public.informer where guid=$1 LIMIT 1 OFFSET 0;''')
                 result = await stmt.fetchrow(block_src)
-                return dict(result)
+                if result:
+                    return dict(result)
+                else:
+                    return dict()
 
     @staticmethod
     async def get_campaigns(pool, block_id, block_domain, block_account):
@@ -31,6 +34,8 @@ class Query(object):
                                                        ca.recomendet_type,
                                                        ca.recomendet_count,
                                                        ca.account,
+                                                       ca.retargeting,
+                                                       ca.retargeting_type,
                                                        ca.offer_by_campaign_unique,
                                                        ca.unique_impression_lot,
                                                        ca.html_notification,
@@ -116,4 +121,76 @@ class Query(object):
                                                         GROUP BY ca.id;
                 ''')
                 result = await stmt.fetch(block_id, block_domain, block_account)
-                return [dict(x) for x in result]
+                return [dict(x) for x in result] if result else []
+
+    @staticmethod
+    async def get_place_offer(pool, campaigns, capacity):
+        async with pool.acquire() as connection:
+            async with connection.transaction():
+                stmt = await connection.prepare('''
+                SELECT *
+                FROM offer_place AS ofrs
+                WHERE ofrs.id_cam IN ( '''
+                                                + ','.join(['%s' % x for x in campaigns]) +
+                                                ''') AND ofrs.id NOT IN ('''
+                                                + ','.join(['%s' % x for x in [0, ]]) +
+                                                ''') AND rating > 1000  ORDER BY rating DESC LIMIT '''
+                                                + str(capacity) +
+                                                ''' OFFSET 0;
+                                                ''')
+                result = await stmt.fetch()
+                return [dict(x) for x in result] if result else []
+
+    @staticmethod
+    async def get_social_offer(pool, campaigns, capacity):
+        async with pool.acquire() as connection:
+            async with connection.transaction():
+                stmt = await connection.prepare('''
+                SELECT *
+                FROM offer_social AS ofrs
+                WHERE ofrs.id_cam IN ( '''
+                                                + ','.join(['%s' % x for x in campaigns]) +
+                                                ''') AND ofrs.id NOT IN ('''
+                                                + ','.join(['%s' % x for x in [0, ]]) +
+                                                ''') AND rating > 1000  ORDER BY rating DESC LIMIT '''
+                                                + str(capacity) +
+                                                ''' OFFSET 0;
+                                                ''')
+                result = await stmt.fetch()
+                return [dict(x) for x in result] if result else []
+
+    @staticmethod
+    async def get_dynamic_retargeting_offer(pool, campaigns, capacity):
+        async with pool.acquire() as connection:
+            async with connection.transaction():
+                stmt = await connection.prepare('''
+                SELECT *
+                FROM offer_dynamic_retargeting AS ofrs
+                WHERE ofrs.id_cam IN ( '''
+                                                + ','.join(['%s' % x for x in campaigns]) +
+                                                ''') AND ofrs.id NOT IN ('''
+                                                + ','.join(['%s' % x for x in [0, ]]) +
+                                                ''') LIMIT '''
+                                                + str(capacity) +
+                                                ''' OFFSET 0;
+                                                ''')
+                result = await stmt.fetch()
+                return [dict(x) for x in result] if result else []
+
+    @staticmethod
+    async def get_account_retargeting_offer(pool, campaigns, capacity):
+        async with pool.acquire() as connection:
+            async with connection.transaction():
+                stmt = await connection.prepare('''
+                                SELECT *
+                                FROM offer_account_retargeting AS ofrs
+                                WHERE ofrs.id_cam IN ( '''
+                                                + ','.join(['%s' % x for x in campaigns]) +
+                                                ''') AND ofrs.id NOT IN ('''
+                                                + ','.join(['%s' % x for x in [0, ]]) +
+                                                ''') LIMIT '''
+                                                + str(capacity) +
+                                                ''' OFFSET 0;
+                                                ''')
+                result = await stmt.fetch()
+                return [dict(x) for x in result] if result else []
