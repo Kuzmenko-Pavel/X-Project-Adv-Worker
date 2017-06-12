@@ -4,6 +4,8 @@ import asyncpg
 async def init_db(app):
     app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=15, max_size=30,
                                          max_cacheable_statement_size=150 * 1024)
+    # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test', min_size=15, max_size=30,
+    #                                      max_cacheable_statement_size=150 * 1024)
     app.query = Query()
 
 
@@ -12,12 +14,11 @@ class Query(object):
     async def get_block(pool, block_src):
         async with pool.acquire() as connection:
             async with connection.transaction():
-                stmt = await connection.prepare('''SELECT * FROM public.informer where guid=$1 LIMIT 1 OFFSET 0;''')
+                stmt = await connection.prepare('''SELECT * FROM public.mv_informer where guid=$1 LIMIT 1 OFFSET 0;''')
                 result = await stmt.fetchrow(block_src)
                 if result:
                     return dict(result)
-                else:
-                    return dict()
+            return None
 
     @staticmethod
     async def get_campaigns(pool, block_id, block_domain, block_account):

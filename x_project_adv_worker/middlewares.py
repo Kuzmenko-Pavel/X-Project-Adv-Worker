@@ -37,6 +37,14 @@ def error_pages(overrides):
     return middleware
 
 
+async def cors_middleware(app, handler):
+    async def middleware(request):
+        response = await handler(request)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
+
+    return middleware
+
 async def xml_http_request_middleware(app, handler):
     async def middleware_handler(request):
         headers = request.headers
@@ -84,3 +92,4 @@ def setup_middlewares(app):
     app.middlewares.append(error_middleware)
     app.middlewares.append(xml_http_request_middleware)
     app.middlewares.append(geoip_http_request_middleware)
+    app.middlewares.append(cors_middleware)
