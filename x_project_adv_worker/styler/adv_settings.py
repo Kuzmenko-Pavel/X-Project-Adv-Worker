@@ -6,6 +6,8 @@ class AdvSetting(Map):
         super(AdvSetting, self).__init__(*args, **kwargs)
         self.width = 0
         self.height = 0
+        self.top = 0
+        self.left = 0
         self.border = 0
         self.border_color = 'white'
         self.background_color = 'tran'
@@ -14,18 +16,28 @@ class AdvSetting(Map):
         self.header = Map()
         self.header.width = 0
         self.header.height = 0
+        self.header.top = 0
+        self.header.left = 0
         self.description = Map()
         self.description.width = 0
         self.description.height = 0
+        self.description.top = 0
+        self.description.left = 0
         self.cost = Map()
         self.cost.width = 0
         self.cost.height = 0
+        self.cost.top = 0
+        self.cost.left = 0
         self.button = Map()
         self.button.width = 0
         self.button.height = 0
+        self.button.top = 0
+        self.button.left = 0
         self.image = Map()
         self.image.width = 0
         self.image.height = 0
+        self.image.top = 0
+        self.image.left = 0
 
     def to_variable(self, obj):
         result = []

@@ -1,4 +1,5 @@
 from aiohttp import web
+import json
 
 from x_project_adv_worker.styler import Styler
 
@@ -8,19 +9,19 @@ class InformerView(web.View):
         result = {}
         pool = self.request.app.pool
         data = await self.request.json()
-        print(data)
         block_src = data.get('block_id', '')
-        styler = Styler(data.get('w', 100), data.get('h', 100))
+        styler = Styler(data.get('w', 0), data.get('h', 0))
         block_result = await self.request.app.query.get_block(pool=pool, block_src=block_src)
         if block_result is None:
             return web.json_response(result)
         block_domain = block_result.get('domain', 0)
         block_id = block_result.get('id', 0)
         block_account = block_result.get('account', 0)
-        place_branch = block_result.get('account', True)
-        retargeting_branch = block_result.get('account', True)
-        retargeting_account_branch = block_result.get('account', True)
+        place_branch = block_result.get('place_branch', True)
+        retargeting_branch = block_result.get('retargeting_branch', True)
+        retargeting_account_branch = block_result.get('retargeting_branch', True)
         social_branch = block_result.get('account', True)
+        styler.merge(json.loads(block_result.get('ad_style', "{}")))
         place_offer_campaigns = []
         social_offer_campaigns = []
         dynamic_retargeting_campaigns = []
@@ -45,5 +46,6 @@ class InformerView(web.View):
         result['social'] = social_offer_campaigns
         result['dynamic_retargeting'] = dynamic_retargeting_campaigns
         result['account_retargeting'] = account_retargeting_campaigns
+
         result['css'] = styler()
         return web.json_response(result)

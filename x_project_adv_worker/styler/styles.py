@@ -6,7 +6,7 @@ mixin = """
 }
 
 @mixin br($size: false, $color: 'black'){
-  @if $size{
+  @if $size and $size > 0 {
     border: $size + 0px solid $color;
   }
   @else {
@@ -15,7 +15,7 @@ mixin = """
 }
 
 @mixin bg($color: false){
-  @if $color{
+  @if $color and $color != 'transparent' {
     background-color: $color;
   }
   @else {
@@ -145,23 +145,50 @@ mixin = """
 
 main = """
 #mainContainer {
-    @include brr($border_radius);
-    @include marg($border_radius);
+    @include elps(
+        map_get($main, 'width'),
+        map_get($main, 'height'),
+        0,
+        0,
+        'relative'
+    );
+    @include brr(map_get($main, 'border_radius'));
+    @include bg(map_get($main, 'background_color'));
+    @include br(map_get($main, 'border_color'));
 }
 
 #mainHeader {
-
+    $i: map_get($main, 'header');
+    @include elps(
+        map_get($i, 'width'),
+        map_get($i, 'height'),
+        map_get($i, 'top'),
+        map_get($i, 'left'),
+        'relative'
+    );
 }
 
 #mainFooter {
-
+    $i: map_get($main, 'footer');
+    @include elps(
+        map_get($i, 'width'),
+        map_get($i, 'height'),
+        map_get($i, 'top'),
+        map_get($i, 'left'),
+        'relative'
+    );
 }
 """
 
 adv = """
 @each $name, $setting in $adv-style {
    .adv#{$name} {
-     width: map_get($setting, 'width');   
+     @include elps(
+        map_get($setting, 'width'),
+        map_get($setting, 'height'),
+        map_get($setting, 'top'),
+        map_get($setting, 'left')
+     );   
      div {
        .header, .header:visited, .header:active, .header:link {
        }

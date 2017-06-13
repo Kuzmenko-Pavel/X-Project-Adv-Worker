@@ -4,8 +4,9 @@ import asyncpg
 async def init_db(app):
     app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=15, max_size=30,
                                          max_cacheable_statement_size=150 * 1024)
-    # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test', min_size=15, max_size=30,
-    #                                      max_cacheable_statement_size=150 * 1024)
+    # Example for unix socket connection
+    # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test',
+    #                                      min_size=15, max_size=30, max_cacheable_statement_size=150 * 1024)
     app.query = Query()
 
 
