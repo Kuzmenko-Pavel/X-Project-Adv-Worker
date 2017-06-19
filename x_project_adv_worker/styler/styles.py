@@ -1,42 +1,43 @@
-mixin = """
-@mixin clp {
+macro_template = """
+{% macro clp() -%}
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
-}
+{%- endmacro %}
 
-@mixin br($size: false, $color: 'black'){
+{% macro br(size=False, color='black') -%}
   @if $size and $size > 0 {
     border: $size + 0px solid $color;
   }
-  @else {
+  {% else %}
     border: none;
   }
-}
+{%- endmacro %}
 
-@mixin bg($color: false){
+{% macro bg($color: false) -%}
   @if $color and $color != 'transparent' {
     background-color: $color;
   }
-  @else {
+  {% else %}
     background-color: transparent;
   }
-}
+{%- endmacro %}
 
+{% macro hide($hd: false) -%}
 @mixin hide($hd: false){
   @if $hd {
     display: none;
   }
-}
+{%- endmacro %}
 
-@mixin marg($margin){
+{% macro marg($margin) -%}
     margin-top: nth($margin, 1) + 0px;
     margin-right: nth($margin, 2) + 0px;
     margin-bottom: nth($margin, 3) + 0px;
     margin-left: nth($margin, 4) + 0px;
-}
+{%- endmacro %}
 
-@mixin brr($radiuses) {
+{% macro brr($radiuses) -%}
   -webkit-border-top-left-radius: nth($radiuses, 1) + 0px;
   -webkit-border-top-right-radius: nth($radiuses, 2) + 0px;
   -webkit-border-bottom-right-radius: nth($radiuses, 3) + 0px;
@@ -54,107 +55,99 @@ mixin = """
   border-bottom-right-radius: nth($radiuses, 3) + 0px;
   border-bottom-left-radius: nth($radiuses, 4) + 0px;
   border-radius: nth($radiuses, 1) + 0px nth($radiuses, 2) + 0px nth($radiuses, 3) + 0px nth($radiuses, 4) + 0px;
-  @include clp;
-}
+  {{ clp() }}
+{%- endmacro %}
 
-@mixin fs($ls: false, $fu: false, $ta: false, $fv: false, $size: false, $colour: false, $weight: false,  $lh: false) {
+{% macro fs($ls: false, $fu: false, $ta: false, $fv: false, $size: false, $colour: false, $weight: false,  $lh: false) -%}
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   @if $fu {
     text-decoration: underline;
-  } @else {
+  {% else %}
     text-decoration: none;
   }
 
   @if $ta {
     text-align: $ta;
-  } @else {
+  {% else %}
     text-align: center;
   }
 
   @if $fv {
     font-variant: small-caps;
-  } @else {
+  {% else %}
     font-variant: normal;
   }
 
   @if $size {
     font-size: $size + 0px;
-  } @else {
+  {% else %}
     font-size: 10px;
-  }
+  {% endif %}
 
   @if $colour {
     color: $colour;
-  } @else {
+  {% else %}
     color: black;
-  }
+  {% endif %}
 
   @if $weight {
     font-weight: bold;
-  } @else {
+  {% else %}
     font-weight: normal;
-  }
+  {% endif %}
 
   @if $lh {
     line-height: $lh;
-  } @else {
+  {% else %}
     line-height: 1;
-  }
+  {% endif %}
   @if $ls {
     letter-spacing: $ls + 0px;
-  } @else {
+  {% else %}
     letter-spacing: normal;
-  }
-}
+  {% endif %}
+{%- endmacro %}
 
-@mixin elps($w: false, $h: false, $t: false, $l: false, $ps: false) {
+{% macro elps($w: false, $h: false, $t: false, $l: false, $ps: false) -%}
   @if $ps {
     position: $ps;
-  } @else {
+  {% else %}
     position: absolute;
-  }
+  {% endif %}
 
   @if $t {
     top: $t + 0px;
-  } @else {
-    top: 0px;
-  }
+  {% endif %}
 
   @if $l {
     left: $l + 0px;
-  } @else {
-    left: 0px;
-  }
+  {% endif %}
 
   @if $w {
     width: $w + 0px;
-  } @else {
-    width: 0px;
-  }
+  {% endif %}
 
   @if $h {
     height: $h + 0px;
-  } @else {
-    height: 0px;
-  }
+  {% endif %}
 
-}
+{%- endmacro %}
 """
 
-main = """
+main_template = """
 #mainContainer {
     @include elps(
         map_get($main, 'width'),
         map_get($main, 'height'),
         0,
         0,
-        'relative'
+        relative
     );
     @include brr(map_get($main, 'border_radius'));
     @include bg(map_get($main, 'background_color'));
-    @include br(map_get($main, 'border_color'));
+    @include br(map_get($main, 'border'), map_get($main, 'border_color'));
 }
 
 #mainHeader {
@@ -164,7 +157,7 @@ main = """
         map_get($i, 'height'),
         map_get($i, 'top'),
         map_get($i, 'left'),
-        'relative'
+        relative
     );
 }
 
@@ -175,35 +168,90 @@ main = """
         map_get($i, 'height'),
         map_get($i, 'top'),
         map_get($i, 'left'),
-        'relative'
+        relative
     );
 }
 """
 
-adv = """
+adv_template = """
 @each $name, $setting in $adv-style {
    .adv#{$name} {
      @include elps(
         map_get($setting, 'width'),
         map_get($setting, 'height'),
         map_get($setting, 'top'),
-        map_get($setting, 'left')
-     );   
-     div {
+        map_get($setting, 'left'),
+        relative
+     );
+     @include bg(map_get($setting, 'background_color'));
+     @include br(map_get($setting, 'border'), map_get($setting, 'border_color'));
+     @include brr(map_get($setting, 'border_radius'));
+     @include marg(map_get($setting, 'margin'));
+     > {
        .header, .header:visited, .header:active, .header:link {
+            $i: map_get($setting, 'header');
+            @include elps(
+                map_get($i, 'width'),
+                map_get($i, 'height'),
+                map_get($i, 'top'),
+                map_get($i, 'left')
+             ); 
+             $f: map_get($i, 'font');
+             @include fs(map_get($f, 'letter'),
+                         map_get($f, 'decoration'),
+                         map_get($f, 'align'),
+                         map_get($f, 'variant'),
+                         map_get($f, 'size'),
+                         map_get($f, 'color'),
+                         map_get($f, 'weight'),
+                         map_get($f, 'line')
+                         )
        }
        .header:hover {
          text-decoration: underline;
 
        }
        .description, .description:visited, .description:active, .description:link {
-
+            $i: map_get($setting, 'description');
+            @include elps(
+                map_get($i, 'width'),
+                map_get($i, 'height'),
+                map_get($i, 'top'),
+                map_get($i, 'left')
+             );
+             $f: map_get($i, 'font');
+             @include fs(map_get($f, 'letter'),
+                         map_get($f, 'decoration'),
+                         map_get($f, 'align'),
+                         map_get($f, 'variant'),
+                         map_get($f, 'size'),
+                         map_get($f, 'color'),
+                         map_get($f, 'weight'),
+                         map_get($f, 'line')
+                         )
        }
        .description:hover {
          text-decoration: underline;
 
        }
        .cost, .cost:visited, .cost:active, .cost:link {
+            $i: map_get($setting, 'cost');
+            @include elps(
+                map_get($i, 'width'),
+                map_get($i, 'height'),
+                map_get($i, 'top'),
+                map_get($i, 'left')
+             ); 
+             $f: map_get($i, 'font');
+             @include fs(map_get($f, 'letter'),
+                         map_get($f, 'decoration'),
+                         map_get($f, 'align'),
+                         map_get($f, 'variant'),
+                         map_get($f, 'size'),
+                         map_get($f, 'color'),
+                         map_get($f, 'weight'),
+                         map_get($f, 'line')
+            )
 
        }
        .cost:hover {
@@ -211,6 +259,13 @@ adv = """
 
        }
        .button, .button:visited, .button:active, .button:link {
+            $i: map_get($setting, 'cost');
+            @include elps(
+                map_get($i, 'width'),
+                map_get($i, 'height'),
+                map_get($i, 'top'),
+                map_get($i, 'left')
+             ); 
          span {
            display: none;
 
@@ -223,6 +278,15 @@ adv = """
 
        }
        .imageCon {
+        $i: map_get($setting, 'image');
+            @include elps(
+                map_get($i, 'width'),
+                map_get($i, 'height'),
+                map_get($i, 'top'),
+                map_get($i, 'left')
+             );
+        @include br(map_get($i, 'border'), map_get($i, 'border_color'));
+        @include brr(map_get($i, 'border_radius'));
          div.control_prev, div.control_next {
            position: absolute;
            top: 35%;
@@ -257,8 +321,13 @@ adv = """
            behavior: url(PIE.htc);
 
          }
-         .image {
-
+         > img {
+            $i: map_get($setting, 'cost');
+            @include elps(
+                map_get($i, 'width'),
+                map_get($i, 'height'),
+                $ps: relative
+             );
          }
        }
 
@@ -268,10 +337,10 @@ adv = """
 }
 """
 
-logo = """
+logo_template = """
 @each $name, $setting in $logo-style {
    .logo#{$name} {
-     div {
+     > {
        .header, .header:visited, .header:active, .header:link {
           width: map_get($setting, 'width')
        }
@@ -350,5 +419,3 @@ logo = """
    }
 }
 """
-
-full = ' '.join([mixin, main, adv, logo])

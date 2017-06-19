@@ -40,3 +40,5 @@ class BlockSetting(Map):
 
     def get_height(self):
         return float(self.height - self.border)
+
+    def get_css(self):

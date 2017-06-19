@@ -31,8 +31,11 @@ class Styler():
     def __to_int(val):
         if val is None:
             val = 0
-        if isinstance(val, str):
-            val = int(val.replace('px', ''))
+        elif isinstance(val, str):
+            if val == 'auto':
+                val = 0
+            else:
+                val = int(val.replace('px', ''))
         return val
 
     @staticmethod
@@ -127,6 +130,14 @@ class Styler():
             advBlock.image.height = self.__to_int(data.get('Image', {}).get('height'))
             advBlock.image.top = self.__to_int(data.get('Image', {}).get('top'))
             advBlock.image.left = self.__to_int(data.get('Image', {}).get('left'))
+            advBlock.image.border = self.__to_int(data.get('Image', {}).get('borderWidth'))
+            advBlock.image.border_color = self.__to_color(data.get('Image', {}).get('borderColor'))
+            advBlock.image.border_radius = [
+                self.__to_int(data.get('Image', {}).get('border_top_left_radius')),
+                self.__to_int(data.get('Image', {}).get('border_top_right_radius')),
+                self.__to_int(data.get('Image', {}).get('border_bottom_right_radius')),
+                self.__to_int(data.get('Image', {}).get('border_bottom_left_radius'))
+            ]
             self.adv_data['Block'] = advBlock
 
             del self.adv_style['RetBlock']
@@ -149,7 +160,7 @@ class Styler():
             ]
             advRetBlock.border = self.__to_int(data.get('Advertise', {}).get('borderWidthRet'))
             advRetBlock.border_color = self.__to_color(data.get('Advertise', {}).get('borderColorRet'))
-            background_color_transparent = data.get('Advertise', {}).get('backgroundColorStatusRet', True)
+            background_color_transparent = data.get('Advertise', {}).get('backgroundColorRetStatus', True)
             advRetBlock.background_color = 'transparent' if background_color_transparent else self.__to_color(
                 data.get('Advertise', {}).get('backgroundColorRet')
             )
@@ -173,6 +184,14 @@ class Styler():
             advRetBlock.image.height = self.__to_int(data.get('RetImage', {}).get('height'))
             advRetBlock.image.top = self.__to_int(data.get('RetImage', {}).get('top'))
             advRetBlock.image.left = self.__to_int(data.get('RetImage', {}).get('left'))
+            advRetBlock.image.border = self.__to_int(data.get('RetImage', {}).get('borderWidth'))
+            advRetBlock.image.border_color = self.__to_color(data.get('RetImage', {}).get('borderColor'))
+            advRetBlock.image.border_radius = [
+                self.__to_int(data.get('RetImage', {}).get('border_top_left_radius')),
+                self.__to_int(data.get('RetImage', {}).get('border_top_right_radius')),
+                self.__to_int(data.get('RetImage', {}).get('border_bottom_right_radius')),
+                self.__to_int(data.get('RetImage', {}).get('border_bottom_left_radius'))
+            ]
             self.adv_data['RetBlock'] = advRetBlock
 
             del self.adv_style['RecBlock']
@@ -195,7 +214,7 @@ class Styler():
             ]
             advRecBlock.border = self.__to_int(data.get('Advertise', {}).get('borderWidthRec'))
             advRecBlock.border_color = self.__to_color(data.get('Advertise', {}).get('borderColorRec'))
-            background_color_transparent = data.get('Advertise', {}).get('backgroundColorStatusRec', True)
+            background_color_transparent = data.get('Advertise', {}).get('backgroundColorRecStatus', True)
             advRecBlock.background_color = 'transparent' if background_color_transparent else self.__to_color(
                 data.get('Advertise', {}).get('backgroundColorRec')
             )
@@ -219,6 +238,14 @@ class Styler():
             advRecBlock.image.height = self.__to_int(data.get('RecImage', {}).get('height'))
             advRecBlock.image.top = self.__to_int(data.get('RecImage', {}).get('top'))
             advRecBlock.image.left = self.__to_int(data.get('RecImage', {}).get('left'))
+            advRecBlock.image.border = self.__to_int(data.get('RecImage', {}).get('borderWidth'))
+            advRecBlock.image.border_color = self.__to_color(data.get('RecImage', {}).get('borderColor'))
+            advRecBlock.image.border_radius = [
+                self.__to_int(data.get('RecImage', {}).get('border_top_left_radius')),
+                self.__to_int(data.get('RecImage', {}).get('border_top_right_radius')),
+                self.__to_int(data.get('RecImage', {}).get('border_bottom_right_radius')),
+                self.__to_int(data.get('RecImage', {}).get('border_bottom_left_radius'))
+            ]
             self.adv_data['RecBlock'] = advRecBlock
 
             self._default_size_calculate()
@@ -490,8 +517,10 @@ class Styler():
         import time
         start_time = time.time()
         variable = self._create_variable()
+        print(variable)
         print("--- %s ms ---" % ((time.time() - start_time) * 1000))
         start_time = time.time()
-        css = sass.compile(string=' '.join([variable, full]), output_style='compressed')
+        css = sass.compile(string=' '.join([variable, full]), output_style='expanded')
         print("--- %s ms ---" % ((time.time() - start_time) * 1000))
+
         return css

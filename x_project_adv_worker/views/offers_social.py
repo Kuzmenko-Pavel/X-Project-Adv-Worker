@@ -6,5 +6,4 @@ class OffersSocialView(web.View):
         result = {}
         pool = self.request.app.pool
         data = await self.request.json()
-        print(data)
         return web.json_response(result)
