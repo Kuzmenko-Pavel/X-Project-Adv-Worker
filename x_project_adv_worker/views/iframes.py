@@ -8,6 +8,7 @@ class IframesView(web.View):
     async def get(self):
         data = {
             'block_id': self.request.query.get('scr', ''),
+            'auto': self.request.query.get('auto', 'false'),
             'country': self.request.country,
             'region': self.request.region,
             'ip': self.request.ip,
@@ -19,6 +20,7 @@ class IframesView(web.View):
     async def post(self):
         data = {
             'block_id': self.request.query.get('scr', ''),
+            'auto': self.request.query.get('auto', 'false'),
             'country': self.request.country,
             'region': self.request.region,
             'ip': self.request.ip,

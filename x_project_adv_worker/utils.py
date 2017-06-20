@@ -1,5 +1,6 @@
 import linecache
 import sys
+import re
 
 import trafaret as T
 
@@ -46,11 +47,17 @@ class Map(dict):
         for arg in args:
             if isinstance(arg, dict):
                 for k, v in arg.items():
-                    self[k] = v
+                    if isinstance(v, dict):
+                        self[k] = Map(v)
+                    else:
+                        self[k] = v
 
         if kwargs:
             for k, v in kwargs.items():
-                self[k] = v
+                if isinstance(v, dict):
+                    self[k] = Map(v)
+                else:
+                    self[k] = v
 
     def __getattr__(self, attr):
         return self.get(attr)
@@ -68,3 +75,9 @@ class Map(dict):
     def __delitem__(self, key):
         super(Map, self).__delitem__(key)
         del self.__dict__[key]
+
+
+def css_minifier(css):
+    css = re.sub(r'/\*[\s\S]*?\*/', "", css)
+    css = re.sub(r'\s+', ' ', css)
+    return css

@@ -6,10 +6,13 @@ from x_project_adv_worker.styler import Styler
 
 class InformerView(web.View):
     async def post(self):
+        import time
+        start_time = time.time()
         result = {}
         pool = self.request.app.pool
         data = await self.request.json()
         block_src = data.get('block_id', '')
+        auto = data.get('auto', False)
         styler = Styler(data.get('w', 0), data.get('h', 0))
         block_result = await self.request.app.query.get_block(pool=pool, block_src=block_src)
         if block_result is None:
@@ -21,7 +24,8 @@ class InformerView(web.View):
         retargeting_branch = block_result.get('retargeting_branch', True)
         retargeting_account_branch = block_result.get('retargeting_branch', True)
         social_branch = block_result.get('account', True)
-        styler.merge(json.loads(block_result.get('ad_style', "{}")))
+        if not auto:
+            styler.merge(json.loads(block_result.get('ad_style')))
         place_offer_campaigns = []
         social_offer_campaigns = []
         dynamic_retargeting_campaigns = []
@@ -48,4 +52,5 @@ class InformerView(web.View):
         result['account_retargeting'] = account_retargeting_campaigns
 
         result['css'] = styler()
+        print("--- %s ms ---" % ((time.time() - start_time) * 1000))
         return web.json_response(result)

@@ -3,13 +3,12 @@ from x_project_adv_worker.utils import Map
 
 class BlockSetting(Map):
     def __init__(self, *args, **kwargs):
-        super(BlockSetting, self).__init__(*args, **kwargs)
         self.width = 0
         self.height = 0
         self.border = 0
         self.border_color = 'white'
         self.background_color = 'transparent'
-        self.border_radius = [0, 0, 0, 0]
+        self.border_radius = [5, 5, 5, 5]
         self.header = Map()
         self.header.width = 0
         self.header.height = 0
@@ -34,11 +33,10 @@ class BlockSetting(Map):
         self.styling_adv.width = 0
         self.styling_adv.height = 0
         self.styling_adv.type = None
+        super(BlockSetting, self).__init__(*args, **kwargs)
 
     def get_width(self):
         return float(self.width - self.border)
 
     def get_height(self):
         return float(self.height - self.border)
-
-    def get_css(self):

@@ -26,7 +26,8 @@ install_requires = ['aiohttp',
                     'aiohttp_jinja2',
                     'GeoIP',
                     'asyncpg',
-                    'libsass'
+                    'scipy',
+                    'numpy'
                     ]
 
 setup(
