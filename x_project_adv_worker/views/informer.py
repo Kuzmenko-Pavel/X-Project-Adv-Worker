@@ -1,14 +1,14 @@
 from aiohttp import web
-import json
+import ujson
+import time
 
 from x_project_adv_worker.styler import Styler
 
 
 class InformerView(web.View):
     async def post(self):
-        import time
-        start_time = time.time()
-        result = {}
+        # start_time = time.time()
+        result = dict({'place': [], 'social': [], 'dynamic_retargeting': [], 'account_retargeting':[]})
         pool = self.request.app.pool
         data = await self.request.json()
         block_src = data.get('block_id', '')
@@ -25,32 +25,25 @@ class InformerView(web.View):
         retargeting_account_branch = block_result.get('retargeting_branch', True)
         social_branch = block_result.get('account', True)
         if not auto:
-            styler.merge(json.loads(block_result.get('ad_style')))
-        place_offer_campaigns = []
-        social_offer_campaigns = []
-        dynamic_retargeting_campaigns = []
-        account_retargeting_campaigns = []
+            styler.merge(ujson.loads(block_result.get('ad_style')))
+
         campaigns_result = await  self.request.app.query.get_campaigns(pool=pool, block_id=block_id,
                                                                        block_domain=block_domain,
                                                                        block_account=block_account)
         for campaign in campaigns_result:
-            styler.add(str(campaign['id']), 'Style_1')
+            # styler.add(str(campaign['id']), 'Style_1')
             if campaign['social'] and social_branch:
-                social_offer_campaigns.append(campaign['id'])
+                result['social'].append(campaign['id'])
             elif not campaign['social'] and not campaign['retargeting'] and place_branch:
-                place_offer_campaigns.append(campaign['id'])
+                result['place'].append(campaign['id'])
             elif not campaign['social'] and campaign['retargeting'] and campaign[
                 'retargeting_type'] == 'offer' and retargeting_branch:
-                dynamic_retargeting_campaigns.append(campaign['id'])
+                result['dynamic_retargeting'].append(campaign['id'])
             elif not campaign['social'] and campaign['retargeting'] and campaign[
                 'retargeting_type'] == 'account' and retargeting_account_branch:
-                account_retargeting_campaigns.append(campaign['id'])
-
-        result['place'] = place_offer_campaigns
-        result['social'] = social_offer_campaigns
-        result['dynamic_retargeting'] = dynamic_retargeting_campaigns
-        result['account_retargeting'] = account_retargeting_campaigns
-
-        result['css'] = styler()
-        print("--- %s ms ---" % ((time.time() - start_time) * 1000))
-        return web.json_response(result)
+                result['account_retargeting'].append(campaign['id'])
+        # start_time_css = time.time()
+        result['css'] = await styler()
+        # print("styler --- %s ms ---" % ((time.time() - start_time_css) * 1000))
+        # print("--- %s ms ---" % ((time.time() - start_time) * 1000))
+        return web.json_response(result, dumps=ujson.dumps)

@@ -52,7 +52,7 @@ def main(argv):
     if app['config']['socket']:
         web.run_app(app, path=app['config']['socket'], backlog=1024, access_log=None)
     else:
-        web.run_app(app, host=app['config']['host'], port=app['config']['port'], backlog=1024)
+        web.run_app(app, host=app['config']['host'], port=app['config']['port'], backlog=1024, access_log=None)
 
 
 if __name__ == '__main__':

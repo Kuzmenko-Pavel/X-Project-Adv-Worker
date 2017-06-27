@@ -28,10 +28,7 @@ class Query(object):
                 stmt = await connection.prepare('''SELECT ca.id,
                                                        ca.guid,
                                                        ca.title,
-                                                       ca.project,
                                                        ca.social,
-                                                       ca."showCoverage",
-                                                       ca.impressions_per_day_limit,
                                                        ca.brending,
                                                        ca.recomendet_type,
                                                        ca.recomendet_count,
@@ -40,9 +37,7 @@ class Query(object):
                                                        ca.retargeting_type,
                                                        ca.offer_by_campaign_unique,
                                                        ca.unique_impression_lot,
-                                                       ca.html_notification,
-                                                       ca.disabled_retargiting_style,
-                                                       ca.disabled_recomendet_style
+                                                       ca.html_notification
                                                 FROM campaign AS ca
                                                 INNER JOIN (
                                                     SELECT  gt.id_cam as id  FROM geo AS gt

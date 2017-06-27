@@ -2,7 +2,7 @@ from collections import defaultdict
 from scipy.spatial import cKDTree
 import numpy as np
 
-from .adv_settings import AdvSetting
+from .adv_settings import AdvSetting, LogoSetting
 
 _h_template = np.array([
     (295, 145, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
@@ -11,20 +11,10 @@ _h_template = np.array([
 _v_template = np.array([
     (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'})
 ])
-_h_styling_template = np.array([
-    (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'})
-])
-_v_styling_template = np.array([
-    (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'})
-])
 _h_template_ref = np.array([(x[0], x[1]) for x in _h_template])
 _v_template_ref = np.array([(x[0], x[1]) for x in _v_template])
-_h_styling_template_ref = np.array([(x[0], x[1]) for x in _h_styling_template])
-_v_styling_template_ref = np.array([(x[0], x[1]) for x in _v_styling_template])
 _h_template_tree = cKDTree(_h_template_ref)
 _v_template_tree = cKDTree(_v_template_ref)
-_h_styling_template_tree = cKDTree(_h_styling_template_ref)
-_v_styling_template_tree = cKDTree(_v_styling_template_ref)
 
 
 def adv_size_g(adv_width):
@@ -32,71 +22,135 @@ def adv_size_g(adv_width):
 
 
 def adv_size_gv(adv_width):
-    return ((adv_width / 2) + (round(320 / adv_width) * 14)) + 4
+    return (adv_width / 2) + header_text_size(adv_width) + 4
 
 
 def adv_size_v(adv_width):
-    return (adv_width + (round(320 / adv_width) * 14)) + 4
+    return adv_width + header_text_size(adv_width) + 4
 
 
 def adv_size_bv(adv_width):
-    return (adv_width + ((round(320 / adv_width) * 14) * 2)) + 4
+    return adv_width + header_text_size(adv_width) + description_text_size(adv_width) + 4
+
+
+def header_text_size(width, size=None):
+    if size is None:
+        size = 14
+    symbols = (width / (size * 0.5)) + 1
+    text_height = (round(30 / symbols) * size)
+    print('header_text_size', width, text_height)
+    return text_height
+
+
+def description_text_size(width, size=None):
+    if size is None:
+        size = 13
+    symbols = (width / (size * 0.5)) + 1
+    text_height = (round(70 / symbols) * size)
+    print('description_text_size', width, text_height)
+    return text_height
 
 
 def calculate_default(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
     adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
+    if adv_setting.width > adv_setting.height:
+        ratio = adv_setting.width / adv_setting.height
+        text_header = header_text_size(adv_setting.height)
+        text_description = description_text_size(adv_setting.height)
+        if ratio >= 2:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height
+            adv_setting.header.height = text_header
+            adv_setting.header.width = adv_setting.width - adv_setting.image.width - 6
+            adv_setting.header.left = adv_setting.image.width + 3
+            adv_setting.description.height = text_description
+            adv_setting.description.width = adv_setting.width - adv_setting.image.width - 6
+            adv_setting.description.left = adv_setting.image.width + 3
+            diff_header_description_height = adv_setting.height - adv_setting.header.height - adv_setting.description.height
+            if 0 < diff_header_description_height < 20:
+                adv_setting.header.top = diff_header_description_height / 2
+                adv_setting.description.top = (adv_setting.header.top * 2) + adv_setting.header.height
+            else:
+                adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+                adv_setting.button.height = adv_setting.header.height
+                adv_setting.button.width = adv_setting.header.width
+                adv_setting.button.left = adv_setting.header.left
+                adv_setting.button.top = adv_setting.description.top + adv_setting.description.height
 
-    if adv.type == 'G':
-        header_height = (round(320 / adv_setting.height) * 14)
-        description_height = (round(320 / (adv_setting.height - header_height)) * 14)
-        image_width = adv_setting.height
-        image_left = 0
-        image_height = adv_setting.height
-        image_top = 0
-        header_width = adv_setting.width - image_width
-        header_left = image_left + image_width
-        header_top = 0
-        description_width = adv_setting.width - image_width
-        description_left = image_left + image_width
-        description_top = header_top + header_height
-    elif adv.type == 'V':
-        pass
-    elif adv.type == 'BV':
-        pass
+        elif 1.6 <= ratio < 2:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height
+            adv_setting.header.height = text_header
+            adv_setting.header.width = adv_setting.width - adv_setting.image.width
+            adv_setting.header.left = adv_setting.image.width
+            adv_setting.description.height = text_description
+            adv_setting.description.width = adv_setting.width - adv_setting.image.width
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+            adv_setting.description.left = adv_setting.image.width
+        else:
+            adv_setting.header.height = text_header
+            adv_setting.header.width = adv_setting.width
+            adv_setting.image.top = adv_setting.header.height
+            adv_setting.image.width = adv_setting.image.height = adv_setting.width/2
+            adv_setting.description.width = adv_setting.width - adv_setting.image.width
+            adv_setting.description.height = adv_setting.image.height
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+            adv_setting.description.left = adv_setting.image.width
     else:
-        pass
-    adv_setting.image.width = image_width
-    adv_setting.image.height = image_height
-    adv_setting.image.left = image_left
-    adv_setting.image.top = image_top
-    adv_setting.header.width = header_width
-    adv_setting.header.height = header_height
-    adv_setting.header.left = header_left
-    adv_setting.header.top = header_top
-    adv_setting.description.width = description_width
-    adv_setting.description.height = description_height
-    adv_setting.description.left = description_left
-    adv_setting.description.top = description_top
+        ratio = adv_setting.height / adv_setting.width
+        text_header = header_text_size(adv_setting.width)
+        text_description = description_text_size(adv_setting.width)
+        if ratio >= 2:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.width
+            adv_setting.header.height = text_header
+            adv_setting.header.width = adv_setting.image.width
+            adv_setting.header.top = adv_setting.image.height
+            adv_setting.description.height = text_description
+            adv_setting.description.width = adv_setting.image.width
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+        elif 1 <= ratio < 2:
+            if adv_setting.height < 150:
+
+                image_width = adv_setting.height - text_header
+                diff_image_width = adv_setting.width - image_width
+                if 0 < diff_image_width < 10:
+                    image_width = image_width - diff_image_width
+                    adv_setting.image.width = adv_setting.image.height = image_width
+                    adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+                    adv_setting.header.height = text_header
+                diff_image_height = adv_setting.height - adv_setting.image.height - adv_setting.header.height
+                if 0 < diff_image_height < 10:
+                    adv_setting.image.top = diff_image_height / 4
+                    adv_setting.header.width = adv_setting.width
+                    adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
+            else:
+                adv_setting.image.width = adv_setting.image.height = adv_setting.height - text_header - text_description
+                adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+                adv_setting.header.height = text_header
+                adv_setting.header.width = adv_setting.width
+                adv_setting.header.top = adv_setting.image.height
+                adv_setting.description.height = text_description
+                adv_setting.description.width = adv_setting.width
+                adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+
     return adv_setting
 
 
 def calculate_retargeting(width, height, adv):
-    adv_setting = AdvSetting()
-    adv_setting.border = 1
-    adv_setting.margin = [1, 1, 1, 1]
-    adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
-    adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
+    adv_setting = calculate_default(width, height, adv)
+    adv_setting.border_color = '#ff0000'
+    adv_setting.background_color = '#ffc7c7'
+    adv_setting.header.font.color = '#991313'
+    adv_setting.description.font.color = '#3d3d45'
     return adv_setting
 
 
 def calculate_recomendet(width, height, adv):
-    adv_setting = AdvSetting()
-    adv_setting.border = 1
-    adv_setting.margin = [1, 1, 1, 1]
-    adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
-    adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
+    adv_setting = calculate_default(width, height, adv)
+    adv_setting.border_color = '#21ff3b'
+    adv_setting.background_color = '#adffb7'
+    adv_setting.header.font.color = '#1f8515'
+    adv_setting.description.font.color = '#3d3d45'
     return adv_setting
 
 
@@ -104,20 +158,7 @@ def calculate_style_1(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.width = width
     adv_setting.height = height
-    return adv_setting
-
-
-def calculate_default_logo(width, height, adv):
-    adv_setting = AdvSetting()
-    adv_setting.width = width
-    adv_setting.height = height
-    return adv_setting
-
-
-def calculate_style_1_logo(width, height, adv):
-    adv_setting = AdvSetting()
-    adv_setting.width = width
-    adv_setting.height = height
+    adv_setting.logo = LogoSetting()
     return adv_setting
 
 
@@ -127,8 +168,6 @@ adv_calculator['RetBlock'] = calculate_retargeting
 adv_calculator['RecBlock'] = calculate_recomendet
 adv_calculator['Style_1'] = calculate_style_1
 
-logo_calculator = defaultdict(lambda: calculate_default_logo)
-logo_calculator['Style_1'] = calculate_style_1_logo
 
 adv_size_calculator = defaultdict(lambda: adv_size_gv)
 adv_size_calculator['G'] = adv_size_g

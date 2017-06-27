@@ -8,7 +8,7 @@ class AdvSetting(Map):
         self.top = 0
         self.left = 0
         self.border = 1
-        self.border_color = '#ffffff'
+        self.border_color = '#bdbdbd'
         self.background_color = '#ffffff'
         self.border_radius = [5, 5, 5, 5]
         self.margin = [1, 1, 1, 1]
@@ -18,10 +18,10 @@ class AdvSetting(Map):
         self.header.top = 0
         self.header.left = 0
         self.header.font = Map()
-        self.header.font.size = 10
-        self.header.font.color = '#000000'
+        self.header.font.size = 14
+        self.header.font.color = '#0063C2'
         self.header.font.align = 'center'
-        self.header.font.weight = False
+        self.header.font.weight = True
         self.header.font.letter = 0
         self.header.font.line = 1
         self.header.font.variant = False
@@ -33,8 +33,8 @@ class AdvSetting(Map):
         self.description.top = 0
         self.description.left = 0
         self.description.font = Map()
-        self.description.font.size = 10
-        self.description.font.color = 'black'
+        self.description.font.size = 13
+        self.description.font.color = '#3d3d45'
         self.description.font.align = 'center'
         self.description.font.weight = False
         self.description.font.letter = 0
@@ -48,7 +48,7 @@ class AdvSetting(Map):
         self.cost.top = 0
         self.cost.left = 0
         self.cost.font = Map()
-        self.cost.font.size = 10
+        self.cost.font.size = 14
         self.cost.font.color = 'black'
         self.cost.font.align = 'center'
         self.cost.font.weight = False
@@ -62,6 +62,20 @@ class AdvSetting(Map):
         self.button.height = 0
         self.button.top = 0
         self.button.left = 0
+        self.button.background_color = '#ffffff'
+        self.button.border = 1
+        self.button.border_color = '#ffc7c7'
+        self.button.border_radius = [5, 5, 5, 5]
+        self.button.font = Map()
+        self.button.font.size = 14
+        self.button.font.color = '#991313'
+        self.button.font.align = 'center'
+        self.button.font.weight = False
+        self.button.font.letter = 0
+        self.button.font.line = 1
+        self.button.font.variant = False
+        self.button.font.decoration = False
+        self.button.font.family = 'arial, sans serif'
         self.image = Map()
         self.image.width = 0
         self.image.height = 0
@@ -70,4 +84,11 @@ class AdvSetting(Map):
         self.image.border = 0
         self.image.border_color = 'white'
         self.image.border_radius = [5, 5, 5, 5]
+        self.logo = False
         super(AdvSetting, self).__init__(*args, **kwargs)
+
+
+class LogoSetting(AdvSetting):
+    def __init__(self, *args, **kwargs):
+        super(LogoSetting, self).__init__(*args, **kwargs)
+        del self['logo']
