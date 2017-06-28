@@ -101,7 +101,7 @@ class Styler():
         return False
 
     def _h_default_size_calculate(self, default=None):
-        if self._h_template_calculate():
+        if self._h_template_calculate(default):
             return
         adv_type = self.block.styling_adv.type
         block_width = self.block.get_width()
@@ -114,10 +114,10 @@ class Styler():
             adv_width = block_width / count_column
             adv_type = 'V'
         else:
-            if block_width > 350:
+            if block_width >=300 and block_height < 190:
                 count_column = ceil(block_width / 300.0)
             elif block_width >= 300 and block_height >= 190:
-                count_column = ceil(block_width / 150.0)
+                count_column = round(block_width / 150.0)
 
             if count_column == 1.0:
                 if block_height >= 300:
@@ -127,8 +127,6 @@ class Styler():
             else:
                 if block_height >= 300:
                     count_row = round(block_height / 100.0)
-                elif 190 <= block_height < 300:
-                    count_column = round(block_width / 180.0)
 
             adv_height = block_height / count_row
             adv_width = block_width / count_column
@@ -148,7 +146,7 @@ class Styler():
             self.block.default_adv = self.block.styling_adv
 
     def _v_default_size_calculate(self, default=None):
-        if self._v_template_calculate():
+        if self._v_template_calculate(default):
             return
         adv_type = self.block.styling_adv.type
         block_width = self.block.get_width()

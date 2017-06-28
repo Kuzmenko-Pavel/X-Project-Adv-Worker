@@ -10,6 +10,7 @@ class AdvSetting(Map):
         self.border = 1
         self.border_color = '#bdbdbd'
         self.background_color = '#ffffff'
+        self.opacity = 1
         self.border_radius = [5, 5, 5, 5]
         self.margin = [1, 1, 1, 1]
         self.header = Map()
@@ -17,6 +18,10 @@ class AdvSetting(Map):
         self.header.height = 0
         self.header.top = 0
         self.header.left = 0
+        self.header.z = 0
+        self.header.background_color = 'transparent'
+        self.header.opacity = 1
+        self.header.border_radius = [5, 5, 5, 5]
         self.header.font = Map()
         self.header.font.size = 14
         self.header.font.color = '#0063C2'
@@ -26,12 +31,16 @@ class AdvSetting(Map):
         self.header.font.line = 1
         self.header.font.variant = False
         self.header.font.decoration = False
-        self.header.font.family = 'arial, sans serif'
+        self.header.font.family = 'Arial,Helvetica,sans-serif'
         self.description = Map()
         self.description.width = 0
         self.description.height = 0
         self.description.top = 0
         self.description.left = 0
+        self.description.z = 0
+        self.description.background_color = 'transparent'
+        self.description.opacity = 1
+        self.description.border_radius = [5, 5, 5, 5]
         self.description.font = Map()
         self.description.font.size = 13
         self.description.font.color = '#3d3d45'
@@ -41,12 +50,16 @@ class AdvSetting(Map):
         self.description.font.line = 1
         self.description.font.variant = False
         self.description.font.decoration = False
-        self.description.font.family = 'arial, sans serif'
+        self.description.font.family = 'Arial,Helvetica,sans-serif'
         self.cost = Map()
         self.cost.width = 0
         self.cost.height = 0
         self.cost.top = 0
         self.cost.left = 0
+        self.cost.z = 0
+        self.cost.background_color = 'transparent'
+        self.cost.opacity = 1
+        self.cost.border_radius = [5, 5, 5, 5]
         self.cost.font = Map()
         self.cost.font.size = 14
         self.cost.font.color = 'black'
@@ -56,13 +69,15 @@ class AdvSetting(Map):
         self.cost.font.line = 1
         self.cost.font.variant = False
         self.cost.font.decoration = False
-        self.cost.font.family = 'arial, sans serif'
+        self.cost.font.family = 'Arial,Helvetica,sans-serif'
         self.button = Map()
         self.button.width = 0
         self.button.height = 0
         self.button.top = 0
         self.button.left = 0
-        self.button.background_color = '#ffffff'
+        self.button.z = 0
+        self.button.opacity = 1
+        self.button.background_color = 'transparent'
         self.button.border = 1
         self.button.border_color = '#ffc7c7'
         self.button.border_radius = [5, 5, 5, 5]
@@ -75,7 +90,7 @@ class AdvSetting(Map):
         self.button.font.line = 1
         self.button.font.variant = False
         self.button.font.decoration = False
-        self.button.font.family = 'arial, sans serif'
+        self.button.font.family = 'Arial,Helvetica,sans-serif'
         self.image = Map()
         self.image.width = 0
         self.image.height = 0
@@ -91,4 +106,6 @@ class AdvSetting(Map):
 class LogoSetting(AdvSetting):
     def __init__(self, *args, **kwargs):
         super(LogoSetting, self).__init__(*args, **kwargs)
+        del self['description']
+        del self['cost']
         del self['logo']

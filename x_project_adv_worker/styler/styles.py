@@ -24,6 +24,16 @@ macro_template = """
     {%- endif %}
 {%- endmacro %}
 
+{% macro op(opacity=None) -%}
+    {% if opacity != None and opacity <1  -%}
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity={{opacity * 100|int}})";
+        filter: alpha(opacity={{opacity * 100|int}});
+        -moz-opacity: {{opacity}};
+        -khtml-opacity: {{opacity}};
+        opacity: {{opacity}};
+    {%- endif %}
+{%- endmacro %}
+
 {% macro hide(hd=None) -%}
     {% if hd -%}
         display: none;
@@ -61,7 +71,6 @@ macro_template = """
 {% macro fs(ls=None, fu=None, ta=None, fv=None, size=None, colour=None, weight=None,  lh=None, ff=None) -%}
     cursor: pointer;
     overflow: hidden;
-    text-overflow: ellipsis;
     {% if fu -%}
         text-decoration: underline;
     {% else %}
@@ -85,7 +94,7 @@ macro_template = """
     {% if ff -%}
         font-family: {{ ff }};
     {% else %}
-        font-family: 'arial, sans serif';
+        font-family: 'Arial,Helvetica,sans-serif';
     {%- endif %}
     {% if colour -%}
         color: {{ colour }};
@@ -136,7 +145,7 @@ macro_template = """
 main_template = """
 
 #mainContainer {
-    {{ elps(main['width'], main['height'], 0, 0, relative) }}
+    {{ elps(main['width'], main['height'], 0, 0, 'relative') }}
     {{ brr(main['border_radius']) }}
     {{ bg(main['background_color']) }}
     {{ br(main['border'], main['border_color']) }}
@@ -224,7 +233,7 @@ adv_template = """
     {% set image = setting['image'] %}
     {% set logo = setting['logo'] %}
     .adv{{ name }} {
-        float: left;
+        float: left; 
         {{ elps(
             setting['width'],
             setting['height'],
@@ -256,6 +265,10 @@ adv_template = """
             font['family']
         )
         }}
+        z-index: {{header['z']}};
+        {{ bg(header['background_color']) }}
+        {{ brr(header['border_radius']) }}
+        {{ op(header['opacity']) }}
     }
     .adv{{ name }}>.header:hover {
         text-decoration: underline;
@@ -279,6 +292,10 @@ adv_template = """
             font['family']
         )
         }}
+        z-index: {{description['z']}};
+        {{ bg(description['background_color']) }}
+        {{ brr(description['border_radius']) }}
+        {{ op(description['opacity']) }}
     }
     .adv{{ name }}>.description:hover {
         text-decoration: underline;
@@ -302,6 +319,10 @@ adv_template = """
             font['family']
         )
         }}
+        z-index: {{cost['z']}};
+        {{ bg(cost['background_color']) }}
+        {{ brr(cost['border_radius']) }}
+        {{ op(cost['opacity']) }}
     }
     .adv{{ name }}>.cost:hover {
         text-decoration: underline;
@@ -329,6 +350,10 @@ adv_template = """
         )
         }}
         line-height: {{button['height']}}px;
+        z-index: {{button['z']}};
+        {{ bg(button['background_color']) }}
+        {{ brr(button['border_radius']) }}
+        {{ op(button['opacity']) }}
 
     }
     .adv{{ name }}>.button:hover {
@@ -392,52 +417,6 @@ adv_template = """
         .logo{{ name }}>.header:hover {
             text-decoration: underline;
         }
-        .logo{{ name }}>.description,.adv{{ name }}>.description:visited,.logo{{ name }}>.description:active,.logo{{ name }}>.description:link {
-            {{ elps(
-                logo['description']['width'],
-                logo['description']['height'],
-                logo['description']['top'],
-                logo['description']['left']
-            ) }}
-            {% set font = logo['description']['font'] %}
-            {{ fs(font['letter'],
-                font['decoration'],
-                font['align'],
-                font['variant'],
-                font['size'],
-                font['color'],
-                font['weight'],
-                font['line'],
-                font['family']
-            )
-            }}
-        }
-        .logo{{ name }}>.description:hover {
-            text-decoration: underline;
-        }
-        .logo{{ name }}>.cost,.logo{{ name }}>.cost:visited,.logo{{ name }}>.cost:active,.logo{{ name }}>.cost:link {
-            {{ elps(
-                logo['cost']['width'],
-                logo['cost']['height'],
-                logo['cost']['top'],
-                logo['cost']['left']
-            ) }}
-            {% set font = logo['cost']['font'] %}
-            {{ fs(font['letter'],
-                font['decoration'],
-                font['align'],
-                font['variant'],
-                font['size'],
-                font['color'],
-                font['weight'],
-                font['line'],
-                font['family']
-            )
-            }}
-        }
-        .logo{{ name }}>.cost:hover {
-            text-decoration: underline;
-        }
            .logo{{ name }}>.button,.logo{{ name }}>.button:visited,.logo{{ name }}>.button:active,.logo{{ name }}>.button:link {
             {{ elps(
                 logo['button']['width'],
@@ -474,6 +453,9 @@ adv_template = """
             ) }}
             {{ br(logo['image']['border'], logo['image']['border_color']) }}
             {{ brr(logo['image']['border_radius']) }}
+        }
+        .logo{{ name }}>.imageCon>.control_next, .logo{{ name }}>.imageCon>.control_prev{
+            display: none;
         }
         .logo{{ name }} ul > li > img {
             {{ elps(
