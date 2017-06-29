@@ -217,7 +217,7 @@ class Styler():
     def _create_variable(self):
         import time
         # start_time = time.time()
-        variable = dict({'main': {}, 'adv_style': {}, 'logo_style': {}})
+        variable = dict({'main': {}, 'adv_style': {}})
         variable['main'] = dict(self.block)
         width = self.block.get_width()
         height = self.block.get_height()
@@ -227,6 +227,8 @@ class Styler():
             else:
                 variable['adv_style'][key] = dict(adv_calculator[value](width, height, self.block.styling_adv))
 
+        for key, value in self.adv_data.items():
+            variable['adv_style'][key] = value
         # print("_create_variable --- %s ms ---" % ((time.time() - start_time) * 1000))
         return variable
 

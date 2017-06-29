@@ -9,7 +9,7 @@ macro_template = """
 {%- endmacro %}
 
 {% macro br(size=None, color='black') -%}
-    {% if size >0 -%}
+    {% if size != None and size > 0 -%}
         border: {{size}}px solid {{ color  }};
     {% else %}
         border: none;

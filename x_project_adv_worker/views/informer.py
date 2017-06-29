@@ -7,7 +7,6 @@ from x_project_adv_worker.styler import Styler
 
 class InformerView(web.View):
     async def post(self):
-        # start_time = time.time()
         result = dict({'place': [], 'social': [], 'dynamic_retargeting': [], 'account_retargeting':[]})
         pool = self.request.app.pool
         data = await self.request.json()
@@ -42,8 +41,5 @@ class InformerView(web.View):
             elif not campaign['social'] and campaign['retargeting'] and campaign[
                 'retargeting_type'] == 'account' and retargeting_account_branch:
                 result['account_retargeting'].append(campaign['id'])
-        start_time_css = time.time()
         result['css'] = await styler()
-        print("styler --- %s ms ---" % ((time.time() - start_time_css) * 1000))
-        # print("--- %s ms ---" % ((time.time() - start_time) * 1000))
         return web.json_response(result, dumps=ujson.dumps)

@@ -53,7 +53,6 @@ def calculate_default(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
     adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
-    print(adv.width, adv.height)
     if adv_setting.width > adv_setting.height:
         ratio = adv_setting.width / adv_setting.height
         text_header = header_text_size(adv_setting.height)
@@ -320,9 +319,9 @@ def calculate_style_1(width, height, adv):
 
 
 adv_calculator = defaultdict(lambda: calculate_default)
-adv_calculator['Block'] = calculate_style_1#calculate_default
-adv_calculator['RetBlock'] = calculate_style_1#calculate_retargeting
-adv_calculator['RecBlock'] = calculate_style_1#calculate_recomendet
+adv_calculator['Block'] = calculate_default
+adv_calculator['RetBlock'] = calculate_retargeting
+adv_calculator['RecBlock'] = calculate_recomendet
 adv_calculator['Style_1'] = calculate_style_1
 
 
