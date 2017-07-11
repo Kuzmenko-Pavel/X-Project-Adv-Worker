@@ -33,7 +33,7 @@ class BlockSetting(Map):
         self.default_adv.type = None
         self.styling_adv.count_column = 0
         self.styling_adv.count_row = 0
-        self.default_adv.count_adv = 0
+        self.styling_adv.count_adv = 0
         self.styling_adv.width = 0
         self.styling_adv.height = 0
         self.styling_adv.type = None

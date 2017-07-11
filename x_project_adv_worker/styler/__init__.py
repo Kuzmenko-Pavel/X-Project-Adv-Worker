@@ -19,7 +19,6 @@ class Styler():
             'RecBlock': 'RecBlock'
         }
         self.adv_data = {}
-        self.logo_data = {}
         self.block = BlockSetting()
         self.block.width = width
         self.block.height = height
@@ -46,6 +45,7 @@ class Styler():
             self.block.footer.height = block.footer.height
             self.block.footer.top = block.footer.top
             self.block.footer.left = block.footer.left
+            self.block.default_adv.count_adv = block.default_adv.count_adv
             del self.adv_style['Block']
             self.adv_data['Block'] = AdvSetting(data['adv']['Block'])
 

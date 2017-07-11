@@ -17,6 +17,11 @@ class InformerView(web.View):
         device = data.get('device', 'pc')
         cost = data.get('cost', 0)
         gender = data.get('gender', 0)
+        raw_retargeting = data.get('retargeting', [])
+        retargeting = {}
+        for ids in raw_retargeting:
+            if len(ids) >= 2:
+                retargeting[str(ids[1]).lower()] = ids[0]
         styler = Styler(data.get('w', 0), data.get('h', 0))
         block_result = await self.request.app.query.get_block(pool=pool, block_src=block_src)
         if block_result is None:
@@ -38,22 +43,36 @@ class InformerView(web.View):
                                                                        city=city,
                                                                        device=device,
                                                                        cost=cost,
-                                                                       gender=gender)
+                                                                       gender=gender,
+                                                                       capacity=styler.block.styling_adv.count_adv
+                                                                       )
         for campaign in campaigns_result:
             if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
                 styler.add(str(campaign['id']), 'Style_1')
-
             if campaign['social'] and social_branch:
                 result['campaigns'].append(campaign)
             elif not campaign['social'] and not campaign['retargeting'] and place_branch:
                 result['campaigns'].append(campaign)
             elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'offer' and retargeting_branch:
-                result['campaigns'].append(campaign)
+                if campaign['account'] in retargeting:
+                    result['campaigns'].append(campaign)
             elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'account' and retargeting_account_branch:
-                result['campaigns'].append(campaign)
+                if campaign['account'] in retargeting:
+                    result['campaigns'].append(campaign)
         result['css'] = await styler()
         result['block']['id'] = block_result.get('id', 0)
         result['block']['guid'] = block_result.get('guid', '')
         result['block']['headerHtml'] = block_result.get('headerHtml', '')
         result['block']['footerHtml'] = block_result.get('footerHtml', '')
+        result['block']['capacity'] = styler.block.default_adv.count_adv
+        result['block']['capacity_styling'] = styler.block.styling_adv.count_adv
+        result['block']['blinking'] = block_result.get('blinking', 0)
+        result['block']['blinking_reload'] = block_result.get('blinking_reload', False)
+        result['block']['shake'] = block_result.get('shake', 0)
+        result['block']['shake_mouse'] = block_result.get('shake_mouse',  False)
+        result['block']['shake_reload'] = block_result.get('shake_reload', False)
+        result['block']['html_notification'] = block_result.get('html_notification', True)
+        result['block']['button'] = styler.block.default_button.block
+        result['block']['ret_button'] = styler.block.default_button.ret_block
+        result['block']['rec_button'] = styler.block.default_button.rec_block
         return web.json_response(result, dumps=ujson.dumps)

@@ -1,4 +1,5 @@
 import asyncpg
+import ujson
 from datetime import datetime
 
 
@@ -24,7 +25,8 @@ class Query(object):
             return None
 
     @staticmethod
-    async def get_campaigns(pool, block_id, block_domain, block_account, country, city, device, gender, cost):
+    async def get_campaigns(pool, block_id, block_domain, block_account, country, city, device, gender, cost, capacity):
+        result = []
         gender_list = set('0')
         cost_list = set('0')
         gender_list.add(str(gender))
@@ -55,7 +57,7 @@ FROM mv_campaign AS ca
                INTERSECT
                SELECT t.id AS id
                FROM mv_campaign AS t
-               WHERE t.gender in (%(gender)s) and t.cost in (%(cost)s)
+               WHERE t.gender in (%(gender)s) and t.cost in (%(cost)s) and t.capacity <= %(capacity)d
 
                INTERSECT
                SELECT ct.id
@@ -148,80 +150,233 @@ FROM mv_campaign AS ca
                     'id_acc': block_account,
                     'day': d,
                     'hour': h,
-                    'min': m
+                    'min': m,
+                    'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                result = await stmt.fetch()
+                campaigns = await stmt.fetch()
+                for item in campaigns:
+                    campaign = {}
+                    campaign['account'] = item['account']
+                    campaign['brending'] = item['brending']
+                    campaign['guid'] = item['guid']
+                    campaign['html_notification'] = item['html_notification']
+                    campaign['id'] = item['id']
+                    campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
+                    campaign['recomendet_count'] = item['recomendet_count']
+                    campaign['recomendet_type'] = item['recomendet_type']
+                    campaign['retargeting'] = item['retargeting']
+                    campaign['retargeting_type'] = item['retargeting_type']
+                    campaign['social'] = item['social']
+                    campaign['style_type'] = item['style_type']
+                    campaign['style_class'] = item['style_class']
+                    campaign['style_class_recommendet'] = item['style_class_recommendet']
+                    campaign['style_data'] = ujson.loads(item['style_data'])
+                    campaign['styling'] = item['styling']
+                    campaign['unique_impression_lot'] = item['unique_impression_lot']
+                    result.append(campaign)
                 return [dict(x) for x in result] if result else []
+        return result
 
     @staticmethod
-    async def get_place_offer(pool, campaigns, capacity):
+    async def get_place_offer(pool, block_id, campaigns, capacity, exclude):
+        result = []
+        clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
-                stmt = await connection.prepare('''
-                SELECT *
-                FROM offer_place AS ofrs
-                WHERE ofrs.id_cam IN ( '''
-                                                + ','.join(['%s' % x for x in campaigns]) +
-                                                ''') AND ofrs.id NOT IN ('''
-                                                + ','.join(['%s' % x for x in [0, ]]) +
-                                                ''') AND rating > 1000  ORDER BY rating DESC LIMIT '''
-                                                + str(capacity) +
-                                                ''' OFFSET 0;
-                                                ''')
-                result = await stmt.fetch()
-                return [dict(x) for x in result] if result else []
+                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+                exclude_ids = ','.join([str(x) for x in exclude])
+                campaign_unique = ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns])
+                q = '''
+                    select * from
+                    (
+                    select 
+                    row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_place2informer.rating desc) AS range_number,
+                    count(id) OVER() as all_count,
+                    mv_offer_place2informer.*,
+                    ofrs.*
+                    FROM mv_offer_place AS ofrs
+                    left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)d
+                    WHERE
+                    ofrs.id_cam IN (%(campaigns)s)
+                    AND ofrs.id NOT IN (%(exclude)s)
+                    ) sub
+                    where %(campaign_unique)s
+                    order by sub.range_number, sub.rating desc
+                    LIMIT %(capacity)d OFFSET 0;
+                ''' % {
+                    'inf': block_id,
+                    'campaigns': campaigns_ids,
+                    'exclude': exclude_ids,
+                    'campaign_unique': campaign_unique,
+                    'capacity': capacity
+                }
+                stmt = await connection.prepare(q)
+                offers = await stmt.fetch()
+                for offer in offers:
+                    if clean and offer['all_count'] > capacity:
+                        clean = False
+                    item = {}
+                    item['id'] = offer['id']
+                    item['guid'] = offer['guid']
+                    item['id_cam'] = offer['id_cam']
+                    item['image'] = offer['image']
+                    item['description'] = offer['description']
+                    item['url'] = offer['url']
+                    item['title'] = offer['title']
+                    item['price'] = offer['price']
+                    if offer['recommended']:
+                        item['recommended'] = ujson.loads(offer['recommended'])
+                    else:
+                        item['recommended'] = []
+                    result.append(item)
+        return result, clean
 
     @staticmethod
-    async def get_social_offer(pool, campaigns, capacity):
+    async def get_social_offer(pool, block_id, campaigns, capacity, exclude):
+        result = []
+        clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
-                stmt = await connection.prepare('''
-                SELECT *
-                FROM offer_social AS ofrs
-                WHERE ofrs.id_cam IN ( '''
-                                                + ','.join(['%s' % x for x in campaigns]) +
-                                                ''') AND ofrs.id NOT IN ('''
-                                                + ','.join(['%s' % x for x in [0, ]]) +
-                                                ''') AND rating > 1000  ORDER BY rating DESC LIMIT '''
-                                                + str(capacity) +
-                                                ''' OFFSET 0;
-                                                ''')
-                result = await stmt.fetch()
-                return [dict(x) for x in result] if result else []
+                q = '''
+                    select * from
+                    (
+                    select 
+                    row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_social2informer.rating desc) AS range_number,
+                    count(id) OVER() as all_count,
+                    mv_offer_social2informer.*,
+                    ofrs.*
+                    FROM mv_offer_social AS ofrs
+                    left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
+                    WHERE
+                    ofrs.id_cam IN (%(campaigns)s)
+                    AND ofrs.id NOT IN (%(exclude)s)
+                    ) sub
+                    where %(campaign_unique)s
+                    order by sub.range_number, sub.rating desc
+                    LIMIT %(capacity)d OFFSET 0;
+                ''' % {
+                    'inf': block_id,
+                    'campaigns': ','.join([str(x[0]) for x in campaigns]),
+                    'exclude': ','.join([str(x) for x in exclude]),
+                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                    'capacity': capacity
+                }
+                stmt = await connection.prepare(q)
+                offers = await stmt.fetch()
+                for offer in offers:
+                    if clean and offer['all_count'] > capacity:
+                        clean = False
+                    item = {}
+                    item['id'] = offer['id']
+                    item['guid'] = offer['guid']
+                    item['id_cam'] = offer['id_cam']
+                    item['image'] = offer['image']
+                    item['description'] = offer['description']
+                    item['url'] = offer['url']
+                    item['title'] = offer['title']
+                    item['price'] = offer['price']
+                    if offer['recommended']:
+                        item['recommended'] = ujson.loads(offer['recommended'])
+                    else:
+                        item['recommended'] = []
+                    result.append(item)
+        return result, clean
 
     @staticmethod
-    async def get_dynamic_retargeting_offer(pool, campaigns, capacity):
+    async def get_dynamic_retargeting_offer(pool, campaigns, capacity, exclude, raw_retargeting):
+        result = []
+        clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
-                stmt = await connection.prepare('''
-                SELECT *
-                FROM offer_dynamic_retargeting AS ofrs
-                WHERE ofrs.id_cam IN ( '''
-                                                + ','.join(['%s' % x for x in campaigns]) +
-                                                ''') AND ofrs.id NOT IN ('''
-                                                + ','.join(['%s' % x for x in [0, ]]) +
-                                                ''') LIMIT '''
-                                                + str(capacity) +
-                                                ''' OFFSET 0;
-                                                ''')
-                result = await stmt.fetch()
-                return [dict(x) for x in result] if result else []
+                retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
+                q = '''
+                    select * from
+                    (
+                    select 
+                    row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
+                    count(id) OVER() as all_count,
+                    ofrs.*
+                    FROM mv_offer_dynamic_retargeting AS ofrs
+                    WHERE
+                    ofrs.id_cam IN (%(campaigns)s)
+                    AND ofrs.id NOT IN (%(exclude)s)
+                    AND (%(retargeting)s)
+                    ) sub
+                    where %(campaign_unique)s
+                    order by sub.range_number
+                    LIMIT %(capacity)d OFFSET 0;
+                ''' % {
+                    'campaigns': ','.join([str(x[0]) for x in campaigns]),
+                    'exclude': ','.join([str(x) for x in exclude]),
+                    'retargeting': retargeting,
+                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                    'capacity': capacity
+                }
+                stmt = await connection.prepare(q)
+                offers = await stmt.fetch()
+                for offer in offers:
+                    clean = False
+                    item = {}
+                    item['id'] = offer['id']
+                    item['guid'] = offer['guid']
+                    item['id_cam'] = offer['id_cam']
+                    item['image'] = offer['image']
+                    item['description'] = offer['description']
+                    item['url'] = offer['url']
+                    item['title'] = offer['title']
+                    item['price'] = offer['price']
+                    if offer['recommended']:
+                        item['recommended'] = ujson.loads(offer['recommended'])
+                    else:
+                        item['recommended'] = []
+                    result.append(item)
+        return result, clean
 
     @staticmethod
-    async def get_account_retargeting_offer(pool, campaigns, capacity):
+    async def get_account_retargeting_offer(pool, campaigns, capacity, exclude):
+        result = []
+        clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
-                stmt = await connection.prepare('''
-                                SELECT *
-                                FROM offer_account_retargeting AS ofrs
-                                WHERE ofrs.id_cam IN ( '''
-                                                + ','.join(['%s' % x for x in campaigns]) +
-                                                ''') AND ofrs.id NOT IN ('''
-                                                + ','.join(['%s' % x for x in [0, ]]) +
-                                                ''') LIMIT '''
-                                                + str(capacity) +
-                                                ''' OFFSET 0;
-                                                ''')
-                result = await stmt.fetch()
-                return [dict(x) for x in result] if result else []
+                q = '''
+                    select * from
+                    (
+                    select 
+                    row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
+                    count(id) OVER() as all_count,
+                    ofrs.*
+                    FROM mv_offer_account_retargeting AS ofrs
+                    WHERE
+                    ofrs.id_cam IN (%(campaigns)s)
+                    AND ofrs.id NOT IN (%(exclude)s)
+                    ) sub
+                    where %(campaign_unique)s
+                    order by sub.range_number
+                    LIMIT %(capacity)d OFFSET 0;
+                ''' % {
+                    'campaigns': ','.join([str(x[0]) for x in campaigns]),
+                    'exclude': ','.join([str(x) for x in exclude]),
+                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                    'capacity': capacity
+                }
+                stmt = await connection.prepare(q)
+                offers = await stmt.fetch()
+                for offer in offers:
+                    if clean and offer['all_count'] > capacity:
+                        clean = False
+                    item = {}
+                    item['id'] = offer['id']
+                    item['guid'] = offer['guid']
+                    item['id_cam'] = offer['id_cam']
+                    item['image'] = offer['image']
+                    item['description'] = offer['description']
+                    item['url'] = offer['url']
+                    item['title'] = offer['title']
+                    item['price'] = offer['price']
+                    if offer['recommended']:
+                        item['recommended'] = ujson.loads(offer['recommended'])
+                    else:
+                        item['recommended'] = []
+                    result.append(item)
+        return result, clean

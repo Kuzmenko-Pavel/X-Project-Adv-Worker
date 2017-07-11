@@ -47,6 +47,13 @@ macro_template = """
     margin-left: {{margin[3]}}px;
 {%- endmacro %}
 
+{% macro pad(padding) -%}
+    padding-top: {{padding[0]}}px;
+    padding-right: {{padding[1]}}px;
+    padding-bottom: {{padding[2]}}px;
+    padding-left: {{padding[3]}}px;
+{%- endmacro %}
+
 {% macro brr(radiuses) -%}
     -webkit-border-top-left-radius: {{ radiuses[0] }}px;
     -webkit-border-top-right-radius: {{ radiuses[1] }}px;
@@ -245,6 +252,7 @@ adv_template = """
         {{ br(setting['border'], setting['border_color']) }}
         {{ brr(setting['border_radius']) }}
         {{ marg(setting['margin']) }}
+        {{ pad(setting['padding']) }}
     }
     .adv{{ name }}>.header,.adv{{ name }}>.header:visited,.adv{{ name }}>.header:active,.adv{{ name }}>.header:link {
         {{ elps(
@@ -266,6 +274,8 @@ adv_template = """
         )
         }}
         z-index: {{header['z']}};
+        {{ marg(header['margin']) }}
+        {{ pad(header['padding']) }}
         {{ bg(header['background_color']) }}
         {{ brr(header['border_radius']) }}
         {{ op(header['opacity']) }}
@@ -293,6 +303,8 @@ adv_template = """
         )
         }}
         z-index: {{description['z']}};
+        {{ marg(description['margin']) }}
+        {{ pad(description['padding']) }}
         {{ bg(description['background_color']) }}
         {{ brr(description['border_radius']) }}
         {{ op(description['opacity']) }}
@@ -319,7 +331,11 @@ adv_template = """
             font['family']
         )
         }}
+        white-space:nowrap;
+        text-overflow: ellipsis;
         z-index: {{cost['z']}};
+        {{ marg(cost['margin']) }}
+        {{ pad(cost['padding']) }}
         {{ bg(cost['background_color']) }}
         {{ brr(cost['border_radius']) }}
         {{ op(cost['opacity']) }}
@@ -351,6 +367,8 @@ adv_template = """
         }}
         line-height: {{button['height']}}px;
         z-index: {{button['z']}};
+        {{ marg(button['margin']) }}
+        {{ pad(button['padding']) }}
         {{ bg(button['background_color']) }}
         {{ brr(button['border_radius']) }}
         {{ op(button['opacity']) }}
@@ -439,6 +457,7 @@ adv_template = """
                 font['family']
             )
             }}
+            line-height: {{logo['button']['height']}}px;
         }
         .logo{{ name }}>.button:hover {
             text-decoration: underline;
