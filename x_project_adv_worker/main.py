@@ -1,12 +1,12 @@
 import argparse
 import asyncio
-import logging
 import os
 import sys
 
 from aiohttp import web
 from trafaret_config import commandline
 
+from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.db import init_db
 from x_project_adv_worker.templates import init_templates
 from x_project_adv_worker.geo_ip import init_geo_ip
@@ -38,17 +38,9 @@ def init(loop, argv):
 
 
 def main(argv):
-    log = logging.getLogger()
-    log.setLevel(logging.INFO)
-    f = logging.Formatter('[L:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(f)
-    log.addHandler(ch)
     loop = asyncio.get_event_loop()
-
     app = init(loop, argv)
-    app['log'] = log
+    app['log'] = logger
     if app['config']['socket']:
         web.run_app(app, path=app['config']['socket'], backlog=1024, access_log=None)
     else:

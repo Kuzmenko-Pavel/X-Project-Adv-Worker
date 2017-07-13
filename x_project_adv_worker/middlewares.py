@@ -1,5 +1,6 @@
 from aiohttp import web
 
+from x_project_adv_worker.logger import logger, exception_message
 from .utils import encryptDecrypt
 
 
@@ -26,6 +27,7 @@ def error_pages(overrides):
                 else:
                     return await override(request, response)
             except web.HTTPException as ex:
+                logger.error(exception_message(exc=str(ex), request=str(request._message)))
                 override = overrides.get(ex.status)
                 if override is None:
                     raise
