@@ -60,25 +60,32 @@ async def geoip_http_request_middleware(app, handler):
     async def middleware_handler(request):
         host = '127.0.0.1'
         not_found = 'NOT FOUND'
-        ip = request.query.get('ip')
-        if ip is not None:
-            host = ip
-        else:
-            peername = request.transport.get_extra_info('peername')
-            if peername is not None:
-                host, _ = peername
+        try:
+            ip = request.query.get('ip')
+            headers = request.headers
+            x_real_ip = headers.get('X-Real-IP', headers.get('X-Forwarded-For'))
+            if ip is not None:
+                host = ip
+            elif x_real_ip is not None:
+                host = ip
+            else:
+                peername = request.transport.get_extra_info('peername')
+                if peername is not None and isinstance(peername, tuple):
+                    host, _ = peername
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex), request=str(request._message)))
 
         request.country = not_found
         request.region = not_found
         request.ip = host
+        if host != '127.0.0.1':
+            country = app.GeoIPCountry.country_code_by_addr(host)
+            if country is not None:
+                request.country = country
 
-        country = app.GeoIPCountry.country_code_by_addr(host)
-        if country is not None:
-            request.country = country
-
-        city = app.GeoIPCity.record_by_addr(host)
-        if city is not None:
-            request.region = city.get('region_name', not_found)
+            city = app.GeoIPCity.record_by_addr(host)
+            if city is not None:
+                request.region = city.get('region_name', not_found)
 
         request.token = encryptDecrypt('valid', request.ip)
 
