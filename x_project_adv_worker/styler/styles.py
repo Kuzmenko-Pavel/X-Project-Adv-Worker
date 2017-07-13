@@ -185,7 +185,7 @@ main_template = """
     display: inline-block;
     zoom: 1;
     *display: inline;
-    behavior: url(PIE.htc);
+    behavior: url(./../PIE.htc);
 }
 .imageCon ul li {
     float: left;
@@ -193,7 +193,7 @@ main_template = """
     display: inline-block;
     zoom: 1;
     *display: inline;
-    behavior: url(PIE.htc);
+    behavior: url(./../PIE.htc);
 }
 div.control_prev, div.control_next {
     position: absolute;
@@ -211,22 +211,22 @@ div.control_prev, div.control_next {
     opacity: 0.5;
     border: 1px solid #fff;
     cursor: pointer;
-    behavior: url(PIE.htc);
+    behavior: url(./../PIE.htc);
 }
 div.control_prev:hover, div.control_next:hover {
     opacity: 1;
     padding: 15% 15%;
     -webkit-transition: all 0.2s ease;
-    behavior: url(PIE.htc);
+    behavior: url(./../PIE.htc);
 }
 div.control_prev {
     border-radius: 0 5px 5px 0;
-    behavior: url(PIE.htc);
+    behavior: url(./../PIE.htc);
 }
 div.control_next {
     right: 0;
     border-radius: 5px 0 0 5px;
-    behavior: url(PIE.htc);
+    behavior: url(./../PIE.htc);
 }
 
 """

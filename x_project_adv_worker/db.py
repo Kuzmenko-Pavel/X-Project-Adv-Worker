@@ -1,6 +1,7 @@
 import asyncpg
 import ujson
 from datetime import datetime
+import time
 
 
 async def init_db(app):
@@ -229,6 +230,7 @@ FROM mv_campaign AS ca
                         item['recommended'] = ujson.loads(offer['recommended'])
                     else:
                         item['recommended'] = []
+                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
 
@@ -280,11 +282,12 @@ FROM mv_campaign AS ca
                         item['recommended'] = ujson.loads(offer['recommended'])
                     else:
                         item['recommended'] = []
+                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
 
     @staticmethod
-    async def get_dynamic_retargeting_offer(pool, campaigns, capacity, exclude, raw_retargeting):
+    async def get_dynamic_retargeting_offer(pool, block_id, campaigns, capacity, exclude, raw_retargeting):
         result = []
         clean = True
         async with pool.acquire() as connection:
@@ -330,11 +333,12 @@ FROM mv_campaign AS ca
                         item['recommended'] = ujson.loads(offer['recommended'])
                     else:
                         item['recommended'] = []
+                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
 
     @staticmethod
-    async def get_account_retargeting_offer(pool, campaigns, capacity, exclude):
+    async def get_account_retargeting_offer(pool, block_id, campaigns, capacity, exclude):
         result = []
         clean = True
         async with pool.acquire() as connection:
@@ -378,5 +382,6 @@ FROM mv_campaign AS ca
                         item['recommended'] = ujson.loads(offer['recommended'])
                     else:
                         item['recommended'] = []
+                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
