@@ -62,14 +62,12 @@ async def geoip_http_request_middleware(app, handler):
         not_found = 'NOT FOUND'
         try:
             ip = request.query.get('ip')
-            print('ip', ip)
             headers = request.headers
             x_real_ip = headers.get('X-Real-IP', headers.get('X-Forwarded-For'))
-            print('x_real_ip', x_real_ip, headers)
             if ip is not None:
                 host = ip
             elif x_real_ip is not None:
-                host = ip
+                host = x_real_ip
             else:
                 peername = request.transport.get_extra_info('peername')
                 if peername is not None and isinstance(peername, tuple):
