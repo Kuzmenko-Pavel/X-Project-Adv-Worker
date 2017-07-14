@@ -146,6 +146,7 @@ macro_template = """
     {% if h -%}
         height: {{h}}px;
     {%- endif %}
+    behavior: url(./../PIE.htc);
 {%- endmacro %}
 """
 
