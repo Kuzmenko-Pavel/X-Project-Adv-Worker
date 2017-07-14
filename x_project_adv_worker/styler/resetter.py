@@ -21,7 +21,6 @@ color: black;
 line-height: 1;
 list-style: none;
 overflow: hidden;
-behavior: url(PIE.htc);
 list-style: none;
 list-style-image: none;
 white-space: normal;
