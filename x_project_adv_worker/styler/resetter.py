@@ -27,8 +27,6 @@ list-style-image: none;
 white-space: normal;
 -ms-interpolation-mode: nearest-neighbor;
 image-rendering: -webkit-optimize-contrast;
-}
-[hidden] {
-display: none;
+behavior: url(./PIE.htc);
 }
 '''
