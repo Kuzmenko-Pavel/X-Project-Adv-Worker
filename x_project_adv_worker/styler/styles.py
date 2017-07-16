@@ -41,37 +41,54 @@ macro_template = """
 {%- endmacro %}
 
 {% macro marg(margin) -%}
-    margin-top: {{margin[0]}}px;
-    margin-right: {{margin[1]}}px;
-    margin-bottom: {{margin[2]}}px;
-    margin-left: {{margin[3]}}px;
+{% if margin[0] -%}
+    margin-top: {{margin[0]|int}}px;
+{%- endif %}
+{% if margin[1] -%}
+    margin-right: {{margin[1]|int}}px;
+    {%- endif %}
+{% if margin[2] -%}
+    margin-bottom: {{margin[2]|int}}px;
+    {%- endif %}
+{% if margin[3] -%}
+    margin-left: {{margin[3]|int}}px;
+{%- endif %}
+
 {%- endmacro %}
 
 {% macro pad(padding) -%}
-    padding-top: {{padding[0]}}px;
-    padding-right: {{padding[1]}}px;
-    padding-bottom: {{padding[2]}}px;
-    padding-left: {{padding[3]}}px;
+{% if padding[0] -%}
+    padding-top: {{padding[0]|int}}px;
+{%- endif %}
+{% if padding[1] -%}
+    padding-right: {{padding[1]|int}}px;
+{%- endif %}
+{% if padding[2] -%}
+    padding-bottom: {{padding[2]|int}}px;
+{%- endif %}
+{% if padding[3] -%}
+    padding-left: {{padding[3]|int}}px;
+{%- endif %}
 {%- endmacro %}
 
 {% macro brr(radiuses) -%}
-    -webkit-border-top-left-radius: {{ radiuses[0] }}px;
-    -webkit-border-top-right-radius: {{ radiuses[1] }}px;
-    -webkit-border-bottom-right-radius: {{ radiuses[2] }}px;
-    -webkit-border-bottom-left-radius: {{ radiuses[3] }}px;
-    -khtml-border-top-left-radius: {{ radiuses[0] }}px;
-    -khtml-border-top-right-radius: {{ radiuses[1] }}px;
-    -khtml-border-bottom-right-radius: {{ radiuses[2] }}px;
-    -khtml-border-bottom-left-radius: {{ radiuses[3] }}px;
-    -moz-border-radius-topleft: {{ radiuses[0] }}px;
-    -moz-border-radius-topright: {{ radiuses[1] }}px;
-    -moz-border-radius-bottomright: {{ radiuses[2] }}px;
-    -moz-border-radius-bottomleft: {{ radiuses[3] }}px;
-    border-top-left-radius: {{ radiuses[0] }}px;
-    border-top-right-radius: {{ radiuses[1] }}px;
-    border-bottom-right-radius: {{ radiuses[2] }}px;
-    border-bottom-left-radius: {{ radiuses[3] }}px;
-    border-radius: {{ radiuses[0] }}px {{ radiuses[1] }}px {{ radiuses[2] }}px {{ radiuses[3] }}px;
+    -webkit-border-top-left-radius: {{ radiuses[0]|int }}px;
+    -webkit-border-top-right-radius: {{ radiuses[1]|int }}px;
+    -webkit-border-bottom-right-radius: {{ radiuses[2]|int }}px;
+    -webkit-border-bottom-left-radius: {{ radiuses[3]|int }}px;
+    -khtml-border-top-left-radius: {{ radiuses[0]|int }}px;
+    -khtml-border-top-right-radius: {{ radiuses[1]|int }}px;
+    -khtml-border-bottom-right-radius: {{ radiuses[2]|int }}px;
+    -khtml-border-bottom-left-radius: {{ radiuses[3]|int }}px;
+    -moz-border-radius-topleft: {{ radiuses[0]|int }}px;
+    -moz-border-radius-topright: {{ radiuses[1]|int }}px;
+    -moz-border-radius-bottomright: {{ radiuses[2]|int }}px;
+    -moz-border-radius-bottomleft: {{ radiuses[3]|int }}px;
+    border-top-left-radius: {{ radiuses[0]|int }}px;
+    border-top-right-radius: {{ radiuses[1]|int }}px;
+    border-bottom-right-radius: {{ radiuses[2]|int }}px;
+    border-bottom-left-radius: {{ radiuses[3]|int }}px;
+    border-radius: {{ radiuses[0]|int }}px {{ radiuses[1]|int }}px {{ radiuses[2]|int }}px {{ radiuses[3]|int }}px;
     {{ clp() }}
 {%- endmacro %}
 
@@ -94,7 +111,7 @@ macro_template = """
         font-variant: normal;
     {%- endif %}
     {% if size -%}
-        font-size: {{size}}px;
+        font-size: {{size|int}}px;
     {% else %}
         font-size: 10px;
     {%- endif %}
@@ -135,16 +152,16 @@ macro_template = """
         position: absolute;
     {%- endif %}
     {% if t -%}
-        top: {{t}}px;
+        top: {{t|int}}px;
     {%- endif %}
     {% if l -%}
-        left: {{l}}px;
+        left: {{l|int}}px;
     {%- endif %}
     {% if w -%}
-        width: {{w}}px;
+        width: {{w|int}}px;
     {%- endif %}
     {% if h -%}
-        height: {{h}}px;
+        height: {{h|int}}px;
     {%- endif %}
 {%- endmacro %}
 """
