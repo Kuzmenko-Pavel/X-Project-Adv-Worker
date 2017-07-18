@@ -8,6 +8,8 @@ from x_project_adv_worker.styler import Styler
 class InformerView(web.View):
     async def post(self):
         result = dict({'css': '', 'campaigns': [], 'block': {}})
+        if not self.request.is_xml_http:
+            return web.json_response(result)
         pool = self.request.app.pool
         data = await self.request.json()
         block_src = data.get('block_id', '')

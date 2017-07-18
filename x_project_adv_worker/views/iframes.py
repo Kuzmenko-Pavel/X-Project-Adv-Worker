@@ -10,10 +10,10 @@ class IframesView(web.View):
     async def get_data(self):
         host = '127.0.0.1'
         not_found = 'NOT FOUND'
-        cookie = ''
         post = await self.request.post()
         query = self.request.query
         headers = self.request.headers
+        cookie = self.request.user_cookie
         country = post.get('country', query.get('country'))
         region = post.get('region', query.get('region'))
         test = 'true' if post.get('test', query.get('test', 'false')) == 'true' else 'false'

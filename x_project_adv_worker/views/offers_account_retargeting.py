@@ -4,6 +4,8 @@ from aiohttp import web
 class OffersAccountRetargetingView(web.View):
     async def post(self):
         result = {'clean': False, 'offers': None}
+        if not self.request.is_xml_http:
+            return web.json_response(result)
         pool = self.request.app.pool
         data = await self.request.json()
         block_id = data.get('block_id', 0)
