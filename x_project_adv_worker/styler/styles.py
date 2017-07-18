@@ -167,6 +167,14 @@ macro_template = """
 """
 
 main_template = """
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ellipsis.multiline {
+    white-space: normal;
+}
 
 #mainContainer {
     {{ elps(main['width'], main['height'], 0, 0, 'relative') }}
