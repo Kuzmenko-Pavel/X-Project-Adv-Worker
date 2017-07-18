@@ -197,7 +197,7 @@ main_template = """
 }
 
 #mainFooter {
-    {% set item = main['header'] %}
+    {% set item = main['footer'] %}
     {{ elps(
         item['width'],
         item['height'],

@@ -31,6 +31,7 @@ class Styler():
         if data is not None:
             block = BlockSetting(data['block'])
             self.block.width = block.width
+            self.block.height = block.height
             self.block.border = block.border
             self.block.border_color = block.border_color
             self.block.background_color = block.background_color
@@ -126,7 +127,7 @@ class Styler():
                     count_row = round(block_height / 100.0)
             else:
                 if block_height >= 300:
-                    count_row = round(block_height / 100.0)
+                    count_row = int(block_height / 150.0)
 
             adv_height = block_height / count_row
             adv_width = block_width / count_column

@@ -36,7 +36,7 @@ def adv_size_bv(adv_width):
 def header_text_size(width, size=None):
     if size is None:
         size = 14
-    symbols = (width / (size * 0.5)) - 1
+    symbols = (width / (size * 0.6)) - 1
     text_height = (round(25 / symbols) * size)
     return text_height
 
@@ -64,7 +64,9 @@ def calculate_default(width, height, adv):
             adv_setting.description.height = description_text_size(adv_setting.description.width)
             adv_setting.description.left = adv_setting.image.width + 3
             diff_header_description_height = adv_setting.height - adv_setting.header.height - adv_setting.description.height
-            if 0 < diff_header_description_height < (adv_setting.header.height * 1.5):
+            if diff_header_description_height < (adv_setting.header.height * 1.5):
+                if diff_header_description_height < 0:
+                    diff_header_description_height = 0
                 adv_setting.header.top = diff_header_description_height / 2
                 adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
             else:
@@ -79,18 +81,23 @@ def calculate_default(width, height, adv):
         elif 1.63 <= ratio < 2:
             adv_setting.image.width = adv_setting.image.height = adv_setting.height
             adv_setting.header.width = adv_setting.width - adv_setting.image.width
-            adv_setting.header.height = header_text_size(adv_setting.header.width)
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
             adv_setting.header.left = adv_setting.image.width
             adv_setting.description.width = adv_setting.width - adv_setting.image.width
-            adv_setting.description.height = description_text_size(adv_setting.description.width)
-            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
             adv_setting.description.left = adv_setting.image.width
+            diff_height = adv_setting.height - (adv_setting.header.height + adv_setting.description.height)
+            if diff_height < 0:
+                diff_height = 0
+                adv_setting.description.height = adv_setting.height - adv_setting.header.height
+            adv_setting.header.top = diff_height / 4
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height + (diff_height / 4)
         else:
             adv_setting.header.width = adv_setting.width - 6
-            adv_setting.header.height = header_text_size(adv_setting.header.width)
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
             adv_setting.image.width = adv_setting.image.height = (adv_setting.width/2) - 6
             adv_setting.description.width = adv_setting.width - (adv_setting.image.width + 6)
-            adv_setting.description.height = description_text_size(adv_setting.description.width)
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
             diff_width = adv_setting.width - (adv_setting.image.width + adv_setting.description.width)
             diff_height = adv_setting.height - (adv_setting.header.height + adv_setting.image.height)
             adv_setting.image.left = diff_width / 4
@@ -104,11 +111,11 @@ def calculate_default(width, height, adv):
         text_description = description_text_size(adv_setting.width)
         if ratio >= 2:
             adv_setting.image.width = adv_setting.image.height = adv_setting.width
-            adv_setting.header.height = text_header
             adv_setting.header.width = adv_setting.image.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
             adv_setting.header.top = adv_setting.image.height
-            adv_setting.description.height = text_description
             adv_setting.description.width = adv_setting.image.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
             adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
         elif 1.5 <= ratio < 2:
             if adv_setting.height < 150:
@@ -127,10 +134,10 @@ def calculate_default(width, height, adv):
             else:
                 adv_setting.image.width = adv_setting.image.height = adv_setting.width - 6
                 adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
-                adv_setting.header.height = text_header
                 adv_setting.header.width = adv_setting.width
-                adv_setting.description.height = text_description
+                adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
                 adv_setting.description.width = adv_setting.width
+                adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
                 diff_height = (adv_setting.height - (adv_setting.image.height + adv_setting.image.top + adv_setting.header.height + adv_setting.description.height)) / 2
                 if diff_height <= 0:
                     diff_height = 0
@@ -139,23 +146,25 @@ def calculate_default(width, height, adv):
                 adv_setting.header.top = diff_height + adv_setting.image.height
                 adv_setting.description.top = diff_height + adv_setting.header.top + adv_setting.header.height
         elif 1.15 <= ratio < 1.5:
-            adv_setting.image.width = adv_setting.image.height = adv_setting.width - 6
-            adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
             adv_setting.description.font.weight = True
             adv_setting.description.font.decoration = True
-            adv_setting.description.height = text_description
-            adv_setting.description.top = adv_setting.image.top + adv_setting.image.height
             adv_setting.description.width = adv_setting.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height - adv_setting.description.height
+            if adv_setting.image.width > adv_setting.width:
+                adv_setting.image.width = adv_setting.image.height = adv_setting.width
+            adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+            adv_setting.description.top = adv_setting.image.top + adv_setting.image.height
         else:
             image_width = adv_setting.height - (text_header + 10)
             diff_image_width = adv_setting.width - image_width
             image_width = image_width - diff_image_width
             adv_setting.image.width = adv_setting.image.height = image_width
             adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
-            adv_setting.header.height = text_header
+            adv_setting.header.width = adv_setting.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
             diff_image_height = adv_setting.height - adv_setting.image.height - adv_setting.header.height
             adv_setting.image.top = diff_image_height / 4
-            adv_setting.header.width = adv_setting.width
             adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
 
 
@@ -269,18 +278,15 @@ def calculate_style_1(width, height, adv):
     else:
         adv_setting.header.padding = [5, 0, 5, 0]
         ratio = adv_setting.height / adv_setting.width
-        text_header = header_text_size(adv_setting.width, adv_setting.header.font.size)
-        text_description = description_text_size(adv_setting.width, adv_setting.header.font.size)
-
         if 1.5 <= ratio:
             adv_setting.image.width = adv_setting.image.height = adv_setting.width
             adv_setting.header.background_color = '#000000'
             adv_setting.header.opacity = 0.6
             adv_setting.header.width = adv_setting.image.width
             adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
-            adv_setting.description.height = text_description
-            adv_setting.header.z = 1
             adv_setting.description.width = adv_setting.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            adv_setting.header.z = 1
             diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (adv_setting.description.height / 2)
             if diff_description_center < 0:
                 diff_description_center = 0
@@ -296,10 +302,14 @@ def calculate_style_1(width, height, adv):
             adv_setting.header.opacity = 0.6
             adv_setting.header.width = adv_setting.image.width
             adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
-            adv_setting.description.height = text_description
+            adv_setting.description.width = adv_setting.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            diff = adv_setting.height - adv_setting.image.height
+            print(diff)
+            if diff < adv_setting.description.height:
+                adv_setting.description.height = diff
             adv_setting.header.top = adv_setting.image.height - (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
             adv_setting.header.z = 1
-            adv_setting.description.width = adv_setting.width
             diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (
             adv_setting.description.height / 2)
             if diff_description_center < 0:
@@ -355,6 +365,8 @@ def calculate_style_1(width, height, adv):
         if diff_button_logo_block < 0:
             diff_button_logo_block = 0
         adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height + diff_button_logo_block
+        if adv_setting.logo.button.top + adv_setting.logo.button.height > adv_setting.logo.height:
+            adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height
 
     return adv_setting
 
