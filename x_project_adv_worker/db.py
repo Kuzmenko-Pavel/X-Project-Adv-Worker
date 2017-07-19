@@ -226,10 +226,11 @@ FROM mv_campaign AS ca
                     item['url'] = offer['url']
                     item['title'] = offer['title']
                     item['price'] = offer['price']
+                    item['recommended'] = []
                     if offer['recommended']:
-                        item['recommended'] = ujson.loads(offer['recommended'])
-                    else:
-                        item['recommended'] = []
+                        for rec in ujson.loads(offer['recommended']):
+                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                            item['recommended'].append(rec)
                     item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
@@ -278,10 +279,12 @@ FROM mv_campaign AS ca
                     item['url'] = offer['url']
                     item['title'] = offer['title']
                     item['price'] = offer['price']
+                    item['recommended'] = []
                     if offer['recommended']:
-                        item['recommended'] = ujson.loads(offer['recommended'])
-                    else:
-                        item['recommended'] = []
+                        for rec in ujson.loads(offer['recommended']):
+                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                            item['recommended'].append(rec)
+
                     item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
@@ -329,10 +332,11 @@ FROM mv_campaign AS ca
                     item['url'] = offer['url']
                     item['title'] = offer['title']
                     item['price'] = offer['price']
+                    item['recommended'] = []
                     if offer['recommended']:
-                        item['recommended'] = ujson.loads(offer['recommended'])
-                    else:
-                        item['recommended'] = []
+                        for rec in ujson.loads(offer['recommended']):
+                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                            item['recommended'].append(rec)
                     item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
@@ -378,10 +382,11 @@ FROM mv_campaign AS ca
                     item['url'] = offer['url']
                     item['title'] = offer['title']
                     item['price'] = offer['price']
+                    item['recommended'] = []
                     if offer['recommended']:
-                        item['recommended'] = ujson.loads(offer['recommended'])
-                    else:
-                        item['recommended'] = []
+                        for rec in ujson.loads(offer['recommended']):
+                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                            item['recommended'].append(rec)
                     item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                     result.append(item)
         return result, clean
