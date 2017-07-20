@@ -1,4 +1,5 @@
 from math import ceil
+from x_project_adv_worker.utils import Map
 from .adv_calculator import (adv_calculator, adv_size_calculator, style_type, _h_template, _v_template,
                              _h_template_ref, _v_template_ref, _h_template_tree, _v_template_tree)
 from .adv_settings import AdvSetting
@@ -55,7 +56,6 @@ class Styler():
 
             del self.adv_style['RecBlock']
             self.adv_data['RecBlock'] = AdvSetting(data['adv']['RecBlock'])
-
             self._default_size_calculate()
 
     def _default_size_calculate(self, default=None):
@@ -68,42 +68,49 @@ class Styler():
                 self._v_default_size_calculate(default)
 
     def _h_template_calculate(self, default=None):
-        block_width = int(self.block.get_width())
-        block_height = int(self.block.get_height())
-        idx = _h_template_tree.query_ball_point((block_width, block_height), 10)
-        points = _h_template[idx]
-        if points.size > 0:
-            self.block.styling_adv.count_column = points[0][2]['count_column']
-            self.block.styling_adv.count_row = points[0][2]['count_row']
-            self.block.styling_adv.count_adv = points[0][2]['count_row'] * points[0][2]['count_column']
-            self.block.styling_adv.type = points[0][2]['type']
-            self.block.styling_adv.width = int(block_width / self.block.styling_adv.count_column)
-            self.block.styling_adv.height = int(block_height / self.block.styling_adv.count_row)
-            if default:
-                self.block.default_adv = self.block.styling_adv
-            return True
+        try:
+            block_width = int(self.block.get_width())
+            block_height = int(self.block.get_height())
+            idx = _h_template_tree.query_ball_point((block_width, block_height), 10)
+            points = _h_template[idx]
+            if points.size > 0:
+                self.block.styling_adv.count_column = points[0][2]['count_column']
+                self.block.styling_adv.count_row = points[0][2]['count_row']
+                self.block.styling_adv.count_adv = (points[0][2]['count_row'] * points[0][2]['count_column'])
+                self.block.styling_adv.type = points[0][2]['type']
+                self.block.styling_adv.width = int(block_width / self.block.styling_adv.count_column)
+                self.block.styling_adv.height = int(block_height / self.block.styling_adv.count_row)
+                if default:
+                    self.block.default_adv = Map(self.block.styling_adv)
+                return True
+        except:
+            pass
         return False
 
     def _v_template_calculate(self, default=None):
-        block_width = int(self.block.get_width())
-        block_height = int(self.block.get_height())
-        idx = _v_template_tree.query_ball_point((block_width, block_height), 10)
-        points = _v_template[idx]
-        if points.size > 0:
-            self.block.styling_adv.count_column = points[0]['count_column']
-            self.block.styling_adv.count_row = points[0][2]['count_row']
-            self.block.styling_adv.count_adv = points[0][2]['count_row'] * points[0][2]['count_column']
-            self.block.styling_adv.type = points[0][2]['type']
-            self.block.styling_adv.width = int(block_width / self.block.styling_adv.count_column)
-            self.block.styling_adv.height = int(block_height / self.block.styling_adv.count_row)
-            if default:
-                self.block.default_adv = self.block.styling_adv
-            return True
+        try:
+            block_width = int(self.block.get_width())
+            block_height = int(self.block.get_height())
+            idx = _v_template_tree.query_ball_point((block_width, block_height), 10)
+            points = _v_template[idx]
+            if points.size > 0:
+                self.block.styling_adv.count_column = points[0][2]['count_column']
+                self.block.styling_adv.count_row = points[0][2]['count_row']
+                self.block.styling_adv.count_adv = points[0][2]['count_row'] * points[0][2]['count_column']
+                self.block.styling_adv.type = points[0][2]['type']
+                self.block.styling_adv.width = int(block_width / self.block.styling_adv.count_column)
+                self.block.styling_adv.height = int(block_height / self.block.styling_adv.count_row)
+                if default:
+                    self.block.default_adv = Map(self.block.styling_adv)
+                return True
+        except:
+            pass
         return False
 
     def _h_default_size_calculate(self, default=None):
         if self._h_template_calculate(default):
             return
+
         adv_type = self.block.styling_adv.type
         block_width = self.block.get_width()
         block_height = self.block.get_height()
@@ -144,7 +151,7 @@ class Styler():
         self.block.styling_adv.width = adv_width
         self.block.styling_adv.height = adv_height
         if default:
-            self.block.default_adv = self.block.styling_adv
+            self.block.default_adv = Map(self.block.styling_adv)
 
     def _v_default_size_calculate(self, default=None):
         if self._v_template_calculate(default):
@@ -213,7 +220,7 @@ class Styler():
         self.block.styling_adv.width = adv_width
         self.block.styling_adv.height = adv_height
         if default:
-            self.block.default_adv = self.block.styling_adv
+            self.block.default_adv = Map(self.block.styling_adv)
 
     def _create_variable(self):
         import time

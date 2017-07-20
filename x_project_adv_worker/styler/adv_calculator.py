@@ -5,11 +5,23 @@ import numpy as np
 from .adv_settings import AdvSetting, LogoSetting
 
 _h_template = np.array([
+    (240, 200, {'count_column': 1, 'count_row': 2, 'type': 'G'}),
     (295, 145, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
-    (320, 125, {'count_column': 1, 'count_row': 1, 'type': 'G'})
+    (320, 125, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (310, 300, {'count_column': 1, 'count_row': 3, 'type': 'G'}),
+    (600, 300, {'count_column': 2, 'count_row': 3, 'type': 'G'}),
+    (620, 300, {'count_column': 2, 'count_row': 2, 'type': 'G'}),
+    (728, 600, {'count_column': 4, 'count_row': 2, 'type': 'G'}),
+    (800, 700, {'count_column': 5, 'count_row': 3, 'type': 'G'})
 ])
 _v_template = np.array([
-    (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'})
+    (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (320, 600, {'count_column': 1, 'count_row': 6, 'type': 'G'}),
+    (325, 350, {'count_column': 1, 'count_row': 4, 'type': 'G'}),
+    (370, 500, {'count_column': 1, 'count_row': 4, 'type': 'G'}),
+    (160, 600, {'count_column': 1, 'count_row': 3, 'type': 'G'}),
+    (335, 600, {'count_column': 1, 'count_row': 6, 'type': 'G'}),
+    (600, 1175, {'count_column': 3, 'count_row': 4, 'type': 'G'})
 ])
 _h_template_ref = np.array([(x[0], x[1]) for x in _h_template])
 _v_template_ref = np.array([(x[0], x[1]) for x in _v_template])
@@ -305,7 +317,7 @@ def calculate_style_1(width, height, adv):
             adv_setting.description.width = adv_setting.width
             adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
             diff = adv_setting.height - adv_setting.image.height
-            print(diff)
+
             if diff < adv_setting.description.height:
                 adv_setting.description.height = diff
             adv_setting.header.top = adv_setting.image.height - (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
