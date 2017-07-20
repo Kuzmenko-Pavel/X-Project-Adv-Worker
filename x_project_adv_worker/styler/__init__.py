@@ -48,6 +48,9 @@ class Styler():
             self.block.footer.top = block.footer.top
             self.block.footer.left = block.footer.left
             self.block.default_adv.count_adv = block.default_adv.count_adv
+            self.block.default_button.block = block.default_button.block
+            self.block.default_button.ret_block = block.default_button.ret_block
+            self.block.default_button.rec_block = block.default_button.rec_block
             del self.adv_style['Block']
             self.adv_data['Block'] = AdvSetting(data['adv']['Block'])
 

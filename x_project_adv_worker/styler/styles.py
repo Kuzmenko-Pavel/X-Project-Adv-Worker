@@ -339,7 +339,7 @@ adv_template = """
         {{ bg(description['background_color']) }}
         {{ brr(description['border_radius']) }}
         {{ op(description['opacity']) }}
-        behavior: url(./PIE.htc);
+        behavior: url(PIE.htc);
     }
     .adv{{ name }}>.description:hover {
         text-decoration: underline;
@@ -385,9 +385,7 @@ adv_template = """
             button['top'],
             button['left']
         ) }}
-        {{ bg(button['background_color']) }}
         {{ br(button['border'], button['border_color']) }}
-        {{ brr(button['border_radius']) }}
         {% set font = button['font'] %}
         {{ fs(font['letter'],
             font['decoration'],
@@ -407,7 +405,7 @@ adv_template = """
         {{ bg(button['background_color']) }}
         {{ brr(button['border_radius']) }}
         {{ op(button['opacity']) }}
-        behavior: url(./PIE.htc);
+        behavior: url(PIE.htc);
 
     }
     .adv{{ name }}>.button:hover {
@@ -423,7 +421,7 @@ adv_template = """
         ) }}
         {{ br(image['border'], image['border_color']) }}
         {{ brr(image['border_radius']) }}
-        behavior: url(./PIE.htc);
+        behavior: url(PIE.htc);
     }
     .adv{{ name }} ul > li > img {
         {{ elps(
@@ -475,7 +473,7 @@ adv_template = """
         }
         .logo{{ name }}>.header:hover {
             text-decoration: underline;
-            behavior: url(./PIE.htc);
+            behavior: url(PIE.htc);
         }
            .logo{{ name }}>.button,.logo{{ name }}>.button:visited,.logo{{ name }}>.button:active,.logo{{ name }}>.button:link {
             {{ elps(
