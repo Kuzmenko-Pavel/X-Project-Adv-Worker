@@ -5,7 +5,7 @@ import ujson
 class OffersPlaceView(web.View):
     async def post(self):
         result = {'clean': False, 'offers': None}
-        if self.request.is_xml_http or self.request.has_body:
+        if self.request.is_xml_http and self.request.has_body:
             data = await self.request.json(loads=ujson.loads)
             if isinstance(data, dict):
                 pool = self.request.app.pool

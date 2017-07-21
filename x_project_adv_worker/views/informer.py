@@ -8,7 +8,7 @@ from x_project_adv_worker.styler import Styler
 class InformerView(web.View):
     async def post(self):
         result = dict({'css': '', 'campaigns': [], 'block': {}})
-        if self.request.is_xml_http or self.request.has_body:
+        if self.request.is_xml_http and self.request.has_body:
             data = await self.request.json(loads=ujson.loads)
             if isinstance(data, dict):
                 pool = self.request.app.pool
