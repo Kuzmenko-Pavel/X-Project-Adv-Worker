@@ -1,5 +1,6 @@
 import linecache
 import sys
+import traceback
 import logging
 import os
 import json
@@ -17,8 +18,9 @@ def exception_message(*args, **kwargs):
     params = json.dumps({'args': args, 'kwargs': kwargs})
     exc_type, exc_obj, tb = sys.exc_info()
     f = tb.tb_frame
+    trace = ''.join(traceback.format_tb(tb))
     lineno = tb.tb_lineno
     filename = f.f_code.co_filename
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
-    return 'EXCEPTION IN ({}, LINE {} "{}"): {} PARAMS: {}'.format(filename, lineno, line.strip(), exc_obj, params)
+    return 'EXCEPTION IN ({}, LINE {} "{}"): {} {} PARAMS: {}'.format(filename, lineno, line.strip(), exc_obj, trace, params)
