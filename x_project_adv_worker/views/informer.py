@@ -8,6 +8,7 @@ from x_project_adv_worker.styler import Styler
 class InformerView(web.View):
     async def post(self):
         result = dict({'css': '', 'campaigns': [], 'block': {}})
+        data = {}
         try:
             if self.request.is_xml_http and self.request.has_body:
                 data = await self.request.json(loads=ujson.loads)
@@ -39,6 +40,7 @@ class InformerView(web.View):
                     if not auto and not block_result.get('dynamic', False):
                         styler.merge(ujson.loads(block_result.get('ad_style')))
 
+                    capacity = min([styler.block.styling_adv.count_adv, styler.block.default_adv.count_adv])
                     campaigns_result = await  self.request.app.query.get_campaigns(pool=pool, block_id=block_id,
                                                                                    block_domain=block_domain,
                                                                                    block_account=block_account,
@@ -47,7 +49,7 @@ class InformerView(web.View):
                                                                                    device=device,
                                                                                    cost=cost,
                                                                                    gender=gender,
-                                                                                   capacity=styler.block.styling_adv.count_adv
+                                                                                   capacity=capacity
                                                                                    )
                     for campaign in campaigns_result:
                         if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
@@ -79,5 +81,5 @@ class InformerView(web.View):
                     result['block']['ret_button'] = styler.block.default_button.ret_block
                     result['block']['rec_button'] = styler.block.default_button.rec_block
         except Exception as ex:
-            logger.error(exception_message(exc=str(ex), request=str(self.request._message)))
+            logger.error(exception_message(exc=str(ex), request=str(self.request._message), data=data))
         return web.json_response(result, dumps=ujson.dumps)

@@ -6,6 +6,7 @@ from x_project_adv_worker.logger import logger, exception_message
 class OffersDynamicRetargetingView(web.View):
     async def post(self):
         result = {'clean': False, 'offers': None}
+        data = {}
         try:
             if self.request.is_xml_http and self.request.has_body:
                 data = await self.request.json(loads=ujson.loads)
@@ -25,5 +26,5 @@ class OffersDynamicRetargetingView(web.View):
                                                                                                                     exclude=exclude,
                                                                                                                     raw_retargeting=raw_retargeting)
         except Exception as ex:
-            logger.error(exception_message(exc=str(ex), request=str(self.request._message)))
+            logger.error(exception_message(exc=str(ex), request=str(self.request._message), data=data))
         return web.json_response(result, dumps=ujson.dumps)
