@@ -1,4 +1,4 @@
-from aiohttp import web
+from aiohttp import hdrs, web
 import time
 from datetime import datetime, timedelta
 
@@ -60,8 +60,14 @@ async def cookie_middleware(app, handler):
 
 async def cors_middleware(app, handler):
     async def middleware(request):
-        response = await handler(request)
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        if request.method == hdrs.METH_OPTIONS:
+            response = web.Response(text='')
+        else:
+            response = await handler(request)
+        response.headers[hdrs.ACCESS_CONTROL_ALLOW_ORIGIN] = '*'
+        response.headers[hdrs.ACCESS_CONTROL_ALLOW_HEADERS] = '*'
+        response.headers[hdrs.ACCESS_CONTROL_ALLOW_CREDENTIALS] = 'true'
+        response.headers[hdrs.ACCESS_CONTROL_ALLOW_METHODS] = '%s %s' % (hdrs.METH_GET, hdrs.METH_POST)
         return response
 
     return middleware
