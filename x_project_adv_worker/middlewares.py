@@ -28,7 +28,8 @@ def error_pages(overrides):
                 else:
                     return await override(request, response)
             except web.HTTPException as ex:
-                logger.error(exception_message(exc=str(ex), request=str(request._message)))
+                if ex.status != 404:
+                    logger.error(exception_message(exc=str(ex), request=str(request._message)))
                 override = overrides.get(ex.status)
                 if override is None:
                     raise
@@ -86,7 +87,7 @@ def setup_middlewares(app):
     error_middleware = error_pages({404: handle_404,
                                     405: handle_405,
                                     500: handle_500})
-    app.middlewares.append(error_middleware)
     app.middlewares.append(cookie_middleware)
     app.middlewares.append(xml_http_request_middleware)
     app.middlewares.append(cors_middleware)
+    app.middlewares.append(error_middleware)

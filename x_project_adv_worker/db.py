@@ -6,7 +6,7 @@ import time
 
 async def init_db(app):
     app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=3, max_size=30,
-                                         max_cacheable_statement_size=150 * 1024)
+                                         max_queries=1000, command_timeout=10, timeout=60)
     # Example for unix socket connection
     # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test',
     #                                      min_size=15, max_size=30, max_cacheable_statement_size=150 * 1024)
@@ -20,14 +20,15 @@ class Query(object):
             async with connection.transaction():
                 q = '''SELECT * FROM public.mv_informer where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                 stmt = await connection.prepare(q)
-                result = await stmt.fetchrow()
-                if result:
-                    return dict(result)
+                block = await stmt.fetchrow(timeout=1)
+                if block:
+                    return dict(block)
             return None
 
     @staticmethod
     async def get_campaigns(pool, block_id, block_domain, block_account, country, city, device, gender, cost, capacity):
         result = []
+        campaigns = []
         gender_list = set('0')
         cost_list = set('0')
         gender_list.add(str(gender))
@@ -155,33 +156,33 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                campaigns = await stmt.fetch()
-                for item in campaigns:
-                    campaign = {}
-                    campaign['account'] = item['account']
-                    campaign['brending'] = item['brending']
-                    campaign['guid'] = item['guid']
-                    campaign['html_notification'] = item['html_notification']
-                    campaign['id'] = item['id']
-                    campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
-                    campaign['recomendet_count'] = item['recomendet_count']
-                    campaign['recomendet_type'] = item['recomendet_type']
-                    campaign['retargeting'] = item['retargeting']
-                    campaign['retargeting_type'] = item['retargeting_type']
-                    campaign['social'] = item['social']
-                    campaign['style_type'] = item['style_type']
-                    campaign['style_class'] = item['style_class']
-                    campaign['style_class_recommendet'] = item['style_class_recommendet']
-                    campaign['style_data'] = ujson.loads(item['style_data'])
-                    campaign['styling'] = item['styling']
-                    campaign['unique_impression_lot'] = item['unique_impression_lot']
-                    result.append(campaign)
-                return [dict(x) for x in result] if result else []
-        return result
+                campaigns = await stmt.fetch(timeout=5)
+        for item in campaigns:
+            campaign = {}
+            campaign['account'] = item['account']
+            campaign['brending'] = item['brending']
+            campaign['guid'] = item['guid']
+            campaign['html_notification'] = item['html_notification']
+            campaign['id'] = item['id']
+            campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
+            campaign['recomendet_count'] = item['recomendet_count']
+            campaign['recomendet_type'] = item['recomendet_type']
+            campaign['retargeting'] = item['retargeting']
+            campaign['retargeting_type'] = item['retargeting_type']
+            campaign['social'] = item['social']
+            campaign['style_type'] = item['style_type']
+            campaign['style_class'] = item['style_class']
+            campaign['style_class_recommendet'] = item['style_class_recommendet']
+            campaign['style_data'] = ujson.loads(item['style_data'])
+            campaign['styling'] = item['styling']
+            campaign['unique_impression_lot'] = item['unique_impression_lot']
+            result.append(campaign)
+        return [dict(x) for x in result]
 
     @staticmethod
     async def get_place_offer(pool, block_id, campaigns, capacity, exclude):
         result = []
+        offers = []
         clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
@@ -213,31 +214,32 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch()
-                for offer in offers:
-                    if clean and offer['all_count'] > capacity:
-                        clean = False
-                    item = {}
-                    item['id'] = offer['id']
-                    item['guid'] = offer['guid']
-                    item['id_cam'] = offer['id_cam']
-                    item['image'] = offer['image']
-                    item['description'] = offer['description']
-                    item['url'] = offer['url']
-                    item['title'] = offer['title']
-                    item['price'] = offer['price']
-                    item['recommended'] = []
-                    if offer['recommended']:
-                        for rec in ujson.loads(offer['recommended']):
-                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                            item['recommended'].append(rec)
-                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    result.append(item)
+                offers = await stmt.fetch(timeout=1)
+        for offer in offers:
+            if clean and offer['all_count'] > capacity:
+                clean = False
+            item = {}
+            item['id'] = offer['id']
+            item['guid'] = offer['guid']
+            item['id_cam'] = offer['id_cam']
+            item['image'] = offer['image']
+            item['description'] = offer['description']
+            item['url'] = offer['url']
+            item['title'] = offer['title']
+            item['price'] = offer['price']
+            item['recommended'] = []
+            if offer['recommended']:
+                for rec in ujson.loads(offer['recommended']):
+                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                    item['recommended'].append(rec)
+            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+            result.append(item)
         return result, clean
 
     @staticmethod
     async def get_social_offer(pool, block_id, campaigns, capacity, exclude):
         result = []
+        offers = []
         clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
@@ -266,32 +268,33 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch()
-                for offer in offers:
-                    if clean and offer['all_count'] > capacity:
-                        clean = False
-                    item = {}
-                    item['id'] = offer['id']
-                    item['guid'] = offer['guid']
-                    item['id_cam'] = offer['id_cam']
-                    item['image'] = offer['image']
-                    item['description'] = offer['description']
-                    item['url'] = offer['url']
-                    item['title'] = offer['title']
-                    item['price'] = offer['price']
-                    item['recommended'] = []
-                    if offer['recommended']:
-                        for rec in ujson.loads(offer['recommended']):
-                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                            item['recommended'].append(rec)
+                offers = await stmt.fetch(timeout=1)
+        for offer in offers:
+            if clean and offer['all_count'] > capacity:
+                clean = False
+            item = {}
+            item['id'] = offer['id']
+            item['guid'] = offer['guid']
+            item['id_cam'] = offer['id_cam']
+            item['image'] = offer['image']
+            item['description'] = offer['description']
+            item['url'] = offer['url']
+            item['title'] = offer['title']
+            item['price'] = offer['price']
+            item['recommended'] = []
+            if offer['recommended']:
+                for rec in ujson.loads(offer['recommended']):
+                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                    item['recommended'].append(rec)
 
-                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    result.append(item)
+            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+            result.append(item)
         return result, clean
 
     @staticmethod
     async def get_dynamic_retargeting_offer(pool, block_id, campaigns, capacity, exclude, raw_retargeting):
         result = []
+        offers = []
         clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
@@ -320,30 +323,31 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch()
-                for offer in offers:
-                    clean = False
-                    item = {}
-                    item['id'] = offer['id']
-                    item['guid'] = offer['guid']
-                    item['id_cam'] = offer['id_cam']
-                    item['image'] = offer['image']
-                    item['description'] = offer['description']
-                    item['url'] = offer['url']
-                    item['title'] = offer['title']
-                    item['price'] = offer['price']
-                    item['recommended'] = []
-                    if offer['recommended']:
-                        for rec in ujson.loads(offer['recommended']):
-                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                            item['recommended'].append(rec)
-                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    result.append(item)
+                offers = await stmt.fetch(timeout=1)
+        for offer in offers:
+            clean = False
+            item = {}
+            item['id'] = offer['id']
+            item['guid'] = offer['guid']
+            item['id_cam'] = offer['id_cam']
+            item['image'] = offer['image']
+            item['description'] = offer['description']
+            item['url'] = offer['url']
+            item['title'] = offer['title']
+            item['price'] = offer['price']
+            item['recommended'] = []
+            if offer['recommended']:
+                for rec in ujson.loads(offer['recommended']):
+                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                    item['recommended'].append(rec)
+            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+            result.append(item)
         return result, clean
 
     @staticmethod
     async def get_account_retargeting_offer(pool, block_id, campaigns, capacity, exclude):
         result = []
+        offers = []
         clean = True
         async with pool.acquire() as connection:
             async with connection.transaction():
@@ -369,24 +373,24 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch()
-                for offer in offers:
-                    if clean and offer['all_count'] > capacity:
-                        clean = False
-                    item = {}
-                    item['id'] = offer['id']
-                    item['guid'] = offer['guid']
-                    item['id_cam'] = offer['id_cam']
-                    item['image'] = offer['image']
-                    item['description'] = offer['description']
-                    item['url'] = offer['url']
-                    item['title'] = offer['title']
-                    item['price'] = offer['price']
-                    item['recommended'] = []
-                    if offer['recommended']:
-                        for rec in ujson.loads(offer['recommended']):
-                            rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                            item['recommended'].append(rec)
-                    item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    result.append(item)
+                offers = await stmt.fetch(timeout=1)
+        for offer in offers:
+            if clean and offer['all_count'] > capacity:
+                clean = False
+            item = {}
+            item['id'] = offer['id']
+            item['guid'] = offer['guid']
+            item['id_cam'] = offer['id_cam']
+            item['image'] = offer['image']
+            item['description'] = offer['description']
+            item['url'] = offer['url']
+            item['title'] = offer['title']
+            item['price'] = offer['price']
+            item['recommended'] = []
+            if offer['recommended']:
+                for rec in ujson.loads(offer['recommended']):
+                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                    item['recommended'].append(rec)
+            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+            result.append(item)
         return result, clean

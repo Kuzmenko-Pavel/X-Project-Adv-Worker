@@ -27,7 +27,8 @@ install_requires = ['aiohttp',
                     'GeoIP',
                     'asyncpg',
                     'scipy',
-                    'numpy'
+                    'numpy',
+                    'uvloop'
                     ]
 
 setup(
