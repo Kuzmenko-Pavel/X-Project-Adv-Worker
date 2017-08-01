@@ -338,6 +338,7 @@ def calculate_style_1(width, height, adv):
     adv_setting.cost.top = adv_setting.image.top
     adv_setting.cost.left = adv_setting.image.left
 
+    adv_setting.logo.image.border_radius = [0, 0, 0, 0]
     adv_setting.logo.image.width = adv_setting.image.width
     adv_setting.logo.image.left = adv_setting.image.left
     adv_setting.logo.header.width = adv_setting.description.width
