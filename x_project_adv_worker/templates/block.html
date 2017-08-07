@@ -19,19 +19,10 @@
         {{style}}
     </style>
     <script language="JavaScript">
-        window.adsparams = {
-            block_id: "{{ block_id }}",
-            auto: {{ auto }},
-            country: "{{ country }}",
-            region: "{{ region }}",
-            ip: "{{ ip }}",
-            test: {{ test }},
-            cookie: "{{ cookie }}",
-            request: "initial",
-            token: "{{ token }}"
-        };
+        window.adsparams = {{ js }};
     </script>
     <!--script src="http://localhost:8000/js/block.js"></script-->
+    <!--script src="https://rg.yottos.com/js/block.js"></script-->
     <script src="/js/block.js"></script>
 </head>
 <body>

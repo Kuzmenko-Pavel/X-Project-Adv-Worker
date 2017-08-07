@@ -1,4 +1,6 @@
 from aiohttp import web
+import re
+import ujson
 import aiohttp_jinja2
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.utils import encryptDecrypt
@@ -10,6 +12,7 @@ class IframesView(web.View):
     async def get_data(self):
         host = '127.0.0.1'
         not_found = 'NOT FOUND'
+        ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
         post = await self.request.post()
         query = self.request.query
         headers = self.request.headers
@@ -19,8 +22,20 @@ class IframesView(web.View):
         test = 'true' if post.get('test', query.get('test', 'false')) == 'true' else 'false'
         block_id = post.get('scr', query.get('scr', ''))
         auto = 'true' if post.get('auto', query.get('auto', 'false')) == 'true' else 'false'
-        ip = post.get('ip', query.get('ip'))
-        x_real_ip = headers.get('X-Real-IP', headers.get('X-Forwarded-For'))
+        ip = post.get('ip', query.get('ip', ''))
+        ip_check = ip_regex.match(ip)
+        if ip_check:
+            ip = ip_check.group()
+        else:
+            ip = None
+
+        x_real_ip = headers.get('X-Real-IP', headers.get('X-Forwarded-For', ''))
+        x_real_ip_check = ip_regex.match(x_real_ip)
+        if x_real_ip_check:
+            ip = x_real_ip_check.group()
+        else:
+            x_real_ip = None
+
         if ip is not None:
             host = ip
         elif x_real_ip is not None:
@@ -59,14 +74,17 @@ class IframesView(web.View):
 
         request_token = encryptDecrypt('valid', host)
         data = {
-            'block_id': block_id,
-            'auto': auto,
-            'country': country,
-            'region': region,
-            'ip': host,
-            'token': request_token,
-            'test': test,
-            'cookie': cookie,
+            'js': ujson.dumps({
+                'block_id': block_id,
+                'auto': auto,
+                'country': country,
+                'region': region,
+                'ip': host,
+                'token': request_token,
+                'test': test,
+                'cookie': cookie,
+                'request': 'initial'
+            }),
             'style': reset_css
         }
         return data
