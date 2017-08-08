@@ -19,9 +19,9 @@ class IframesView(web.View):
         cookie = self.request.user_cookie
         country = post.get('country', query.get('country'))
         region = post.get('region', query.get('region'))
-        test = 'true' if post.get('test', query.get('test', 'false')) == 'true' else 'false'
+        test = True if post.get('test', query.get('test', 'false')) == 'true' else False
         block_id = post.get('scr', query.get('scr', ''))
-        auto = 'true' if post.get('auto', query.get('auto', 'false')) == 'true' else 'false'
+        auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
         ip = post.get('ip', query.get('ip', ''))
         ip_check = ip_regex.match(ip)
         if ip_check:
