@@ -18,7 +18,7 @@ class InformerView(web.View):
                     auto = data.get('auto', False)
                     country = data.get('country', 'NOT FOUND')
                     city = data.get('city', 'NOT FOUND')
-                    device = data.get('device', 'pc')
+                    device = data.get('device', '**')
                     cost = data.get('cost', 0)
                     gender = data.get('gender', 0)
                     raw_retargeting = data.get('retargeting', [])

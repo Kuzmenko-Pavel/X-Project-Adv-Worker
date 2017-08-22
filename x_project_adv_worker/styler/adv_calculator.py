@@ -347,6 +347,10 @@ def calculate_style_1(width, height, adv):
     adv_setting.logo.button.width = adv_setting.description.width - (adv_setting.logo.button.border * 2)
     adv_setting.logo.button.font.size = adv_setting.description.font.size
     adv_setting.logo.button.height = header_text_size(adv_setting.logo.button.width, adv_setting.logo.button.font.size)
+
+    if adv_setting.logo.button.height <= adv_setting.logo.button.font.size:
+        adv_setting.logo.button.height = adv_setting.logo.button.height + 8
+
     adv_setting.logo.button.left = adv_setting.logo.header.left
     if adv_setting.logo.header.left > 5:
         logo_block_height = adv_setting.logo.height / 2
@@ -378,8 +382,10 @@ def calculate_style_1(width, height, adv):
         if diff_button_logo_block < 0:
             diff_button_logo_block = 0
         adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height + diff_button_logo_block
-        if adv_setting.logo.button.top + adv_setting.logo.button.height > adv_setting.logo.height:
+        if adv_setting.logo.button.top + adv_setting.logo.button.height + 2 > adv_setting.logo.height:
             adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height
+            if adv_setting.logo.button.top + adv_setting.logo.button.height + 2 > adv_setting.logo.height:
+                adv_setting.logo.button.top = adv_setting.logo.button.top - ((adv_setting.logo.button.top + adv_setting.logo.button.height + 2) - adv_setting.logo.height)
 
     return adv_setting
 
