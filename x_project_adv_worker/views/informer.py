@@ -17,7 +17,7 @@ class InformerView(web.View):
                     block_src = data.get('block_id', '')
                     auto = data.get('auto', False)
                     country = data.get('country', 'NOT FOUND')
-                    city = data.get('city', 'NOT FOUND')
+                    region = data.get('region', 'NOT FOUND')
                     device = data.get('device', '**')
                     cost = data.get('cost', 0)
                     gender = data.get('gender', 0)
@@ -45,7 +45,7 @@ class InformerView(web.View):
                                                                                    block_domain=block_domain,
                                                                                    block_account=block_account,
                                                                                    country=country,
-                                                                                   city=city,
+                                                                                   region=region,
                                                                                    device=device,
                                                                                    cost=cost,
                                                                                    gender=gender,

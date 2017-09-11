@@ -26,7 +26,7 @@ class Query(object):
             return None
 
     @staticmethod
-    async def get_campaigns(pool, block_id, block_domain, block_account, country, city, device, gender, cost, capacity):
+    async def get_campaigns(pool, block_id, block_domain, block_account, country, region, device, gender, cost, capacity):
         result = []
         campaigns = []
         gender_list = set('0')
@@ -47,7 +47,7 @@ FROM mv_campaign AS ca
                SELECT gt.id_cam_pk AS id
                FROM mv_geo AS gt
                  INNER JOIN mv_geo_lite_city AS gtl ON gt.id_geo_pk = gtl.id
-               WHERE (gtl.country = '%(country)s' AND (gtl.city = '%(city)s' OR gtl.city = '*')) OR
+               WHERE (gtl.country = '%(country)s' AND (gtl.city = '%(region)s' OR gtl.city = '*')) OR
                      (gtl.country = '*' AND gtl.city = '*')
                      
                INTERSECT
@@ -142,9 +142,9 @@ FROM mv_campaign AS ca
              ) AS c ON ca.id = c.id
                   
                 ''' % {
-                    'country': country,
-                    'city': city,
-                    'device': device,
+                    'country': country.replace("'", "''"),
+                    'region': region.replace("'", "''"),
+                    'device': device.replace("'", "''"),
                     'gender': ','.join(gender_list),
                     'cost': ','.join(cost_list),
                     'id_inf': block_id,
