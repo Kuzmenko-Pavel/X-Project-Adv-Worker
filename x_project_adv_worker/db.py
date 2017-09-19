@@ -159,12 +159,15 @@ FROM mv_campaign AS ca
                 campaigns = await stmt.fetch(timeout=5)
         for item in campaigns:
             campaign = {}
+            offer_count = item['offer_count']
+            styling = item['styling']
+            offer_by_campaign_unique = item['offer_by_campaign_unique'] #if not styling else 1 #TODO styling range algoritm
             campaign['account'] = item['account']
             campaign['brending'] = item['brending']
             campaign['guid'] = item['guid']
             campaign['html_notification'] = item['html_notification']
             campaign['id'] = item['id']
-            campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
+            campaign['offer_by_campaign_unique'] = offer_by_campaign_unique
             campaign['recomendet_count'] = item['recomendet_count']
             campaign['recomendet_type'] = item['recomendet_type']
             campaign['retargeting'] = item['retargeting']
@@ -174,21 +177,26 @@ FROM mv_campaign AS ca
             campaign['style_class'] = item['style_class']
             campaign['style_class_recommendet'] = item['style_class_recommendet']
             campaign['style_data'] = ujson.loads(item['style_data'])
-            campaign['styling'] = item['styling']
+            campaign['styling'] = styling
             campaign['unique_impression_lot'] = item['unique_impression_lot']
+            #TODO add in matView
+            campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
             result.append(campaign)
         return [dict(x) for x in result]
 
     @staticmethod
-    async def get_place_offer(pool, block_id, campaigns, capacity, exclude):
+    async def get_place_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
         offers = []
         clean = True
+        counter_prediction = offer_count-len(exclude)
+        if counter_prediction < capacity:
+            index = 0
         async with pool.acquire() as connection:
             async with connection.transaction():
                 campaigns_ids = ','.join([str(x[0]) for x in campaigns])
                 exclude_ids = ','.join([str(x) for x in exclude])
-                campaign_unique = ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns])
+                campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns])
                 q = '''
                     select * from
                     (
@@ -205,13 +213,14 @@ FROM mv_campaign AS ca
                     ) sub
                     where %(campaign_unique)s
                     order by sub.range_number, sub.rating desc
-                    LIMIT %(capacity)d OFFSET 0;
+                    LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
                     'inf': block_id,
                     'campaigns': campaigns_ids,
                     'exclude': exclude_ids,
                     'campaign_unique': campaign_unique,
-                    'capacity': capacity
+                    'capacity': capacity,
+                    'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
                 offers = await stmt.fetch(timeout=1)
@@ -237,10 +246,13 @@ FROM mv_campaign AS ca
         return result, clean
 
     @staticmethod
-    async def get_social_offer(pool, block_id, campaigns, capacity, exclude):
+    async def get_social_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
         offers = []
         clean = True
+        counter_prediction = offer_count - len(exclude)
+        if counter_prediction < capacity:
+            index = 0
         async with pool.acquire() as connection:
             async with connection.transaction():
                 q = '''
@@ -259,13 +271,14 @@ FROM mv_campaign AS ca
                     ) sub
                     where %(campaign_unique)s
                     order by sub.range_number, sub.rating desc
-                    LIMIT %(capacity)d OFFSET 0;
+                    LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
                     'inf': block_id,
                     'campaigns': ','.join([str(x[0]) for x in campaigns]),
                     'exclude': ','.join([str(x) for x in exclude]),
-                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
-                    'capacity': capacity
+                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns]),
+                    'capacity': capacity,
+                    'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
                 offers = await stmt.fetch(timeout=1)
@@ -292,10 +305,13 @@ FROM mv_campaign AS ca
         return result, clean
 
     @staticmethod
-    async def get_dynamic_retargeting_offer(pool, block_id, campaigns, capacity, exclude, raw_retargeting):
+    async def get_dynamic_retargeting_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
         result = []
         offers = []
         clean = True
+        counter_prediction = offer_count - len(exclude)
+        if counter_prediction < capacity:
+            index = 0
         async with pool.acquire() as connection:
             async with connection.transaction():
                 retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
@@ -314,13 +330,14 @@ FROM mv_campaign AS ca
                     ) sub
                     where %(campaign_unique)s
                     order by sub.range_number
-                    LIMIT %(capacity)d OFFSET 0;
+                    LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
                     'campaigns': ','.join([str(x[0]) for x in campaigns]),
                     'exclude': ','.join([str(x) for x in exclude]),
                     'retargeting': retargeting,
                     'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
-                    'capacity': capacity
+                    'capacity': capacity,
+                    'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
                 offers = await stmt.fetch(timeout=1)
@@ -345,10 +362,13 @@ FROM mv_campaign AS ca
         return result, clean
 
     @staticmethod
-    async def get_account_retargeting_offer(pool, block_id, campaigns, capacity, exclude):
+    async def get_account_retargeting_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
         offers = []
         clean = True
+        counter_prediction = offer_count - len(exclude)
+        if counter_prediction < capacity:
+            index = 0
         async with pool.acquire() as connection:
             async with connection.transaction():
                 q = '''
@@ -365,12 +385,13 @@ FROM mv_campaign AS ca
                     ) sub
                     where %(campaign_unique)s
                     order by sub.range_number
-                    LIMIT %(capacity)d OFFSET 0;
+                    LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
                     'campaigns': ','.join([str(x[0]) for x in campaigns]),
                     'exclude': ','.join([str(x) for x in exclude]),
-                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
-                    'capacity': capacity
+                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in campaigns]),
+                    'capacity': capacity,
+                    'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
                 offers = await stmt.fetch(timeout=1)

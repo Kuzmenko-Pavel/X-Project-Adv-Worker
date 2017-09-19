@@ -14,6 +14,8 @@ class OffersDynamicRetargetingView(web.View):
                     pool = self.request.app.pool
                     block_id = data.get('block_id', 0)
                     capacity = data.get('capacity', 5)
+                    index = data.get('index', 0)
+                    offer_count = data.get('offer_count', 0)
                     campaigns = data.get('campaigns', [])
                     exclude = data.get('exclude', [])
                     raw_retargeting = data.get('retargeting', [])
@@ -23,6 +25,8 @@ class OffersDynamicRetargetingView(web.View):
                                                                                                                     block_id=block_id,
                                                                                                                     campaigns=campaigns,
                                                                                                                     capacity=capacity,
+                                                                                                                    index=index,
+                                                                                                                    offer_count=offer_count,
                                                                                                                     exclude=exclude,
                                                                                                                     raw_retargeting=raw_retargeting)
         except Exception as ex:

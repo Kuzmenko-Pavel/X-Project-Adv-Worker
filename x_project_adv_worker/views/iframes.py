@@ -22,6 +22,7 @@ class IframesView(web.View):
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
         block_id = post.get('scr', query.get('scr', ''))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
+        index = post.get('index', 0)
         ip = post.get('ip', query.get('ip', ''))
         ip_check = ip_regex.match(ip)
         if ip_check:
@@ -76,6 +77,7 @@ class IframesView(web.View):
         data = {
             'js': ujson.dumps({
                 'block_id': block_id,
+                'index': index,
                 'auto': auto,
                 'country': country,
                 'region': region,
