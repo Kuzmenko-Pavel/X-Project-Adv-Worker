@@ -33,7 +33,7 @@ class IframesView(web.View):
         x_real_ip = headers.get('X-Real-IP', headers.get('X-Forwarded-For', ''))
         x_real_ip_check = ip_regex.match(x_real_ip)
         if x_real_ip_check:
-            ip = x_real_ip_check.group()
+            x_real_ip = x_real_ip_check.group()
         else:
             x_real_ip = None
 
