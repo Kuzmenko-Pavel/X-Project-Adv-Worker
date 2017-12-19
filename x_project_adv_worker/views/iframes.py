@@ -15,6 +15,7 @@ class IframesView(web.View):
         ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
         post = await self.request.post()
         query = self.request.query
+        webp = self.request.webp
         headers = self.request.headers
         cookie = self.request.user_cookie
         country = post.get('country', query.get('country'))
@@ -85,6 +86,7 @@ class IframesView(web.View):
                 'token': request_token,
                 'test': test,
                 'cookie': cookie,
+                'webp': webp,
                 'request': 'initial'
             }),
             'style': reset_css

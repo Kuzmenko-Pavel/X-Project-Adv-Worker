@@ -59,6 +59,18 @@ async def cookie_middleware(app, handler):
     return middleware
 
 
+async def detect_accept_middleware(app, handler):
+    async def middleware(request):
+        is_webp = False
+        if 'webp' in request.headers.get('ACCEPT', []):
+            is_webp = True
+        request.webp = is_webp
+        response = await handler(request)
+        return response
+
+    return middleware
+
+
 async def cors_middleware(app, handler):
     async def middleware(request):
         if request.method == hdrs.METH_OPTIONS:
@@ -69,6 +81,42 @@ async def cors_middleware(app, handler):
         response.headers[hdrs.ACCESS_CONTROL_ALLOW_HEADERS] = '*'
         response.headers[hdrs.ACCESS_CONTROL_ALLOW_CREDENTIALS] = 'true'
         response.headers[hdrs.ACCESS_CONTROL_ALLOW_METHODS] = '%s %s' % (hdrs.METH_GET, hdrs.METH_POST)
+        return response
+
+    return middleware
+
+
+async def csp_middleware(app, handler):
+    async def middleware(request):
+        csp = []
+        csp_data = {
+            'base-uri': ["'self'"],
+            'default-src': ["'self'"],
+            'img-src': ['data:', 'cdn.yottos.com'],
+            'script-src': ["'nonce-2726c7f26c'", 'http://10.0.0.110:8000/'],
+            'connect-src': ['http://10.0.0.110:8080/'],
+            'style-src': ["'unsafe-inline'"],
+            'worker-src': [],
+            'frame-src': [],
+            'manifest-src': [],
+            'media-src': [],
+            'font-src': [],
+            'child-src': [],
+            'form-action': [],
+            'object-src': [],
+            # 'plugin-types': [],
+            'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-popups'],
+            # 'require-sri-for': ['script', 'style'],
+
+        }
+        response = await handler(request)
+        for key, value in csp_data.items():
+            if len(value) == 0:
+                value.append("'none'")
+            csp.append('%s %s' % (key, ' '.join(value)))
+        # csp.append('upgrade-insecure-requests')
+        csp.append('block-all-mixed-content')
+        response.headers['content-security-policy'] = '; '.join(csp)
         return response
 
     return middleware
@@ -88,6 +136,8 @@ def setup_middlewares(app):
                                     405: handle_405,
                                     500: handle_500})
     app.middlewares.append(cookie_middleware)
+    app.middlewares.append(detect_accept_middleware)
     app.middlewares.append(xml_http_request_middleware)
     app.middlewares.append(cors_middleware)
+    app.middlewares.append(csp_middleware)
     app.middlewares.append(error_middleware)
