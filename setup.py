@@ -28,7 +28,8 @@ install_requires = ['aiohttp',
                     'asyncpg',
                     'scipy',
                     'numpy',
-                    'uvloop'
+                    'uvloop',
+                    'cchardet'
                     ]
 
 setup(

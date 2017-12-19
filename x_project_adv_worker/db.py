@@ -20,7 +20,7 @@ class Query(object):
             async with connection.transaction():
                 q = '''SELECT * FROM public.mv_informer where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                 stmt = await connection.prepare(q)
-                block = await stmt.fetchrow(timeout=1)
+                block = await stmt.fetchrow(timeout=5)
                 if block:
                     return dict(block)
             return None
@@ -223,7 +223,7 @@ FROM mv_campaign AS ca
                     'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=1)
+                offers = await stmt.fetch(timeout=5)
         for offer in offers:
             if clean and offer['all_count'] > capacity:
                 clean = False
@@ -281,7 +281,7 @@ FROM mv_campaign AS ca
                     'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=1)
+                offers = await stmt.fetch(timeout=5)
         for offer in offers:
             if clean and offer['all_count'] > capacity:
                 clean = False
@@ -340,7 +340,7 @@ FROM mv_campaign AS ca
                     'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=1)
+                offers = await stmt.fetch(timeout=5)
         for offer in offers:
             clean = False
             item = {}
@@ -394,7 +394,7 @@ FROM mv_campaign AS ca
                     'offset': index * capacity
                 }
                 stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=1)
+                offers = await stmt.fetch(timeout=5)
         for offer in offers:
             if clean and offer['all_count'] > capacity:
                 clean = False
