@@ -1,0 +1,15 @@
+{
+  "name": "advertise-js-block",
+  "version": "0.0.1",
+  "devDependencies": {},
+  "dependencies": {
+    "jquery": "~1.12.x",
+    "jquery-tmpl": "*",
+    "requirejs": ">=2.1.15",
+    "jquery.transform.js": "jquery-transform#*",
+    "mobile-detect": "hgoebl/mobile-detect.js#^1.3.6",
+    "json3": "*",
+    "underscore": "^1.8.3",
+    "almond": "^0.3.3"
+  }
+}

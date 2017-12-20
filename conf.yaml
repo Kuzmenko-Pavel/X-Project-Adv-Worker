@@ -2,3 +2,5 @@ host: 0.0.0.0
 port: 8080
 postgres:
   uri: postgresql://ad_worker:ad_worker@localhost:5432/ad_worker
+
+debug: True

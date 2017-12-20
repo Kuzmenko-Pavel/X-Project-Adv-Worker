@@ -1,0 +1,29 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "nonew": true,
+  "noarg": true,
+  "noempty": true,
+  "plusplus": false,
+  "sub": true,
+  "undef": true,
+  "boss": true,
+  "eqnull": true,
+  "asi": false,
+  "funcscope": false,
+  "es5": true,
+  "maxerr": 100000,
+  "browser": true,
+  "devel": true,
+  "jquery": true,
+  "node": true,
+  "onevar": true,
+  "globals": {
+    "define": true,
+    "requirejs": true,
+    "componentHandler": true
+  }
+}

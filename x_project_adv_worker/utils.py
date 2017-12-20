@@ -12,6 +12,7 @@ TRAFARET_CONF = T.Dict({
     T.Key('postgres'): T.Dict({
         T.Key('uri'): T.String(),
     }),
+    T.Key('debug', default=False): T.Bool(),
 })
 
 
