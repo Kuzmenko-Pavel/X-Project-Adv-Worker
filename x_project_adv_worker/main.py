@@ -5,6 +5,7 @@ import os
 import sys
 
 from aiohttp import web
+import aiohttp_debugtoolbar
 from trafaret_config import commandline
 
 from x_project_adv_worker.logger import logger, exception_message
@@ -31,6 +32,8 @@ def init(loop, argv):
     app = web.Application(loop=loop)
     app['config'] = config
     app.on_startup.append(init_db)
+    if app['config']['debug']:
+        aiohttp_debugtoolbar.setup(app)
     init_templates(app)
     init_geo_ip(app)
 

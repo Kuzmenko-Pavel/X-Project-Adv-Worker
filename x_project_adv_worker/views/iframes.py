@@ -6,7 +6,7 @@ from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.utils import encryptDecrypt
 from x_project_adv_worker.logger import logger, exception_message
 
-@aiohttp_jinja2.template('block.html')
+
 class IframesView(web.View):
 
     async def get_data(self):
@@ -91,7 +91,8 @@ class IframesView(web.View):
             }),
             'style': reset_css
         }
-        return data
+        response = aiohttp_jinja2.render_template('block.html', self.request, data)
+        return response
 
     async def get(self):
         return await self.get_data()

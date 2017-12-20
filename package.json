@@ -1,0 +1,20 @@
+{
+  "name": "advertise-block-js",
+  "version": "1.0.0",
+  "devDependencies": {
+    "grunt": "~1.x",
+    "bower": "~1.x"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower install",
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "connect-livereload": "^0.6.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-requirejs": "^1.0.0",
+    "grunt-contrib-uglify": "^2.2.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "text": "github:requirejs/text"
+  }
+}

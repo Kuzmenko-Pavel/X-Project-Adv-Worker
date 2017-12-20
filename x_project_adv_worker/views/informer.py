@@ -1,4 +1,6 @@
 from aiohttp import web
+from asyncio import CancelledError
+import time
 import ujson
 
 from x_project_adv_worker.logger import logger, exception_message
@@ -80,6 +82,9 @@ class InformerView(web.View):
                     result['block']['button'] = styler.block.default_button.block
                     result['block']['ret_button'] = styler.block.default_button.ret_block
                     result['block']['rec_button'] = styler.block.default_button.rec_block
+        except CancelledError as ex:
+            logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
+                                           request=str(self.request.message), data=data))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), request=str(self.request._message), data=data))
         return web.json_response(result, dumps=ujson.dumps)
