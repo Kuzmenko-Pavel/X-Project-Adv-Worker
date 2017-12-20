@@ -1,5 +1,8 @@
 from aiohttp import web
+from asyncio import CancelledError
+import time
 import ujson
+
 from x_project_adv_worker.logger import logger, exception_message
 
 
@@ -29,6 +32,9 @@ class OffersDynamicRetargetingView(web.View):
                                                                                                                     offer_count=offer_count,
                                                                                                                     exclude=exclude,
                                                                                                                     raw_retargeting=raw_retargeting)
+        except CancelledError as ex:
+            logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
+                                           request=str(self.request.message), data=data))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), request=str(self.request._message), data=data))
         return web.json_response(result, dumps=ujson.dumps)

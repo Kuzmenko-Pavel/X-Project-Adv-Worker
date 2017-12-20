@@ -17,3 +17,5 @@ def setup_routes(app):
         app.router.add_route('GET', '/v1/test', TestView)
         app.router.add_route('GET', '/bl.js', Dummy)
         app.router.add_route('POST', '/bl.js', Dummy)
+        app.router.add_route('GET', '/logger.json', Dummy)
+        app.router.add_route('POST', '/logger.json', Dummy)

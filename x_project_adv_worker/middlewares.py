@@ -25,6 +25,7 @@ def error_pages(overrides):
     async def middleware(app, handler):
         async def middleware_handler(request):
             try:
+                request.start_time = time.time()
                 response = await handler(request)
                 override = overrides.get(response.status)
                 if override is None:
@@ -32,8 +33,13 @@ def error_pages(overrides):
                 else:
                     return await override(request, response)
             except web.HTTPException as ex:
-                if ex.status != 404:
-                    logger.error(exception_message(exc=str(ex), request=str(request._message)))
+                if ex.status == 404:
+                    logger.info(exception_message(exc=str(ex), request=str(request.message)))
+                elif ex.status == 403:
+                    logger.warning(exception_message(exc=str(ex), request=str(request.message)))
+                else:
+                    logger.error(exception_message(exc=str(ex), request=str(request.message)))
+
                 override = overrides.get(ex.status)
                 if override is None:
                     raise
