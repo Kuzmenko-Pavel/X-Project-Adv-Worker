@@ -9,6 +9,10 @@ async def handle_404(request, response):
     return web.Response(text='')
 
 
+async def handle_403(request, response):
+    return web.Response(text='')
+
+
 async def handle_405(request, response):
     return web.Response(text='')
 
@@ -85,6 +89,7 @@ async def xml_http_request_middleware(app, handler):
 
 def setup_middlewares(app):
     error_middleware = error_pages({404: handle_404,
+                                    403: handle_403,
                                     405: handle_405,
                                     500: handle_500})
     app.middlewares.append(cookie_middleware)
