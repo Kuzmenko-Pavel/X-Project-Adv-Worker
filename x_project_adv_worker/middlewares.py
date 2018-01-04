@@ -1,5 +1,6 @@
 from aiohttp import hdrs, web
 import time
+from uuid import uuid4
 from datetime import datetime, timedelta
 
 from x_project_adv_worker.logger import logger, exception_message
@@ -98,13 +99,16 @@ async def cors_middleware(app, handler):
 
 async def csp_middleware(app, handler):
     async def middleware(request):
+        nonce = uuid4().hex
+        request.nonce = nonce
+        host = request.host
         csp = []
         csp_data = {
-            'base-uri': ["'self'"],
-            'default-src': ["'self'"],
+            'base-uri': [host],
+            'default-src': [host],
             'img-src': ['data:', 'cdn.yottos.com'],
-            'script-src': ["'nonce-2726c7f26c'", 'http://10.0.0.110:8000/'],
-            'connect-src': ['http://10.0.0.110:8080/'],
+            'script-src': ["'unsafe-inline'", "'nonce-%s'" % nonce, host],
+            'connect-src': [host],
             'style-src': ["'unsafe-inline'"],
             'worker-src': [],
             'frame-src': [],
@@ -116,9 +120,12 @@ async def csp_middleware(app, handler):
             'object-src': [],
             # 'plugin-types': [],
             'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-popups'],
-            # 'require-sri-for': ['script', 'style'],
+            'require-sri-for': ['script', 'style'],
 
         }
+        if request.app['config']['debug']:
+            csp_data['style-src'].append("'self'")
+            csp_data['img-src'].append("'self'")
         response = await handler(request)
         for key, value in csp_data.items():
             if len(value) == 0:

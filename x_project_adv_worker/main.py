@@ -10,6 +10,7 @@ from trafaret_config import commandline
 
 from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.db import init_db
+from x_project_adv_worker.static_hash import static_hash
 from x_project_adv_worker.templates import init_templates
 from x_project_adv_worker.geo_ip import init_geo_ip
 from x_project_adv_worker.middlewares import setup_middlewares
@@ -29,9 +30,11 @@ def init(loop, argv):
     options = ap.parse_args(argv)
     config = commandline.config_from_options(options, TRAFARET_CONF)
     config['socket'] = options.socket
+    config['dir_path'] = dir_path
     app = web.Application(loop=loop)
     app['config'] = config
     app.on_startup.append(init_db)
+    app.on_startup.append(static_hash)
     if app['config']['debug']:
         aiohttp_debugtoolbar.setup(app)
     init_templates(app)

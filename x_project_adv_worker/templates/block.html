@@ -15,16 +15,16 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-    <style type="text/css">
+    <style type="text/css" nonce="{{ nonce }}">
         {{style}}
     </style>
-    <script language="JavaScript" nonce="2726c7f26c">
+    <script language="JavaScript" nonce="{{ nonce }}">
         window.adsparams = {{ js }};
     </script>
     <!--script async src="http://10.0.0.110:8000/js/block.js"></script-->
     <!--script async src="https://rg.yottos.com/js/block.js"></script-->
-    <script async src="/js/block.js"></script>
-    <!--script async src="/v1/static/js/block.js"></script-->
+    <!--script async src="/js/block.js"></script-->
+    <script integrity="{{ integrity }}" async src="/v1/static/js/block.js"></script>
 </head>
 <body>
 </body>

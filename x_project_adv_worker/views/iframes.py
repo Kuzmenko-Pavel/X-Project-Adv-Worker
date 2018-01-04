@@ -87,9 +87,12 @@ class IframesView(web.View):
                 'test': test,
                 'cookie': cookie,
                 'webp': webp,
-                'request': 'initial'
+                'request': 'initial',
+                'nonce': self.request.nonce
             }),
-            'style': reset_css
+            'style': reset_css,
+            'nonce': self.request.nonce,
+            'integrity': self.request.app.static_hash['static/js/block.js']
         }
         response = aiohttp_jinja2.render_template('block.html', self.request, data)
         return response
