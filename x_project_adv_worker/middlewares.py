@@ -153,7 +153,7 @@ def setup_middlewares(app):
                                     403: handle_403,
                                     405: handle_405,
                                     500: handle_500})
-    app.middlewares.append(cookie_middleware)
+    # app.middlewares.append(cookie_middleware)
     app.middlewares.append(detect_accept_middleware)
     app.middlewares.append(xml_http_request_middleware)
     app.middlewares.append(cors_middleware)

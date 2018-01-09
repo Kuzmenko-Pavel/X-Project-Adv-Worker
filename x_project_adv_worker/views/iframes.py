@@ -5,10 +5,12 @@ import aiohttp_jinja2
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.utils import encryptDecrypt
 from x_project_adv_worker.logger import logger, exception_message
+from x_project_adv_worker import headers
 
 
 class IframesView(web.View):
 
+    @headers.cookie()
     async def get_data(self):
         host = '127.0.0.1'
         not_found = 'NOT FOUND'
