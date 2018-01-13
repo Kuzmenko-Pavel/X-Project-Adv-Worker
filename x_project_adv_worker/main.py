@@ -34,8 +34,9 @@ def init(loop, argv):
     app = web.Application(loop=loop)
     app['config'] = config
     app.on_startup.append(init_db)
-    app.on_startup.append(static_hash)
-    if app['config']['debug']:
+    #require-sri
+    #app.on_startup.append(static_hash)
+    if app['config']['debug']['console']:
         aiohttp_debugtoolbar.setup(app)
     init_templates(app)
     init_geo_ip(app)

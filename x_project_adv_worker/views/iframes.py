@@ -5,19 +5,21 @@ import aiohttp_jinja2
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.utils import encryptDecrypt
 from x_project_adv_worker.logger import logger, exception_message
-from x_project_adv_worker import headers
+from x_project_adv_worker.headers import *
 
 
 class IframesView(web.View):
 
-    @headers.cookie()
+    @cookie()
+    @detect_webp()
+    @csp()
     async def get_data(self):
         host = '127.0.0.1'
         not_found = 'NOT FOUND'
         ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
         post = await self.request.post()
         query = self.request.query
-        webp = self.request.webp
+        is_not_webp = self.request.is_not_webp
         headers = self.request.headers
         cookie = self.request.user_cookie
         country = post.get('country', query.get('country'))
@@ -88,13 +90,14 @@ class IframesView(web.View):
                 'token': request_token,
                 'test': test,
                 'cookie': cookie,
-                'webp': webp,
+                'is_not_webp': is_not_webp,
                 'request': 'initial',
                 'nonce': self.request.nonce
             }),
             'style': reset_css,
             'nonce': self.request.nonce,
-            'integrity': self.request.app.static_hash['static/js/block.js']
+            # require-sri
+            # 'integrity': self.request.app.static_hash['static/js/block.js']
         }
         response = aiohttp_jinja2.render_template('block.html', self.request, data)
         return response
