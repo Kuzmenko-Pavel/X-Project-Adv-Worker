@@ -16,7 +16,6 @@ class InformerView(web.View):
         try:
             data = await self.request.json(loads=ujson.loads)
             if isinstance(data, dict):
-                pool = self.request.app.pool
                 block_src = data.get('block_id', '')
                 auto = data.get('auto', False)
                 country = data.get('country', 'NOT FOUND')
@@ -30,7 +29,7 @@ class InformerView(web.View):
                     if len(ids) >= 2:
                         retargeting[str(ids[1]).lower()] = ids[0]
                 styler = Styler(data.get('w', 0), data.get('h', 0))
-                block_result = await self.request.app.query.get_block(pool=pool, block_src=block_src)
+                block_result = await self.request.app.query.get_block(block_src=block_src)
                 if block_result is None:
                     return web.json_response(result)
                 block_domain = block_result.get('domain', 0)
@@ -44,7 +43,7 @@ class InformerView(web.View):
                     styler.merge(ujson.loads(block_result.get('ad_style')))
 
                 capacity = min([styler.block.styling_adv.count_adv, styler.block.default_adv.count_adv])
-                campaigns_result = await  self.request.app.query.get_campaigns(pool=pool, block_id=block_id,
+                campaigns_result = await  self.request.app.query.get_campaigns(block_id=block_id,
                                                                                block_domain=block_domain,
                                                                                block_account=block_account,
                                                                                country=country,

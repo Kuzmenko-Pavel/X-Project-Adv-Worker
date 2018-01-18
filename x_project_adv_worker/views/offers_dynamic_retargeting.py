@@ -15,7 +15,6 @@ class OffersDynamicRetargetingView(web.View):
         try:
             data = await self.request.json(loads=ujson.loads)
             if isinstance(data, dict):
-                pool = self.request.app.pool
                 block_id = data.get('block_id', 0)
                 capacity = data.get('capacity', 5)
                 index = data.get('index', 0)
@@ -25,8 +24,7 @@ class OffersDynamicRetargetingView(web.View):
                 raw_retargeting = data.get('retargeting', [])
                 campaigns.append([0, 0])
                 exclude.append(0)
-                result['offers'], result['clean'] = await  self.request.app.query.get_dynamic_retargeting_offer(pool=pool,
-                                                                                                                block_id=block_id,
+                result['offers'], result['clean'] = await  self.request.app.query.get_dynamic_retargeting_offer(block_id=block_id,
                                                                                                                 campaigns=campaigns,
                                                                                                                 capacity=capacity,
                                                                                                                 index=index,

@@ -10,13 +10,15 @@ async def init_db(app):
     # Example for unix socket connection
     # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test',
     #                                      min_size=15, max_size=30, max_cacheable_statement_size=150 * 1024)
-    app.query = Query()
+    app.query = Query(app.pool)
 
 
 class Query(object):
-    @staticmethod
-    async def get_block(pool, block_src):
-        async with pool.acquire() as connection:
+    def __init__(self, pool):
+        self.pool = pool
+
+    async def get_block(self, block_src):
+        async with self.pool.acquire() as connection:
             async with connection.transaction():
                 q = '''SELECT * FROM public.mv_informer where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                 stmt = await connection.prepare(q)
@@ -25,8 +27,7 @@ class Query(object):
                     return dict(block)
             return None
 
-    @staticmethod
-    async def get_campaigns(pool, block_id, block_domain, block_account, country, region, device, gender, cost, capacity):
+    async def get_campaigns(self, block_id, block_domain, block_account, country, region, device, gender, cost, capacity):
         result = []
         campaigns = []
         gender_list = set('0')
@@ -37,7 +38,7 @@ class Query(object):
         d = date.weekday() + 1
         h = date.hour
         m = date.minute
-        async with pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
             async with connection.transaction():
                 q = '''
     SELECT
@@ -184,15 +185,14 @@ FROM mv_campaign AS ca
             result.append(campaign)
         return [dict(x) for x in result]
 
-    @staticmethod
-    async def get_place_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
         offers = []
         clean = True
         counter_prediction = offer_count-len(exclude)
         if counter_prediction < capacity:
             index = 0
-        async with pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
             async with connection.transaction():
                 campaigns_ids = ','.join([str(x[0]) for x in campaigns])
                 exclude_ids = ','.join([str(x) for x in exclude])
@@ -245,15 +245,14 @@ FROM mv_campaign AS ca
             result.append(item)
         return result, clean
 
-    @staticmethod
-    async def get_social_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_social_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
         offers = []
         clean = True
         counter_prediction = offer_count - len(exclude)
         if counter_prediction < capacity:
             index = 0
-        async with pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
             async with connection.transaction():
                 q = '''
                     select * from
@@ -304,15 +303,14 @@ FROM mv_campaign AS ca
             result.append(item)
         return result, clean
 
-    @staticmethod
-    async def get_dynamic_retargeting_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
+    async def get_dynamic_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
         result = []
         offers = []
         clean = True
         counter_prediction = offer_count - len(exclude)
         if counter_prediction < capacity:
             index = 0
-        async with pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
             async with connection.transaction():
                 retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
                 q = '''
@@ -361,15 +359,14 @@ FROM mv_campaign AS ca
             result.append(item)
         return result, clean
 
-    @staticmethod
-    async def get_account_retargeting_offer(pool, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_account_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
         offers = []
         clean = True
         counter_prediction = offer_count - len(exclude)
         if counter_prediction < capacity:
             index = 0
-        async with pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
             async with connection.transaction():
                 q = '''
                     select * from
