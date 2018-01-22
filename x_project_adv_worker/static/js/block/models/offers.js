@@ -4,8 +4,8 @@
 define(['jquery', 'underscore', './link', './../loader/offers', './../loader/offers_log'], function (jQuery, _, link, offers_loader, offers_log) {
     var Offers = function (app) {
         this.app = app;
-        this.items = new Array();
-        this.log_item = new Array();
+        this.items = [];
+        this.log_item = [];
         this.styling = null;
         this.brending = null;
         this.req_count = 0;
@@ -156,7 +156,7 @@ define(['jquery', 'underscore', './link', './../loader/offers', './../loader/off
 
     };
     Offers.prototype.union = function (place, social, account_retargeting, dynamic_retargeting) {
-        this.items = new Array();
+        this.items = [];
         this.styling = null;
         var full_block_offer = 0;
         var one_block_offer = 0;

@@ -7,7 +7,6 @@ define([
     './start',
     './detect_device',
     './detect_browser',
-    './check_image_format',
     './user_history/main',
     './settings',
     './animated/shake',
@@ -22,7 +21,6 @@ define([
              start,
              detect_device,
              DetectBrowser,
-             check_image_format,
              user_history,
              settings,
              shake,
@@ -38,15 +36,9 @@ define([
         this.adsparams = window.adsparams;
         this.params = new Params(this);
         this.image_format = 'png';
-        this.image_cheker = check_image_format();
-        this.image_cheker.then(
-            _.bind(function () {
-                this.image_format = 'webp';
-            }, this),
-            _.bind(function () {
-                this.image_format = 'png';
-            }, this)
-        );
+        if (this.adsparams['is_webp']){
+            this.image_format = 'webp';
+        }
         this.settings = settings;
         this.device = detect_device();
         this.browser = new DetectBrowser();

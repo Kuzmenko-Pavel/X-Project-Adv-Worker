@@ -9,7 +9,7 @@ define(['underscore'], function (_) {
         var hit_log = new Array(0, 0, 0);
         if (_.isUndefined(this[guid])) {
             hit_log[val] += 1;
-            this[guid] = [val, hit_log]
+            this[guid] = [val, hit_log];
         }
         else {
             hit_log = this[guid][1];

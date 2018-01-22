@@ -29,7 +29,6 @@ module.exports = function (grunt) {
                     mainConfigFile: 'x_project_adv_worker/static/js/block/require_config.js',
                     baseUrl: 'x_project_adv_worker/static/js/block/',
                     include: ['main', './../../../../bower_components/almond/almond'],
-                    //include: ['main', './../../../../node_modules/requirejs/require'],
                     out: 'x_project_adv_worker/static/js/block.js',
                     removeCombined: false,
                     findNestedDependencies: true,
@@ -86,7 +85,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-
-    grunt.registerTask('default', ['watch']);
-    grunt.registerTask('server', ['requirejs', 'default']);
+    grunt.registerTask('default', ['jshint', 'requirejs', 'watch']);
 };

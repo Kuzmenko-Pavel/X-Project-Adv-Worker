@@ -32,7 +32,11 @@ define([
         "./../../../../bower_components/jquery/src/exports/amd"
     ], function (jQuery) {
 
-        Date.now = Date.now || function(){ return +new Date; };
+        if (!Date.now) {
+            Date.now = function now() {
+                return new Date().getTime();
+            };
+        }
 
         jQuery.ajaxSetup({
             dataType: 'json',
@@ -49,11 +53,11 @@ define([
         jQuery.fn.ellipsis = function()
         {
             var height = function(t, el){
-                    return t.height() > el.height();
+                return t.height() > el.height();
             };
 
             var width = function (t, el) {
-                        return t.width() > el.width();
+                return t.width() > el.width();
             };
 
             var wordwrap = function (str, width) {
@@ -74,11 +78,11 @@ define([
                     var text = wordwrap(el.html(), Math.floor(el.width()/(parseInt(el.css('font-size')) / 1.91)));
                     var multiline = el.hasClass('multiline');
                     var t = jQuery(this.cloneNode(true))
-                            .hide()
-                            .css('position', 'absolute')
-                            .css('overflow', 'visible')
-                            .width(multiline ? el.width() : 'auto')
-                            .height(multiline ? 'auto' : el.height());
+                        .hide()
+                        .css('position', 'absolute')
+                        .css('overflow', 'visible')
+                        .width(multiline ? el.width() : 'auto')
+                        .height(multiline ? 'auto' : el.height());
 
                     var func = multiline ? height : width;
 

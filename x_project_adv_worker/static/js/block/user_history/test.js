@@ -3,14 +3,20 @@
  */
 define(['json'], function (JSON) {
     return function () {
-        var test = 'test';
-        try {
+        var storageTest = function (test) {
             JSON.parse("{}");
             localStorage.setItem(test, test);
             localStorage.removeItem(test);
-            return true;
-        } catch (e) {
-            return false;
-        }
+        };
+        var test = function () {
+            try {
+                storageTest('test');
+                return true;
+            } catch (e) {
+                return false;
+            }
+        };
+        var result = test();
+        return result;
     };
 });

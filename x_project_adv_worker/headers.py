@@ -101,9 +101,9 @@ def detect_webp():
         @functools.wraps(func)
         def wrapped(*args):
             if isinstance(args[0], AbstractView):
-                args[0].request.is_not_webp = 'webp' in args[0].request.headers.get('ACCEPT', [])
+                args[0].request.is_webp = 'webp' in args[0].request.headers.get('ACCEPT', [])
             else:
-                args[-1].is_not_webp = 'webp' in args[-1].headers.get('ACCEPT', [])
+                args[-1].is_webp = 'webp' in args[-1].headers.get('ACCEPT', [])
             if asyncio.iscoroutinefunction(func):
                 coro = func
             else:

@@ -20,11 +20,11 @@ define(['jquery','underscore'], function (jQuery, _) {
         this.ret_button = '';
         this.rec_button = '';
         this.offer_count = {place:0, social:0, dynamic_retargeting:0, account_retargeting:0};
-        this.campaigns = new Object();
-        this.place = new Array();
-        this.social = new Array();
-        this.account_retargeting = new Array();
-        this.dynamic_retargeting = new Array();
+        this.campaigns = {};
+        this.place = [];
+        this.social = [];
+        this.account_retargeting = [];
+        this.dynamic_retargeting = [];
         this.css = "";
     };
     Informer.prototype.parse = function (server_obj) {

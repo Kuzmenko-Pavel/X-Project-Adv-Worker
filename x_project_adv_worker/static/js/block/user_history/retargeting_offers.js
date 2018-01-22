@@ -12,7 +12,7 @@ define(['underscore'], function (_) {
     RetargetingOffers.prototype.load = function (guid, arg1) {
         if (_.isArray(arg1)) {
             if (_.isUndefined(arg1[3])) {
-                arg1[3] = arg1[0]
+                arg1[3] = arg1[0];
             }
             this[guid] = [arg1[0], arg1[1], arg1[2], arg1[3]];
         }
@@ -24,6 +24,7 @@ define(['underscore'], function (_) {
     };
 
     RetargetingOffers.prototype.get = function () {
+        var x;
         var keys = [];
         var res = [];
         var time = Math.floor(Date.now());
@@ -50,7 +51,7 @@ define(['underscore'], function (_) {
             }
         );
         for (x in keys) {
-            if (typeof(keys[x]) != 'function') {
+            if (typeof(keys[x]) !== 'function') {
                 res.push([keys[x][0], keys[x][2], keys[x][4]]);
             }
         }

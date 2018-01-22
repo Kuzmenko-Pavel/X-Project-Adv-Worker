@@ -28,16 +28,18 @@ define(['underscore', 'text'], function (_, text) {
       var onLoad = function (content) {
 
         // Merge settings
-        _.extend(_.templateSettings, config.underscoreTemplateSettings || {})
+        _.extend(_.templateSettings, config.underscoreTemplateSettings || {});
 
         // compile the template
         content = _.template(content);
 
+        /* jshint ignore:start */
         if (config.isBuild) {
           content = buildMap[name] = content.source;
         } else {
           content = new Function('obj', 'return ' + content.source)();
         }
+        /* jshint ignore:end */
 
         onLoadNative(content);
       };

@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['jquery', './../settings'], function (jQuery, settings) {
+define(['jquery', 'underscore', './../settings'], function (jQuery, _, settings) {
     return function (obj) {
         var request = jQuery.map(settings.requiredData.offers, function(dataItem) {
             if (!obj.informer[dataItem.param] || (obj.informer[dataItem.param] || '').length === 0) {

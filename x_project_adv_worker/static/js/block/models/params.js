@@ -33,7 +33,7 @@ define(['jquery', 'json', 'underscore'], function (jQuery, JSON, _) {
             data['params']['request'] = this.app.adsparams.request;
             data['params']['test'] = this.app.adsparams.test;
             data['items'] = jQuery.map(this.app.offers.log_item, function(dataItem) {
-                var item = new Object();
+                var item = {};
                 item.guid = dataItem.guid;
                 item.id = dataItem.id;
                 item.campaign_social = dataItem.camp.social;
