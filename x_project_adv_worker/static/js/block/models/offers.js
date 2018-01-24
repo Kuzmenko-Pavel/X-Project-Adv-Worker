@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 20.04.17.
  */
-define(['jquery', 'underscore', './link', './../loader/offers', './../loader/offers_log'], function (jQuery, _, link, offers_loader, offers_log) {
+define(['./../jquery', './../underscore', './link', './../loader/offers', './../loader/offers_log'], function (jQuery, _, link, offers_loader, offers_log) {
     var Offers = function (app) {
         this.app = app;
         this.items = [];

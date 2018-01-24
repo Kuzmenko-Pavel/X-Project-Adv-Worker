@@ -1,35 +1,33 @@
 define([
-        "./../../../../bower_components/jquery/src/core",
-        "./../../../../bower_components/jquery/src/selector",
-        "./../../../../bower_components/jquery/src/traversing",
-        "./../../../../bower_components/jquery/src/callbacks",
-        "./../../../../bower_components/jquery/src/deferred",
-        "./../../../../bower_components/jquery/src/core/ready",
-        "./../../../../bower_components/jquery/src/support",
-        "./../../../../bower_components/jquery/src/data",
-        "./../../../../bower_components/jquery/src/queue",
-        "./../../../../bower_components/jquery/src/queue/delay",
-        "./../../../../bower_components/jquery/src/attributes",
-        "./../../../../bower_components/jquery/src/event",
-        "./../../../../bower_components/jquery/src/event/alias",
-        "./../../../../bower_components/jquery/src/manipulation",
-        "./../../../../bower_components/jquery/src/manipulation/_evalUrl",
-        "./../../../../bower_components/jquery/src/wrap",
-        "./../../../../bower_components/jquery/src/css",
-        "./../../../../bower_components/jquery/src/css/hiddenVisibleSelectors",
-        "./../../../../bower_components/jquery/src/serialize",
-        "./../../../../bower_components/jquery/src/ajax",
-        "./../../../../bower_components/jquery/src/ajax/xhr",
-        "./../../../../bower_components/jquery/src/ajax/script",
-        "./../../../../bower_components/jquery/src/ajax/jsonp",
-        "./../../../../bower_components/jquery/src/ajax/load",
-        "./../../../../bower_components/jquery/src/event/ajax",
-        "./../../../../bower_components/jquery/src/effects",
-        "./../../../../bower_components/jquery/src/effects/animatedSelector",
-        "./../../../../bower_components/jquery/src/offset",
-        "./../../../../bower_components/jquery/src/dimensions",
-        "./../../../../bower_components/jquery/src/deprecated",
-        "./../../../../bower_components/jquery/src/exports/amd"
+        "./jquery/core",
+        "./jquery/selector",
+        "./jquery/traversing",
+        "./jquery/callbacks",
+        "./jquery/deferred",
+        "./jquery/core/ready",
+        "./jquery/support",
+        "./jquery/data",
+        "./jquery/queue",
+        "./jquery/queue/delay",
+        "./jquery/attributes",
+        "./jquery/event",
+        "./jquery/event/alias",
+        "./jquery/manipulation",
+        "./jquery/manipulation/_evalUrl",
+        "./jquery/wrap",
+        "./jquery/css",
+        "./jquery/css/hiddenVisibleSelectors",
+        "./jquery/serialize",
+        "./jquery/ajax",
+        "./jquery/ajax/xhr",
+        "./jquery/ajax/script",
+        "./jquery/ajax/jsonp",
+        "./jquery/ajax/load",
+        "./jquery/event/ajax",
+        "./jquery/offset",
+        "./jquery/dimensions",
+        "./jquery/deprecated",
+        "./jquery/exports/amd"
     ], function (jQuery) {
 
         if (!Date.now) {
@@ -50,9 +48,8 @@ define([
             }
         });
 
-        jQuery.fn.ellipsis = function()
-        {
-            var height = function(t, el){
+        jQuery.fn.ellipsis = function () {
+            var height = function (t, el) {
                 return t.height() > el.height();
             };
 
@@ -70,12 +67,10 @@ define([
 
             };
 
-            return this.each(function()
-            {
+            return this.each(function () {
                 var el = jQuery(this);
-                if(el.css("overflow") === 'hidden')
-                {
-                    var text = wordwrap(el.html(), Math.floor(el.width()/(parseInt(el.css('font-size')) / 1.91)));
+                if (el.css("overflow") === 'hidden') {
+                    var text = wordwrap(el.html(), Math.floor(el.width() / (parseInt(el.css('font-size')) / 1.91)));
                     var multiline = el.hasClass('multiline');
                     var t = jQuery(this.cloneNode(true))
                         .hide()
@@ -87,8 +82,7 @@ define([
                     var func = multiline ? height : width;
 
                     t.html(text);
-                    while (text.length > 0 && func(t, el))
-                    {
+                    while (text.length > 0 && func(t, el)) {
                         text = text.substr(0, text.length - 1);
                         t.html(text + "...");
                     }

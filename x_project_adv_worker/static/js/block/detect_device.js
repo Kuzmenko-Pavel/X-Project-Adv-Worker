@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 13.04.17.
  */
-define('detect_device', ['mobile_detect'], function (MobileDetect) {
+define('detect_device', ['./mobile-detect'], function (MobileDetect) {
     var md = new MobileDetect(window.navigator.userAgent);
     return function getDevise() {
         var device = "pc";

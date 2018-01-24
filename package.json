@@ -2,8 +2,9 @@
   "name": "advertise-block-js",
   "version": "1.0.0",
   "devDependencies": {
-    "grunt": "~1.x",
-    "bower": "~1.x"
+    "amdclean": "^2.7.0",
+    "bower": "~1.x",
+    "grunt": "~1.x"
   },
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",

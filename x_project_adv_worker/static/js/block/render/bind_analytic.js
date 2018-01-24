@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 25.04.17.
  */
-define(['jquery', 'underscore'], function (jQuery, _) {
+define(['./../jquery', './../underscore'], function (jQuery, _) {
     return function(items){
         if (typeof(window.ga) === 'function')
         {

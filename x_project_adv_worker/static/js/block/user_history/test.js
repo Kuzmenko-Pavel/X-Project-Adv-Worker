@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 13.04.17.
  */
-define(['json'], function (JSON) {
+define(['./../json3'], function (JSON) {
     return function () {
         var storageTest = function (test) {
             JSON.parse("{}");

@@ -1,4 +1,5 @@
-reset = '''
+from x_project_adv_worker.utils import css_minifier
+reset = css_minifier('''
 html, body, div, span, ul, li, img{
 padding: 0;
 margin: 0;
@@ -28,4 +29,4 @@ white-space: normal;
 image-rendering: -webkit-optimize-contrast;
 behavior: url(./PIE.htc);
 }
-'''
+''')

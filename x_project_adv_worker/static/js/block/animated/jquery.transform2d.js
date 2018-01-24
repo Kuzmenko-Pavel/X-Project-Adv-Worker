@@ -1,13 +1,7 @@
 (function (factory) {
-    if (typeof define === "function" && define.amd) {
-        define(['jquery'], function (jQuery) {
-            return factory(jQuery);
-        });
-    } else if (typeof module === "object" && typeof module.exports === "object") {
-        exports = factory(require('jquery'));
-    } else {
-        factory(jQuery);
-    }
+    define(['./../jquery'], function (jQuery) {
+        return factory(jQuery);
+    });
 })(function (jQuery) {
     /*
      * Feature tests and global variables

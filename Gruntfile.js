@@ -12,15 +12,11 @@ module.exports = function (grunt) {
         },
         watch: {
             taskName: {
-                options: {
-                    livereload: {
-                        port: 35729,
-                    }
-                },
                 files: [
-                    "x_project_adv_worker/static/js/**/*.js"
+                    "x_project_adv_worker/static/js/block/**/*.js"
                 ],
-                tasks: ['jshint', 'requirejs']
+                // tasks: ['jshint', 'requirejs']
+                tasks: ['requirejs']
             }
         },
         requirejs: {
@@ -28,14 +24,15 @@ module.exports = function (grunt) {
                 options: {
                     mainConfigFile: 'x_project_adv_worker/static/js/block/require_config.js',
                     baseUrl: 'x_project_adv_worker/static/js/block/',
-                    include: ['main', './../../../../bower_components/almond/almond'],
+                    // include: ['main', './../../../../bower_components/almond/almond'],
                     out: 'x_project_adv_worker/static/js/block.js',
-                    removeCombined: false,
+                    include: ['main'],
+                    removeCombined: true,
                     findNestedDependencies: true,
                     preserveLicenseComments: false,
                     wrap: true,
                     optimize: 'uglify2',
-                    //optimize: 'none',
+                    // optimize: 'none',
                     uglify2: {
                         output: {
                             beautify: false,
@@ -75,7 +72,17 @@ module.exports = function (grunt) {
                         },
                         ie8: true
                     },
-                    generateSourceMaps: false
+                    generateSourceMaps: false,
+                    onModuleBundleComplete: function (data) {
+                        var fs = module.require('fs'),
+                            amdclean = module.require('amdclean'),
+                            outputFile = data.path,
+                            cleanedCode = amdclean.clean({
+                                'filePath': outputFile
+                            });
+
+                        fs.writeFileSync(outputFile, cleanedCode);
+                    }
                 }
             }
         }
@@ -85,5 +92,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.registerTask('default', ['jshint', 'requirejs', 'watch']);
+    grunt.registerTask('default', ['requirejs', 'watch']);
 };

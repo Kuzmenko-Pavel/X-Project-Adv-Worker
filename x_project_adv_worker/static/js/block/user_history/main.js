@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 13.04.17.
  */
-define(['underscore', 'json', './test', './fixed_queue', './exclude_offers', './retargeting_offers', './gender_account', './gender_user', './cost_account', './cost_user', './activity_account', './activity_user'],
+define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_offers', './retargeting_offers', './gender_account', './gender_user', './cost_account', './cost_user', './activity_account', './activity_user'],
     function (_, JSON, test, FixedQueue, ExcludeOffers, RetargetingOffers, GenderAccount, GenderUser, CostAccount, CostUser, ActivityAccount, ActivityUser) {
         var UserHistory = function () {
             this.searchengines = new FixedQueue(3);

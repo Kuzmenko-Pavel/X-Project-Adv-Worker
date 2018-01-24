@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 20.04.17.
  */
-define(['jquery', 'json', 'underscore'], function (jQuery, JSON, _) {
+define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON, _) {
     var Params = function (app) {
         this.app = app;
         this.w_h = jQuery(window).height();

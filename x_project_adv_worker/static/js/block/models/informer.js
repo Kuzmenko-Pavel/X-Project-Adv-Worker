@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 20.04.17.
  */
-define(['jquery','underscore'], function (jQuery, _) {
+define(['./../jquery','./../underscore'], function (jQuery, _) {
     var Informer = function (app) {
         this.app = app;
         this.informer_id = '';

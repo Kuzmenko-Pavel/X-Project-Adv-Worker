@@ -1,10 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 05.04.17.
  */
-define([
-    'jquery',
-    'underscore'
-], function (jQuery, _) {
+define([], function () {
     return function () {
         this.loader();
     };

@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 14.04.17.
  */
-define(['jquery', './jquery.easing', './jquery.transform2d'], function (jQuery) {
+define(['./../jquery', './jquery.easing', './jquery.transform2d'], function (jQuery) {
     return function (elements) {
         if (this.mouseInBlock) {
             return;

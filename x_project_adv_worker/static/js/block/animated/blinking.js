@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 14.04.17.
  */
-define(['jquery'], function (jQuery) {
+define(['./../jquery'], function (jQuery) {
     return function (elements) {
         if (this.mouseInBlock) {
             return;

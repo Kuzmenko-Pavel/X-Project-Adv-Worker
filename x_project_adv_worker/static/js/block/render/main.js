@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['jquery', 'underscore', './bind_redirect', './../templates/main', './bind_slider'],
+define(['./../jquery', './../underscore', './bind_redirect', './../templates/main', './bind_slider'],
     function (jQuery, _, redirect, templates, slider) {
         return function (app) {
             var render_obj = new Object({app: app});

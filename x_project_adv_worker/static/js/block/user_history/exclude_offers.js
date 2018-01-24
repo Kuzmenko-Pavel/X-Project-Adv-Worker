@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 13.04.17.
  */
-define(['underscore'], function (_) {
+define(['./../underscore'], function (_) {
     var ExcludeOffers = function (invert, counter) {
         var invert_ = Boolean(invert || false);
         var counter_ = Boolean(counter || false);

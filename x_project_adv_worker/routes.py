@@ -1,6 +1,4 @@
-from .views import (IframesView, InformerView,
-                    OffersPlaceView, OffersSocialView, OffersAccountRetargetingView, OffersDynamicRetargetingView,
-                    TestView, Dummy)
+from .views import *
 
 
 def setup_routes(app):
