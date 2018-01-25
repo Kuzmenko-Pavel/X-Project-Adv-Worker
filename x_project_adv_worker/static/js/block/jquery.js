@@ -4,16 +4,16 @@ define([
         "./jquery/traversing",
         "./jquery/callbacks",
         "./jquery/deferred",
-        "./jquery/core/ready",
+        // "./jquery/core/ready",
         "./jquery/support",
         "./jquery/data",
-        "./jquery/queue",
-        "./jquery/queue/delay",
+        // "./jquery/queue",
+        // "./jquery/queue/delay",
         "./jquery/attributes",
-        "./jquery/event",
-        "./jquery/event/alias",
-        "./jquery/manipulation",
-        "./jquery/manipulation/_evalUrl",
+        // "./jquery/event",
+        // "./jquery/event/alias",
+        // "./jquery/manipulation",
+        // "./jquery/manipulation/_evalUrl",
         "./jquery/wrap",
         "./jquery/css",
         "./jquery/css/hiddenVisibleSelectors",
@@ -27,7 +27,7 @@ define([
         "./jquery/offset",
         "./jquery/dimensions",
         "./jquery/deprecated",
-        "./jquery/exports/amd"
+        // "./jquery/exports/amd"
     ], function (jQuery) {
 
         if (!Date.now) {

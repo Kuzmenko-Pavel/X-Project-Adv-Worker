@@ -390,11 +390,186 @@ def calculate_style_1(width, height, adv):
     return adv_setting
 
 
+def calculate_style_2(width, height, adv):
+    adv_setting = AdvSetting()
+    adv_setting.logo = LogoSetting()
+    adv_setting.logo.border_radius = [0, 0, 0, 0]
+    adv_setting.logo.margin = [0, 0, 0, 0]
+    adv_setting.logo.background_color = '#ffffff'
+    adv_setting.logo.border = 5
+    adv_setting.logo.border_color = '#ffffff'
+    adv_setting.header.font.color = '#ffffff'
+    adv_setting.button.border = 1
+    adv_setting.button.border_color = '#f09213'
+    adv_setting.button.font.color = '#f09213'
+    adv_setting.logo.button.border = 1
+    adv_setting.logo.button.border_color = '#f09213'
+    adv_setting.logo.button.font.color = '#f09213'
+    adv_setting.margin = [0, 0, 0, 0]
+    adv_setting.background_color = '#eff2f3'
+    adv_setting.border = 5
+    adv_setting.border_color = '#ffffff'
+    adv_setting.logo.width = adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
+    adv_setting.logo.height = adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
+    adv_setting.header.background_color = '#eff2f3'
+    adv_setting.description.background_color = '#eff2f3'
+    adv_setting.description.font.color = '#256799'
+    adv_setting.border_radius = [0, 0, 0, 0]
+    adv_setting.header.border_radius = [0, 0, 0, 0]
+    adv_setting.description.border_radius = [0, 0, 0, 0]
+    adv_setting.image.border_radius = [0, 0, 0, 0]
+    if adv_setting.width > adv_setting.height:
+        ratio = adv_setting.width / adv_setting.height
+        adv_setting.header.font.color = '#256799'
+        if adv_setting.height < 100:
+            adv_setting.header.font.size = 12
+            adv_setting.description.font.size = 11
+        if ratio >= 2:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height
+            adv_setting.header.width = adv_setting.width - adv_setting.image.width - 6
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
+            adv_setting.header.left = adv_setting.image.width + 3
+            adv_setting.description.width = adv_setting.width - adv_setting.image.width - 6
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            adv_setting.description.left = adv_setting.image.width + 3
+            diff_header_description_height = adv_setting.height - adv_setting.header.height - adv_setting.description.height
+            if diff_header_description_height < (adv_setting.header.height * 1.5):
+                if diff_header_description_height < 0:
+                    diff_header_description_height = 0
+                adv_setting.header.top = diff_header_description_height / 2
+                adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+            else:
+
+                diff_header_description_height = diff_header_description_height - adv_setting.header.height
+                adv_setting.header.top = diff_header_description_height / 4
+                adv_setting.description.top = (adv_setting.header.top * 1.5) + adv_setting.header.height
+                adv_setting.button.height = adv_setting.header.height + adv_setting.header.top
+                adv_setting.button.width = adv_setting.header.width
+                adv_setting.button.left = adv_setting.header.left
+                adv_setting.button.top = adv_setting.description.top + adv_setting.description.height + 2
+
+        elif 1.63 <= ratio < 2:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height
+            adv_setting.header.width = adv_setting.width - adv_setting.image.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
+            adv_setting.header.left = adv_setting.image.width
+            adv_setting.description.width = adv_setting.width - adv_setting.image.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+            adv_setting.description.left = adv_setting.image.width
+        else:
+            adv_setting.header.width = adv_setting.width - 6
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
+            adv_setting.image.width = adv_setting.image.height = (adv_setting.width / 2) - 6
+            adv_setting.description.width = adv_setting.width - (adv_setting.image.width + 6)
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            diff_width = adv_setting.width - (adv_setting.image.width + adv_setting.description.width)
+            diff_height = adv_setting.height - (adv_setting.header.height + adv_setting.image.height)
+            adv_setting.image.left = diff_width / 4
+            adv_setting.description.left = adv_setting.image.left + adv_setting.image.width + (diff_width / 4)
+            adv_setting.header.top = diff_height / 4
+            adv_setting.image.top = adv_setting.header.top + adv_setting.header.height + (diff_height / 4)
+            adv_setting.description.top = adv_setting.image.top
+
+    else:
+        adv_setting.header.padding = [5, 0, 5, 0]
+        ratio = adv_setting.height / adv_setting.width
+        if 1.5 <= ratio:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.width
+            adv_setting.header.background_color = '#000000'
+            adv_setting.header.opacity = 0.6
+            adv_setting.header.width = adv_setting.image.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
+            adv_setting.description.width = adv_setting.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            adv_setting.header.z = 1
+            diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (adv_setting.description.height / 2)
+            if diff_description_center < 0:
+                diff_description_center = 0
+                adv_setting.image.top = 0
+            else:
+                adv_setting.image.top = diff_description_center / 2
+            adv_setting.header.top = (adv_setting.image.top + adv_setting.image.height) - (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
+            adv_setting.description.top = adv_setting.header.top + (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0]) + diff_description_center
+
+        else:
+            adv_setting.image.width = adv_setting.image.height = adv_setting.width
+            adv_setting.header.background_color = '#000000'
+            adv_setting.header.opacity = 0.6
+            adv_setting.header.width = adv_setting.image.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
+            adv_setting.description.width = adv_setting.width
+            adv_setting.description.height = description_text_size(adv_setting.description.width, adv_setting.description.font.size)
+            diff = adv_setting.height - adv_setting.image.height
+
+            if diff < adv_setting.description.height:
+                adv_setting.description.height = diff
+            adv_setting.header.top = adv_setting.image.height - (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
+            adv_setting.header.z = 1
+            diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (
+            adv_setting.description.height / 2)
+            if diff_description_center < 0:
+                diff_description_center = 0
+            adv_setting.description.top = adv_setting.header.top + (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0]) + diff_description_center
+
+    adv_setting.logo.image.border_radius = [0, 0, 0, 0]
+    adv_setting.logo.image.width = adv_setting.image.width
+    adv_setting.logo.image.left = adv_setting.image.left
+    adv_setting.logo.header.width = adv_setting.description.width
+    adv_setting.logo.header.height = description_text_size(adv_setting.logo.header.width, adv_setting.logo.header.font.size)
+    adv_setting.logo.header.left = adv_setting.description.left
+    adv_setting.logo.button.width = adv_setting.description.width - (adv_setting.logo.button.border * 2)
+    adv_setting.logo.button.font.size = adv_setting.description.font.size
+    adv_setting.logo.button.height = header_text_size(adv_setting.logo.button.width, adv_setting.logo.button.font.size)
+
+    if adv_setting.logo.button.height <= adv_setting.logo.button.font.size:
+        adv_setting.logo.button.height = adv_setting.logo.button.height + 8
+
+    adv_setting.logo.button.left = adv_setting.logo.header.left
+    if adv_setting.logo.header.left > 5:
+        logo_block_height = adv_setting.logo.height / 2
+        diff_img_logo_block = (logo_block_height - 25)
+        if diff_img_logo_block < 0:
+            diff_img_logo_block = 0
+        adv_setting.logo.image.top = diff_img_logo_block
+        diff_header_logo_block = (logo_block_height - adv_setting.logo.header.height)
+        if diff_header_logo_block < 0:
+            diff_header_logo_block = 0
+        adv_setting.logo.header.top = diff_header_logo_block
+        diff_button_logo_block = (logo_block_height - adv_setting.logo.button.height) / 2
+        if diff_button_logo_block < 0:
+            diff_button_logo_block = 0
+        adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height + diff_button_logo_block
+        if (adv_setting.logo.button.top + adv_setting.logo.button.height) > adv_setting.logo.height:
+            adv_setting.logo.button.top = adv_setting.logo.height - (adv_setting.logo.button.height + (adv_setting.logo.button.border * 2))
+    else:
+        logo_block_height = adv_setting.logo.height / 3
+        diff_img_logo_block = (logo_block_height - 50)
+        if diff_img_logo_block < 0:
+            diff_img_logo_block = 0
+        adv_setting.logo.image.top = diff_img_logo_block
+        diff_header_logo_block = (logo_block_height - adv_setting.logo.header.height)
+        if diff_header_logo_block < 0:
+            diff_header_logo_block = 0
+        adv_setting.logo.header.top = adv_setting.logo.image.top + 50 + diff_header_logo_block
+        diff_button_logo_block = (logo_block_height - adv_setting.logo.button.height) / 2
+        if diff_button_logo_block < 0:
+            diff_button_logo_block = 0
+        adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height + diff_button_logo_block
+        if adv_setting.logo.button.top + adv_setting.logo.button.height + 2 > adv_setting.logo.height:
+            adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height
+            if adv_setting.logo.button.top + adv_setting.logo.button.height + 2 > adv_setting.logo.height:
+                adv_setting.logo.button.top = adv_setting.logo.button.top - ((adv_setting.logo.button.top + adv_setting.logo.button.height + 2) - adv_setting.logo.height)
+
+    return adv_setting
+
+
 adv_calculator = defaultdict(lambda: calculate_default)
 adv_calculator['Block'] = calculate_default
 adv_calculator['RetBlock'] = calculate_retargeting
 adv_calculator['RecBlock'] = calculate_recomendet
 adv_calculator['Style_1'] = calculate_style_1
+adv_calculator['Style_2'] = calculate_style_2
 
 
 adv_size_calculator = defaultdict(lambda: adv_size_gv)
