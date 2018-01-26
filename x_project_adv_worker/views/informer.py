@@ -55,7 +55,8 @@ class InformerView(web.View):
                                                                                )
                 for campaign in campaigns_result:
                     if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
-                        styler.add(str(campaign['id']), 'Style_1')
+                        styler.add(str(campaign['id']), campaign['style_type'])
+
                     if campaign['social'] and social_branch:
                         result['campaigns'].append(campaign)
                     elif not campaign['social'] and not campaign['retargeting'] and place_branch:
