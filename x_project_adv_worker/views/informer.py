@@ -1,11 +1,12 @@
-from aiohttp import web
-from asyncio import CancelledError
 import time
 import ujson
+import asyncio
 
+from aiohttp import web
+
+from x_project_adv_worker.headers import *
 from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.styler import Styler
-from x_project_adv_worker.headers import *
 
 
 class InformerView(web.View):
@@ -30,15 +31,12 @@ class InformerView(web.View):
                         retargeting[str(ids[1]).lower()] = ids[0]
                 styler = Styler(data.get('w', 0), data.get('h', 0))
                 capacity = min([styler.block.styling_adv.count_adv, styler.block.default_adv.count_adv])
-
-
                 block_result = await self.request.app.query.get_block(block_src=block_src)
-
-                if block_result is None:
+                if not block_result:
                     return web.json_response(result)
 
-                block_domain = block_result.get('domain', 0)
                 block_id = block_result.get('id', 0)
+                block_domain = block_result.get('domain', 0)
                 block_account = block_result.get('account', 0)
 
                 campaigns_result = await  self.request.app.query.get_campaigns(block_id=block_id,
@@ -51,7 +49,6 @@ class InformerView(web.View):
                                                                                gender=gender,
                                                                                capacity=capacity
                                                                                )
-
                 place_branch = block_result.get('place_branch', True)
                 retargeting_branch = block_result.get('retargeting_branch', True)
                 retargeting_account_branch = block_result.get('retargeting_branch', True)
@@ -68,10 +65,12 @@ class InformerView(web.View):
                         result['campaigns'].append(campaign)
                     elif not campaign['social'] and not campaign['retargeting'] and place_branch:
                         result['campaigns'].append(campaign)
-                    elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'offer' and retargeting_branch:
+                    elif not campaign['social'] and campaign['retargeting'] and campaign[
+                        'retargeting_type'] == 'offer' and retargeting_branch:
                         if campaign['account'] in retargeting:
                             result['campaigns'].append(campaign)
-                    elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'account' and retargeting_account_branch:
+                    elif not campaign['social'] and campaign['retargeting'] and campaign[
+                        'retargeting_type'] == 'account' and retargeting_account_branch:
                         if campaign['account'] in retargeting:
                             result['campaigns'].append(campaign)
                 result['css'] = await styler()
@@ -84,13 +83,13 @@ class InformerView(web.View):
                 result['block']['blinking'] = block_result.get('blinking', 0)
                 result['block']['blinking_reload'] = block_result.get('blinking_reload', False)
                 result['block']['shake'] = block_result.get('shake', 0)
-                result['block']['shake_mouse'] = block_result.get('shake_mouse',  False)
+                result['block']['shake_mouse'] = block_result.get('shake_mouse', False)
                 result['block']['shake_reload'] = block_result.get('shake_reload', False)
                 result['block']['html_notification'] = block_result.get('html_notification', True)
                 result['block']['button'] = styler.block.default_button.block
                 result['block']['ret_button'] = styler.block.default_button.ret_block
                 result['block']['rec_button'] = styler.block.default_button.rec_block
-        except CancelledError as ex:
+        except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
                                            request=str(self.request.message), data=data))
         except Exception as ex:
