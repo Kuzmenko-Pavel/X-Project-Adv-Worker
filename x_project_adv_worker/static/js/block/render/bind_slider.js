@@ -2,7 +2,7 @@
  * Created by kuzmenko-pavel on 04.07.17.
  */
 define(['./../jquery', './../underscore'], function (jQuery, _) {
-    var slider = function(el){
+    return function(el){
         var items = el.find('.imageCon');
         _.each(items, function(element, index, list) {
             var el = jQuery(element);
@@ -54,5 +54,4 @@ define(['./../jquery', './../underscore'], function (jQuery, _) {
             }
         }, this);
     };
-    return slider;
 });

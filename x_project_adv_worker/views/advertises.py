@@ -1,6 +1,7 @@
 import asyncio
 import time
 import ujson
+import aiohttp_jinja2
 
 from aiohttp import web
 
@@ -111,12 +112,9 @@ class AdvertisesView(web.View):
     async def post(self):
         result = dict({
             'css': '',
-            'campaigns': [],
+            'html': '',
             'block': {},
-            'place': {'clean': False, 'offers': None},
-            'social': {'clean': False, 'offers': None},
-            'account_retargeting': {'clean': False, 'offers': None},
-            'dynamic_retargeting': {'clean': False, 'offers': None}
+            'offers': {},
         })
         data = {}
         try:
@@ -171,35 +169,26 @@ class AdvertisesView(web.View):
                         styler.add(str(campaign['id']), campaign['style_type'])
 
                     if campaign['social'] and social_branch:
-                        result['campaigns'].append(campaign)
                         campaigns_socia.append((campaign['id'], campaign['offer_count']))
                         offer_count_socia += campaign['offer_count']
 
                     elif not campaign['social'] and not campaign['retargeting'] and place_branch:
-                        result['campaigns'].append(campaign)
                         campaigns_place.append((campaign['id'], campaign['offer_count']))
                         offer_count_place += campaign['offer_count']
 
                     elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'offer' and retargeting_branch:
                         if campaign['account'] in retargeting:
-                            result['campaigns'].append(campaign)
                             campaigns_retargeting_dynamic.append((campaign['id'], campaign['offer_count']))
                             offer_count_retargeting_dynamic += campaign['offer_count']
 
                     elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'account' and retargeting_account_branch:
                         if campaign['account'] in retargeting:
-                            result['campaigns'].append(campaign)
                             campaigns_retargeting_account.append((campaign['id'], campaign['offer_count']))
                             offer_count_retargeting_account += campaign['offer_count']
 
                 result['css'] = await styler()
                 result['block']['id'] = block_result.get('id', 0)
                 result['block']['guid'] = block_result.get('guid', '')
-                result['block']['headerHtml'] = block_result.get('headerHtml', '')
-                result['block']['footerHtml'] = block_result.get('footerHtml', '')
-                result['block']['button'] = styler.block.default_button.block
-                result['block']['ret_button'] = styler.block.default_button.ret_block
-                result['block']['rec_button'] = styler.block.default_button.rec_block
 
                 tasks_result = await self.find_offers(campaigns_place, campaigns_socia, campaigns_retargeting_account,
                                                       campaigns_retargeting_dynamic, block_id, capacity, index,
@@ -208,14 +197,11 @@ class AdvertisesView(web.View):
                                                       offer_count_retargeting_dynamic, retargeting_dynamic_exclude,
                                                       raw_retargeting)
 
-                result['place']['offers'], result['place']['clean'] = tasks_result[0]
-                result['social']['offers'], result['social']['clean'] = tasks_result[1]
-                result['account_retargeting']['offers'], result['account_retargeting']['clean'] = tasks_result[2]
-                result['dynamic_retargeting']['offers'], result['dynamic_retargeting']['clean'] = tasks_result[3]
-
+                result['html'] = aiohttp_jinja2.render_string('advertises.html', self.request, {})
         except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
                                            request=str(self.request.message), data=data))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), request=str(self.request.message), data=data))
+
         return web.json_response(result, dumps=ujson.dumps)

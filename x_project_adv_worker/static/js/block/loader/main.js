@@ -1,19 +1,12 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['./../jquery', './../underscore', './informer'],
-    function (jQuery, _, informer_loader) {
+define(['./../jquery', './../underscore', './advertise'],
+    function (jQuery, _, advertise) {
         var loader_obj = function () {
-            var informer_defferr = jQuery.when(informer_loader(this));
-            informer_defferr.then(_.bind(function (informer) {
-                if (this.informer.parse(informer)){
-                    this.informer.apply_css();
-                    this.offers.union(informer['place'], informer['social'], informer['account_retargeting'],  informer['dynamic_retargeting']);
-                    this.render.render();
-                }
-                else{
-                   this.render.not_found();
-                }
+            var informer_defferr = jQuery.when(advertise(this));
+            informer_defferr.then(_.bind(function (data) {
+                this.advertise.parse(data);
             }, this));
             return true;
         };

@@ -34,13 +34,13 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
         }
         else if (req_type === 'log'){
             data['params'] = {};
-            data['params']['informer_id'] = this.app.informer.informer_id;
-            data['params']['informer_id_int'] = this.app.informer.informer_id_int;
+            data['params']['informer_id'] = this.app.advertise.informer_id;
+            data['params']['informer_id_int'] = this.app.advertise.informer_id_int;
             data['params']['ip'] = this.app.adsparams.ip;
             data['params']['cookie'] = this.app.adsparams.cookie;
             data['params']['request'] = this.app.adsparams.request;
             data['params']['test'] = this.app.adsparams.test;
-            data['items'] = jQuery.map(this.app.offers.log_item, function(dataItem) {
+            data['items'] = jQuery.map(this.app.advertise.log_item, function(dataItem) {
                 var item = {};
                 item.guid = dataItem.guid;
                 item.id = dataItem.id;

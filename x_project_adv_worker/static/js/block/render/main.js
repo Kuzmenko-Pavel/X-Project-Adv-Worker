@@ -1,25 +1,20 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['./../jquery', './../underscore', './bind_redirect', './../templates/main', './bind_slider'],
-    function (jQuery, _, redirect, templates, slider) {
+define(['./../jquery', './../underscore', './bind_redirect', './bind_slider', './apply_css'],
+    function (jQuery, redirect, templates, slider, apply_css) {
         return function (app) {
             var render_obj = new Object({app: app});
+            render_obj.redirect = redirect;
+            render_obj.slider = slider;
+            render_obj.apply_css = apply_css;
             render_obj.render = function () {
-                var temp_el = jQuery('<div></div>');
-                temp_el.append(templates.advTemplate({offers: this.app.offers.items}));
-                jQuery('body').html(templates.advBlockTemplate({
-                    mainHeader: this.app.informer.headerHtml,
-                    ads: temp_el.html(),
-                    mainFooter: this.app.informer.footerHtml
-                }));
-                redirect(this.app, jQuery('#adsContainer'));
-                slider(jQuery('#adsContainer'));
-                this.app.offers.views(jQuery('#adsContainer'));
+                // var $adsContainer = jQuery('#adsContainer');
+                // this.redirect($adsContainer);
+                // this.slider($adsContainer);
+                this.apply_css();
+                jQuery('body').html(this.app.advertise.html);
                 jQuery('.ellipsis').ellipsis();
-            };
-            render_obj.not_found = function () {
-                jQuery('html').html(templates.advBlockNotFoundTemplate());
             };
             return render_obj;
         };

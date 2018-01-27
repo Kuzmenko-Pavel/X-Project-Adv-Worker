@@ -22,9 +22,7 @@ module.exports = function (grunt) {
         requirejs: {
             compile: {
                 options: {
-                    mainConfigFile: 'x_project_adv_worker/static/js/block/require_config.js',
                     baseUrl: 'x_project_adv_worker/static/js/block/',
-                    // include: ['main', './../../../../bower_components/almond/almond'],
                     out: 'x_project_adv_worker/static/js/block.js',
                     include: ['main'],
                     removeCombined: true,

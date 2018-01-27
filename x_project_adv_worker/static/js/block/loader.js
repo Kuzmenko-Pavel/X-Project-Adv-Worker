@@ -2,26 +2,21 @@
  * Created by kuzmenko-pavel on 04.04.17.
  */
 define([
-    './jquery',
-    './underscore',
     './detect_device',
     './detect_browser',
     './user_history/main',
     './settings',
     './loader/main',
-    './models/informer',
-    './models/offers',
+    './models/advertise',
     './models/params',
     './render/main'
-], function (jQuery,
-             _,
+], function (
              detect_device,
              DetectBrowser,
              user_history,
              settings,
              loader,
-             Informer,
-             Offers,
+             Advertise,
              Params,
              Render
 ) {
@@ -38,8 +33,7 @@ define([
         this.browser = new DetectBrowser();
         this.time_start = new Date().getTime();
         this.uh.load();
-        this.informer = new Informer(this);
-        this.offers = new Offers(this);
+        this.advertise = new Advertise(this);
         this.render = new Render(this);
     };
 
