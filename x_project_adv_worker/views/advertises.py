@@ -10,6 +10,103 @@ from x_project_adv_worker.styler import Styler
 
 
 class AdvertisesView(web.View):
+    async def find_block(self, block_src, country, region, device, cost, gender, capacity):
+        tasks = []
+        block_cache = self.request.app.block_cache.get(block_src)
+        if block_cache:
+            block_id, block_domain, block_account = block_cache
+
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_block(block_src=block_src)))
+
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_campaigns(block_id=block_id,
+                                                                                    block_domain=block_domain,
+                                                                                    block_account=block_account,
+                                                                                    country=country,
+                                                                                    region=region,
+                                                                                    device=device,
+                                                                                    cost=cost,
+                                                                                    gender=gender,
+                                                                                    capacity=capacity
+                                                                                    )))
+            block_result, campaigns_result = await asyncio.gather(*tasks)
+            if not block_result:
+                return None, None
+            block_id = block_result.get('id', 0)
+            block_domain = block_result.get('domain', 0)
+            block_account = block_result.get('account', 0)
+        else:
+            block_result = await self.request.app.query.get_block(block_src=block_src)
+            if not block_result:
+                return None, None
+
+            block_id = block_result.get('id', 0)
+            block_domain = block_result.get('domain', 0)
+            block_account = block_result.get('account', 0)
+
+            campaigns_result = await  self.request.app.query.get_campaigns(block_id=block_id,
+                                                                           block_domain=block_domain,
+                                                                           block_account=block_account,
+                                                                           country=country,
+                                                                           region=region,
+                                                                           device=device,
+                                                                           cost=cost,
+                                                                           gender=gender,
+                                                                           capacity=capacity
+                                                                           )
+        self.request.app.block_cache[block_src] = (block_id, block_domain, block_account)
+        return block_result, campaigns_result
+
+    async def find_offers(self, campaigns_place, campaigns_socia, campaigns_retargeting_account,
+                          campaigns_retargeting_dynamic, block_id, capacity, index, offer_count_place,
+                          exclude, offer_count_socia, offer_count_retargeting_account, retargeting_account_exclude,
+                          offer_count_retargeting_dynamic, retargeting_dynamic_exclude, raw_retargeting):
+        tasks = []
+        if campaigns_place:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_place_offer(
+                block_id=block_id,
+                campaigns=campaigns_place,
+                capacity=capacity,
+                index=index,
+                offer_count=offer_count_place,
+                exclude=exclude)))
+        else:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_empty_offer()))
+
+        if campaigns_socia:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_social_offer(
+                block_id=block_id,
+                campaigns=campaigns_socia,
+                capacity=capacity,
+                index=index,
+                offer_count=offer_count_socia,
+                exclude=exclude)))
+        else:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_empty_offer()))
+
+        if campaigns_retargeting_account:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_account_retargeting_offer(
+                block_id=block_id,
+                campaigns=campaigns_retargeting_account,
+                capacity=capacity,
+                index=index,
+                offer_count=offer_count_retargeting_account,
+                exclude=retargeting_account_exclude)))
+        else:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_empty_offer()))
+
+        if campaigns_retargeting_dynamic:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_dynamic_retargeting_offer(
+                block_id=block_id,
+                campaigns=campaigns_retargeting_dynamic,
+                capacity=capacity,
+                index=index,
+                offer_count=offer_count_retargeting_dynamic,
+                exclude=retargeting_dynamic_exclude,
+                raw_retargeting=raw_retargeting)))
+        else:
+            tasks.append(asyncio.ensure_future(self.request.app.query.get_empty_offer()))
+        return await asyncio.gather(*tasks)
+
     @xml_http_request()
     async def post(self):
         result = dict({
@@ -47,24 +144,11 @@ class AdvertisesView(web.View):
                 styler = Styler(data.get('w', 0), data.get('h', 0))
                 capacity = min([styler.block.styling_adv.count_adv, styler.block.default_adv.count_adv])
 
-                block_result = await self.request.app.query.get_block(block_src=block_src)
+                block_result, campaigns_result = await self.find_block(block_src, country, region, device, cost, gender, capacity)
                 if not block_result:
                     return web.json_response(result)
 
                 block_id = block_result.get('id', 0)
-                block_domain = block_result.get('domain', 0)
-                block_account = block_result.get('account', 0)
-
-                campaigns_result = await  self.request.app.query.get_campaigns(block_id=block_id,
-                                                                               block_domain=block_domain,
-                                                                               block_account=block_account,
-                                                                               country=country,
-                                                                               region=region,
-                                                                               device=device,
-                                                                               cost=cost,
-                                                                               gender=gender,
-                                                                               capacity=capacity
-                                                                               )
                 place_branch = block_result.get('place_branch', True)
                 retargeting_branch = block_result.get('retargeting_branch', True)
                 retargeting_account_branch = block_result.get('retargeting_branch', True)
@@ -125,42 +209,17 @@ class AdvertisesView(web.View):
                 result['block']['ret_button'] = styler.block.default_button.ret_block
                 result['block']['rec_button'] = styler.block.default_button.rec_block
 
-                if campaigns_place:
-                    result['place']['offers'], result['place']['clean'] = await self.request.app.query.get_place_offer(
-                        block_id=block_id,
-                        campaigns=campaigns_place,
-                        capacity=capacity,
-                        index=index,
-                        offer_count=offer_count_place,
-                        exclude=exclude)
+                tasks_result = await self.find_offers(campaigns_place, campaigns_socia, campaigns_retargeting_account,
+                                                      campaigns_retargeting_dynamic, block_id, capacity, index,
+                                                      offer_count_place, exclude, offer_count_socia,
+                                                      offer_count_retargeting_account, retargeting_account_exclude,
+                                                      offer_count_retargeting_dynamic, retargeting_dynamic_exclude,
+                                                      raw_retargeting)
 
-                if campaigns_socia:
-                    result['social']['offers'], result['social']['clean'] = await  self.request.app.query.get_social_offer(
-                        block_id=block_id,
-                        campaigns=campaigns_socia,
-                        capacity=capacity,
-                        index=index,
-                        offer_count=offer_count_socia,
-                        exclude=exclude)
-
-                if campaigns_retargeting_account:
-                    result['account_retargeting']['offers'], result['account_retargeting']['clean'] = await self.request.app.query.get_account_retargeting_offer(
-                        block_id=block_id,
-                        campaigns=campaigns_retargeting_account,
-                        capacity=capacity,
-                        index=index,
-                        offer_count=offer_count_retargeting_account,
-                        exclude=retargeting_account_exclude)
-
-                if campaigns_retargeting_dynamic:
-                    result['dynamic_retargeting']['offers'], result['dynamic_retargeting']['clean'] = await  self.request.app.query.get_dynamic_retargeting_offer(
-                        block_id=block_id,
-                        campaigns=campaigns_retargeting_dynamic,
-                        capacity=capacity,
-                        index=index,
-                        offer_count=offer_count_retargeting_dynamic,
-                        exclude=retargeting_dynamic_exclude,
-                        raw_retargeting=raw_retargeting)
+                result['place']['offers'], result['place']['clean'] = tasks_result[0]
+                result['social']['offers'], result['place']['clean'] = tasks_result[1]
+                result['account_retargeting']['offers'], result['place']['clean'] = tasks_result[2]
+                result['dynamic_retargeting']['offers'], result['place']['clean'] = tasks_result[3]
 
         except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),

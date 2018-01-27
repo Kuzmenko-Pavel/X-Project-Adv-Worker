@@ -27,7 +27,6 @@ define(['./../jquery','./../underscore'], function (jQuery, _) {
         this.css = "";
     };
     Informer.prototype.parse = function (server_obj) {
-        console.log(server_obj);
         this.css = server_obj.css;
         _.each(server_obj.campaigns, function(element, index, list) {
             if (element.retargeting && element.retargeting_type === 'offer'){

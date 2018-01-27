@@ -11,6 +11,7 @@ async def init_db(app):
     # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test',
     #                                      min_size=15, max_size=30, max_cacheable_statement_size=150 * 1024)
     app.query = Query(app.pool)
+    app.block_cache = {}
 
 
 class Query(object):
@@ -411,3 +412,6 @@ FROM mv_campaign AS ca
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
             result.append(item)
         return result, clean
+
+    async def get_empty_offer(self, *args, **kwargs):
+        return [], False
