@@ -10397,9 +10397,9 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
   };
   loader_informer = function (jQuery, settings) {
     return function (obj) {
-      return jQuery.ajax(settings.requiredData.informer.url, {
+      return jQuery.ajax(settings.requiredData.advertises.url, {
         params: obj.params,
-        param: settings.requiredData.informer.param
+        param: settings.requiredData.advertises.param
       });
     };
   }(jquery, settings);
@@ -10432,8 +10432,7 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
       var informer_defferr = jQuery.when(informer_loader(this));
       informer_defferr.then(_.bind(function (informer) {
         if (this.informer.parse(informer)) {
-          this.informer.apply_css();
-          offers_loader(this);
+          this.informer.apply_css();  // offers_loader(this);
         } else {
           this.render.not_found();
         }
@@ -10468,6 +10467,7 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
       this.css = '';
     };
     Informer.prototype.parse = function (server_obj) {
+      console.log(server_obj);
       this.css = server_obj.css;
       _.each(server_obj.campaigns, function (element, index, list) {
         if (element.retargeting && element.retargeting_type === 'offer') {

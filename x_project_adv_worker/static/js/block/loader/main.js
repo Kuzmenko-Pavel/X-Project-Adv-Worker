@@ -8,7 +8,7 @@ define(['./../jquery', './../underscore', './informer', './offers'],
             informer_defferr.then(_.bind(function (informer) {
                 if (this.informer.parse(informer)){
                     this.informer.apply_css();
-                    offers_loader(this);
+                    // offers_loader(this);
                 }
                 else{
                    this.render.not_found();

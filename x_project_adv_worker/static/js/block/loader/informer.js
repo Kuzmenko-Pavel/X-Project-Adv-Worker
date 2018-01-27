@@ -4,8 +4,8 @@
 define(['./../jquery', './../settings'], function (jQuery, settings) {
     return function (obj) {
         return jQuery.ajax(
-            settings.requiredData.informer.url,
-            {params:obj.params, param:settings.requiredData.informer.param}
+            settings.requiredData.advertises.url,
+            {params:obj.params, param:settings.requiredData.advertises.param}
             );
     };
 });

@@ -88,21 +88,24 @@ class AdvertisesView(web.View):
 
                     if campaign['social'] and social_branch:
                         result['campaigns'].append(campaign)
-                        campaigns_socia.append(campaign['id'])
+                        campaigns_socia.append((campaign['id'], campaign['offer_count']))
                         offer_count_socia += campaign['offer_count']
+
                     elif not campaign['social'] and not campaign['retargeting'] and place_branch:
                         result['campaigns'].append(campaign)
-                        campaigns_place.append(campaign['id'])
+                        campaigns_place.append((campaign['id'], campaign['offer_count']))
                         offer_count_place += campaign['offer_count']
+
                     elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'offer' and retargeting_branch:
                         if campaign['account'] in retargeting:
                             result['campaigns'].append(campaign)
-                            campaigns_retargeting_dynamic.append(campaign['id'])
+                            campaigns_retargeting_dynamic.append((campaign['id'], campaign['offer_count']))
                             offer_count_retargeting_dynamic += campaign['offer_count']
+
                     elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'account' and retargeting_account_branch:
                         if campaign['account'] in retargeting:
                             result['campaigns'].append(campaign)
-                            campaigns_retargeting_account.append(campaign['id'])
+                            campaigns_retargeting_account.append((campaign['id'], campaign['offer_count']))
                             offer_count_retargeting_account += campaign['offer_count']
 
                 result['css'] = await styler()
@@ -122,38 +125,42 @@ class AdvertisesView(web.View):
                 result['block']['ret_button'] = styler.block.default_button.ret_block
                 result['block']['rec_button'] = styler.block.default_button.rec_block
 
-                result['place']['offers'], result['place']['clean'] = await self.request.app.query.get_place_offer(
-                    block_id=block_id,
-                    campaigns=campaigns_place,
-                    capacity=capacity,
-                    index=index,
-                    offer_count=offer_count_place,
-                    exclude=exclude)
+                if campaigns_place:
+                    result['place']['offers'], result['place']['clean'] = await self.request.app.query.get_place_offer(
+                        block_id=block_id,
+                        campaigns=campaigns_place,
+                        capacity=capacity,
+                        index=index,
+                        offer_count=offer_count_place,
+                        exclude=exclude)
 
-                result['social']['offers'], result['social']['clean'] = await  self.request.app.query.get_social_offer(
-                    block_id=block_id,
-                    campaigns=campaigns_socia,
-                    capacity=capacity,
-                    index=index,
-                    offer_count=offer_count_socia,
-                    exclude=exclude)
+                if campaigns_socia:
+                    result['social']['offers'], result['social']['clean'] = await  self.request.app.query.get_social_offer(
+                        block_id=block_id,
+                        campaigns=campaigns_socia,
+                        capacity=capacity,
+                        index=index,
+                        offer_count=offer_count_socia,
+                        exclude=exclude)
 
-                result['account_retargeting']['offers'], result['account_retargeting']['clean'] = await self.request.app.query.get_account_retargeting_offer(
-                    block_id=block_id,
-                    campaigns=campaigns_retargeting_account,
-                    capacity=capacity,
-                    index=index,
-                    offer_count=offer_count_retargeting_account,
-                    exclude=retargeting_account_exclude)
+                if campaigns_retargeting_account:
+                    result['account_retargeting']['offers'], result['account_retargeting']['clean'] = await self.request.app.query.get_account_retargeting_offer(
+                        block_id=block_id,
+                        campaigns=campaigns_retargeting_account,
+                        capacity=capacity,
+                        index=index,
+                        offer_count=offer_count_retargeting_account,
+                        exclude=retargeting_account_exclude)
 
-                result['dynamic_retargeting']['offers'], result['dynamic_retargeting']['clean'] = await  self.request.app.query.get_dynamic_retargeting_offer(
-                    block_id=block_id,
-                    campaigns=campaigns_retargeting_dynamic,
-                    capacity=capacity,
-                    index=index,
-                    offer_count=offer_count_retargeting_dynamic,
-                    exclude=retargeting_dynamic_exclude,
-                    raw_retargeting=raw_retargeting)
+                if campaigns_retargeting_dynamic:
+                    result['dynamic_retargeting']['offers'], result['dynamic_retargeting']['clean'] = await  self.request.app.query.get_dynamic_retargeting_offer(
+                        block_id=block_id,
+                        campaigns=campaigns_retargeting_dynamic,
+                        capacity=capacity,
+                        index=index,
+                        offer_count=offer_count_retargeting_dynamic,
+                        exclude=retargeting_dynamic_exclude,
+                        raw_retargeting=raw_retargeting)
 
         except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
