@@ -187,14 +187,12 @@ FROM mv_campaign AS ca
 
     async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
-        offers = []
         clean = True
         counter_prediction = offer_count-len(exclude)
         if counter_prediction < capacity:
             index = 0
         async with self.pool.acquire() as connection:
             async with connection.transaction():
-                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
                 exclude_ids = ','.join([str(x) for x in exclude])
                 campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns])
                 q = '''
@@ -216,7 +214,7 @@ FROM mv_campaign AS ca
                     LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
                     'inf': block_id,
-                    'campaigns': campaigns_ids,
+                    'campaigns': ','.join(campaigns),
                     'exclude': exclude_ids,
                     'campaign_unique': campaign_unique,
                     'capacity': capacity,
@@ -247,7 +245,6 @@ FROM mv_campaign AS ca
 
     async def get_social_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
-        offers = []
         clean = True
         counter_prediction = offer_count - len(exclude)
         if counter_prediction < capacity:
@@ -273,7 +270,7 @@ FROM mv_campaign AS ca
                     LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
                     'inf': block_id,
-                    'campaigns': ','.join([str(x[0]) for x in campaigns]),
+                    'campaigns': ','.join(campaigns),
                     'exclude': ','.join([str(x) for x in exclude]),
                     'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns]),
                     'capacity': capacity,
@@ -305,7 +302,6 @@ FROM mv_campaign AS ca
 
     async def get_dynamic_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
         result = []
-        offers = []
         clean = True
         counter_prediction = offer_count - len(exclude)
         if counter_prediction < capacity:
@@ -330,7 +326,7 @@ FROM mv_campaign AS ca
                     order by sub.range_number
                     LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
-                    'campaigns': ','.join([str(x[0]) for x in campaigns]),
+                    'campaigns': ','.join(campaigns),
                     'exclude': ','.join([str(x) for x in exclude]),
                     'retargeting': retargeting,
                     'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
@@ -361,7 +357,6 @@ FROM mv_campaign AS ca
 
     async def get_account_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         result = []
-        offers = []
         clean = True
         counter_prediction = offer_count - len(exclude)
         if counter_prediction < capacity:
@@ -384,7 +379,7 @@ FROM mv_campaign AS ca
                     order by sub.range_number
                     LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
-                    'campaigns': ','.join([str(x[0]) for x in campaigns]),
+                    'campaigns': ','.join(campaigns),
                     'exclude': ','.join([str(x) for x in exclude]),
                     'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in campaigns]),
                     'capacity': capacity,

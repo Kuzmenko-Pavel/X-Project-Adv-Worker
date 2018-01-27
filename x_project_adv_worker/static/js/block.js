@@ -10385,32 +10385,14 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
   }(underscore, json3, user_history_test, user_history_fixed_queue, user_history_exclude_offers, user_history_retargeting_offers, user_history_gender_account, user_history_gender_user, user_history_cost_account, user_history_cost_user, user_history_activity_account, user_history_activity_user);
   settings = {
     requiredData: {
-      informer: {
-        param: 'informer',
-        url: '/v1/informer.json'
+      advertises: {
+        param: 'advertises',
+        url: '/v1/advertises.json'
       },
       offer_log: {
         param: 'log',
         url: '/logger.json'
-      },
-      offers: [
-        {
-          param: 'place',
-          url: '/v1/place.json'
-        },
-        {
-          param: 'social',
-          url: '/v1/social.json'
-        },
-        {
-          param: 'account_retargeting',
-          url: '/v1/account_retargeting.json'
-        },
-        {
-          param: 'dynamic_retargeting',
-          url: '/v1/dynamic_retargeting.json'
-        }
-      ]
+      }
     }
   };
   loader_informer = function (jQuery, settings) {
@@ -10478,12 +10460,6 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
       this.button = '';
       this.ret_button = '';
       this.rec_button = '';
-      this.offer_count = {
-        place: 0,
-        social: 0,
-        dynamic_retargeting: 0,
-        account_retargeting: 0
-      };
       this.campaigns = {};
       this.place = [];
       this.social = [];
@@ -10499,31 +10475,26 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
             element.id,
             element.offer_by_campaign_unique
           ]);
-          this.offer_count.dynamic_retargeting += element.offer_count;
         } else if (element.retargeting && element.retargeting_type === 'account') {
           this.account_retargeting.push([
             element.id,
             element.offer_by_campaign_unique
           ]);
-          this.offer_count.account_retargeting += element.offer_count;
         } else if (!element.retargeting && !element.social) {
           this.place.push([
             element.id,
             element.offer_by_campaign_unique
           ]);
-          this.offer_count.place += element.offer_count;
         } else if (!element.retargeting && element.social) {
           this.social.push([
             element.id,
             element.offer_by_campaign_unique
           ]);
-          this.offer_count.social += element.offer_count;
         } else {
           this.social.push([
             element.id,
             element.offer_by_campaign_unique
           ]);
-          this.offer_count.social += element.offer_count;
         }
         this.campaigns[element.id] = element;
       }, this);
@@ -10998,7 +10969,7 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
     Params.prototype.generateRequestData = function (req_type) {
       this.app.uh.load();
       var data = {};
-      if (req_type === 'informer') {
+      if (req_type === 'advertises') {
         data['w'] = this.w_w;
         data['h'] = this.w_h;
         data['device'] = this.app.device;
@@ -11010,6 +10981,14 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
         data['token'] = this.app.adsparams.token;
         data['cost'] = this.app.uh.cost_user.get();
         data['gender'] = this.app.uh.gender_user.get();
+        data['retargeting'] = this.app.uh.retargeting.get();
+        data['index'] = parseInt(this.app.adsparams.index);
+        if (!_.isNumber(data['index'])) {
+          data['index'] = 0;
+        }
+        data['exclude'] = this.app.uh.exclude_get();
+        data['retargeting_account_exclude'] = this.app.uh.retargeting_account_exclude_get();
+        data['retargeting_dynamic_exclude'] = this.app.uh.retargeting_exclude_get();
         data['retargeting'] = this.app.uh.retargeting.get();
       } else if (req_type === 'log') {
         data['params'] = {};
@@ -11031,36 +11010,6 @@ var jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_con
           item.branch = dataItem.branch;
           return item;
         });
-      } else {
-        data['index'] = parseInt(this.app.adsparams.index);
-        if (!_.isNumber(data['index'])) {
-          data['index'] = 0;
-        }
-        data['block_id'] = this.app.informer.informer_id_int;
-        if (this.app.informer.capacity >= this.app.informer.capacity_styling) {
-          data['capacity'] = this.app.informer.capacity;
-        } else {
-          data['capacity'] = this.app.informer.capacity_styling;
-        }
-        if (req_type === 'place') {
-          data['campaigns'] = this.app.informer.place;
-          data['exclude'] = this.app.uh.exclude_get();
-          data['offer_count'] = this.app.informer.offer_count.place;
-        } else if (req_type === 'social') {
-          data['campaigns'] = this.app.informer.social;
-          data['exclude'] = this.app.uh.exclude_get();
-          data['offer_count'] = this.app.informer.offer_count.social;
-        } else if (req_type === 'account_retargeting') {
-          data['campaigns'] = this.app.informer.account_retargeting;
-          data['exclude'] = this.app.uh.retargeting_account_exclude_get();
-          data['retargeting'] = this.app.uh.retargeting.get();
-          data['offer_count'] = this.app.informer.offer_count.account_retargeting;
-        } else if (req_type === 'dynamic_retargeting') {
-          data['campaigns'] = this.app.informer.dynamic_retargeting;
-          data['exclude'] = this.app.uh.retargeting_exclude_get();
-          data['retargeting'] = this.app.uh.retargeting.get();
-          data['offer_count'] = this.app.informer.offer_count.dynamic_retargeting;
-        }
       }
       return JSON.stringify(data);
     };

@@ -10,7 +10,7 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
     Params.prototype.generateRequestData = function (req_type) {
         this.app.uh.load();
         var data = {};
-        if (req_type === 'informer'){
+        if (req_type === 'advertises'){
             data['w'] = this.w_w;
                 data['h'] = this.w_h;
             data['device'] = this.app.device;
@@ -22,6 +22,14 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             data['token'] = this.app.adsparams.token;
             data['cost'] = this.app.uh.cost_user.get();
             data['gender'] = this.app.uh.gender_user.get();
+            data['retargeting'] = this.app.uh.retargeting.get();
+            data['index'] = parseInt(this.app.adsparams.index);
+            if (!_.isNumber(data['index'])){
+                data['index'] = 0;
+            }
+            data['exclude'] = this.app.uh.exclude_get();
+            data['retargeting_account_exclude'] = this.app.uh.retargeting_account_exclude_get();
+            data['retargeting_dynamic_exclude'] = this.app.uh.retargeting_exclude_get();
             data['retargeting'] = this.app.uh.retargeting.get();
         }
         else if (req_type === 'log'){
@@ -45,43 +53,6 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
                 return item;
             });
         }
-        else {
-            data['index'] = parseInt(this.app.adsparams.index);
-            if (!_.isNumber(data['index'])){
-                data['index'] = 0;
-            }
-            data['block_id'] = this.app.informer.informer_id_int;
-            if (this.app.informer.capacity >= this.app.informer.capacity_styling) {
-                data['capacity'] = this.app.informer.capacity;
-            }
-            else{
-                data['capacity'] = this.app.informer.capacity_styling;
-            }
-
-            if (req_type === 'place') {
-                data['campaigns'] = this.app.informer.place;
-                data['exclude'] = this.app.uh.exclude_get();
-                data['offer_count'] = this.app.informer.offer_count.place;
-            }
-            else if (req_type === 'social') {
-                data['campaigns'] = this.app.informer.social;
-                data['exclude'] = this.app.uh.exclude_get();
-                data['offer_count'] = this.app.informer.offer_count.social;
-            }
-            else if (req_type === 'account_retargeting') {
-                data['campaigns'] = this.app.informer.account_retargeting;
-                data['exclude'] = this.app.uh.retargeting_account_exclude_get();
-                data['retargeting'] = this.app.uh.retargeting.get();
-                data['offer_count'] = this.app.informer.offer_count.account_retargeting;
-            }
-            else if (req_type === 'dynamic_retargeting') {
-                data['campaigns'] = this.app.informer.dynamic_retargeting;
-                data['exclude'] = this.app.uh.retargeting_exclude_get();
-                data['retargeting'] = this.app.uh.retargeting.get();
-                data['offer_count'] = this.app.informer.offer_count.dynamic_retargeting;
-            }
-        }
-
         return JSON.stringify(data);
     };
     return Params;

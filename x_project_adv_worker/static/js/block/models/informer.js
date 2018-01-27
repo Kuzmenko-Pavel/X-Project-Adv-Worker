@@ -19,7 +19,6 @@ define(['./../jquery','./../underscore'], function (jQuery, _) {
         this.button = '';
         this.ret_button = '';
         this.rec_button = '';
-        this.offer_count = {place:0, social:0, dynamic_retargeting:0, account_retargeting:0};
         this.campaigns = {};
         this.place = [];
         this.social = [];
@@ -32,23 +31,18 @@ define(['./../jquery','./../underscore'], function (jQuery, _) {
         _.each(server_obj.campaigns, function(element, index, list) {
             if (element.retargeting && element.retargeting_type === 'offer'){
                 this.dynamic_retargeting.push([element.id, element.offer_by_campaign_unique]);
-                this.offer_count.dynamic_retargeting += element.offer_count;
             }
             else if (element.retargeting && element.retargeting_type === 'account'){
                 this.account_retargeting.push([element.id, element.offer_by_campaign_unique]);
-                this.offer_count.account_retargeting += element.offer_count;
             }
             else if (!element.retargeting && !element.social){
                 this.place.push([element.id, element.offer_by_campaign_unique]);
-                this.offer_count.place += element.offer_count;
             }
             else if (!element.retargeting && element.social){
                 this.social.push([element.id, element.offer_by_campaign_unique]);
-                this.offer_count.social += element.offer_count;
             }
             else{
                 this.social.push([element.id, element.offer_by_campaign_unique]);
-                this.offer_count.social += element.offer_count;
             }
             this.campaigns[element.id] = element;
         }, this);
