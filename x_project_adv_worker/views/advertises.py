@@ -197,14 +197,6 @@ class AdvertisesView(web.View):
                 result['block']['guid'] = block_result.get('guid', '')
                 result['block']['headerHtml'] = block_result.get('headerHtml', '')
                 result['block']['footerHtml'] = block_result.get('footerHtml', '')
-                result['block']['capacity'] = styler.block.default_adv.count_adv
-                result['block']['capacity_styling'] = styler.block.styling_adv.count_adv
-                result['block']['blinking'] = block_result.get('blinking', 0)
-                result['block']['blinking_reload'] = block_result.get('blinking_reload', False)
-                result['block']['shake'] = block_result.get('shake', 0)
-                result['block']['shake_mouse'] = block_result.get('shake_mouse', False)
-                result['block']['shake_reload'] = block_result.get('shake_reload', False)
-                result['block']['html_notification'] = block_result.get('html_notification', True)
                 result['block']['button'] = styler.block.default_button.block
                 result['block']['ret_button'] = styler.block.default_button.ret_block
                 result['block']['rec_button'] = styler.block.default_button.rec_block
@@ -217,9 +209,9 @@ class AdvertisesView(web.View):
                                                       raw_retargeting)
 
                 result['place']['offers'], result['place']['clean'] = tasks_result[0]
-                result['social']['offers'], result['place']['clean'] = tasks_result[1]
-                result['account_retargeting']['offers'], result['place']['clean'] = tasks_result[2]
-                result['dynamic_retargeting']['offers'], result['place']['clean'] = tasks_result[3]
+                result['social']['offers'], result['social']['clean'] = tasks_result[1]
+                result['account_retargeting']['offers'], result['account_retargeting']['clean'] = tasks_result[2]
+                result['dynamic_retargeting']['offers'], result['dynamic_retargeting']['clean'] = tasks_result[3]
 
         except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),

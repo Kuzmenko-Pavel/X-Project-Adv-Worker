@@ -8,64 +8,29 @@ define(['./../jquery','./../underscore'], function (jQuery, _) {
         this.informer_id_int = 0;
         this.footerHtml = "";
         this.headerHtml = "";
-        this.blinking = 0;
-        this.blinking_reload = false;
-        this.html_notification = false;
-        this.shake = 0;
-        this.shake_mouse = false;
-        this.shake_reload = false;
-        this.capacity = 1;
-        this.capacity_styling = 1;
         this.button = '';
         this.ret_button = '';
         this.rec_button = '';
         this.campaigns = {};
-        this.place = [];
-        this.social = [];
-        this.account_retargeting = [];
-        this.dynamic_retargeting = [];
         this.css = "";
     };
     Informer.prototype.parse = function (server_obj) {
-        this.css = server_obj.css;
-        _.each(server_obj.campaigns, function(element, index, list) {
-            if (element.retargeting && element.retargeting_type === 'offer'){
-                this.dynamic_retargeting.push([element.id, element.offer_by_campaign_unique]);
-            }
-            else if (element.retargeting && element.retargeting_type === 'account'){
-                this.account_retargeting.push([element.id, element.offer_by_campaign_unique]);
-            }
-            else if (!element.retargeting && !element.social){
-                this.place.push([element.id, element.offer_by_campaign_unique]);
-            }
-            else if (!element.retargeting && element.social){
-                this.social.push([element.id, element.offer_by_campaign_unique]);
-            }
-            else{
-                this.social.push([element.id, element.offer_by_campaign_unique]);
-            }
-            this.campaigns[element.id] = element;
-        }, this);
         if (server_obj.block){
             if (server_obj.block.id === undefined){
                 return false;
             }
             this.informer_id = server_obj.block.guid;
             this.informer_id_int = server_obj.block.id;
-            this.capacity = server_obj.block.capacity;
-            this.capacity_styling = server_obj.block.capacity_styling;
             this.headerHtml = server_obj.block.headerHtml;
             this.footerHtml = server_obj.block.footerHtml;
-            this.blinking = server_obj.block.blinking;
-            this.blinking_reload = server_obj.block.blinking_reload;
-            this.html_notification = server_obj.block.html_notification;
-            this.shake = server_obj.block.shake;
-            this.shake_mouse = server_obj.block.shake_mouse;
-            this.shake_reload = server_obj.block.shake_reload;
             this.button = server_obj.block.button;
             this.ret_button = server_obj.block.ret_button;
             this.rec_button = server_obj.block.rec_button;
         }
+        this.css = server_obj.css;
+        _.each(server_obj.campaigns, function(element, index, list) {
+            this.campaigns[element.id] = element;
+        }, this);
         return true;
     };
     Informer.prototype.apply_css = function () {

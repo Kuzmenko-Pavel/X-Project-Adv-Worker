@@ -1,7 +1,7 @@
 /**
  * Created by kuzmenko-pavel on 20.04.17.
  */
-define(['./../jquery', './../underscore', './link', './../loader/offers', './../loader/offers_log'], function (jQuery, _, link, offers_loader, offers_log) {
+define(['./../jquery', './../underscore', './link', './../loader/offers_log'], function (jQuery, _, link, offers_log) {
     var Offers = function (app) {
         this.app = app;
         this.items = [];
@@ -273,12 +273,7 @@ define(['./../jquery', './../underscore', './link', './../loader/offers', './../
         if (place['clean'] || (place['clean'] && social['clean'])) {
             this.app.uh.exclude_clean(true);
         }
-        if (this.items.length === 0) {
-            if (this.app.uh.clear() && this.req_count < 10) {
-                this.req_count++;
-                offers_loader(this.app);
-            }
-        }
+
     };
     Offers.prototype.get = function (id) {
         var offer = _.find(this.items, function (element) {
@@ -303,7 +298,7 @@ define(['./../jquery', './../underscore', './link', './../loader/offers', './../
             this.app.uh.exclude_click.add(offer.id, 1);
         }
         this.app.uh.save();
-        offers_loader(this.app);
+        this.app.loader();
     };
     Offers.prototype.views = function (el) {
         var items = el.find('div[data-id]');

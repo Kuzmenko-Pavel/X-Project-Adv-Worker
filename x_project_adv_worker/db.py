@@ -7,9 +7,6 @@ import time
 async def init_db(app):
     app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=5, max_size=50,
                                          max_queries=5000, command_timeout=10, timeout=60)
-    # Example for unix socket connection
-    # app.pool = await asyncpg.create_pool(host='/var/run/postgresql/', user='dev', password='dev', database='test',
-    #                                      min_size=15, max_size=30, max_cacheable_statement_size=150 * 1024)
     app.query = Query(app.pool)
     app.block_cache = {}
 
@@ -161,15 +158,12 @@ FROM mv_campaign AS ca
                 campaigns = await stmt.fetch(timeout=5)
         for item in campaigns:
             campaign = {}
-            offer_count = item['offer_count']
-            styling = item['styling']
-            offer_by_campaign_unique = item['offer_by_campaign_unique'] #if not styling else 1 #TODO styling range algoritm
             campaign['account'] = item['account']
             campaign['brending'] = item['brending']
             campaign['guid'] = item['guid']
             campaign['html_notification'] = item['html_notification']
             campaign['id'] = item['id']
-            campaign['offer_by_campaign_unique'] = offer_by_campaign_unique
+            campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
             campaign['recomendet_count'] = item['recomendet_count']
             campaign['recomendet_type'] = item['recomendet_type']
             campaign['retargeting'] = item['retargeting']
@@ -179,9 +173,9 @@ FROM mv_campaign AS ca
             campaign['style_class'] = item['style_class']
             campaign['style_class_recommendet'] = item['style_class_recommendet']
             campaign['style_data'] = ujson.loads(item['style_data'])
-            campaign['styling'] = styling
+            campaign['styling'] = item['styling']
             campaign['unique_impression_lot'] = item['unique_impression_lot']
-            #TODO add in matView
+            offer_count = item['offer_count']
             campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
             result.append(campaign)
         return [dict(x) for x in result]
