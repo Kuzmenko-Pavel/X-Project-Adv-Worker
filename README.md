@@ -1,1 +1,3 @@
 # X-Project-Adv-Worker
+
+`sudo siege -v -b -c10 -t60S -H "X-Requested-With: XMLHttpRequest" 'http://0.0.0.0:8000/v1/informer.json POST {"w":1920,"h":389,"device":"pc","block_id":"9200beb4-b468-11e5-a497-00e081bad801","auto":false,"country":"UA","ip":"37.57.27.229","token":"EVBS","cost":0,"gender":0,"retargeting":[["1460851","75251188-6ABF-4A39-87D0-A38280779F9B",1],["217358277","75251188-6ABF-4A39-87D0-A38280779F9B",1],["94411852","75251188-6ABF-4A39-87D0-A38280779F9B",1],["2","43711F9F-464B-4DA2-A013-D23A581A9538",0]]}'`

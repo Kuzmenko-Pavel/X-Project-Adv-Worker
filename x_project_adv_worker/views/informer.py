@@ -29,20 +29,18 @@ class InformerView(web.View):
                     if len(ids) >= 2:
                         retargeting[str(ids[1]).lower()] = ids[0]
                 styler = Styler(data.get('w', 0), data.get('h', 0))
+                capacity = min([styler.block.styling_adv.count_adv, styler.block.default_adv.count_adv])
+
+
                 block_result = await self.request.app.query.get_block(block_src=block_src)
+
                 if block_result is None:
                     return web.json_response(result)
+
                 block_domain = block_result.get('domain', 0)
                 block_id = block_result.get('id', 0)
                 block_account = block_result.get('account', 0)
-                place_branch = block_result.get('place_branch', True)
-                retargeting_branch = block_result.get('retargeting_branch', True)
-                retargeting_account_branch = block_result.get('retargeting_branch', True)
-                social_branch = block_result.get('account', True)
-                if not auto and not block_result.get('dynamic', False):
-                    styler.merge(ujson.loads(block_result.get('ad_style')))
 
-                capacity = min([styler.block.styling_adv.count_adv, styler.block.default_adv.count_adv])
                 campaigns_result = await  self.request.app.query.get_campaigns(block_id=block_id,
                                                                                block_domain=block_domain,
                                                                                block_account=block_account,
@@ -53,6 +51,15 @@ class InformerView(web.View):
                                                                                gender=gender,
                                                                                capacity=capacity
                                                                                )
+
+                place_branch = block_result.get('place_branch', True)
+                retargeting_branch = block_result.get('retargeting_branch', True)
+                retargeting_account_branch = block_result.get('retargeting_branch', True)
+                social_branch = block_result.get('account', True)
+
+                if not auto and not block_result.get('dynamic', False):
+                    styler.merge(ujson.loads(block_result.get('ad_style')))
+
                 for campaign in campaigns_result:
                     if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
                         styler.add(str(campaign['id']), campaign['style_type'])
@@ -87,5 +94,5 @@ class InformerView(web.View):
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
                                            request=str(self.request.message), data=data))
         except Exception as ex:
-            logger.error(exception_message(exc=str(ex), request=str(self.request._message), data=data))
+            logger.error(exception_message(exc=str(ex), request=str(self.request.message), data=data))
         return web.json_response(result, dumps=ujson.dumps)
