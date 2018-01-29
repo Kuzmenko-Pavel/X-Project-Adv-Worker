@@ -7,8 +7,8 @@ define([
         // "./jquery/core/ready",
         "./jquery/support",
         "./jquery/data",
-        // "./jquery/queue",
-        // "./jquery/queue/delay",
+        "./jquery/queue",
+        "./jquery/queue/delay",
         "./jquery/attributes",
         // "./jquery/event",
         // "./jquery/event/alias",
@@ -26,7 +26,7 @@ define([
         "./jquery/event/ajax",
         "./jquery/offset",
         "./jquery/dimensions",
-        "./jquery/deprecated",
+        "./jquery/deprecated"
         // "./jquery/exports/amd"
     ], function (jQuery) {
 
