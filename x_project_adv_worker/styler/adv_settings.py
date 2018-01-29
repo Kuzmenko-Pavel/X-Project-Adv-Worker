@@ -25,6 +25,8 @@ class AdvSetting(Map):
         self.header.background_color = 'transparent'
         self.header.opacity = 1
         self.header.border_radius = [5, 5, 5, 5]
+        self.header.border = 0
+        self.header.border_color = 'transparent'
         self.header.font = Map()
         self.header.font.size = 14
         self.header.font.color = '#0063C2'
@@ -46,6 +48,8 @@ class AdvSetting(Map):
         self.description.background_color = 'transparent'
         self.description.opacity = 1
         self.description.border_radius = [5, 5, 5, 5]
+        self.description.border = 0
+        self.description.border_color = 'transparent'
         self.description.font = Map()
         self.description.font.size = 13
         self.description.font.color = '#3d3d45'
@@ -67,6 +71,8 @@ class AdvSetting(Map):
         self.cost.background_color = 'transparent'
         self.cost.opacity = 1
         self.cost.border_radius = [5, 5, 5, 5]
+        self.cost.border = 0
+        self.cost.border_color = 'transparent'
         self.cost.font = Map()
         self.cost.font.size = 14
         self.cost.font.color = 'black'

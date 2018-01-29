@@ -302,6 +302,7 @@ adv_template = """
             font['family']
         )
         }}
+        {{ br(header['border'], header['border_color']) }}
         z-index: {{header['z']}};
         {{ marg(header['margin']) }}
         {{ pad(header['padding']) }}
@@ -333,6 +334,7 @@ adv_template = """
             font['family']
         )
         }}
+        {{ br(description['border'], description['border_color']) }}
         z-index: {{description['z']}};
         {{ marg(description['margin']) }}
         {{ pad(description['padding']) }}
@@ -366,6 +368,7 @@ adv_template = """
         }}
         white-space:nowrap;
         text-overflow: ellipsis;
+        {{ br(cost['border'], cost['border_color']) }}
         z-index: {{cost['z']}};
         {{ marg(cost['margin']) }}
         {{ pad(cost['padding']) }}
