@@ -37,9 +37,14 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             return false;
         };
         UserHistory.prototype.load = function () {
+            var retrievedObject;
             if (test()) {
                 _.each(this, function (uh_element, uh_name, uh) {
-                    var retrievedObject = JSON.parse(localStorage.getItem(uh_name));
+                    try {
+                       retrievedObject = JSON.parse(localStorage.getItem(uh_name));
+                    } catch (e) {
+                        retrievedObject = {};
+                    }
                     _.each(retrievedObject, function (element, index, list) {
                         uh[uh_name].load(index, list[index]);
                     });

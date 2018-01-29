@@ -6,10 +6,22 @@ define(['./../underscore'], function (_) {
         var invert_ = Boolean(invert || false);
         var counter_ = Boolean(counter || false);
         this.invert = function () {
-            return invert_;
+            //FIX IE7
+            try {
+                return invert_ || false;
+            }
+            catch (e) {
+                return false;
+            }
         };
         this.counter = function () {
-            return counter_;
+            //FIX IE7
+            try {
+                return counter_ || false;
+            }
+            catch (e) {
+                return false;
+            }
         };
 
     };
