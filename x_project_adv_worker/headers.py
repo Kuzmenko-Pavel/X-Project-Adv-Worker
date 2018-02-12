@@ -70,7 +70,8 @@ def csp():
                 'child-src': [],
                 'form-action': [],
                 'object-src': [],
-                'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-popups'],
+                'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-forms', 'allow-popups',
+                            'allow-popups-to-escape-sandbox'],
                 # 'require-sri-for': ['script', 'style'],
 
             }
