@@ -240,8 +240,8 @@ define(['./../jquery', './../underscore', './link', './../loader/offers', './../
                         full_block_offer +=1;
                     }
                     else{
-                    one_block_offer +=1;
-                }
+                        one_block_offer +=1;
+                    }
                 }, this);
                 _.each(social['offers'], function (element, index, list) {
                     if (full_block_offer >= one_block_offer){
@@ -289,8 +289,18 @@ define(['./../jquery', './../underscore', './link', './../loader/offers', './../
         }
         return offer;
     };
+    // Offers.prototype.openTab = function(link){
+    //     // Create link in memory
+    //     var a = window.document.createElement("a");
+    //     var e = window.document.createEvent("MouseEvents");
+    //     a.target = '_blank';
+    //     a.href = link;
+    //     e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    //     a.dispatchEvent(e);
+    // };
     Offers.prototype.click = function (id) {
         var offer = this.get(id);
+        // this.openTab(link(offer, this.app));
         var popup = window.open(link(offer, this.app), '_blank');
         if (popup) {
             popup.moveTo(0, 0);
