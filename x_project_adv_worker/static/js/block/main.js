@@ -2,12 +2,12 @@
  * Created by user on 13.07.16.
  */
 require([
-    // './jquery',
-    // './underscore',
+    './underscore',
+    './jquery',
     './loader'
 ], function (
-    // jQuery,
-    // _,
+    _,
+    jQuery,
     Loader
 ) {
     (window.adsbyyottos = window.adsbyyottos || new Loader()).start();

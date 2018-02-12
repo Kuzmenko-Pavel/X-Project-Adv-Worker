@@ -3,34 +3,29 @@
  */
 define(['./../underscore'], function (_) {
     var CostUser = function () {
+        this.hit_log = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        this.cost = void 0;
     };
 
     CostUser.prototype.add = function (val) {
-        var hit_log = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
-        if (_.isUndefined(this['cost'])) {
-            this['cost'] = val;
-            hit_log[val] += 1;
-            this['hit_log'] = hit_log;
+        if (this.cost === void 0) {
+            this.cost = val;
+            this.hit_log[val] += 1;
         }
         else {
-            if (_.isArray(this['hit_log'])) {
-                hit_log = this['hit_log'];
-                hit_log[val] += 1;
-                hit_log[0] = 1;
-                this['hit_log'] = hit_log;
-                this['cost'] = _.indexOf(hit_log, _.max(hit_log));
-            }
+            this.hit_log[val] += 1;
+            this.hit_log[0] = 1;
+            this.cost = _.indexOf(this.hit_log, _.max(this.hit_log));
         }
-        if (this['cost'] < 0) {
-            this['cost'] = 0;
+        if (this.cost < 0) {
+            this.cost = 0;
         }
     };
     CostUser.prototype.get = function () {
-        var res = 0;
-        if (!_.isUndefined(this['cost'])) {
-            res = this['cost'];
+        if (this.cost === void 0) {
+            return 0;
         }
-        return res;
+        return this.cost;
     };
     CostUser.prototype.load = function (guid, arg1) {
         this[guid] = arg1;
