@@ -58,8 +58,8 @@ def csp():
             csp_data = {
                 'base-uri': [host],
                 'default-src': [host],
-                'img-src': ['cdn.yottos.com'],
-                'script-src': ["'unsafe-inline'", "'nonce-%s'" % nonce, host],
+                'img-src': ['cdn.yottos.com', 'www.google-analytics.com'],
+                'script-src': ["'unsafe-inline'", 'cdn.yottos.com', "'nonce-%s'" % nonce, host],
                 'connect-src': [host],
                 'style-src': ["'unsafe-inline'"],
                 'worker-src': [],

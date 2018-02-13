@@ -52,10 +52,10 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             }
             data['block_id'] = this.app.informer.informer_id_int;
             if (this.app.informer.capacity >= this.app.informer.capacity_styling) {
-                data['capacity'] = this.app.informer.capacity;
+                data['capacity'] = this.app.informer.capacity + Math.round(this.app.informer.capacity / 3);
             }
             else{
-                data['capacity'] = this.app.informer.capacity_styling;
+                data['capacity'] = this.app.informer.capacity_styling  + Math.round(this.app.informer.capacity / 3);
             }
 
             if (req_type === 'place') {
