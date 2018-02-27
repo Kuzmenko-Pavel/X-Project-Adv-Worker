@@ -6,10 +6,10 @@ define(['./../underscore'], function (_) {
     };
 
     ActivityUser.prototype.add = function (timeFirst, timeLast) {
-        if (_.isUndefined(this['timeFirst'])) {
-            this['timeFirst'] = timeFirst;
+        if (_.isUndefined(this.timeFirst)) {
+            this.timeFirst = timeFirst;
         }
-        this['timeLast'] = timeLast;
+        this.timeLast = timeLast;
     };
 
     ActivityUser.prototype.load = function (guid, arg1) {

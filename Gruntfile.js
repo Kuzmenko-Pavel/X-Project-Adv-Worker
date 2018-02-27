@@ -35,6 +35,7 @@ module.exports = function (grunt) {
                         output: {
                             beautify: false,
                             quote_keys: true,
+                            screw_ie8: false,
                             ascii_only: true
                         },
                         compress: {

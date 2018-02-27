@@ -58,8 +58,8 @@ def csp():
             csp_data = {
                 'base-uri': [host],
                 'default-src': [host],
-                'img-src': ['cdn.yottos.com'],
-                'script-src': ["'unsafe-inline'", "'nonce-%s'" % nonce, host],
+                'img-src': ['cdn.yottos.com', 'www.google-analytics.com'],
+                'script-src': ["'unsafe-inline'", 'cdn.yottos.com', "'nonce-%s'" % nonce, host],
                 'connect-src': [host],
                 'style-src': ["'unsafe-inline'"],
                 'worker-src': [],
@@ -70,7 +70,8 @@ def csp():
                 'child-src': [],
                 'form-action': [],
                 'object-src': [],
-                'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-popups'],
+                'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-forms', 'allow-popups',
+                            'allow-popups-to-escape-sandbox'],
                 # 'require-sri-for': ['script', 'style'],
 
             }

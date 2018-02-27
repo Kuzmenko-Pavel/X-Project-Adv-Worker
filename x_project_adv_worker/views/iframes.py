@@ -91,8 +91,7 @@ class IframesView(web.View):
                 'test': test,
                 'cookie': cookie,
                 'is_webp': is_webp,
-                'request': 'initial',
-                'nonce': self.request.nonce
+                'request': 'initial'
             }),
             'style': reset_css,
             'nonce': self.request.nonce,

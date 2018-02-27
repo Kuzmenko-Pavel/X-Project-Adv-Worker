@@ -6,10 +6,10 @@ define(['./../underscore'], function (_) {
         var invert_ = Boolean(invert || false);
         var counter_ = Boolean(counter || false);
         this.invert = function () {
-            return invert_;
+            return invert_ || false;
         };
         this.counter = function () {
-            return counter_;
+            return counter_ || false;
         };
 
     };
@@ -45,28 +45,29 @@ define(['./../underscore'], function (_) {
 
     ExcludeOffers.prototype.get = function () {
         var keys = [];
-            _.each(this, function (value, key, uh) {
-                 if (uh.invert()) {
-                    if (value > 0) {
-                        if (uh.counter()) {
-                            keys.push([key.replace(/\D/g, ''), value]);
-                        }
-                        else{
-                            keys.push(key.replace(/\D/g, ''));
-                        }
+        var obj = this || {};
+        _.each(obj, function (value, key, uh) {
+             if (uh.invert()) {
+                if (value > 0) {
+                    if (uh.counter()) {
+                        keys.push([key.replace(/\D/g, ''), value]);
+                    }
+                    else{
+                        keys.push(key.replace(/\D/g, ''));
                     }
                 }
-                else {
-                    if (value <= 0) {
-                        if (uh.counter()) {
-                            keys.push([key.replace(/\D/g, ''), value]);
-                        }
-                        else{
-                            keys.push(key.replace(/\D/g, ''));
-                        }
+            }
+            else {
+                if (value <= 0) {
+                    if (uh.counter()) {
+                        keys.push([key.replace(/\D/g, ''), value]);
+                    }
+                    else{
+                        keys.push(key.replace(/\D/g, ''));
                     }
                 }
-            });
+            }
+        });
         return keys;
     };
 

@@ -4,5 +4,5 @@ postgres:
   uri: postgresql://ad_worker:ad_worker@localhost:5432/ad_worker
 
 debug:
-  status: True
+  status: False
   console: False
