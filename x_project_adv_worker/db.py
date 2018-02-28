@@ -5,7 +5,7 @@ import time
 
 
 async def init_db(app):
-    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=5, max_size=50,
+    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=1, max_size=50,
                                          max_queries=5000, command_timeout=10, timeout=60)
     app.query = Query(app.pool)
     app.block_cache = {}
@@ -181,6 +181,8 @@ FROM mv_campaign AS ca
         return [dict(x) for x in result]
 
     async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
+        if not campaigns:
+            return [], False
         result = []
         clean = True
         campaigns_ids = ','.join([str(x[0]) for x in campaigns])
@@ -240,6 +242,8 @@ FROM mv_campaign AS ca
         return result, clean
 
     async def get_social_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
+        if not campaigns:
+            return [], False
         result = []
         clean = True
         campaigns_ids = ','.join([str(x[0]) for x in campaigns])
@@ -298,6 +302,8 @@ FROM mv_campaign AS ca
         return result, clean
 
     async def get_dynamic_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
+        if not campaigns:
+            return [], False
         result = []
         clean = True
         campaigns_ids = ','.join([str(x[0]) for x in campaigns])
@@ -354,6 +360,8 @@ FROM mv_campaign AS ca
         return result, clean
 
     async def get_account_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
+        if not campaigns:
+            return [], False
         result = []
         clean = True
         campaigns_ids = ','.join([str(x[0]) for x in campaigns])
@@ -406,6 +414,3 @@ FROM mv_campaign AS ca
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
             result.append(item)
         return result, clean
-
-    async def get_empty_offer(self, *args, **kwargs):
-        return [], False

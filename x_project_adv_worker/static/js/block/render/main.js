@@ -13,7 +13,8 @@ define(['./../jquery', './../underscore', './bind_redirect', './bind_slider', '.
                 // this.redirect($adsContainer);
                 // this.slider($adsContainer);
                 this.apply_css();
-                jQuery('body').html(this.app.advertise.html);
+                jQuery('body').append('<pre id="json"></pre>');
+                jQuery('#json').html(JSON.stringify(this.app.advertise.offers, null, 2));
                 jQuery('.ellipsis').ellipsis();
             };
             return render_obj;

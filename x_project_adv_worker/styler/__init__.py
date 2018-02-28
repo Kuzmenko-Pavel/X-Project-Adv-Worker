@@ -10,7 +10,8 @@ from .styles import full
 reset_css = reset
 
 
-class Styler():
+class Styler(object):
+    __slots__ = ['adv_style', 'adv_data', 'block']
     style_type = style_type
 
     def __init__(self, width, height):
@@ -23,10 +24,7 @@ class Styler():
         self.block = BlockSetting()
         self.block.width = width
         self.block.height = height
-        # import time
-        # start_time = time.time()
         self._default_size_calculate(True)
-        # print("_default_size_calculate --- %s ms ---" % ((time.time() - start_time) * 1000))
 
     def merge(self, data=None):
         if data is not None:
@@ -226,8 +224,6 @@ class Styler():
             self.block.default_adv = Map(self.block.styling_adv)
 
     def _create_variable(self):
-        import time
-        # start_time = time.time()
         variable = dict({'main': {}, 'adv_style': {}})
         variable['main'] = dict(self.block)
         width = self.block.get_width()
@@ -240,13 +236,20 @@ class Styler():
 
         for key, value in self.adv_data.items():
             variable['adv_style'][key] = value
-        # print("_create_variable --- %s ms ---" % ((time.time() - start_time) * 1000))
         return variable
 
     def add(self, name, style):
         if style not in self.style_type:
             style = 'Block'
         self.adv_style[name] = style
+
+    @property
+    def min_capacity(self):
+        return min([self.block.styling_adv.count_adv, self.block.default_adv.count_adv])
+
+    @property
+    def max_capacity(self):
+        return max([self.block.styling_adv.count_adv, self.block.default_adv.count_adv])
 
     async def __call__(self):
         return full.render(self._create_variable())

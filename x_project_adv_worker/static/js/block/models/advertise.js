@@ -14,7 +14,6 @@ define(['./../jquery','./../underscore'], function (jQuery, _) {
         this.informer_id = server_obj.block.guid;
         this.informer_id_int = server_obj.block.id;
         this.css = server_obj.css;
-        this.html = server_obj.html;
         this.offers = server_obj.offers;
         this.app.render.render();
     };

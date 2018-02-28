@@ -12,14 +12,14 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
         var data = {};
         if (req_type === 'advertises'){
             data['w'] = this.w_w;
-                data['h'] = this.w_h;
-            data['device'] = this.app.device;
+            data['h'] = this.w_h;
             data['block_id'] = this.app.adsparams.block_id;
             data['auto'] = this.app.adsparams.auto;
             data['country'] = this.app.adsparams.country;
             data['region'] = this.app.adsparams.region;
             data['ip'] = this.app.adsparams.ip;
             data['token'] = this.app.adsparams.token;
+            data['is_webp'] = this.app.adsparams.is_webp;
             data['cost'] = this.app.uh.cost_user.get();
             data['gender'] = this.app.uh.gender_user.get();
             data['retargeting'] = this.app.uh.retargeting.get();

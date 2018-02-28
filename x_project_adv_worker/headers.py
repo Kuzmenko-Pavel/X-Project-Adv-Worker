@@ -1,4 +1,4 @@
-__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors']
+__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_device']
 import asyncio
 import functools
 from datetime import datetime, timedelta
@@ -8,6 +8,7 @@ from uuid import uuid4
 from aiohttp import web, hdrs
 from aiohttp.abc import AbstractView
 
+from x_project_adv_worker.user_agents import simple_parse
 
 def cookie(name='yottos_unique_id', domain='.yottos.com', days=365):
     def wrapper(func):
@@ -157,6 +158,27 @@ def cors():
                 context.headers[hdrs.ACCESS_CONTROL_ALLOW_HEADERS] = '*'
                 context.headers[hdrs.ACCESS_CONTROL_ALLOW_CREDENTIALS] = 'true'
                 context.headers[hdrs.ACCESS_CONTROL_ALLOW_METHODS] = '%s %s' % (hdrs.METH_GET, hdrs.METH_POST)
+            return context
+        return wrapped
+    return wrapper
+
+
+def detect_device():
+    def wrapper(func):
+        @asyncio.coroutine
+        @functools.wraps(func)
+        def wrapped(*args):
+            if isinstance(args[0], AbstractView):
+                args[0].request.device = simple_parse(args[0].request.headers[hdrs.USER_AGENT])
+            else:
+                args[-1].device = simple_parse(args[-1].headers[hdrs.USER_AGENT])
+
+            if asyncio.iscoroutinefunction(func):
+                coro = func
+            else:
+                coro = asyncio.coroutine(func)
+
+            context = yield from coro(*args)
             return context
         return wrapped
     return wrapper

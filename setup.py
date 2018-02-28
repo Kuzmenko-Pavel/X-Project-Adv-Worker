@@ -30,7 +30,8 @@ install_requires = ['aiohttp',
                     'numpy',
                     'uvloop',
                     'cchardet',
-                    'aiohttp_debugtoolbar'
+                    'aiohttp_debugtoolbar',
+                    'ua-parser>=0.4.1'
                     ]
 
 setup(
