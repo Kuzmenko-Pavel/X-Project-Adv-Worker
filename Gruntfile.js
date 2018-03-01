@@ -22,6 +22,7 @@ module.exports = function (grunt) {
         requirejs: {
             compile: {
                 options: {
+                    mainConfigFile: 'x_project_adv_worker/static/js/block/require_config.js',
                     baseUrl: 'x_project_adv_worker/static/js/block/',
                     out: 'x_project_adv_worker/static/js/block.js',
                     include: ['main'],
@@ -55,7 +56,7 @@ module.exports = function (grunt) {
                             unused: true,
                             if_return: true,
                             join_vars: true,
-                            drop_console: true,
+                            //drop_console: true,
                             passes: 3
                         },
                         warnings: true,

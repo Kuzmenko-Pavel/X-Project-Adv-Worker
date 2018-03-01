@@ -1,9 +1,8 @@
 __all__ = ['DataProcessor']
-from asyncio import ensure_future, gather
 import ujson
+from asyncio import ensure_future, gather
 
 from x_project_adv_worker.data_processor.params import Params
-from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.styler import Styler
 
 
@@ -23,8 +22,8 @@ class DataProcessor(object):
         self.app = app
         self.params = Params(data)
         self.styler = Styler(self.params.width, self.params.height)
-        self.block = None
-        self.campaigns = None
+        self.block = dict()
+        self.campaigns = dict()
         self.block_id = 0
         self.place_branch = True
         self.retargeting_branch = True
@@ -45,11 +44,11 @@ class DataProcessor(object):
 
     async def find_block(self):
         tasks = []
-        block_cache = self.app.block_cache.get(self.params.block_src)
+        block_cache = self.app.block_cache.get(self.params.block_id)
         if block_cache:
             block_id, block_domain, block_account, block_width, block_height = block_cache
 
-            tasks.append(ensure_future(self.app.query.get_block(block_src=self.params.block_src)))
+            tasks.append(ensure_future(self.app.query.get_block(block_src=self.params.block_id)))
 
             tasks.append(ensure_future(self.app.query.get_campaigns(block_id=block_id,
                                                                     block_domain=block_domain,
@@ -61,57 +60,60 @@ class DataProcessor(object):
                                                                     gender=self.params.gender,
                                                                     capacity=self.styler.min_capacity
                                                                     )))
-            self.block, self.campaigns = await gather(*tasks)
-            if not self.block:
-                # TODO logic for not found block
-                pass
-            block_id = self.block.get('id', 0)
-            block_domain = self.block.get('domain', 0)
-            block_account = self.block.get('account', 0)
+            block, campaigns = await gather(*tasks)
+            if not block:
+                del self.app.block_cache[self.params.block_id]
+                return False
+            block_id = block.get('id', 0)
+            block_domain = block.get('domain', 0)
+            block_account = block.get('account', 0)
             # TODO add width, height in db
-            block_width = self.block.get('width')
-            block_height = self.block.get('height')
+            block_width = block.get('width')
+            block_height = block.get('height')
         else:
-            self.block = await self.app.query.get_block(block_src=self.params.block_src)
-            if not self.block:
-                # TODO logic for not found block
-                pass
+            block = await self.app.query.get_block(block_src=self.params.block_id)
+            if not block:
+                return False
 
-            block_id = self.block.get('id', 0)
-            block_domain = self.block.get('domain', 0)
-            block_account = self.block.get('account', 0)
+            block_id = block.get('id', 0)
+            block_domain = block.get('domain', 0)
+            block_account = block.get('account', 0)
             # TODO add width, height in db
-            block_width = self.block.get('width')
-            block_height = self.block.get('height')
+            block_width = block.get('width')
+            block_height = block.get('height')
 
-            self.campaigns = await  self.app.query.get_campaigns(block_id=block_id,
-                                                                 block_domain=block_domain,
-                                                                 block_account=block_account,
-                                                                 country=self.params.country,
-                                                                 region=self.params.region,
-                                                                 device=self.params.device,
-                                                                 cost=self.params.cost,
-                                                                 gender=self.params.gender,
-                                                                 capacity=self.styler.min_capacity
-                                                                 )
-        self.app.block_cache[self.params.block_src] = (block_id, block_domain, block_account, block_width, block_height)
-        await self.block_processing()
-        await self.campaigns_processing()
+            campaigns = await  self.app.query.get_campaigns(block_id=block_id,
+                                                            block_domain=block_domain,
+                                                            block_account=block_account,
+                                                            country=self.params.country,
+                                                            region=self.params.region,
+                                                            device=self.params.device,
+                                                            cost=self.params.cost,
+                                                            gender=self.params.gender,
+                                                            capacity=self.styler.min_capacity
+                                                            )
+        self.app.block_cache[self.params.block_id] = (block_id, block_domain, block_account, block_width, block_height)
+        await self.block_processing(block)
+        await self.campaigns_processing(campaigns)
+        return True
 
-    async def block_processing(self):
-        self.data['block']['id'] = self.block.get('id', 0)
-        self.data['block']['guid'] = self.params.block_src
-        self.block_id = self.block.get('id', 0)
-        self.place_branch = self.block.get('place_branch', True)
-        self.retargeting_branch = self.block.get('retargeting_branch', True)
-        self.retargeting_account_branch = self.block.get('retargeting_branch', True)
+    async def block_processing(self, block):
+        self.data['block']['id'] = block.get('id', 0)
+        self.data['block']['guid'] = self.params.block_id
+        self.data['block']['headerHtml'] = block.get('headerHtml', '')
+        self.data['block']['footerHtml'] = block.get('footerHtml', '')
+        self.block_id = block.get('id', 0)
+        self.place_branch = block.get('place_branch', True)
+        self.retargeting_branch = block.get('retargeting_branch', True)
+        self.retargeting_account_branch = block.get('retargeting_branch', True)
         # TODO check in db
-        self.social_branch = self.block.get('social_branch', True)
-        if not self.params.auto and not self.block.get('dynamic', False):
-            self.styler.merge(ujson.loads(self.block.get('ad_style')))
+        self.social_branch = block.get('social_branch', True)
+        if not self.params.auto and not block.get('dynamic', False):
+            self.styler.merge(ujson.loads(block.get('ad_style')))
 
-    async def campaigns_processing(self):
-        for campaign in self.campaigns:
+    async def campaigns_processing(self, campaigns):
+        for campaign in campaigns:
+            self.campaigns[campaign['id']] = campaign
             if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
                 self.styler.add(str(campaign['id']), campaign['style_type'])
 
@@ -133,22 +135,8 @@ class DataProcessor(object):
                     self.campaigns_retargeting_account.append((campaign['id'], campaign['offer_count']))
                     self.offer_count_retargeting_account += campaign['offer_count']
 
-        self.data['css'] = await self.styler()
-
-        #
-        # tasks_result = await self.find_offers(campaigns_place, campaigns_socia, campaigns_retargeting_account,
-        #                                       campaigns_retargeting_dynamic, block_id, capacity, index,
-        #                                       offer_count_place, exclude, offer_count_socia,
-        #                                       offer_count_retargeting_account, retargeting_account_exclude,
-        #                                       offer_count_retargeting_dynamic, retargeting_dynamic_exclude,
-        #                                       raw_retargeting)
-        #
-        pass
-
     async def find_offers(self):
-
         tasks = list()
-
         tasks.append(ensure_future(self.app.query.get_place_offer(
             block_id=self.block_id,
             campaigns=self.campaigns_place,
@@ -186,9 +174,18 @@ class DataProcessor(object):
         await self.union_offers()
 
     async def union_offers(self):
-        self.data['offers'] = self.place_offer[0]
+        offers = list()
+        for offer in self.place_offer[0]:
+            camp = self.campaigns.get(offer.get('id_cam'), {})
+            offer['style_class'] = 'adv' + camp.get('style_class', '')
+            offers.append(offer)
+        self.data['offers'] = offers
+
+    async def styling(self):
+        self.data['css'] = await self.styler()
 
     async def __call__(self):
-        await self.find_block()
-        await self.find_offers()
+        if await self.find_block():
+            await self.find_offers()
+            await self.styling()
         return self.data

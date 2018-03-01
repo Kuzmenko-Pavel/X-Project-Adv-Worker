@@ -2,14 +2,14 @@ __all__ = ['Params']
 
 
 class Params(object):
-    __slots__ = ['width', 'height', 'block_src', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
+    __slots__ = ['width', 'height', 'block_id', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
                  'exclude', 'is_webp', 'retargeting_account_exclude', 'retargeting_dynamic_exclude',
                  'raw_retargeting', 'retargeting']
 
     def __init__(self, data):
         self.width = data.get('w', 0)
         self.height = data.get('h', 0)
-        self.block_src = data.get('block_id', '')
+        self.block_id = data.get('block_id', '')
         self.auto = data.get('auto', False)
         self.country = data.get('country', 'NOT FOUND')
         self.region = data.get('region', 'NOT FOUND')
