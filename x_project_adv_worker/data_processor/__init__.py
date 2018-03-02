@@ -11,13 +11,13 @@ class DataProcessor(object):
                  'retargeting_branch', 'retargeting_account_branch', 'social_branch', 'campaigns_place',
                  'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
-                 'place_offer', 'social_offer', 'account_retargeting_offer', 'dynamic_retargeting_offer']
+                 'styling', 'brending', 'block_button', 'block_ret_button', 'block_rec_button']
 
     def __init__(self, app, data):
         self.data = dict({
             'css': '',
-            'block': {},
-            'offers': {},
+            'block': dict(),
+            'offers': list(),
         })
         self.app = app
         self.params = Params(data)
@@ -37,10 +37,11 @@ class DataProcessor(object):
         self.offer_count_retargeting_account = 0
         self.campaigns_retargeting_dynamic = list()
         self.offer_count_retargeting_dynamic = 0
-        self.place_offer = list()
-        self.social_offer = list()
-        self.account_retargeting_offer = list()
-        self.dynamic_retargeting_offer = list()
+        self.styling = None
+        self.brending = None
+        self.block_button = ''
+        self.block_ret_button = ''
+        self.block_rec_button = ''
 
     async def find_block(self):
         tasks = []
@@ -110,6 +111,9 @@ class DataProcessor(object):
         self.social_branch = block.get('social_branch', True)
         if not self.params.auto and not block.get('dynamic', False):
             self.styler.merge(ujson.loads(block.get('ad_style')))
+        self.block_button = self.styler.block.default_button.block
+        self.block_ret_button = self.styler.block.default_button.ret_block
+        self.block_rec_button = self.styler.block.default_button.rec_block
 
     async def campaigns_processing(self, campaigns):
         for campaign in campaigns:
@@ -170,22 +174,131 @@ class DataProcessor(object):
             exclude=self.params.retargeting_dynamic_exclude,
             raw_retargeting=self.params.raw_retargeting)))
 
-        self.place_offer, self.social_offer, self.account_retargeting_offer, self.dynamic_retargeting_offer = await gather(*tasks)
-        await self.union_offers()
+        place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(*tasks)
+        await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
 
-    async def union_offers(self):
-        offers = list()
-        for offer in self.place_offer[0]:
-            camp = self.campaigns.get(offer.get('id_cam'), {})
-            offer['style_class'] = 'adv' + camp.get('style_class', '')
-            offers.append(offer)
-        self.data['offers'] = offers
+    async def union_offers(self, place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer):
+        for result in [dynamic_retargeting_offer, account_retargeting_offer, place_offer, social_offer]:
+            for offer in result[0]:
+                camp = self.campaigns.get(offer['id_cam'])
+                offer['campaign'] = camp
+                await self.create_offer(offer)
 
-    async def styling(self):
+    def change_image(self, images):
+        return images
+
+    def change_link(self, link):
+        return link
+
+    async def create_offer(self, offer, recomendet=None):
+        # TODO Нахер переделать, херня полная
+        data_offers_len = len(self.data['offers'])
+        offer_styling = offer['campaign']['styling']
+        offer_brending = offer['campaign']['brending']
+        if self.styling:
+            if data_offers_len > self.styler.block.styling_adv.count_adv:
+                return
+            elif data_offers_len == (self.styler.block.styling_adv.count_adv - 1) and offer['campaign']['style_data']:
+                self.data['offers'].append({
+                    'title': offer['campaign']['style_data']['head_title'],
+                    'description': None,
+                    'price': None,
+                    'url': self.change_link(offer['url']),
+                    'images': [offer['campaign']['style_data']['img']],
+                    'style_class': 'logo' + offer['campaign']['style_class'],
+                    'id': None,
+                    'guid': None,
+                    'id_cam': None,
+                    'guid_cam': None,
+                    'token': None,
+                    'button': offer['campaign']['style_data']['button_title']
+                })
+                return
+        else:
+            if data_offers_len > self.styler.block.default_adv.count_adv:
+                return
+        if offer_styling:
+            if self.styling is None or self.styling == offer['id_cam']:
+                self.styling = offer['id_cam']
+            else:
+                return
+        else:
+            if self.styling is None:
+                self.styling = False
+
+        if offer_brending:
+            if self.brending is None or self.brending == offer['id_cam']:
+                self.brending = offer['id_cam']
+            else:
+                return
+        else:
+            if self.brending is None:
+                self.brending = False
+
+        style_class = offer['campaign']['style_class']
+        button = self.block_button
+        branch = 'NL30'
+        if offer['campaign']['retargeting']:
+            button = self.block_ret_button
+            branch = 'NL31'
+        if recomendet:
+            style_class = offer['campaign']['style_class_recommendet']
+            button = self.block_rec_button
+            branch = 'NL32'
+
+        self.data['offers'].append({
+            'title': offer['title'],
+            'description': offer['description'],
+            'price': offer['price'],
+            'url': self.change_link(offer['url']),
+            'images': self.change_image(offer['images']),
+            'style_class': 'adv' + style_class,
+            'id': offer['id'],
+            'guid': offer['guid'],
+            'camp': offer['campaign'],
+            'id_cam': offer['id_cam'],
+            'guid_cam': offer['campaign']['guid'],
+            'token': offer['token'],
+            'branch': branch,
+            'button': button
+        })
+        if offer_styling:
+            styling_item = offer.get('recommended', [])
+            if len(styling_item) < self.styler.block.styling_adv.count_adv:
+                styling_item = styling_item * 2
+            for item in styling_item:
+                item['id_cam'] = offer['id_cam']
+                item['campaign'] = offer['campaign']
+                await self.create_offer(item, True)
+            if recomendet:
+                if len(self.data['offers']) <= self.styler.block.styling_adv.count_adv:
+                    await self.create_offer(offer)
+        else:
+            if offer_brending:
+                brending_item = offer.get('recommended', [])
+                recomendet_count = offer['campaign']['recomendet_count']
+                day = 0
+                if offer['campaign']['recomendet_type'] == 'min':
+                    if recomendet_count - day > 1:
+                        recomendet_count = recomendet_count - day
+                    else:
+                        recomendet_count = 1
+                elif offer['campaign']['recomendet_type'] == 'max':
+                    if 1 + day < recomendet_count:
+                        recomendet_count = 1 + day
+                else:
+                    if recomendet_count < 1:
+                        recomendet_count = 1
+                for item in brending_item[:recomendet_count]:
+                    item['id_cam'] = offer['id_cam']
+                    item['campaign'] = offer['campaign']
+                    await self.create_offer(item, True)
+
+    async def css(self):
         self.data['css'] = await self.styler()
 
     async def __call__(self):
         if await self.find_block():
             await self.find_offers()
-            await self.styling()
+            await self.css()
         return self.data

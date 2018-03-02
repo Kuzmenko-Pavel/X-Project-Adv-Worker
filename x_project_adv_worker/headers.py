@@ -10,6 +10,7 @@ from aiohttp.abc import AbstractView
 
 from x_project_adv_worker.user_agents import simple_parse
 
+
 def cookie(name='yottos_unique_id', domain='.yottos.com', days=365):
     def wrapper(func):
         @asyncio.coroutine
@@ -59,7 +60,7 @@ def csp():
             csp_data = {
                 'base-uri': [host],
                 'default-src': [host],
-                'img-src': ['cdn.yottos.com', 'www.google-analytics.com'],
+                'img-src': ['cdn.yottos.com', 'www.google-analytics.com', "data:"],
                 'script-src': ["'unsafe-inline'", 'cdn.yottos.com', "'nonce-%s'" % nonce, host],
                 'connect-src': [host],
                 'style-src': ["'unsafe-inline'"],
@@ -73,7 +74,6 @@ def csp():
                 'object-src': [],
                 'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-forms', 'allow-popups',
                             'allow-popups-to-escape-sandbox'],
-                # 'require-sri-for': ['script', 'style'],
 
             }
             if request.app['config']['debug']['console']:

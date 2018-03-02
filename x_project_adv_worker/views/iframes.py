@@ -94,9 +94,7 @@ class IframesView(web.View):
                 'request': 'initial'
             }),
             'style': reset_css,
-            'nonce': self.request.nonce,
-            # require-sri
-            # 'integrity': self.request.app.static_hash['static/js/block.js']
+            'nonce': self.request.nonce
         }
         response = aiohttp_jinja2.render_template('block.html', self.request, data)
         return response

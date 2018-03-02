@@ -10,6 +10,6 @@ def init_templates(app):
         trim_blocks=True,
         lstrip_blocks=True,
         enable_async=True,
-        extensions=[HTMLCompress]
+        # extensions=[HTMLCompress]
     )
 
