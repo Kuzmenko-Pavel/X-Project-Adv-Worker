@@ -86,6 +86,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
         };
         UserHistory.prototype.retargeting_clean = function (cl) {
             if (cl) {
+                this.load();
                 this.retargeting_exclude = new ExcludeOffers();
                 this.retargeting_view = new ExcludeOffers(true, true);
                 this.save();

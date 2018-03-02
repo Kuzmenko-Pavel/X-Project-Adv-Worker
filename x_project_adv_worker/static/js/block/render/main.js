@@ -14,10 +14,12 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                     ads: templates.advTemplate({offers: this.app.advertise.offers}),
                     mainFooter: this.app.advertise.footer_html
                 }));
-                var $adsContainer = jQuery('#adsContainer');
-                // this.redirect($adsContainer);
-                // this.slider($adsContainer);
                 this.apply_css();
+                var $adsContainer = jQuery('#adsContainer');
+                this.redirect($adsContainer);
+                this.slider($adsContainer);
+                jQuery('.ellipsis').ellipsis();
+                this.app.advertise.view();
             };
             render_obj.not_found = function () {
                 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

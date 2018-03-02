@@ -1,5 +1,5 @@
 ;(function() {
-var underscore, json3, user_history_test, user_history_fixed_queue, user_history_exclude_offers, user_history_retargeting_offers, user_history_gender_account, user_history_gender_user, user_history_cost_account, user_history_cost_user, user_history_activity_account, user_history_activity_user, user_history_main, settings, jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_concat, jquery_var_push, jquery_var_indexOf, jquery_var_class2type, jquery_var_toString, jquery_var_hasOwn, jquery_var_support, jquery_core, jquery_sizzle, jquery_selector_sizzle, jquery_selector, jquery_traversing_var_dir, jquery_traversing_var_siblings, jquery_traversing_var_rneedsContext, jquery_core_var_rsingleTag, jquery_traversing_findFilter, jquery_core_init, jquery_traversing, jquery_var_rnotwhite, jquery_callbacks, jquery_deferred, jquery_core_ready, jquery_support, jquery_data_support, jquery_data_var_acceptData, jquery_data, jquery_attributes_support, jquery_attributes_val, jquery_core_access, jquery_attributes_attr, jquery_attributes_prop, jquery_attributes_classes, jquery_attributes, jquery_manipulation_var_rcheckableType, jquery_manipulation_var_rtagName, jquery_manipulation_var_rscriptType, jquery_manipulation_var_rleadingWhitespace, jquery_manipulation_var_nodeNames, jquery_manipulation_createSafeFragment, jquery_manipulation_support, jquery_manipulation_wrapMap, jquery_manipulation_getAll, jquery_manipulation_setGlobalEval, jquery_manipulation_buildFragment, jquery_event_support, jquery_event, jquery_manipulation, jquery_wrap, jquery_var_pnum, jquery_css_var_rmargin, jquery_var_rcssNum, jquery_css_var_rnumnonpx, jquery_css_var_cssExpand, jquery_css_var_isHidden, jquery_css_var_swap, jquery_var_documentElement, jquery_css_support, jquery_css_curCSS = {}, jquery_css_adjustCSS, jquery_css_defaultDisplay, jquery_css_addGetHookIf, jquery_css, jquery_css_hiddenVisibleSelectors, jquery_serialize, jquery_ajax_var_location, jquery_ajax_var_nonce, jquery_ajax_var_rquery, jquery_ajax_parseJSON, jquery_ajax_parseXML, jquery_ajax, jquery_ajax_xhr, jquery_ajax_script, jquery_ajax_jsonp, jquery_core_parseHTML, jquery_event_alias, jquery_ajax_load, jquery_event_ajax, jquery_offset, jquery_dimensions, jquery_deprecated, jquery, loader_advertise, loader_main, models_advertise, models_params, render_bind_redirect, render_bind_slider, render_apply_css, text, tpl, tpl_templates_advBlockTemplatehtml, tpl_templates_advTemplatehtml, tpl_templates_advBlockNotFoundTemplatehtml, templates_main, render_main, loader, main;
+var underscore, json3, user_history_test, user_history_fixed_queue, user_history_exclude_offers, user_history_retargeting_offers, user_history_gender_account, user_history_gender_user, user_history_cost_account, user_history_cost_user, user_history_activity_account, user_history_activity_user, user_history_main, settings, jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_concat, jquery_var_push, jquery_var_indexOf, jquery_var_class2type, jquery_var_toString, jquery_var_hasOwn, jquery_var_support, jquery_core, jquery_sizzle, jquery_selector_sizzle, jquery_selector, jquery_traversing_var_dir, jquery_traversing_var_siblings, jquery_traversing_var_rneedsContext, jquery_core_var_rsingleTag, jquery_traversing_findFilter, jquery_core_init, jquery_traversing, jquery_var_rnotwhite, jquery_callbacks, jquery_deferred, jquery_core_ready, jquery_support, jquery_data_support, jquery_data_var_acceptData, jquery_data, jquery_attributes_support, jquery_attributes_val, jquery_core_access, jquery_attributes_attr, jquery_attributes_prop, jquery_attributes_classes, jquery_attributes, jquery_manipulation_var_rcheckableType, jquery_manipulation_var_rtagName, jquery_manipulation_var_rscriptType, jquery_manipulation_var_rleadingWhitespace, jquery_manipulation_var_nodeNames, jquery_manipulation_createSafeFragment, jquery_manipulation_support, jquery_manipulation_wrapMap, jquery_manipulation_getAll, jquery_manipulation_setGlobalEval, jquery_manipulation_buildFragment, jquery_event_support, jquery_event, jquery_manipulation, jquery_wrap, jquery_var_pnum, jquery_css_var_rmargin, jquery_var_rcssNum, jquery_css_var_rnumnonpx, jquery_css_var_cssExpand, jquery_css_var_isHidden, jquery_css_var_swap, jquery_var_documentElement, jquery_css_support, jquery_css_curCSS = {}, jquery_css_adjustCSS, jquery_css_defaultDisplay, jquery_css_addGetHookIf, jquery_css, jquery_css_hiddenVisibleSelectors, jquery_serialize, jquery_ajax_var_location, jquery_ajax_var_nonce, jquery_ajax_var_rquery, jquery_ajax_parseJSON, jquery_ajax_parseXML, jquery_ajax, jquery_ajax_xhr, jquery_ajax_script, jquery_ajax_jsonp, jquery_core_parseHTML, jquery_event_alias, jquery_ajax_load, jquery_event_ajax, jquery_offset, jquery_dimensions, jquery_deprecated, jquery, loader_advertise, loader_main, loader_offers_log, models_advertise, models_params, render_bind_redirect, render_bind_slider, render_apply_css, text, tpl, tpl_templates_advBlockTemplatehtml, tpl_templates_advTemplatehtml, tpl_templates_advBlockNotFoundTemplatehtml, templates_main, render_main, loader, main;
 (function () {
   //     Underscore.js 1.8.3
   //     http://underscorejs.org
@@ -1978,6 +1978,7 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
     };
     UserHistory.prototype.retargeting_clean = function (cl) {
       if (cl) {
+        this.load();
         this.retargeting_exclude = new ExcludeOffers();
         this.retargeting_view = new ExcludeOffers(true, true);
         this.save();
@@ -9552,16 +9553,23 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
     };
   }(jquery, settings);
   loader_main = function (jQuery, _, advertise) {
-    var loader_obj = function () {
-      var informer_defferr = jQuery.when(advertise(this));
-      informer_defferr.then(_.bind(function (data) {
+    return function () {
+      var advertise_defferr = jQuery.when(advertise(this));
+      advertise_defferr.then(_.bind(function (data) {
         this.advertise.parse(data);
       }, this));
       return true;
     };
-    return loader_obj;
   }(jquery, underscore, loader_advertise);
-  models_advertise = function (jQuery, _) {
+  loader_offers_log = function (jQuery, settings) {
+    return function (obj) {
+      return jQuery.ajax(settings.requiredData.offer_log.url, {
+        params: obj.params,
+        param: settings.requiredData.offer_log.param
+      });
+    };
+  }(jquery, settings);
+  models_advertise = function (jQuery, _, offers_log) {
     var Advertise = function (app) {
       this.app = app;
       this.informer_id = '';
@@ -9582,10 +9590,57 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
         this.css = server_obj.css;
         this.offers = server_obj.offers;
         this.app.render.render();
+        this.app.uh.exclude_clean(server_obj.clean.place);
+        this.app.uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
+        this.app.uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+        if (this.offers.length === 0) {
+          this.app.uh.exclude_clean(true);
+          this.app.uh.retargeting_clean(true);
+          this.app.uh.retargeting_account_clean(true);
+          this.app.uh.exclude_click_clean(true);
+          this.app.uh.retargeting_click_clean(true);
+        }
       }
     };
+    Advertise.prototype.get = function (id) {
+      var offer = _.find(this.offers, function (element) {
+        return element.id === id;
+      });
+      if (offer === undefined) {
+        offer = this.offers[0];
+      }
+      return offer;
+    };
+    Advertise.prototype.click = function (id) {
+      var offer = this.get(id);
+      var popup = window.open(offer.url, '_blank');
+      if (popup) {
+        popup.moveTo(0, 0);
+      }
+      this.app.uh.load();
+      if (offer.camp.retargeting) {
+        this.app.uh.retargeting_exclude_click.add(offer.id, 1);
+      } else {
+        this.app.uh.exclude_click.add(offer.id, 1);
+      }
+      this.app.uh.save();
+      this.app.loader();
+    };
+    Advertise.prototype.view = function () {
+      this.app.uh.load();
+      _.each(this.offers, function (offer) {
+        if (offer.retargeting) {
+          this.app.uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
+          this.app.uh.retargeting_view.add(offer.id);
+        } else {
+          this.app.uh.exclude.add(offer.id, offer.unique_impression_lot);
+        }
+      }, this);
+      this.app.uh.save();
+      offers_log(this.app);
+    };
     return Advertise;
-  }(jquery, underscore);
+  }(jquery, underscore, loader_offers_log);
   models_params = function (jQuery, JSON, _) {
     var Params = function (app) {
       this.app = app;
@@ -9624,15 +9679,15 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
         data['params']['cookie'] = this.app.adsparams.cookie;
         data['params']['request'] = this.app.adsparams.request;
         data['params']['test'] = this.app.adsparams.test;
-        data['items'] = jQuery.map(this.app.advertise.log_item, function (dataItem) {
+        data['items'] = jQuery.map(this.app.advertise.offers, function (dataItem) {
           var item = {};
           item.guid = dataItem.guid;
           item.id = dataItem.id;
-          item.campaign_social = dataItem.camp.social;
+          item.campaign_social = dataItem.campaign_social;
           item.token = dataItem.token;
-          item.campaign_guid = dataItem.camp.guid;
-          item.campaign_id = dataItem.camp.id;
-          item.retargeting = dataItem.camp.retargeting;
+          item.campaign_guid = dataItem.guid_cam;
+          item.campaign_id = dataItem.id_cam;
+          item.retargeting = dataItem.retargeting;
           item.branch = dataItem.branch;
           return item;
         });
@@ -9644,8 +9699,14 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
   render_bind_redirect = function (jQuery, _) {
     return function (el) {
       var items = el.find('div[data-id]');
+      var app = this.app;
       _.each(items, function (element, index, list) {
-        jQuery(element).click(function (event) {
+        jQuery(element).on('mousedown', function (event) {
+          if (event.which === 1 || event.which === 2) {
+            var item = jQuery(event.currentTarget);
+            var id = item.data('id');
+            app.advertise.click(id);
+          }
         });
       }, this);
     };
@@ -10117,10 +10178,12 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
           ads: templates.advTemplate({ offers: this.app.advertise.offers }),
           mainFooter: this.app.advertise.footer_html
         }));
-        var $adsContainer = jQuery('#adsContainer');
-        // this.redirect($adsContainer);
-        // this.slider($adsContainer);
         this.apply_css();
+        var $adsContainer = jQuery('#adsContainer');
+        this.redirect($adsContainer);
+        this.slider($adsContainer);
+        jQuery('.ellipsis').ellipsis();
+        this.app.advertise.view();
       };
       render_obj.not_found = function () {
         (function (i, s, o, g, r, a, m) {
@@ -10146,14 +10209,14 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
       this.settings = settings;
       this.time_start = new Date().getTime();
       this.uh.load();
+      this.loader = loader;
       this.advertise = new Advertise(this);
       this.render = new Render(this);
     };
-    Loader.prototype.loader = loader;
-    return Loader;
+    return new Loader();
   }(user_history_main, settings, loader_main, models_advertise, models_params, render_main);
   (function (Loader) {
-    (window.adsbyyottos = window.adsbyyottos || new Loader()).loader();
+    (window.adsbyyottos = window.adsbyyottos || Loader).loader();
   }(loader));
   main = undefined;
 }());

@@ -6,5 +6,5 @@ require([
 ], function (
     Loader
 ) {
-    (window.adsbyyottos = window.adsbyyottos || new Loader()).loader();
+    (window.adsbyyottos = window.adsbyyottos || Loader).loader();
 });

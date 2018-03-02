@@ -22,11 +22,10 @@ define([
         this.settings = settings;
         this.time_start = new Date().getTime();
         this.uh.load();
+        this.loader = loader;
         this.advertise = new Advertise(this);
         this.render = new Render(this);
     };
-
-    Loader.prototype.loader = loader;
-    return Loader;
+    return new Loader();
 
 });

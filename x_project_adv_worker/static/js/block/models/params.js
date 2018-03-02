@@ -40,15 +40,15 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             data['params']['cookie'] = this.app.adsparams.cookie;
             data['params']['request'] = this.app.adsparams.request;
             data['params']['test'] = this.app.adsparams.test;
-            data['items'] = jQuery.map(this.app.advertise.log_item, function(dataItem) {
+            data['items'] = jQuery.map(this.app.advertise.offers, function(dataItem) {
                 var item = {};
                 item.guid = dataItem.guid;
                 item.id = dataItem.id;
-                item.campaign_social = dataItem.camp.social;
+                item.campaign_social = dataItem.campaign_social;
                 item.token = dataItem.token;
-                item.campaign_guid = dataItem.camp.guid;
-                item.campaign_id = dataItem.camp.id;
-                item.retargeting = dataItem.camp.retargeting;
+                item.campaign_guid = dataItem.guid_cam;
+                item.campaign_id = dataItem.id_cam;
+                item.retargeting = dataItem.retargeting;
                 item.branch = dataItem.branch;
                 return item;
             });

@@ -18,6 +18,7 @@ class DataProcessor(object):
             'css': '',
             'block': dict(),
             'offers': list(),
+            'clean': {'place': False, 'account_retargeting': False, 'dynamic_retargeting': False}
         })
         self.app = app
         self.params = Params(data)
@@ -178,6 +179,10 @@ class DataProcessor(object):
         await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
 
     async def union_offers(self, place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer):
+        self.data['clean']['place'] = place_offer[1]
+        self.data['clean']['place'] = social_offer[1]
+        self.data['clean']['account_retargeting'] = account_retargeting_offer[1]
+        self.data['clean']['dynamic_retargeting'] = dynamic_retargeting_offer[1]
         for result in [dynamic_retargeting_offer, account_retargeting_offer, place_offer, social_offer]:
             for offer in result[0]:
                 camp = self.campaigns.get(offer['id_cam'])
@@ -187,8 +192,8 @@ class DataProcessor(object):
     def change_image(self, images):
         return images
 
-    def change_link(self, link):
-        return link
+    def change_link(self, offer):
+        return ''
 
     async def create_offer(self, offer, recomendet=None):
         # TODO Нахер переделать, херня полная
@@ -196,14 +201,14 @@ class DataProcessor(object):
         offer_styling = offer['campaign']['styling']
         offer_brending = offer['campaign']['brending']
         if self.styling:
-            if data_offers_len > self.styler.block.styling_adv.count_adv:
+            if data_offers_len >= self.styler.block.styling_adv.count_adv:
                 return
             elif data_offers_len == (self.styler.block.styling_adv.count_adv - 1) and offer['campaign']['style_data']:
                 self.data['offers'].append({
                     'title': offer['campaign']['style_data']['head_title'],
                     'description': None,
                     'price': None,
-                    'url': self.change_link(offer['url']),
+                    'url': self.change_link(offer),
                     'images': [offer['campaign']['style_data']['img']],
                     'style_class': 'logo' + offer['campaign']['style_class'],
                     'id': None,
@@ -215,7 +220,7 @@ class DataProcessor(object):
                 })
                 return
         else:
-            if data_offers_len > self.styler.block.default_adv.count_adv:
+            if data_offers_len >= self.styler.block.default_adv.count_adv:
                 return
         if offer_styling:
             if self.styling is None or self.styling == offer['id_cam']:
@@ -255,9 +260,11 @@ class DataProcessor(object):
             'style_class': 'adv' + style_class,
             'id': offer['id'],
             'guid': offer['guid'],
-            'camp': offer['campaign'],
             'id_cam': offer['id_cam'],
             'guid_cam': offer['campaign']['guid'],
+            'campaign_social': offer['campaign']['social'],
+            'retargeting': offer['campaign']['retargeting'],
+            'unique_impression_lot': offer['campaign']['unique_impression_lot'],
             'token': offer['token'],
             'branch': branch,
             'button': button
