@@ -8,7 +8,7 @@
 <!--[if gt IE 8]><!-->
 <html><!--<![endif]-->
 <head>
-    <script language="JavaScript" nonce="{{ nonce }}">window.adsparams = {{ js }};</script>
+    <script language="JavaScript" nonce="{{ nonce }}">window.adsparams = {{ js|safe }};</script>
     <script async defer src="/v1/static/js/block.js"></script>
 {#    <script integrity="{{ integrity }}" async src="/v1/static/js/block.js"></script>#}
     <meta name="referrer" content="origin"/>
