@@ -1,7 +1,10 @@
 import asyncpg
+import asyncio
 import ujson
 from datetime import datetime
 import time
+
+from x_project_adv_worker.logger import logger, exception_message
 
 
 async def init_db(app):
@@ -185,60 +188,65 @@ FROM mv_campaign AS ca
             return [], False
         result = []
         clean = True
-        campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-        counter_prediction = offer_count-len(exclude)
-        exclude_ids = ','.join([str(x) for x in exclude])
-        campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns])
-        if counter_prediction < capacity:
-            index = 0
-        async with self.pool.acquire() as connection:
-            async with connection.transaction():
-                q = '''
-                    select * from
-                    (
-                    select 
-                    row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_place2informer.rating desc) AS range_number,
-                    count(id) OVER() as all_count,
-                    mv_offer_place2informer.*,
-                    ofrs.*
-                    FROM mv_offer_place AS ofrs
-                    left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)d
-                    WHERE
-                    ofrs.id_cam IN (%(campaigns)s)
-                    AND ofrs.id NOT IN (%(exclude)s)
-                    ) sub
-                    where %(campaign_unique)s
-                    order by sub.range_number, sub.rating desc
-                    LIMIT %(capacity)d OFFSET %(offset)d;
-                ''' % {
-                    'inf': block_id,
-                    'campaigns': campaigns_ids,
-                    'exclude': exclude_ids,
-                    'campaign_unique': campaign_unique,
-                    'capacity': capacity,
-                    'offset': index * capacity
-                }
-                stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=5)
-        for offer in offers:
-            if clean and offer['all_count'] > capacity:
-                clean = False
-            item = {}
-            item['id'] = offer['id']
-            item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
-            item['images'] = offer['images']
-            item['description'] = offer['description']
-            item['url'] = offer['url']
-            item['title'] = offer['title']
-            item['price'] = offer['price']
-            item['recommended'] = []
-            if offer['recommended']:
-                for rec in ujson.loads(offer['recommended']):
-                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    item['recommended'].append(rec)
-            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-            result.append(item)
+        try:
+            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+            counter_prediction = offer_count-len(exclude)
+            exclude_ids = ','.join([str(x) for x in exclude])
+            campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns])
+            if counter_prediction < capacity:
+                index = 0
+            async with self.pool.acquire() as connection:
+                async with connection.transaction():
+                    q = '''
+                        select * from
+                        (
+                        select 
+                        row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_place2informer.rating desc) AS range_number,
+                        count(id) OVER() as all_count,
+                        mv_offer_place2informer.*,
+                        ofrs.*
+                        FROM mv_offer_place AS ofrs
+                        left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)d
+                        WHERE
+                        ofrs.id_cam IN (%(campaigns)s)
+                        AND ofrs.id NOT IN (%(exclude)s)
+                        ) sub
+                        where %(campaign_unique)s
+                        order by sub.range_number, sub.rating desc
+                        LIMIT %(capacity)d OFFSET %(offset)d;
+                    ''' % {
+                        'inf': block_id,
+                        'campaigns': campaigns_ids,
+                        'exclude': exclude_ids,
+                        'campaign_unique': campaign_unique,
+                        'capacity': capacity,
+                        'offset': index * capacity
+                    }
+                    stmt = await connection.prepare(q)
+                    offers = await stmt.fetch(timeout=5)
+            for offer in offers:
+                if clean and offer['all_count'] > capacity:
+                    clean = False
+                item = {}
+                item['id'] = offer['id']
+                item['guid'] = offer['guid']
+                item['id_cam'] = offer['id_cam']
+                item['images'] = offer['images']
+                item['description'] = offer['description']
+                item['url'] = offer['url']
+                item['title'] = offer['title']
+                item['price'] = offer['price']
+                item['recommended'] = []
+                if offer['recommended']:
+                    for rec in ujson.loads(offer['recommended']):
+                        rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['recommended'].append(rec)
+                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                result.append(item)
+        except asyncio.CancelledError as ex:
+            logger.error(exception_message(exc=str(ex)))
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
         return result, clean
 
     async def get_social_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
@@ -246,59 +254,64 @@ FROM mv_campaign AS ca
             return [], False
         result = []
         clean = True
-        campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-        counter_prediction = offer_count - len(exclude)
-        if counter_prediction < capacity:
-            index = 0
-        async with self.pool.acquire() as connection:
-            async with connection.transaction():
-                q = '''
-                    select * from
-                    (
-                    select 
-                    row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_social2informer.rating desc) AS range_number,
-                    count(id) OVER() as all_count,
-                    mv_offer_social2informer.*,
-                    ofrs.*
-                    FROM mv_offer_social AS ofrs
-                    left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
-                    WHERE
-                    ofrs.id_cam IN (%(campaigns)s)
-                    AND ofrs.id NOT IN (%(exclude)s)
-                    ) sub
-                    where %(campaign_unique)s
-                    order by sub.range_number, sub.rating desc
-                    LIMIT %(capacity)d OFFSET %(offset)d;
-                ''' % {
-                    'inf': block_id,
-                    'campaigns': campaigns_ids,
-                    'exclude': ','.join([str(x) for x in exclude]),
-                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns]),
-                    'capacity': capacity,
-                    'offset': index * capacity
-                }
-                stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=5)
-        for offer in offers:
-            if clean and offer['all_count'] > capacity:
-                clean = False
-            item = {}
-            item['id'] = offer['id']
-            item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
-            item['images'] = offer['images']
-            item['description'] = offer['description']
-            item['url'] = offer['url']
-            item['title'] = offer['title']
-            item['price'] = offer['price']
-            item['recommended'] = []
-            if offer['recommended']:
-                for rec in ujson.loads(offer['recommended']):
-                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    item['recommended'].append(rec)
+        try:
+            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+            counter_prediction = offer_count - len(exclude)
+            if counter_prediction < capacity:
+                index = 0
+            async with self.pool.acquire() as connection:
+                async with connection.transaction():
+                    q = '''
+                        select * from
+                        (
+                        select 
+                        row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_social2informer.rating desc) AS range_number,
+                        count(id) OVER() as all_count,
+                        mv_offer_social2informer.*,
+                        ofrs.*
+                        FROM mv_offer_social AS ofrs
+                        left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
+                        WHERE
+                        ofrs.id_cam IN (%(campaigns)s)
+                        AND ofrs.id NOT IN (%(exclude)s)
+                        ) sub
+                        where %(campaign_unique)s
+                        order by sub.range_number, sub.rating desc
+                        LIMIT %(capacity)d OFFSET %(offset)d;
+                    ''' % {
+                        'inf': block_id,
+                        'campaigns': campaigns_ids,
+                        'exclude': ','.join([str(x) for x in exclude]),
+                        'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns]),
+                        'capacity': capacity,
+                        'offset': index * capacity
+                    }
+                    stmt = await connection.prepare(q)
+                    offers = await stmt.fetch(timeout=5)
+            for offer in offers:
+                if clean and offer['all_count'] > capacity:
+                    clean = False
+                item = {}
+                item['id'] = offer['id']
+                item['guid'] = offer['guid']
+                item['id_cam'] = offer['id_cam']
+                item['images'] = offer['images']
+                item['description'] = offer['description']
+                item['url'] = offer['url']
+                item['title'] = offer['title']
+                item['price'] = offer['price']
+                item['recommended'] = []
+                if offer['recommended']:
+                    for rec in ujson.loads(offer['recommended']):
+                        rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['recommended'].append(rec)
 
-            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-            result.append(item)
+                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                result.append(item)
+        except asyncio.CancelledError as ex:
+            logger.error(exception_message(exc=str(ex)))
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
         return result, clean
 
     async def get_dynamic_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):

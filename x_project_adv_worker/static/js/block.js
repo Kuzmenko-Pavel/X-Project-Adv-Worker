@@ -9660,6 +9660,7 @@ var underscore, json3, user_history_test, user_history_fixed_queue, user_history
         data['ip'] = this.app.adsparams.ip;
         data['token'] = this.app.adsparams.token;
         data['is_webp'] = this.app.adsparams.is_webp;
+        data['time_start'] = this.app.time_start;
         data['cost'] = this.app.uh.cost_user.get();
         data['gender'] = this.app.uh.gender_user.get();
         data['retargeting'] = this.app.uh.retargeting.get();
