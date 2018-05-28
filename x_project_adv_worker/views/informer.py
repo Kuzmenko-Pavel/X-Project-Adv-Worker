@@ -68,7 +68,7 @@ class InformerView(web.View):
                         if campaign['account'] in retargeting:
                             result['campaigns'].append(campaign)
                 result['css'] = await styler()
-                result['block']['id'] = block_result.get('id', 0)
+                result['block']['id'] = str(block_result.get('id', 0))
                 result['block']['guid'] = block_result.get('guid', '')
                 result['block']['headerHtml'] = block_result.get('headerHtml', '')
                 result['block']['footerHtml'] = block_result.get('footerHtml', '')

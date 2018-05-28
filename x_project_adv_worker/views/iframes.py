@@ -10,6 +10,7 @@ from x_project_adv_worker.headers import *
 
 class IframesView(web.View):
 
+    @cache(expire=3600)
     @cookie()
     @detect_webp()
     @csp()

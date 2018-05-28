@@ -167,7 +167,7 @@ FROM mv_campaign AS ca
             campaign['brending'] = item['brending']
             campaign['guid'] = item['guid']
             campaign['html_notification'] = item['html_notification']
-            campaign['id'] = item['id']
+            campaign['id'] = str(item['id'])
             campaign['offer_by_campaign_unique'] = offer_by_campaign_unique
             campaign['recomendet_count'] = item['recomendet_count']
             campaign['recomendet_type'] = item['recomendet_type']
@@ -196,7 +196,7 @@ FROM mv_campaign AS ca
             async with connection.transaction():
                 campaigns_ids = ','.join([str(x[0]) for x in campaigns])
                 exclude_ids = ','.join([str(x) for x in exclude])
-                campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns])
+                campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (int(x[0]), x[1]) for x in campaigns])
                 q = '''
                     select * from
                     (
@@ -215,7 +215,7 @@ FROM mv_campaign AS ca
                     order by sub.range_number, sub.rating desc
                     LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
-                    'inf': block_id,
+                    'inf': int(block_id),
                     'campaigns': campaigns_ids,
                     'exclude': exclude_ids,
                     'campaign_unique': campaign_unique,
@@ -228,9 +228,9 @@ FROM mv_campaign AS ca
             if clean and offer['all_count'] > capacity:
                 clean = False
             item = {}
-            item['id'] = offer['id']
+            item['id'] = str(offer['id'])
             item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
+            item['id_cam'] = str(offer['id_cam'])
             item['image'] = offer['image']
             item['description'] = offer['description']
             item['url'] = offer['url']
@@ -272,10 +272,10 @@ FROM mv_campaign AS ca
                     order by sub.range_number, sub.rating desc
                     LIMIT %(capacity)d OFFSET %(offset)d;
                 ''' % {
-                    'inf': block_id,
+                    'inf': int(block_id),
                     'campaigns': ','.join([str(x[0]) for x in campaigns]),
                     'exclude': ','.join([str(x) for x in exclude]),
-                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns]),
+                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (int(x[0]), x[1]) for x in campaigns]),
                     'capacity': capacity,
                     'offset': index * capacity
                 }
@@ -285,9 +285,9 @@ FROM mv_campaign AS ca
             if clean and offer['all_count'] > capacity:
                 clean = False
             item = {}
-            item['id'] = offer['id']
+            item['id'] = str(offer['id'])
             item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
+            item['id_cam'] = str(offer['id_cam'])
             item['image'] = offer['image']
             item['description'] = offer['description']
             item['url'] = offer['url']
@@ -333,7 +333,7 @@ FROM mv_campaign AS ca
                     'campaigns': ','.join([str(x[0]) for x in campaigns]),
                     'exclude': ','.join([str(x) for x in exclude]),
                     'retargeting': retargeting,
-                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (int(x[0]), x[1]) for x in campaigns]),
                     'capacity': capacity,
                     'offset': index * capacity
                 }
@@ -342,9 +342,9 @@ FROM mv_campaign AS ca
         for offer in offers:
             clean = False
             item = {}
-            item['id'] = offer['id']
+            item['id'] = str(offer['id'])
             item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
+            item['id_cam'] = str(offer['id_cam'])
             item['image'] = offer['image']
             item['description'] = offer['description']
             item['url'] = offer['url']
@@ -386,7 +386,7 @@ FROM mv_campaign AS ca
                 ''' % {
                     'campaigns': ','.join([str(x[0]) for x in campaigns]),
                     'exclude': ','.join([str(x) for x in exclude]),
-                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in campaigns]),
+                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (int(x[0]), x[1]) for x in campaigns]),
                     'capacity': capacity,
                     'offset': index * capacity
                 }
@@ -396,9 +396,9 @@ FROM mv_campaign AS ca
             if clean and offer['all_count'] > capacity:
                 clean = False
             item = {}
-            item['id'] = offer['id']
+            item['id'] = str(offer['id'])
             item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
+            item['id_cam'] = str(offer['id_cam'])
             item['image'] = offer['image']
             item['description'] = offer['description']
             item['url'] = offer['url']
