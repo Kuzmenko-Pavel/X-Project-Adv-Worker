@@ -239,6 +239,7 @@ FROM mv_campaign AS ca
             item['recommended'] = []
             if offer['recommended']:
                 for rec in ujson.loads(offer['recommended']):
+                    rec['id'] = str(rec['id'])
                     rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
                     item['recommended'].append(rec)
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
@@ -296,6 +297,7 @@ FROM mv_campaign AS ca
             item['recommended'] = []
             if offer['recommended']:
                 for rec in ujson.loads(offer['recommended']):
+                    rec['id'] = str(rec['id'])
                     rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
                     item['recommended'].append(rec)
 
@@ -353,6 +355,7 @@ FROM mv_campaign AS ca
             item['recommended'] = []
             if offer['recommended']:
                 for rec in ujson.loads(offer['recommended']):
+                    rec['id'] = str(rec['id'])
                     rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
                     item['recommended'].append(rec)
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
@@ -407,6 +410,7 @@ FROM mv_campaign AS ca
             item['recommended'] = []
             if offer['recommended']:
                 for rec in ujson.loads(offer['recommended']):
+                    rec['id'] = str(rec['id'])
                     rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
                     item['recommended'].append(rec)
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
