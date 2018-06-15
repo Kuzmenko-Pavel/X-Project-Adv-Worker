@@ -28,6 +28,8 @@ class IframesView(web.View):
         block_id = post.get('scr', query.get('scr', ''))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
         index = post.get('index', 0)
+        rand = post.get('rand', 0)
+        origin = post.get('origin', '*')
         ip = post.get('ip', query.get('ip', ''))
         ip_check = ip_regex.match(ip)
         if ip_check:
@@ -83,6 +85,7 @@ class IframesView(web.View):
             'js': ujson.dumps({
                 'block_id': block_id,
                 'index': index,
+                'rand': rand,
                 'auto': auto,
                 'country': country,
                 'region': region,
@@ -91,6 +94,7 @@ class IframesView(web.View):
                 'test': test,
                 'cookie': cookie,
                 'is_webp': is_webp,
+                'origin': origin,
                 'request': 'initial'
             }),
             'style': reset_css,

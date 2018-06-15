@@ -77,6 +77,7 @@ def csp():
 
             }
             if request.app['config']['debug']['console']:
+                csp_data['script-src'].append("'self'")
                 csp_data['style-src'].append("'self'")
                 csp_data['img-src'].append("'self'")
             if asyncio.iscoroutinefunction(func):
