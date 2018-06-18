@@ -1,4 +1,4 @@
-__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors']
+__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_device', 'cache']
 import asyncio
 import functools
 from datetime import datetime, timedelta

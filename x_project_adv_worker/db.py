@@ -71,19 +71,19 @@ FROM mv_campaign AS ca
                     (
                       SELECT c2c.id_cam_pk AS id
                       FROM mv_campaign2categories AS c2c
-                        INNER JOIN mv_categories2domain AS ct2d ON c2c.id_cat_pk = ct2d.id_cat_pk AND ct2d.id_dom_pk = %(id_dom)d
+                        INNER JOIN mv_categories2domain AS ct2d ON c2c.id_cat_pk = ct2d.id_cat_pk AND ct2d.id_dom_pk = %(id_dom)s
                       UNION
                       SELECT c2da.id_cam AS id
                       FROM mv_campaign2domains AS c2da
-                      WHERE (c2da.id_dom = %(id_dom)d OR c2da.id_dom = 1) AND c2da.allowed = TRUE
+                      WHERE (c2da.id_dom = %(id_dom)s OR c2da.id_dom = 1) AND c2da.allowed = TRUE
                       UNION
                       SELECT c2aa.id_cam AS id
                       FROM mv_campaign2accounts AS c2aa
-                      WHERE (c2aa.id_acc = %(id_acc)d OR c2aa.id_acc = 1) AND c2aa.allowed = TRUE
+                      WHERE (c2aa.id_acc = %(id_acc)s OR c2aa.id_acc = 1) AND c2aa.allowed = TRUE
                       UNION
                       SELECT c2ia.id_cam AS id
                       FROM mv_campaign2informer AS c2ia
-                      WHERE (c2ia.id_inf = %(id_inf)d OR c2ia.id_inf = 1) AND c2ia.allowed = TRUE
+                      WHERE (c2ia.id_inf = %(id_inf)s OR c2ia.id_inf = 1) AND c2ia.allowed = TRUE
                     ) AS cau
                   EXCEPT
                   SELECT caud.id
@@ -92,20 +92,20 @@ FROM mv_campaign AS ca
                       SELECT c2dd.id_cam AS id
                       FROM mv_campaign2domains AS c2dd
                         LEFT JOIN mv_campaign2domains AS c2dde
-                          ON c2dd.id_cam = c2dde.id_cam AND c2dde.id_dom = %(id_dom)d AND c2dde.allowed = TRUE
-                      WHERE c2dde.id_cam IS NULL AND ((c2dd.id_dom = %(id_dom)d OR c2dd.id_dom = 1) AND c2dd.allowed = FALSE)
+                          ON c2dd.id_cam = c2dde.id_cam AND c2dde.id_dom = %(id_dom)s AND c2dde.allowed = TRUE
+                      WHERE c2dde.id_cam IS NULL AND ((c2dd.id_dom = %(id_dom)s OR c2dd.id_dom = 1) AND c2dd.allowed = FALSE)
                       UNION
                       SELECT c2ad.id_cam AS id
                       FROM mv_campaign2accounts AS c2ad
                         LEFT JOIN mv_campaign2accounts AS c2ade
-                          ON c2ad.id_cam = c2ade.id_cam AND c2ade.id_acc = %(id_acc)d AND c2ade.allowed = TRUE
-                      WHERE c2ade.id_cam IS NULL AND ((c2ad.id_acc = %(id_acc)d OR c2ad.id_acc = 1) AND c2ad.allowed = FALSE)
+                          ON c2ad.id_cam = c2ade.id_cam AND c2ade.id_acc = %(id_acc)s AND c2ade.allowed = TRUE
+                      WHERE c2ade.id_cam IS NULL AND ((c2ad.id_acc = %(id_acc)s OR c2ad.id_acc = 1) AND c2ad.allowed = FALSE)
                       UNION
                       SELECT c2id.id_cam AS id
                       FROM mv_campaign2informer AS c2id
                         LEFT JOIN mv_campaign2informer AS c2ide
-                          ON c2id.id_cam = c2ide.id_cam AND c2ide.id_inf = %(id_inf)d AND c2ide.allowed = TRUE
-                      WHERE c2ide.id_cam IS NULL AND ((c2id.id_inf = %(id_inf)d OR c2id.id_inf = 1) AND c2id.allowed = FALSE)
+                          ON c2id.id_cam = c2ide.id_cam AND c2ide.id_inf = %(id_inf)s AND c2ide.allowed = TRUE
+                      WHERE c2ide.id_cam IS NULL AND ((c2id.id_inf = %(id_inf)s OR c2id.id_inf = 1) AND c2id.allowed = FALSE)
                     ) AS caud
                  ) AS ct
 
@@ -149,9 +149,9 @@ FROM mv_campaign AS ca
                     'device': device.replace("'", "''"),
                     'gender': ','.join(gender_list),
                     'cost': ','.join(cost_list),
-                    'id_inf': block_id,
-                    'id_dom': block_domain,
-                    'id_acc': block_account,
+                    'id_inf': str(block_id),
+                    'id_dom': str(block_domain),
+                    'id_acc': str(block_account),
                     'day': d,
                     'hour': h,
                     'min': m,
@@ -192,7 +192,7 @@ FROM mv_campaign AS ca
             campaigns_ids = ','.join([str(x[0]) for x in campaigns])
             counter_prediction = offer_count-len(exclude)
             exclude_ids = ','.join([str(x) for x in exclude])
-            campaign_unique = ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns])
+            campaign_unique = ' or '.join(['(sub.id_cam = %s and sub.range_number <= %d)' % (str(x[0]), x[1]) for x in campaigns])
             if counter_prediction < capacity:
                 index = 0
             async with self.pool.acquire() as connection:
@@ -206,7 +206,7 @@ FROM mv_campaign AS ca
                         mv_offer_place2informer.*,
                         ofrs.*
                         FROM mv_offer_place AS ofrs
-                        left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)d
+                        left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)s
                         WHERE
                         ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
@@ -215,7 +215,7 @@ FROM mv_campaign AS ca
                         order by sub.range_number, sub.rating desc
                         LIMIT %(capacity)d OFFSET %(offset)d;
                     ''' % {
-                        'inf': block_id,
+                        'inf': str(block_id),
                         'campaigns': campaigns_ids,
                         'exclude': exclude_ids,
                         'campaign_unique': campaign_unique,
@@ -237,10 +237,6 @@ FROM mv_campaign AS ca
                 item['title'] = offer['title']
                 item['price'] = offer['price']
                 item['recommended'] = []
-                if offer['recommended']:
-                    for rec in ujson.loads(offer['recommended']):
-                        rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                        item['recommended'].append(rec)
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
         except asyncio.CancelledError as ex:
@@ -301,11 +297,6 @@ FROM mv_campaign AS ca
                 item['title'] = offer['title']
                 item['price'] = offer['price']
                 item['recommended'] = []
-                if offer['recommended']:
-                    for rec in ujson.loads(offer['recommended']):
-                        rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                        item['recommended'].append(rec)
-
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
         except asyncio.CancelledError as ex:
@@ -364,10 +355,6 @@ FROM mv_campaign AS ca
             item['title'] = offer['title']
             item['price'] = offer['price']
             item['recommended'] = []
-            if offer['recommended']:
-                for rec in ujson.loads(offer['recommended']):
-                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    item['recommended'].append(rec)
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
             result.append(item)
         return result, clean
@@ -420,10 +407,6 @@ FROM mv_campaign AS ca
             item['title'] = offer['title']
             item['price'] = offer['price']
             item['recommended'] = []
-            if offer['recommended']:
-                for rec in ujson.loads(offer['recommended']):
-                    rec['token'] = str(rec['id']) + str(block_id) + str(time.time()).replace('.', '')
-                    item['recommended'].append(rec)
             item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
             result.append(item)
         return result, clean
