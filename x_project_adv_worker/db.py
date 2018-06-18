@@ -46,16 +46,16 @@ class Query(object):
 ca.*
 FROM mv_campaign AS ca
   INNER JOIN (
-               SELECT gt.id_cam_pk AS id
+               SELECT gt.id_cam AS id
                FROM mv_geo AS gt
-                 INNER JOIN mv_geo_lite_city AS gtl ON gt.id_geo_pk = gtl.id
+                 INNER JOIN mv_geo_lite_city AS gtl ON gt.id_geo = gtl.id
                WHERE (gtl.country = '%(country)s' AND (gtl.city = '%(region)s' OR gtl.city = '*')) OR
                      (gtl.country = '*' AND gtl.city = '*')
                      
                INTERSECT
-               SELECT dt.id_cam_pk AS id
+               SELECT dt.id_cam AS id
                FROM mv_campaign2device AS dt
-                 INNER JOIN mv_device AS d ON dt.id_dev_pk = d.id
+                 INNER JOIN mv_device AS d ON dt.id_dev = d.id
                WHERE d.name = '%(device)s' OR d.name = '**'
 
                INTERSECT
@@ -69,43 +69,37 @@ FROM mv_campaign AS ca
                  (SELECT cau.id
                   FROM
                     (
-                      SELECT c2c.id_cam_pk AS id
+                      SELECT c2c.id_cam AS id
                       FROM mv_campaign2categories AS c2c
-                        INNER JOIN mv_categories2domain AS ct2d ON c2c.id_cat_pk = ct2d.id_cat_pk AND ct2d.id_dom_pk = %(id_dom)s
+                        INNER JOIN mv_categories2domain AS ct2d ON c2c.id_cat = ct2d.id_cat AND ct2d.id_dom = %(id_dom)s
                       UNION
                       SELECT c2da.id_cam AS id
-                      FROM mv_campaign2domains AS c2da
-                      WHERE (c2da.id_dom = %(id_dom)s OR c2da.id_dom = 1) AND c2da.allowed = TRUE
+                      FROM mv_campaign2domains_allowed AS c2da
+                      WHERE c2da.id_dom = %(id_dom)s OR c2da.id_dom = 1
                       UNION
                       SELECT c2aa.id_cam AS id
-                      FROM mv_campaign2accounts AS c2aa
-                      WHERE (c2aa.id_acc = %(id_acc)s OR c2aa.id_acc = 1) AND c2aa.allowed = TRUE
+                      FROM mv_campaign2accounts_allowed AS c2aa
+                      WHERE c2aa.id_acc = %(id_acc)s OR c2aa.id_acc = 1
                       UNION
                       SELECT c2ia.id_cam AS id
-                      FROM mv_campaign2informer AS c2ia
-                      WHERE (c2ia.id_inf = %(id_inf)s OR c2ia.id_inf = 1) AND c2ia.allowed = TRUE
+                      FROM mv_campaign2informer_allowed AS c2ia
+                      WHERE c2ia.id_inf = %(id_inf)s OR c2ia.id_inf = 1
                     ) AS cau
                   EXCEPT
                   SELECT caud.id
                   FROM
                     (
                       SELECT c2dd.id_cam AS id
-                      FROM mv_campaign2domains AS c2dd
-                        LEFT JOIN mv_campaign2domains AS c2dde
-                          ON c2dd.id_cam = c2dde.id_cam AND c2dde.id_dom = %(id_dom)s AND c2dde.allowed = TRUE
-                      WHERE c2dde.id_cam IS NULL AND ((c2dd.id_dom = %(id_dom)s OR c2dd.id_dom = 1) AND c2dd.allowed = FALSE)
+                      FROM mv_campaign2domains_disallowed AS c2dd
+                      WHERE c2dd.id_dom = %(id_dom)s OR c2dd.id_dom = 1
                       UNION
                       SELECT c2ad.id_cam AS id
-                      FROM mv_campaign2accounts AS c2ad
-                        LEFT JOIN mv_campaign2accounts AS c2ade
-                          ON c2ad.id_cam = c2ade.id_cam AND c2ade.id_acc = %(id_acc)s AND c2ade.allowed = TRUE
-                      WHERE c2ade.id_cam IS NULL AND ((c2ad.id_acc = %(id_acc)s OR c2ad.id_acc = 1) AND c2ad.allowed = FALSE)
+                      FROM mv_campaign2accounts_disallowed AS c2ad
+                      WHERE c2ad.id_acc = %(id_acc)s OR c2ad.id_acc = 1
                       UNION
                       SELECT c2id.id_cam AS id
-                      FROM mv_campaign2informer AS c2id
-                        LEFT JOIN mv_campaign2informer AS c2ide
-                          ON c2id.id_cam = c2ide.id_cam AND c2ide.id_inf = %(id_inf)s AND c2ide.allowed = TRUE
-                      WHERE c2ide.id_cam IS NULL AND ((c2id.id_inf = %(id_inf)s OR c2id.id_inf = 1) AND c2id.allowed = FALSE)
+                      FROM mv_campaign2informer_disallowed AS c2id
+                      WHERE c2id.id_inf = %(id_inf)s OR c2id.id_inf = 1
                     ) AS caud
                  ) AS ct
 
