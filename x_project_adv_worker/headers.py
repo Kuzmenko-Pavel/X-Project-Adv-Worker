@@ -1,4 +1,4 @@
-__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_device']
+__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors']
 import asyncio
 import functools
 from datetime import datetime, timedelta
@@ -145,10 +145,6 @@ def cors():
         @asyncio.coroutine
         @functools.wraps(func)
         def wrapped(*args):
-            if isinstance(args[0], AbstractView):
-                request = args[0].request
-            else:
-                request = args[-1]
             if asyncio.iscoroutinefunction(func):
                 coro = func
             else:
@@ -180,6 +176,23 @@ def detect_device():
                 coro = asyncio.coroutine(func)
 
             context = yield from coro(*args)
+            return context
+        return wrapped
+    return wrapper
+
+
+def cache(expire):
+    def wrapper(func):
+        @asyncio.coroutine
+        @functools.wraps(func)
+        def wrapped(*args):
+            if asyncio.iscoroutinefunction(func):
+                coro = func
+            else:
+                coro = asyncio.coroutine(func)
+            context = yield from coro(*args)
+            if isinstance(context, web.StreamResponse):
+                context.headers[hdrs.CACHE_CONTROL] = 'max-age'
             return context
         return wrapped
     return wrapper
