@@ -27,9 +27,9 @@ class IframesView(web.View):
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
         block_id = post.get('scr', query.get('scr', ''))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
-        index = post.get('index', 0)
-        rand = post.get('rand', 0)
-        origin = post.get('origin', '*')
+        index = post.get('index', query.get('index', 0))
+        rand = post.get('rand', query.get('rand', 0))
+        origin = post.get('origin', query.get('origin', '*'))
         ip = post.get('ip', query.get('ip', ''))
         ip_check = ip_regex.match(ip)
         if ip_check:

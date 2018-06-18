@@ -10063,10 +10063,10 @@ var ytl, underscore, json3, user_history_test, user_history_fixed_queue, user_hi
   }(jquery, settings);
   loader_main = function (jQuery, _, advertise) {
     return function () {
-      // var advertise_defferr = jQuery.when(advertise(this));
-      // advertise_defferr.then(_.bind(function (data) {
-      //     this.advertise.parse(data);
-      // }, this));
+      var advertise_defferr = jQuery.when(advertise(this));
+      advertise_defferr.then(_.bind(function (data) {
+        this.advertise.parse(data);
+      }, this));
       return true;
     };
   }(jquery, underscore, loader_advertise);
