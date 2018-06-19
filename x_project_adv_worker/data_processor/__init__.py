@@ -119,8 +119,8 @@ class DataProcessor(object):
     async def campaigns_processing(self, campaigns):
         for campaign in campaigns:
             self.campaigns[campaign['id']] = campaign
-            if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
-                self.styler.add(str(campaign['id']), campaign['style_type'])
+            # if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
+            #     self.styler.add(str(campaign['id']), campaign['style_type'])
 
             if campaign['social'] and self.social_branch:
                 self.campaigns_socia.append((campaign['id'], campaign['offer_count']))
@@ -177,6 +177,12 @@ class DataProcessor(object):
 
         place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(*tasks)
         await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
+
+    async def find_recomendet(self):
+        await self.app.query.get_recomendet_offer(
+                offer_ids=[1],
+                capacity=self.styler.max_capacity,
+                exclude=self.params.exclude)
 
     async def union_offers(self, place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer):
         self.data['clean']['place'] = place_offer[1]
@@ -269,43 +275,45 @@ class DataProcessor(object):
             'branch': branch,
             'button': button
         })
-        if offer_styling:
-            styling_item = offer.get('recommended', [])
-            if len(styling_item) < self.styler.block.styling_adv.count_adv:
-                styling_item = styling_item * 2
-            for item in styling_item:
-                item['id_cam'] = offer['id_cam']
-                item['campaign'] = offer['campaign']
-                await self.create_offer(item, True)
-            if recomendet:
-                if len(self.data['offers']) <= self.styler.block.styling_adv.count_adv:
-                    await self.create_offer(offer)
-        else:
-            if offer_brending:
-                brending_item = offer.get('recommended', [])
-                recomendet_count = offer['campaign']['recomendet_count']
-                day = 0
-                if offer['campaign']['recomendet_type'] == 'min':
-                    if recomendet_count - day > 1:
-                        recomendet_count = recomendet_count - day
-                    else:
-                        recomendet_count = 1
-                elif offer['campaign']['recomendet_type'] == 'max':
-                    if 1 + day < recomendet_count:
-                        recomendet_count = 1 + day
-                else:
-                    if recomendet_count < 1:
-                        recomendet_count = 1
-                for item in brending_item[:recomendet_count]:
-                    item['id_cam'] = offer['id_cam']
-                    item['campaign'] = offer['campaign']
-                    await self.create_offer(item, True)
+        if offer['campaign']['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
+            self.styler.add(str(offer['campaign']['id']), offer['campaign']['style_type'])
+        # if offer_styling:
+        #     styling_item = offer.get('recommended', [])
+        #     if len(styling_item) < self.styler.block.styling_adv.count_adv:
+        #         styling_item = styling_item * 2
+        #     for item in styling_item:
+        #         item['id_cam'] = offer['id_cam']
+        #         item['campaign'] = offer['campaign']
+        #         await self.create_offer(item, True)
+        #     if recomendet:
+        #         if len(self.data['offers']) <= self.styler.block.styling_adv.count_adv:
+        #             await self.create_offer(offer)
+        # else:
+        #     if offer_brending:
+        #         brending_item = offer.get('recommended', [])
+        #         recomendet_count = offer['campaign']['recomendet_count']
+        #         day = 0
+        #         if offer['campaign']['recomendet_type'] == 'min':
+        #             if recomendet_count - day > 1:
+        #                 recomendet_count = recomendet_count - day
+        #             else:
+        #                 recomendet_count = 1
+        #         elif offer['campaign']['recomendet_type'] == 'max':
+        #             if 1 + day < recomendet_count:
+        #                 recomendet_count = 1 + day
+        #         else:
+        #             if recomendet_count < 1:
+        #                 recomendet_count = 1
+        #         for item in brending_item[:recomendet_count]:
+        #             item['id_cam'] = offer['id_cam']
+        #             item['campaign'] = offer['campaign']
+        #             await self.create_offer(item, True)
 
     async def css(self):
-        self.data['css'] = await self.styler()
+        self.data['css'] = await self.styler.calculate()
 
     async def __call__(self):
         if await self.find_block():
             await self.find_offers()
-            await self.css()
+            await gather(ensure_future(self.find_recomendet()), ensure_future(self.css()))
         return self.data

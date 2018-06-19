@@ -225,7 +225,7 @@ FROM mv_campaign AS ca
                 item['id'] = offer['id']
                 item['guid'] = offer['guid']
                 item['id_cam'] = offer['id_cam']
-                item['images'] = offer['image']
+                item['images'] = offer['images']
                 item['description'] = offer['description']
                 item['url'] = offer['url']
                 item['title'] = offer['title']
@@ -285,12 +285,12 @@ FROM mv_campaign AS ca
                 item['id'] = offer['id']
                 item['guid'] = offer['guid']
                 item['id_cam'] = offer['id_cam']
-                item['images'] = offer['image']
+                item['images'] = offer['images']
                 item['description'] = offer['description']
                 item['url'] = offer['url']
                 item['title'] = offer['title']
                 item['price'] = offer['price']
-                item['recommended'] = []
+                item['recommended'] = offer['recommended']
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
         except asyncio.CancelledError as ex:
@@ -304,53 +304,58 @@ FROM mv_campaign AS ca
             return [], False
         result = []
         clean = True
-        campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-        counter_prediction = offer_count - len(exclude)
-        retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
-        if counter_prediction < capacity:
-            index = 0
-        async with self.pool.acquire() as connection:
-            async with connection.transaction():
-                q = '''
-                    select * from
-                    (
-                    select 
-                    row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
-                    count(id) OVER() as all_count,
-                    ofrs.*
-                    FROM mv_offer_dynamic_retargeting AS ofrs
-                    WHERE
-                    ofrs.id_cam IN (%(campaigns)s)
-                    AND ofrs.id NOT IN (%(exclude)s)
-                    AND (%(retargeting)s)
-                    ) sub
-                    where %(campaign_unique)s
-                    order by sub.range_number
-                    LIMIT %(capacity)d OFFSET %(offset)d;
-                ''' % {
-                    'campaigns': campaigns_ids,
-                    'exclude': ','.join([str(x) for x in exclude]),
-                    'retargeting': retargeting,
-                    'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
-                    'capacity': capacity,
-                    'offset': index * capacity
-                }
-                stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=5)
-        for offer in offers:
-            clean = False
-            item = {}
-            item['id'] = offer['id']
-            item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
-            item['images'] = offer['image']
-            item['description'] = offer['description']
-            item['url'] = offer['url']
-            item['title'] = offer['title']
-            item['price'] = offer['price']
-            item['recommended'] = []
-            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-            result.append(item)
+        try:
+            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+            counter_prediction = offer_count - len(exclude)
+            retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
+            if counter_prediction < capacity:
+                index = 0
+            async with self.pool.acquire() as connection:
+                async with connection.transaction():
+                    q = '''
+                        select * from
+                        (
+                        select 
+                        row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
+                        count(id) OVER() as all_count,
+                        ofrs.*
+                        FROM mv_offer_dynamic_retargeting AS ofrs
+                        WHERE
+                        ofrs.id_cam IN (%(campaigns)s)
+                        AND ofrs.id NOT IN (%(exclude)s)
+                        AND (%(retargeting)s)
+                        ) sub
+                        where %(campaign_unique)s
+                        order by sub.range_number
+                        LIMIT %(capacity)d OFFSET %(offset)d;
+                    ''' % {
+                        'campaigns': campaigns_ids,
+                        'exclude': ','.join([str(x) for x in exclude]),
+                        'retargeting': retargeting,
+                        'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                        'capacity': capacity,
+                        'offset': index * capacity
+                    }
+                    stmt = await connection.prepare(q)
+                    offers = await stmt.fetch(timeout=5)
+            for offer in offers:
+                clean = False
+                item = {}
+                item['id'] = offer['id']
+                item['guid'] = offer['guid']
+                item['id_cam'] = offer['id_cam']
+                item['images'] = offer['images']
+                item['description'] = offer['description']
+                item['url'] = offer['url']
+                item['title'] = offer['title']
+                item['price'] = offer['price']
+                item['recommended'] = []
+                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                result.append(item)
+        except asyncio.CancelledError as ex:
+            logger.error(exception_message(exc=str(ex)))
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
         return result, clean
 
     async def get_account_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
@@ -358,49 +363,76 @@ FROM mv_campaign AS ca
             return [], False
         result = []
         clean = True
-        campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-        counter_prediction = offer_count - len(exclude)
-        if counter_prediction < capacity:
-            index = 0
-        async with self.pool.acquire() as connection:
-            async with connection.transaction():
-                q = '''
-                    select * from
-                    (
-                    select 
-                    row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
-                    count(id) OVER() as all_count,
-                    ofrs.*
-                    FROM mv_offer_account_retargeting AS ofrs
-                    WHERE
-                    ofrs.id_cam IN (%(campaigns)s)
-                    AND ofrs.id NOT IN (%(exclude)s)
-                    ) sub
-                    where %(campaign_unique)s
-                    order by sub.range_number
-                    LIMIT %(capacity)d OFFSET %(offset)d;
-                ''' % {
-                    'campaigns': campaigns_ids,
-                    'exclude': ','.join([str(x) for x in exclude]),
-                    'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in campaigns]),
-                    'capacity': capacity,
-                    'offset': index * capacity
-                }
-                stmt = await connection.prepare(q)
-                offers = await stmt.fetch(timeout=5)
-        for offer in offers:
-            if clean and offer['all_count'] > capacity:
-                clean = False
-            item = {}
-            item['id'] = offer['id']
-            item['guid'] = offer['guid']
-            item['id_cam'] = offer['id_cam']
-            item['images'] = offer['image']
-            item['description'] = offer['description']
-            item['url'] = offer['url']
-            item['title'] = offer['title']
-            item['price'] = offer['price']
-            item['recommended'] = []
-            item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-            result.append(item)
+        try:
+            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+            counter_prediction = offer_count - len(exclude)
+            if counter_prediction < capacity:
+                index = 0
+            async with self.pool.acquire() as connection:
+                async with connection.transaction():
+                    q = '''
+                        select * from
+                        (
+                        select 
+                        row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
+                        count(id) OVER() as all_count,
+                        ofrs.*
+                        FROM mv_offer_account_retargeting AS ofrs
+                        WHERE
+                        ofrs.id_cam IN (%(campaigns)s)
+                        AND ofrs.id NOT IN (%(exclude)s)
+                        ) sub
+                        where %(campaign_unique)s
+                        order by sub.range_number
+                        LIMIT %(capacity)d OFFSET %(offset)d;
+                    ''' % {
+                        'campaigns': campaigns_ids,
+                        'exclude': ','.join([str(x) for x in exclude]),
+                        'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in campaigns]),
+                        'capacity': capacity,
+                        'offset': index * capacity
+                    }
+                    stmt = await connection.prepare(q)
+                    offers = await stmt.fetch(timeout=5)
+            for offer in offers:
+                if clean and offer['all_count'] > capacity:
+                    clean = False
+                item = {}
+                item['id'] = offer['id']
+                item['guid'] = offer['guid']
+                item['id_cam'] = offer['id_cam']
+                item['images'] = offer['images']
+                item['description'] = offer['description']
+                item['url'] = offer['url']
+                item['title'] = offer['title']
+                item['price'] = offer['price']
+                item['recommended'] = []
+                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                result.append(item)
+        except asyncio.CancelledError as ex:
+            logger.error(exception_message(exc=str(ex)))
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
         return result, clean
+
+    async def get_recomendet_offer(self, offer_ids, capacity, exclude):
+        if not offer_ids:
+            return []
+        result = []
+        try:
+            async with self.pool.acquire() as connection:
+                async with connection.transaction():
+                    q = '''
+                    select %(capacity)d as t;
+                    ''' % {
+                        'capacity': capacity
+                    }
+                    stmt = await connection.prepare(q)
+                    offers = await stmt.fetch(timeout=5)
+                    for offer in offers:
+                        pass
+        except asyncio.CancelledError as ex:
+            logger.error(exception_message(exc=str(ex)))
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
+        return result

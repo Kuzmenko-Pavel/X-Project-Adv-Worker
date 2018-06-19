@@ -8,7 +8,7 @@ define( [
 
 	"./core/init",
 	"./ajax/parseJSON",
-	"./ajax/parseXML",
+	// "./ajax/parseXML",
 	"./deferred"
 ], function( jQuery, document, rnotwhite, location, nonce, rquery ) {
 

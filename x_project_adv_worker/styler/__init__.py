@@ -4,10 +4,8 @@ from .adv_calculator import (adv_calculator, adv_size_calculator, style_type, _h
                              _h_template_ref, _v_template_ref, _h_template_tree, _v_template_tree)
 from .adv_settings import AdvSetting
 from .block_settings import BlockSetting
-from .resetter import reset
+from .resetter import reset_css
 from .styles import full
-
-reset_css = reset
 
 
 class Styler(object):
@@ -223,16 +221,16 @@ class Styler(object):
         if default:
             self.block.default_adv = Map(self.block.styling_adv)
 
-    def _create_variable(self):
+    async def _create_variable(self):
         variable = dict({'main': {}, 'adv_style': {}})
         variable['main'] = dict(self.block)
         width = self.block.get_width()
         height = self.block.get_height()
         for key, value in self.adv_style.items():
             if 'Block' in key:
-                variable['adv_style'][key] = dict(adv_calculator[value](width, height, self.block.default_adv))
+                variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.default_adv))
             else:
-                variable['adv_style'][key] = dict(adv_calculator[value](width, height, self.block.styling_adv))
+                variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.styling_adv))
 
         for key, value in self.adv_data.items():
             variable['adv_style'][key] = value
@@ -251,5 +249,5 @@ class Styler(object):
     def max_capacity(self):
         return max([self.block.styling_adv.count_adv, self.block.default_adv.count_adv])
 
-    async def __call__(self):
-        return full.render(self._create_variable())
+    async def calculate(self):
+        return full.render(await self._create_variable())

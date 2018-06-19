@@ -1,5 +1,5 @@
 from x_project_adv_worker.utils import css_minifier
-reset = css_minifier('''
+reset_css = css_minifier('''
 html, body, div, span, ul, li, img{
 padding: 0;
 margin: 0;

@@ -66,7 +66,7 @@ def description_text_size(width, size=None, count=None):
     return text_height
 
 
-def calculate_default(width, height, adv):
+async def calculate_default(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
     adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
@@ -193,8 +193,8 @@ def calculate_default(width, height, adv):
     return adv_setting
 
 
-def calculate_retargeting(width, height, adv):
-    adv_setting = calculate_default(width, height, adv)
+async def calculate_retargeting(width, height, adv):
+    adv_setting = await calculate_default(width, height, adv)
     adv_setting.border_color = '#ff0000'
     adv_setting.background_color = '#ffc7c7'
     adv_setting.header.font.color = '#991313'
@@ -202,8 +202,8 @@ def calculate_retargeting(width, height, adv):
     return adv_setting
 
 
-def calculate_recomendet(width, height, adv):
-    adv_setting = calculate_default(width, height, adv)
+async def calculate_recomendet(width, height, adv):
+    adv_setting = await calculate_default(width, height, adv)
     adv_setting.border_color = '#21ff3b'
     adv_setting.background_color = '#adffb7'
     adv_setting.header.font.color = '#1f8515'
@@ -211,7 +211,7 @@ def calculate_recomendet(width, height, adv):
     return adv_setting
 
 
-def calculate_style_1(width, height, adv):
+async def calculate_style_1(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.logo = LogoSetting()
     adv_setting.logo.border_radius = [0, 0, 0, 0]
@@ -416,7 +416,7 @@ def calculate_style_1(width, height, adv):
     return adv_setting
 
 
-def calculate_style_2(width, height, adv):
+async def calculate_style_2(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.margin = [0, 0, 0, 0]
     adv_setting.background_color = '#eff2f3'
