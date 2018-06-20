@@ -1,5 +1,7 @@
 __all__ = ['DataProcessor']
 import ujson
+import base64
+import time
 from asyncio import ensure_future, gather
 
 from x_project_adv_worker.data_processor.params import Params
@@ -13,15 +15,15 @@ class DataProcessor(object):
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
                  'styling', 'brending', 'block_button', 'block_ret_button', 'block_rec_button']
 
-    def __init__(self, app, data):
+    def __init__(self, request, data):
         self.data = dict({
             'css': '',
             'block': dict(),
             'offers': list(),
             'clean': {'place': False, 'account_retargeting': False, 'dynamic_retargeting': False}
         })
-        self.app = app
-        self.params = Params(data)
+        self.app = request.app
+        self.params = Params(request, data)
         self.styler = Styler(self.params.width, self.params.height)
         self.block = dict()
         self.campaigns = dict()
@@ -196,10 +198,22 @@ class DataProcessor(object):
                 await self.create_offer(offer)
 
     def change_image(self, images):
+        if self.params.is_webp:
+            return map(lambda x: x.replace('.png', '.webp'), images)
         return images
 
     def change_link(self, offer):
-        return ''
+        offer_url = offer['url']
+        base64_url = base64.urlsafe_b64encode(str('id=%s\ninf=%s\ntoken=%s\nurl=%s\nrand=%s\ncamp=%s\ntr=%d' % (
+            offer['guid'],
+            self.params.block_id,
+            offer['token'],
+            offer_url,
+            '',
+            offer['campaign']['guid'],
+            int(time.time()*1000)
+        )).encode('utf-8'))
+        return b'/click?' + base64_url
 
     async def create_offer(self, offer, recomendet=None):
         # TODO Нахер переделать, херня полная
@@ -261,7 +275,7 @@ class DataProcessor(object):
             'title': offer['title'],
             'description': offer['description'],
             'price': offer['price'],
-            'url': self.change_link(offer['url']),
+            'url': self.change_link(offer),
             'images': self.change_image(offer['images']),
             'style_class': 'adv' + style_class,
             'id': str(offer['id']),

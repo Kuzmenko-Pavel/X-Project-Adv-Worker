@@ -24,7 +24,7 @@ class AdvertisesView(web.View):
             data = await self.request.json(loads=ujson.loads)
             if isinstance(data, dict):
                 data['device'] = self.request.device
-                data_processor = DataProcessor(self.request.app, data)
+                data_processor = DataProcessor(self.request, data)
                 result = await data_processor()
         except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
