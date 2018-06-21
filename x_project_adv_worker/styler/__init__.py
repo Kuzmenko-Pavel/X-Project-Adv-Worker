@@ -228,12 +228,13 @@ class Styler(object):
         height = self.block.get_height()
         for key, value in self.adv_style.items():
             if 'Block' in key:
-                variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.default_adv))
+                if key in self.adv_data.keys():
+                    variable['adv_style'][key] = self.adv_data[key]
+                else:
+                    variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.default_adv))
             else:
                 variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.styling_adv))
 
-        for key, value in self.adv_data.items():
-            variable['adv_style'][key] = value
         return variable
 
     def add(self, name, style):

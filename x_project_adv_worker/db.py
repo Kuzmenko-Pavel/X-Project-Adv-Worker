@@ -23,7 +23,7 @@ class Query(object):
             async with connection.transaction():
                 q = '''SELECT * FROM public.mv_informer where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                 stmt = await connection.prepare(q)
-                block = await stmt.fetchrow(timeout=5)
+                block = await stmt.fetchrow(timeout=1)
                 if block:
                     return dict(block)
             return None
@@ -152,7 +152,7 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                campaigns = await stmt.fetch(timeout=5)
+                campaigns = await stmt.fetch(timeout=1)
         for item in campaigns:
             campaign = {}
             campaign['account'] = item['account']
@@ -217,7 +217,7 @@ FROM mv_campaign AS ca
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=5)
+                    offers = await stmt.fetch(timeout=1)
             for offer in offers:
                 if clean and offer['all_count'] > capacity:
                     clean = False
@@ -230,7 +230,7 @@ FROM mv_campaign AS ca
                 item['url'] = offer['url']
                 item['title'] = offer['title']
                 item['price'] = offer['price']
-                item['recommended'] = []
+                item['recommended'] = offer['recommended']
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
         except asyncio.CancelledError as ex:
@@ -277,7 +277,7 @@ FROM mv_campaign AS ca
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=5)
+                    offers = await stmt.fetch(timeout=1)
             for offer in offers:
                 if clean and offer['all_count'] > capacity:
                     clean = False
@@ -337,7 +337,7 @@ FROM mv_campaign AS ca
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=5)
+                    offers = await stmt.fetch(timeout=1)
             for offer in offers:
                 clean = False
                 item = {}
@@ -349,7 +349,7 @@ FROM mv_campaign AS ca
                 item['url'] = offer['url']
                 item['title'] = offer['title']
                 item['price'] = offer['price']
-                item['recommended'] = []
+                item['recommended'] = offer['recommended']
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
         except asyncio.CancelledError as ex:
@@ -393,7 +393,7 @@ FROM mv_campaign AS ca
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=5)
+                    offers = await stmt.fetch(timeout=1)
             for offer in offers:
                 if clean and offer['all_count'] > capacity:
                     clean = False
@@ -406,7 +406,7 @@ FROM mv_campaign AS ca
                 item['url'] = offer['url']
                 item['title'] = offer['title']
                 item['price'] = offer['price']
-                item['recommended'] = []
+                item['recommended'] = offer['recommended']
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
         except asyncio.CancelledError as ex:
@@ -415,22 +415,42 @@ FROM mv_campaign AS ca
             logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_recomendet_offer(self, offer_ids, capacity, exclude):
+    async def get_recomendet_offer(self, loop_counter, offer_ids,  block_id, capacity, exclude):
+        views = ['mv_offer_dynamic_retargeting', 'mv_offer_account_retargeting', 'mv_offer_place', 'mv_offer_social']
+        if len(views) < loop_counter:
+            return []
         if not offer_ids:
             return []
         result = []
+        view = views[loop_counter-1]
         try:
             async with self.pool.acquire() as connection:
                 async with connection.transaction():
                     q = '''
-                    select %(capacity)d as t;
+                    select * 
+                    from %(view)s AS ofrs
+                    WHERE ofrs.id IN (%(offer_ids)s)
+                    LIMIT %(capacity)d;
                     ''' % {
+                        'view': view,
+                        'offer_ids': ','.join([str(x) for x in offer_ids]),
                         'capacity': capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=5)
+                    offers = await stmt.fetch(timeout=1)
                     for offer in offers:
-                        pass
+                        item = {}
+                        item['id'] = offer['id']
+                        item['guid'] = offer['guid']
+                        item['id_cam'] = offer['id_cam']
+                        item['images'] = offer['images']
+                        item['description'] = offer['description']
+                        item['url'] = offer['url']
+                        item['title'] = offer['title']
+                        item['price'] = offer['price']
+                        item['recommended'] = []
+                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        result.append(item)
         except asyncio.CancelledError as ex:
             logger.error(exception_message(exc=str(ex)))
         except Exception as ex:

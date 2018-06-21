@@ -13,7 +13,7 @@ class DataProcessor(object):
                  'retargeting_branch', 'retargeting_account_branch', 'social_branch', 'campaigns_place',
                  'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
-                 'styling', 'brending', 'block_button', 'block_ret_button', 'block_rec_button']
+                 'block_button', 'block_ret_button', 'block_rec_button']
 
     def __init__(self, request, data):
         self.data = dict({
@@ -40,8 +40,6 @@ class DataProcessor(object):
         self.offer_count_retargeting_account = 0
         self.campaigns_retargeting_dynamic = list()
         self.offer_count_retargeting_dynamic = 0
-        self.styling = None
-        self.brending = None
         self.block_button = ''
         self.block_ret_button = ''
         self.block_rec_button = ''
@@ -110,7 +108,7 @@ class DataProcessor(object):
         self.place_branch = block.get('place_branch', True)
         self.retargeting_branch = block.get('retargeting_branch', True)
         self.retargeting_account_branch = block.get('retargeting_branch', True)
-        # TODO check in db
+        # TODO check in db retargeting_account_branch = retargeting_branch
         self.social_branch = block.get('social_branch', True)
         if not self.params.auto and not block.get('dynamic', False):
             self.styler.merge(ujson.loads(block.get('ad_style')))
@@ -180,22 +178,81 @@ class DataProcessor(object):
         place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(*tasks)
         await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
 
-    async def find_recomendet(self):
-        await self.app.query.get_recomendet_offer(
-                offer_ids=[1],
-                capacity=self.styler.max_capacity,
+    async def find_recomendet(self, offer, loop_counter):
+        offer_ids = offer['recommended']
+        offer_styling_block = offer['campaign']['styling']
+        capacity = self.styler.max_capacity - len(self.data['offers'])
+        if offer_styling_block:
+            capacity = capacity - 1
+        if capacity > 0:
+            recomendet = await self.app.query.get_recomendet_offer(
+                loop_counter=loop_counter,
+                offer_ids=offer_ids,
+                block_id=self.block_id,
+                capacity=capacity,
                 exclude=self.params.exclude)
 
+            for recomendet_offer in recomendet:
+                recomendet_offer['campaign'] = offer['campaign']
+                await self.create_offer(recomendet_offer, True)
+
+        if offer_styling_block:
+            await self.create_logo(offer)
+
     async def union_offers(self, place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer):
+        styling_block = None
+        brending_block = None
+        loop_break = False
+        loop_counter = 0
         self.data['clean']['place'] = place_offer[1]
         self.data['clean']['place'] = social_offer[1]
         self.data['clean']['account_retargeting'] = account_retargeting_offer[1]
         self.data['clean']['dynamic_retargeting'] = dynamic_retargeting_offer[1]
         for result in [dynamic_retargeting_offer, account_retargeting_offer, place_offer, social_offer]:
+            loop_counter += 1
+            if loop_break:
+                break
             for offer in result[0]:
+                if loop_break:
+                    break
+
                 camp = self.campaigns.get(offer['id_cam'])
+                offer_styling_block = camp['styling']
+                offer_brending_block = camp['brending']
+                if offer_styling_block:
+                    if styling_block is None or styling_block == offer['id_cam']:
+                        styling_block = offer['id_cam']
+                    else:
+                        continue
+                else:
+                    if styling_block:
+                        continue
+                    elif styling_block is None:
+                        styling_block = False
+
+                if offer_brending_block:
+                    if brending_block is None or brending_block == offer['id_cam']:
+                        brending_block = offer['id_cam']
+                    else:
+                        continue
+                else:
+                    if brending_block:
+                        continue
+                    elif brending_block is None:
+                        brending_block = False
+
+                if camp['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
+                    self.styler.add(str(camp['id']), camp['style_type'])
+                else:
+                    self.styler.add(camp['style_class'], camp['style_class'])
+
                 offer['campaign'] = camp
+
                 await self.create_offer(offer)
+                if offer_styling_block or offer_brending_block:
+                    await self.find_recomendet(offer, loop_counter)
+                if len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+                    loop_break = True
 
     def change_image(self, images):
         if self.params.is_webp:
@@ -209,57 +266,37 @@ class DataProcessor(object):
             self.params.block_id,
             offer['token'],
             offer_url,
-            '',
+            self.params.token,
             offer['campaign']['guid'],
             int(time.time()*1000)
         )).encode('utf-8'))
         return b'/click?' + base64_url
 
-    async def create_offer(self, offer, recomendet=None):
-        # TODO Нахер переделать, херня полная
-        data_offers_len = len(self.data['offers'])
-        offer_styling = offer['campaign']['styling']
-        offer_brending = offer['campaign']['brending']
-        if self.styling:
-            if data_offers_len >= self.styler.block.styling_adv.count_adv:
-                return
-            elif data_offers_len == (self.styler.block.styling_adv.count_adv - 1) and offer['campaign']['style_data']:
-                self.data['offers'].append({
-                    'title': offer['campaign']['style_data']['head_title'],
-                    'description': None,
-                    'price': None,
-                    'url': self.change_link(offer),
-                    'images': [offer['campaign']['style_data']['img']],
-                    'style_class': 'logo' + offer['campaign']['style_class'],
-                    'id': None,
-                    'guid': None,
-                    'id_cam': None,
-                    'guid_cam': None,
-                    'token': None,
-                    'button': offer['campaign']['style_data']['button_title']
-                })
-                return
-        else:
-            if data_offers_len >= self.styler.block.default_adv.count_adv:
-                return
-        if offer_styling:
-            if self.styling is None or self.styling == offer['id_cam']:
-                self.styling = offer['id_cam']
-            else:
-                return
-        else:
-            if self.styling is None:
-                self.styling = False
+    async def create_logo(self, offer):
+        if len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+            return
+        self.data['offers'].append({
+            'title': offer['campaign']['style_data']['head_title'],
+            'description': None,
+            'price': None,
+            'url': self.change_link(offer),
+            'images': [offer['campaign']['style_data']['img']],
+            'style_class': 'logo%s' % offer['campaign']['style_class'],
+            'id': None,
+            'guid': None,
+            'id_cam': None,
+            'guid_cam': None,
+            'campaign_social': None,
+            'retargeting': None,
+            'unique_impression_lot': None,
+            'token': None,
+            'branch': None,
+            'button':  offer['campaign']['style_data']['button_title']
+        })
 
-        if offer_brending:
-            if self.brending is None or self.brending == offer['id_cam']:
-                self.brending = offer['id_cam']
-            else:
-                return
-        else:
-            if self.brending is None:
-                self.brending = False
-
+    async def create_offer(self, offer, recomendet=False):
+        if len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+            return
         style_class = offer['campaign']['style_class']
         button = self.block_button
         branch = 'NL30'
@@ -277,7 +314,7 @@ class DataProcessor(object):
             'price': offer['price'],
             'url': self.change_link(offer),
             'images': self.change_image(offer['images']),
-            'style_class': 'adv' + style_class,
+            'style_class': 'adv%s' % style_class,
             'id': str(offer['id']),
             'guid': offer['guid'],
             'id_cam': str(offer['id_cam']),
@@ -289,39 +326,6 @@ class DataProcessor(object):
             'branch': branch,
             'button': button
         })
-        if offer['campaign']['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
-            self.styler.add(str(offer['campaign']['id']), offer['campaign']['style_type'])
-        # if offer_styling:
-        #     styling_item = offer.get('recommended', [])
-        #     if len(styling_item) < self.styler.block.styling_adv.count_adv:
-        #         styling_item = styling_item * 2
-        #     for item in styling_item:
-        #         item['id_cam'] = offer['id_cam']
-        #         item['campaign'] = offer['campaign']
-        #         await self.create_offer(item, True)
-        #     if recomendet:
-        #         if len(self.data['offers']) <= self.styler.block.styling_adv.count_adv:
-        #             await self.create_offer(offer)
-        # else:
-        #     if offer_brending:
-        #         brending_item = offer.get('recommended', [])
-        #         recomendet_count = offer['campaign']['recomendet_count']
-        #         day = 0
-        #         if offer['campaign']['recomendet_type'] == 'min':
-        #             if recomendet_count - day > 1:
-        #                 recomendet_count = recomendet_count - day
-        #             else:
-        #                 recomendet_count = 1
-        #         elif offer['campaign']['recomendet_type'] == 'max':
-        #             if 1 + day < recomendet_count:
-        #                 recomendet_count = 1 + day
-        #         else:
-        #             if recomendet_count < 1:
-        #                 recomendet_count = 1
-        #         for item in brending_item[:recomendet_count]:
-        #             item['id_cam'] = offer['id_cam']
-        #             item['campaign'] = offer['campaign']
-        #             await self.create_offer(item, True)
 
     async def css(self):
         self.data['css'] = await self.styler.calculate()
@@ -329,5 +333,5 @@ class DataProcessor(object):
     async def __call__(self):
         if await self.find_block():
             await self.find_offers()
-            await gather(ensure_future(self.find_recomendet()), ensure_future(self.css()))
+            await self.css()
         return self.data

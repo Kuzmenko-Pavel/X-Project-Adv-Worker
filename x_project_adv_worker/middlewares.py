@@ -33,7 +33,8 @@ def error_pages(overrides):
                     return await override(request, response)
             except web.HTTPException as ex:
                 if ex.status == 404:
-                    logger.info(exception_message(exc=str(ex), request=str(request.message)))
+                    pass
+                    # logger.info(exception_message(exc=str(ex), request=str(request.message)))
                 elif ex.status == 403:
                     logger.warning(exception_message(exc=str(ex), request=str(request.message)))
                 else:
