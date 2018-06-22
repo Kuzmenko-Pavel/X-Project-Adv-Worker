@@ -119,25 +119,23 @@ class DataProcessor(object):
     async def campaigns_processing(self, campaigns):
         for campaign in campaigns:
             self.campaigns[campaign['id']] = campaign
-            # if campaign['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
-            #     self.styler.add(str(campaign['id']), campaign['style_type'])
 
             if campaign['social'] and self.social_branch:
-                self.campaigns_socia.append((campaign['id'], campaign['offer_count']))
+                self.campaigns_socia.append((campaign['id'], campaign['offer_by_campaign_unique']))
                 self.offer_count_socia += campaign['offer_count']
 
             elif not campaign['social'] and not campaign['retargeting'] and self.place_branch:
-                self.campaigns_place.append((campaign['id'], campaign['offer_count']))
+                self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
                 self.offer_count_place += campaign['offer_count']
 
             elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'offer' and self.retargeting_branch:
                 if campaign['account'] in self.params.retargeting:
-                    self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['offer_count']))
+                    self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['offer_by_campaign_unique']))
                     self.offer_count_retargeting_dynamic += campaign['offer_count']
 
             elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'account' and self.retargeting_account_branch:
                 if campaign['account'] in self.params.retargeting:
-                    self.campaigns_retargeting_account.append((campaign['id'], campaign['offer_count']))
+                    self.campaigns_retargeting_account.append((campaign['id'], campaign['offer_by_campaign_unique']))
                     self.offer_count_retargeting_account += campaign['offer_count']
 
     async def find_offers(self):
@@ -183,6 +181,7 @@ class DataProcessor(object):
         offer_styling_block = offer['campaign']['styling']
         capacity = self.styler.max_capacity - len(self.data['offers'])
         if offer_styling_block:
+            capacity = self.styler.styling_capacity - len(self.data['offers'])
             capacity = capacity - 1
         if capacity > 0:
             recomendet = await self.app.query.get_recomendet_offer(
@@ -191,10 +190,11 @@ class DataProcessor(object):
                 block_id=self.block_id,
                 capacity=capacity,
                 exclude=self.params.exclude)
-
-            for recomendet_offer in recomendet:
-                recomendet_offer['campaign'] = offer['campaign']
-                await self.create_offer(recomendet_offer, True)
+            while len(self.data['offers']) <= capacity and recomendet:
+                for recomendet_offer in recomendet:
+                    recomendet_offer['campaign'] = offer['campaign']
+                    if len(self.data['offers']) <= capacity:
+                        await self.create_offer(recomendet_offer, True)
 
         if offer_styling_block:
             await self.create_logo(offer)
@@ -204,8 +204,7 @@ class DataProcessor(object):
         brending_block = None
         loop_break = False
         loop_counter = 0
-        self.data['clean']['place'] = place_offer[1]
-        self.data['clean']['place'] = social_offer[1]
+        self.data['clean']['place'] = place_offer[1] or social_offer[1]
         self.data['clean']['account_retargeting'] = account_retargeting_offer[1]
         self.data['clean']['dynamic_retargeting'] = dynamic_retargeting_offer[1]
         for result in [dynamic_retargeting_offer, account_retargeting_offer, place_offer, social_offer]:
@@ -249,9 +248,12 @@ class DataProcessor(object):
                 offer['campaign'] = camp
 
                 await self.create_offer(offer)
+
                 if offer_styling_block or offer_brending_block:
                     await self.find_recomendet(offer, loop_counter)
-                if len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+                if offer_styling_block and len(self.data['offers']) >= self.styler.block.styling_adv.count_adv:
+                    loop_break = True
+                elif not offer_styling_block and len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
                     loop_break = True
 
     def change_image(self, images):

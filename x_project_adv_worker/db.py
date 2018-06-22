@@ -23,7 +23,7 @@ class Query(object):
             async with connection.transaction():
                 q = '''SELECT * FROM public.mv_informer where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                 stmt = await connection.prepare(q)
-                block = await stmt.fetchrow(timeout=1)
+                block = await stmt.fetchrow(timeout=10)
                 if block:
                     return dict(block)
             return None
@@ -152,7 +152,7 @@ FROM mv_campaign AS ca
                     'capacity': capacity
                 }
                 stmt = await connection.prepare(q)
-                campaigns = await stmt.fetch(timeout=1)
+                campaigns = await stmt.fetch(timeout=10)
         for item in campaigns:
             campaign = {}
             campaign['account'] = item['account']
@@ -186,9 +186,13 @@ FROM mv_campaign AS ca
             campaigns_ids = ','.join([str(x[0]) for x in campaigns])
             counter_prediction = offer_count-len(exclude)
             exclude_ids = ','.join([str(x) for x in exclude])
-            campaign_unique = ' or '.join(['(sub.id_cam = %s and sub.range_number <= %d)' % (str(x[0]), x[1]) for x in campaigns])
+            range_number = 1
+            if counter_prediction < capacity * 2:
+                range_number = capacity
             if counter_prediction < capacity:
                 index = 0
+            campaign_unique = ' or '.join(
+                ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
             async with self.pool.acquire() as connection:
                 async with connection.transaction():
                     q = '''
@@ -213,14 +217,16 @@ FROM mv_campaign AS ca
                         'campaigns': campaigns_ids,
                         'exclude': exclude_ids,
                         'campaign_unique': campaign_unique,
-                        'capacity': capacity,
+                        'capacity': capacity * 2,
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=1)
+                    offers = await stmt.fetch(timeout=10)
             for offer in offers:
-                if clean and offer['all_count'] > capacity:
+                if offer['all_count'] > capacity and offer['rating']:
                     clean = False
+                else:
+                    clean = True
                 item = {}
                 item['id'] = offer['id']
                 item['guid'] = offer['guid']
@@ -247,8 +253,13 @@ FROM mv_campaign AS ca
         try:
             campaigns_ids = ','.join([str(x[0]) for x in campaigns])
             counter_prediction = offer_count - len(exclude)
+            range_number = 1
+            if counter_prediction < capacity * 2:
+                range_number = capacity
             if counter_prediction < capacity:
                 index = 0
+            campaign_unique = ' or '.join(
+                ['(sub.id_cam = %s and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
             async with self.pool.acquire() as connection:
                 async with connection.transaction():
                     q = '''
@@ -272,12 +283,12 @@ FROM mv_campaign AS ca
                         'inf': block_id,
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
-                        'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1]) for x in campaigns]),
+                        'campaign_unique': campaign_unique,
                         'capacity': capacity,
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=1)
+                    offers = await stmt.fetch(timeout=10)
             for offer in offers:
                 if clean and offer['all_count'] > capacity:
                     clean = False
@@ -337,7 +348,7 @@ FROM mv_campaign AS ca
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=1)
+                    offers = await stmt.fetch(timeout=10)
             for offer in offers:
                 clean = False
                 item = {}
@@ -393,7 +404,7 @@ FROM mv_campaign AS ca
                         'offset': index * capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=1)
+                    offers = await stmt.fetch(timeout=10)
             for offer in offers:
                 if clean and offer['all_count'] > capacity:
                     clean = False
@@ -437,7 +448,7 @@ FROM mv_campaign AS ca
                         'capacity': capacity
                     }
                     stmt = await connection.prepare(q)
-                    offers = await stmt.fetch(timeout=1)
+                    offers = await stmt.fetch(timeout=10)
                     for offer in offers:
                         item = {}
                         item['id'] = offer['id']

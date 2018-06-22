@@ -24,8 +24,10 @@ define(['./../jquery','./../underscore', './../loader/offers_log'], function (jQ
             this.offers = server_obj.offers;
             this.app.render.render();
             this.app.uh.exclude_clean(server_obj.clean.place);
-            this.app.uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
-            this.app.uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+            if (server_obj.clean.place){
+                this.app.uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
+                this.app.uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+            }
             if (this.offers.length === 0){
                 this.app.uh.exclude_clean(true);
                 this.app.uh.retargeting_clean(true);
