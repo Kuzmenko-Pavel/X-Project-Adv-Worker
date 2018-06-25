@@ -8,14 +8,16 @@ define([
     './loader/main',
     './models/advertise',
     './models/params',
-    './render/main'
+    './render/main',
+    './loader/offers_log'
 ], function (YottosLib,
              user_history,
              settings,
              loader,
              Advertise,
              Params,
-             Render
+             Render,
+             Logger
 ) {
     var Loader = function () {
         this.uh = user_history;
@@ -28,6 +30,7 @@ define([
         this.loader = loader;
         this.advertise = new Advertise(this);
         this.render = new Render(this);
+        this.logger = new Logger(this);
         this.post_listener = function (e) {
             if (e && e.data){
                 if (typeof e.data === 'string'){
@@ -37,12 +40,19 @@ define([
                         if (this[action]){
                             this[action](e.origin);
                         }
-                        else{
-                            console.log(name, action);
-                        }
                     }
                 }
             }
+        };
+        this.block_initial = function () {
+            console.log('block_initial');
+        };
+        this.block_complite = function () {
+            this.logger.log();
+            console.log('block_complite');
+        };
+        this.mouse_move = function () {
+            console.log('mouse_move');
         };
         this.ping = function (targetOrigin) {
             targetOrigin = targetOrigin || this.adsparams.origin;

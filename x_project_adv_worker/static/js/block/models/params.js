@@ -6,6 +6,7 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
         this.app = app;
         this.w_h = jQuery(window).height();
         this.w_w = jQuery(window).width();
+        //this.app.adsparams.post
     };
     Params.prototype.generateRequestData = function (req_type) {
         this.app.uh.load();
@@ -35,25 +36,54 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             data['retargeting'] = this.app.uh.retargeting.get();
         }
         else if (req_type === 'log'){
+            var block_impression = 1
             data[params] = {};
             data[params]['informer_id'] = this.app.advertise.informer_id;
             data[params]['informer_id_int'] = this.app.advertise.informer_id_int;
             data[params]['ip'] = this.app[adsparams].ip;
             data[params]['cookie'] = this.app[adsparams].cookie;
             data[params]['request'] = this.app[adsparams].request;
+            data[params]['active'] = this.app.logger.logging;
             data[params]['test'] = this.app[adsparams].test;
-            data['items'] = jQuery.map(this.app.advertise.offers, function(dataItem) {
+            // data['items'] = jQuery.map(this.app.advertise.offers, function(dataItem) {
+            //     var item = {};
+            //     item.guid = dataItem.guid;
+            //     item.id = dataItem.id;
+            //     item.campaign_social = dataItem.campaign_social;
+            //     item.token = dataItem.token;
+            //     item.campaign_guid = dataItem.guid_cam;
+            //     item.campaign_id = dataItem.id_cam;
+            //     item.retargeting = dataItem.retargeting;
+            //     item.branch = dataItem.branch;
+            //     return item;
+            // });
+            data['items'] = [];
+            this.app.uh.load();
+            _.each(this.app.advertise.offers, function (offer) {
                 var item = {};
-                item.guid = dataItem.guid;
-                item.id = dataItem.id;
-                item.campaign_social = dataItem.campaign_social;
-                item.token = dataItem.token;
-                item.campaign_guid = dataItem.guid_cam;
-                item.campaign_id = dataItem.id_cam;
-                item.retargeting = dataItem.retargeting;
-                item.branch = dataItem.branch;
-                return item;
+                item.guid = offer.guid;
+                item.id = offer.id;
+                item.campaign_social = offer.campaign_social;
+                item.token = offer.token;
+                item.campaign_guid = offer.guid_cam;
+                item.campaign_id = offer.id_cam;
+                item.retargeting = offer.retargeting;
+                item.branch = offer.branch;
+                this.data['items'].push(item);
+                if (this.app.logger.logging === 'complite') {
+                    if (offer.retargeting) {
+                        this.app.uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
+                        this.app.uh.retargeting_view.add(offer.id);
+                    }
+                    else {
+                        this.app.uh.exclude.add(offer.id, offer.unique_impression_lot);
+                    }
+                }
+            }, {
+                app: this.app,
+                data: data
             });
+            this.app.uh.save();
         }
         return JSON.stringify(data);
     };

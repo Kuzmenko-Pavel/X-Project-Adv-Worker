@@ -1,5 +1,12072 @@
-!function(){var e,t,n,r,i,o,a,u,s,c,l,f,d,h,g,y,v,m,x,b,w,_,C,T,S,k,E,N,A,j,D,L,O,H,F,M,B,I,R,q,P,z,W,$,X,U,J,V,K,G,Y,Q,Z,ee,te,ne,re,ie={},oe,ae,ue,se,ce,le,fe,de,pe,he,ge,ye,ve,me,xe,be,we,_e,Ce,Te,Se,ke,Ee,Ne,Ae,je,De,Le,Oe,He,Fe,Me,Be,Ie,Re,qe,Pe,ze,We,$e,Xe,Ue,Je,Ve,Ke,Ge,Ye,Qe,Ze,et,tt;!function(){e=function(){function e(e,t){var r=j.length,o=e.constructor,a=b.isFunction(o)&&o[n]||i,u="constructor";for(b.has(e,u)&&!b.contains(t,u)&&t.push(u);r--;)(u=j[r])in e&&e[u]!==a[u]&&!b.contains(t,u)&&t.push(u)}function t(e){function t(t,n,r,i,o,a){for(;o>=0&&o<a;o+=e){var u=i?i[o]:o;r=n(r,t[u],u,t)}return r}return function(n,r,i,o){r=w(r,o,4);var a=!N(n)&&b.keys(n),u=(a||n).length,s=e>0?0:u-1;return arguments.length<3&&(i=n[a?a[s]:s],s+=e),t(n,r,i,a,s,u)}}var n="prototype",r=Array[n],i=Object[n],o=Function[n],a=i.toString,u=r.slice,s=Array.isArray,c=Object.keys,l=o.bind,f=Object.create,d=!1,h=window.addEventListener,g=h?"addEventListener":"attachEvent",y=h?"removeEventListener":"detachEvent",v=h?"":"on";try{var m=Object.defineProperty({},"passive",{"get":function(){d=!0}});window[g](v+"test",null,m),window[y](v+"test",null,m)}catch(H){}var x=function(){},b=function(e){return e instanceof b?e:this instanceof b?void(this._wrapped=e):new b(e)},w=function(e,t,n){if(void 0===t)return e;switch(null==n?3:n){case 1:return function(n){return e.call(t,n)};case 2:return function(n,r){return e.call(t,n,r)};case 3:return function(n,r,i){return e.call(t,n,r,i)};case 4:return function(n,r,i,o){return e.call(t,n,r,i,o)}}return function(){return e.apply(t,arguments)}},_=function(e,t,n){return null===e?b.identity:b.isFunction(e)?w(e,t,n):b.isObject(e)?b.matcher(e):b.property(e)};b.iteratee=function(e,t){return _(e,t,Infinity)};var C=function(e){if(!b.isObject(e))return{};if(f)return f(e);x[e]=e;var t=new x;return x[e]=null,t},T=function(e){return function(t){return null===t?void 0:t[e]}},S=function(e,t){return function(n){var r=arguments.length;if(r<2||null===n)return n;for(var i=1;i<r;i++)for(var o=arguments[i],a=e(o),u=a.length,s=0;s<u;s++){var c=a[s];t&&void 0!==n[c]||(n[c]=o[c])}return n}},k=Math.pow(2,53)-1,E=T("length"),N=function(e){var t=E(e);return"number"==typeof t&&t>=0&&t<=k},A=!{"toString":null}.propertyIsEnumerable("toString"),j=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"];b.keys=function(t){if(!b.isObject(t))return[];if(c)return c(t);var n=[];for(var r in t)b.has(t,r)&&n.push(r);return A&&e(t,n),n},b.each=b.forEach=function(e,t,n){t=w(t,n);var r,i;if(N(e))for(r=0,i=e.length;r<i;r++)t(e[r],r,e);else{var o=b.keys(e);for(r=0,i=o.length;r<i;r++)t(e[o[r]],o[r],e)}return e},b.reduce=b.foldl=b.inject=t(1),b.reduceRight=b.foldr=t(-1),b.filter=b.select=function(e,t,n){var r=[];return t=_(t,n),b.each(e,function(e,n,i){t(e,n,i)&&r.push(e)}),r},b.some=b.any=function(e,t,n){t=_(t,n);for(var r=!N(e)&&b.keys(e),i=(r||e).length,o=0;o<i;o++){var a=r?r[o]:o;if(t(e[a],a,e))return!0}return!1},b.size=function(e){return null==e?0:N(e)?e.length:b.keys(e).length};var D=function(e,t,r,i,o){if(!(i instanceof t))return e.apply(r,o);var a=C(e[n]),u=e.apply(a,o);return b.isObject(u)?u:a};b.bind=function(e,t){if(l&&e.bind===l)return l.apply(e,u.call(arguments,1));if(!b.isFunction(e))throw new TypeError("Bind must be called on a function");var n=u.call(arguments,2),r=function(){return D(e,r,t,this,n.concat(u.call(arguments)))};return r},b.allKeys=function(t){if(!b.isObject(t))return[];var n=[];for(var r in t)n.push(r);return A&&e(t,n),n},b.extend=S(b.allKeys),b.extendOwn=b.assign=S(b.keys),b.isArray=s||function(e){return"[object Array]"===a.call(e)},b.isObject=function(e){var t=typeof e;return"function"===t||"object"===t&&!!e},b.each(["Arguments","Function","String","Number","Date","RegExp","Error"],function(e){b["is"+e]=function(t){return a.call(t)==="[object "+e+"]"}}),b.isNull=function(e){return null===e};var L=function(e,t){return e._chain?b(t).chain():t};b.each(["pop","push","reverse","shift","sort","splice","unshift"],function(e){var t=r[e];b[n][e]=function(){var n=this._wrapped;return t.apply(n,arguments),"shift"!==e&&"splice"!==e||0!==n.length||delete n[0],L(this,n)}}),b.each(["concat","join","slice"],function(e){var t=r[e];b[n][e]=function(){return L(this,t.apply(this._wrapped,arguments))}}),b[n].value=function(){return this._wrapped},b[n].valueOf=b[n].toJSON=b[n].value,b[n].toString=function(){return""+this._wrapped},b.on_event=function(e,t,n,r,i){var o=b.bind(n,r||t),a={"once":i||!1};d&&(a.passive=!0),t[g](v+e,o,a)},b.on_load=function(e,t,n){var r=b.bind(t,n||e),i=!1,o=!0,a=e.document,u=a.documentElement,s=function(t){"readystatechange"===t.type&&"complete"!==a.readyState||(("load"===t.type?e:a)[y](v+t.type,s,!1),!i&&(i=!0)&&r.call(e,t.type||t))},c=function(){try{u.doScroll("left")}catch(e){return void setTimeout(c,50)}s("poll")};if("complete"===a.readyState)r.call(e,"lazy");else{if(!h&&u.doScroll){try{o=!e.frameElement}catch(l){}o&&c()}a[g](v+"DOMContentLoaded",s,!1),a[g](v+"readystatechange",s,!1),e[g](v+"load",s,!1)}};var O=function(){};return O[n].JSON=window.JSON||{},O[n].JSON.stringify=O[n].JSON.stringify||function(e){var t=typeof e;if("object"!==t||null===e)return"string"===t&&(e='"'+e+'"'),e+"";var n,r,i=[],o=e&&e.constructor===Array;for(n in e)r=e[n],t=typeof r,"string"===t?r='"'+r+'"':"object"===t&&null!==r&&(r=this.stringify(r)),i.push((o?"":'"'+n+'":')+r);return(o?"[":"{")+i+(o?"]":"}")},O[n].JSON.parse=O[n].JSON.parse||function(e){return""===e&&(e='""'),eval("var p="+e+";"),p},O[n].b={"_keyStr":"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="},O[n].b.e=function(e){var t,n,r,i,o,a,u,s="",c=0;for(e=this._u_e(e);c<e.length;)t=e.charCodeAt(c++),n=e.charCodeAt(c++),r=e.charCodeAt(c++),i=t>>2,o=(3&t)<<4|n>>4,a=(15&n)<<2|r>>6,u=63&r,isNaN(n)?a=u=64:isNaN(r)&&(u=64),s=s+this._keyStr.charAt(i)+this._keyStr.charAt(o)+this._keyStr.charAt(a)+this._keyStr.charAt(u);return s},O[n].b.d=function(e){var t,n,r,i,o,a,u,s="",c=0;for(e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");c<e.length;)i=this._keyStr.indexOf(e.charAt(c++)),o=this._keyStr.indexOf(e.charAt(c++)),a=this._keyStr.indexOf(e.charAt(c++)),u=this._keyStr.indexOf(e.charAt(c++)),t=i<<2|o>>4,n=(15&o)<<4|a>>2,r=(3&a)<<6|u,s+=String.fromCharCode(t),64!==a&&(s+=String.fromCharCode(n)),64!==u&&(s+=String.fromCharCode(r));return s=this._u_d(s)},O[n].b._u_e=function(e){e=e.replace(/\r\n/g,"\n");for(var t="",n=0;n<e.length;n++){var r=e.charCodeAt(n);r<128?t+=String.fromCharCode(r):r>127&&r<2048?(t+=String.fromCharCode(r>>6|192),t+=String.fromCharCode(63&r|128)):(t+=String.fromCharCode(r>>12|224),t+=String.fromCharCode(r>>6&63|128),t+=String.fromCharCode(63&r|128))}return t},O[n].b._u_d=function(e){for(var t="",n=0,r=0,i=0,o=0;n<e.length;)r=e.charCodeAt(n),r<128?(t+=String.fromCharCode(r),n++):r>191&&r<224?(i=e.charCodeAt(n+1),t+=String.fromCharCode((31&r)<<6|63&i),n+=2):(i=e.charCodeAt(n+1),o=e.charCodeAt(n+2),t+=String.fromCharCode((15&r)<<12|(63&i)<<6|63&o),n+=3);return t},O[n]._=b,O[n].post_exists=function(){var e=!1;return window.postMessage&&(e=!0),e},new O}(),function(){function e(e){function t(t,n,r,i,o,a){for(;o>=0&&o<a;o+=e){var u=i?i[o]:o;r=n(r,t[u],u,t)}return r}return function(n,r,i,o){r=b(r,o,4);var a=!E(n)&&x.keys(n),u=(a||n).length,s=e>0?0:u-1;return arguments.length<3&&(i=n[a?a[s]:s],s+=e),t(n,r,i,a,s,u)}}function n(e){return function(t,n,r){n=w(n,r);for(var i=k(t),o=e>0?0:i-1;o>=0&&o<i;o+=e)if(n(t[o],o,t))return o;return-1}}function r(e,t,n){return function(r,i,o){var a=0,u=k(r);if("number"==typeof o)e>0?a=o>=0?o:Math.max(o+u,a):u=o>=0?Math.min(o+1,u):o+u+1;else if(n&&o&&u)return o=n(r,i),r[o]===i?o:-1;if(i!==i)return o=t(f.call(r,a,u),x.isNaN),o>=0?o+a:-1;for(o=e>0?a:u-1;o>=0&&o<u;o+=e)if(r[o]===i)return o;return-1}}function i(e,t){var n=L.length,r=e.constructor,i=x.isFunction(r)&&r.prototype||s,o="constructor";for(x.has(e,o)&&!x.contains(t,o)&&t.push(o);n--;)(o=L[n])in e&&e[o]!==i[o]&&!x.contains(t,o)&&t.push(o)}var o=this,a=o._,u=Array.prototype,s=Object.prototype,c=Function.prototype,l=u.push,f=u.slice,d=s.toString,p=s.hasOwnProperty,h=Array.isArray,g=Object.keys,y=c.bind,v=Object.create,m=function(){},x=function(e){return e instanceof x?e:this instanceof x?void(this._wrapped=e):new x(e)};"undefined"!=typeof exports?("undefined"!=typeof module&&module.exports&&(exports=module.exports=x),exports._=x):o._=x,x.VERSION="1.8.3";var b=function(e,t,n){if(void 0===t)return e;switch(null==n?3:n){case 1:return function(n){return e.call(t,n)};case 2:return function(n,r){return e.call(t,n,r)};case 3:return function(n,r,i){return e.call(t,n,r,i)};case 4:return function(n,r,i,o){return e.call(t,n,r,i,o)}}return function(){return e.apply(t,arguments)}},w=function(e,t,n){return null==e?x.identity:x.isFunction(e)?b(e,t,n):x.isObject(e)?x.matcher(e):x.property(e)};x.iteratee=function(e,t){return w(e,t,Infinity)};var _=function(e,t){return function(n){var r=arguments.length;if(r<2||null==n)return n;for(var i=1;i<r;i++)for(var o=arguments[i],a=e(o),u=a.length,s=0;s<u;s++){var c=a[s];t&&void 0!==n[c]||(n[c]=o[c])}return n}},C=function(e){if(!x.isObject(e))return{};if(v)return v(e);m.prototype=e;var t=new m;return m.prototype=null,t},T=function(e){return function(t){return null==t?void 0:t[e]}},S=Math.pow(2,53)-1,k=T("length"),E=function(e){var t=k(e);return"number"==typeof t&&t>=0&&t<=S};x.each=x.forEach=function(e,t,n){t=b(t,n);var r,i;if(E(e))for(r=0,i=e.length;r<i;r++)t(e[r],r,e);else{var o=x.keys(e);for(r=0,i=o.length;r<i;r++)t(e[o[r]],o[r],e)}return e},x.map=x.collect=function(e,t,n){t=w(t,n);for(var r=!E(e)&&x.keys(e),i=(r||e).length,o=Array(i),a=0;a<i;a++){var u=r?r[a]:a;o[a]=t(e[u],u,e)}return o},x.reduce=x.foldl=x.inject=e(1),x.reduceRight=x.foldr=e(-1),x.find=x.detect=function(e,t,n){var r;if(void 0!==(r=E(e)?x.findIndex(e,t,n):x.findKey(e,t,n))&&-1!==r)return e[r]},x.filter=x.select=function(e,t,n){var r=[];return t=w(t,n),x.each(e,function(e,n,i){t(e,n,i)&&r.push(e)}),r},x.reject=function(e,t,n){return x.filter(e,x.negate(w(t)),n)},x.every=x.all=function(e,t,n){t=w(t,n);for(var r=!E(e)&&x.keys(e),i=(r||e).length,o=0;o<i;o++){var a=r?r[o]:o;if(!t(e[a],a,e))return!1}return!0},x.some=x.any=function(e,t,n){t=w(t,n);for(var r=!E(e)&&x.keys(e),i=(r||e).length,o=0;o<i;o++){var a=r?r[o]:o;if(t(e[a],a,e))return!0}return!1},x.contains=x.includes=x.include=function(e,t,n,r){return E(e)||(e=x.values(e)),("number"!=typeof n||r)&&(n=0),x.indexOf(e,t,n)>=0},x.invoke=function(e,t){var n=f.call(arguments,2),r=x.isFunction(t);return x.map(e,function(e){var i=r?t:e[t];return null==i?i:i.apply(e,n)})},x.pluck=function(e,t){return x.map(e,x.property(t))},x.where=function(e,t){return x.filter(e,x.matcher(t))},x.findWhere=function(e,t){return x.find(e,x.matcher(t))},x.max=function(e,t,n){var r,i,o=-Infinity,a=-Infinity;if(null==t&&null!=e){e=E(e)?e:x.values(e);for(var u=0,s=e.length;u<s;u++)(r=e[u])>o&&(o=r)}else t=w(t,n),x.each(e,function(e,n,r){((i=t(e,n,r))>a||i===-Infinity&&o===-Infinity)&&(o=e,a=i)});return o},x.min=function(e,t,n){var r,i,o=Infinity,a=Infinity;if(null==t&&null!=e){e=E(e)?e:x.values(e);for(var u=0,s=e.length;u<s;u++)(r=e[u])<o&&(o=r)}else t=w(t,n),x.each(e,function(e,n,r){((i=t(e,n,r))<a||i===Infinity&&o===Infinity)&&(o=e,a=i)});return o},x.shuffle=function(e){for(var t,n=E(e)?e:x.values(e),r=n.length,i=Array(r),o=0;o<r;o++)t=x.random(0,o),t!==o&&(i[o]=i[t]),i[t]=n[o];return i},x.sample=function(e,t,n){return null==t||n?(E(e)||(e=x.values(e)),e[x.random(e.length-1)]):x.shuffle(e).slice(0,Math.max(0,t))},x.sortBy=function(e,t,n){return t=w(t,n),x.pluck(x.map(e,function(e,n,r){return{"value":e,"index":n,"criteria":t(e,n,r)}}).sort(function(e,t){var n=e.criteria,r=t.criteria;if(n!==r){if(n>r||void 0===n)return 1;if(n<r||void 0===r)return-1}return e.index-t.index}),"value")};var N=function(e){return function(t,n,r){var i={};return n=w(n,r),x.each(t,function(r,o){var a=n(r,o,t);e(i,r,a)}),i}};x.groupBy=N(function(e,t,n){x.has(e,n)?e[n].push(t):e[n]=[t]}),x.indexBy=N(function(e,t,n){e[n]=t}),x.countBy=N(function(e,t,n){x.has(e,n)?e[n]++:e[n]=1}),x.toArray=function(e){return e?x.isArray(e)?f.call(e):E(e)?x.map(e,x.identity):x.values(e):[]},x.size=function(e){return null==e?0:E(e)?e.length:x.keys(e).length},x.partition=function(e,t,n){t=w(t,n);var r=[],i=[];return x.each(e,function(e,n,o){(t(e,n,o)?r:i).push(e)}),[r,i]},x.first=x.head=x.take=function(e,t,n){if(null!=e)return null==t||n?e[0]:x.initial(e,e.length-t)},x.initial=function(e,t,n){return f.call(e,0,Math.max(0,e.length-(null==t||n?1:t)))},x.last=function(e,t,n){if(null!=e)return null==t||n?e[e.length-1]:x.rest(e,Math.max(0,e.length-t))},x.rest=x.tail=x.drop=function(e,t,n){return f.call(e,null==t||n?1:t)},x.compact=function(e){return x.filter(e,x.identity)};var A=function(e,t,n,r){for(var i=[],o=0,a=r||0,u=k(e);a<u;a++){var s=e[a];if(E(s)&&(x.isArray(s)||x.isArguments(s))){t||(s=A(s,t,n));var c=0,l=s.length;for(i.length+=l;c<l;)i[o++]=s[c++]}else n||(i[o++]=s)}return i};x.flatten=function(e,t){return A(e,t,!1)},x.without=function(e){return x.difference(e,f.call(arguments,1))},x.uniq=x.unique=function(e,t,n,r){x.isBoolean(t)||(r=n,n=t,t=!1),null!=n&&(n=w(n,r));for(var i=[],o=[],a=0,u=k(e);a<u;a++){var s=e[a],c=n?n(s,a,e):s;t?(a&&o===c||i.push(s),o=c):n?x.contains(o,c)||(o.push(c),i.push(s)):x.contains(i,s)||i.push(s)}return i},x.union=function(){return x.uniq(A(arguments,!0,!0))},x.intersection=function(e){for(var t=[],n=arguments.length,r=0,i=k(e);r<i;r++){var o=e[r];if(!x.contains(t,o)){for(var a=1;a<n&&x.contains(arguments[a],o);a++);a===n&&t.push(o)}}return t},x.difference=function(e){var t=A(arguments,!0,!0,1);return x.filter(e,function(e){return!x.contains(t,e)})},x.zip=function(){return x.unzip(arguments)},x.unzip=function(e){for(var t=e&&x.max(e,k).length||0,n=Array(t),r=0;r<t;r++)n[r]=x.pluck(e,r);return n},x.object=function(e,t){for(var n={},r=0,i=k(e);r<i;r++)t?n[e[r]]=t[r]:n[e[r][0]]=e[r][1];return n},x.findIndex=n(1),x.findLastIndex=n(-1),x.sortedIndex=function(e,t,n,r){n=w(n,r,1);for(var i=n(t),o=0,a=k(e);o<a;){var u=Math.floor((o+a)/2);n(e[u])<i?o=u+1:a=u}return o},x.indexOf=r(1,x.findIndex,x.sortedIndex),x.lastIndexOf=r(-1,x.findLastIndex),x.range=function(e,t,n){null==t&&(t=e||0,e=0),n=n||1;for(var r=Math.max(Math.ceil((t-e)/n),0),i=Array(r),o=0;o<r;o++,e+=n)i[o]=e;return i};var j=function(e,t,n,r,i){if(!(r instanceof t))return e.apply(n,i);var o=C(e.prototype),a=e.apply(o,i);return x.isObject(a)?a:o};x.bind=function(e,t){if(y&&e.bind===y)return y.apply(e,f.call(arguments,1));if(!x.isFunction(e))throw new TypeError("Bind must be called on a function");var n=f.call(arguments,2),r=function(){return j(e,r,t,this,n.concat(f.call(arguments)))};return r},x.partial=function(e){var t=f.call(arguments,1),n=function(){for(var r=0,i=t.length,o=Array(i),a=0;a<i;a++)o[a]=t[a]===x?arguments[r++]:t[a];for(;r<arguments.length;)o.push(arguments[r++]);return j(e,n,this,this,o)};return n},x.bindAll=function(e){var t,n,r=arguments.length;if(r<=1)throw Error("bindAll must be passed function names");for(t=1;t<r;t++)n=arguments[t],e[n]=x.bind(e[n],e);return e},x.memoize=function(e,t){var n=function(r){var i=n.cache,o=""+(t?t.apply(this,arguments):r);return x.has(i,o)||(i[o]=e.apply(this,arguments)),i[o]};return n.cache={},n},x.delay=function(e,t){var n=f.call(arguments,2);return setTimeout(function(){return e.apply(null,n)},t)},x.defer=x.partial(x.delay,x,1),x.throttle=function(e,t,n){var r,i,o,a=null,u=0;n||(n={});var s=function(){u=!1===n.leading?0:x.now(),a=null,o=e.apply(r,i),a||(r=i=null)};return function(){var c=x.now();u||!1!==n.leading||(u=c);var l=t-(c-u);return r=this,i=arguments,l<=0||l>t?(a&&(clearTimeout(a),a=null),u=c,o=e.apply(r,i),a||(r=i=null)):a||!1===n.trailing||(a=setTimeout(s,l)),o}},x.debounce=function(e,t,n){var r,i,o,a,u,s=function(){var c=x.now()-a;c<t&&c>=0?r=setTimeout(s,t-c):(r=null,n||(u=e.apply(o,i),r||(o=i=null)))};return function(){o=this,i=arguments,a=x.now();var c=n&&!r;return r||(r=setTimeout(s,t)),c&&(u=e.apply(o,i),o=i=null),u}},x.wrap=function(e,t){return x.partial(t,e)},x.negate=function(e){return function(){return!e.apply(this,arguments)}},x.compose=function(){var e=arguments,t=e.length-1;return function(){for(var n=t,r=e[t].apply(this,arguments);n--;)r=e[n].call(this,r);return r}},x.after=function(e,t){return function(){if(--e<1)return t.apply(this,arguments)}},x.before=function(e,t){var n;return function(){return--e>0&&(n=t.apply(this,arguments)),e<=1&&(t=null),n}},x.once=x.partial(x.before,2);var D=!{"toString":null}.propertyIsEnumerable("toString"),L=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"];x.keys=function(e){if(!x.isObject(e))return[];if(g)return g(e);var t=[];for(var n in e)x.has(e,n)&&t.push(n);return D&&i(e,t),t},x.allKeys=function(e){if(!x.isObject(e))return[];var t=[];for(var n in e)t.push(n);return D&&i(e,t),t},x.values=function(e){for(var t=x.keys(e),n=t.length,r=Array(n),i=0;i<n;i++)r[i]=e[t[i]];return r},x.mapObject=function(e,t,n){t=w(t,n);for(var r,i=x.keys(e),o=i.length,a={},u=0;u<o;u++)r=i[u],a[r]=t(e[r],r,e);return a},x.pairs=function(e){for(var t=x.keys(e),n=t.length,r=Array(n),i=0;i<n;i++)r[i]=[t[i],e[t[i]]];return r},x.invert=function(e){for(var t={},n=x.keys(e),r=0,i=n.length;r<i;r++)t[e[n[r]]]=n[r];return t},x.functions=x.methods=function(e){var t=[];for(var n in e)x.isFunction(e[n])&&t.push(n);return t.sort()},x.extend=_(x.allKeys),x.extendOwn=x.assign=_(x.keys),x.findKey=function(e,t,n){t=w(t,n);for(var r,i=x.keys(e),o=0,a=i.length;o<a;o++)if(r=i[o],t(e[r],r,e))return r},x.pick=function(e,t,n){var r,i,o={},a=e;if(null==a)return o;x.isFunction(t)?(i=x.allKeys(a),r=b(t,n)):(i=A(arguments,!1,!1,1),r=function(e,t,n){return t in n},a=Object(a));for(var u=0,s=i.length;u<s;u++){var c=i[u],l=a[c];r(l,c,a)&&(o[c]=l)}return o},x.omit=function(e,t,n){if(x.isFunction(t))t=x.negate(t);else{var r=x.map(A(arguments,!1,!1,1),String);t=function(e,t){return!x.contains(r,t)}}return x.pick(e,t,n)},x.defaults=_(x.allKeys,!0),x.create=function(e,t){var n=C(e);return t&&x.extendOwn(n,t),n},x.clone=function(e){return x.isObject(e)?x.isArray(e)?e.slice():x.extend({},e):e},x.tap=function(e,t){return t(e),e},x.isMatch=function(e,t){var n=x.keys(t),r=n.length;if(null==e)return!r;for(var i=Object(e),o=0;o<r;o++){var a=n[o];if(t[a]!==i[a]||!(a in i))return!1}return!0};var O=function(e,t,n,r){if(e===t)return 0!==e||1/e==1/t;if(null==e||null==t)return e===t;e instanceof x&&(e=e._wrapped),t instanceof x&&(t=t._wrapped);var i=d.call(e);if(i!==d.call(t))return!1;switch(i){case"[object RegExp]":case"[object String]":return""+e==""+t;case"[object Number]":return+e!=+e?+t!=+t:0==+e?1/+e==1/t:+e==+t;case"[object Date]":case"[object Boolean]":return+e==+t}var o="[object Array]"===i;if(!o){if("object"!=typeof e||"object"!=typeof t)return!1;var a=e.constructor,u=t.constructor;if(a!==u&&!(x.isFunction(a)&&a instanceof a&&x.isFunction(u)&&u instanceof u)&&"constructor"in e&&"constructor"in t)return!1}n=n||[],r=r||[];for(var s=n.length;s--;)if(n[s]===e)return r[s]===t;if(n.push(e),r.push(t),o){if((s=e.length)!==t.length)return!1;for(;s--;)if(!O(e[s],t[s],n,r))return!1}else{var c,l=x.keys(e);if(s=l.length,x.keys(t).length!==s)return!1;for(;s--;)if(c=l[s],!x.has(t,c)||!O(e[c],t[c],n,r))return!1}return n.pop(),r.pop(),!0};x.isEqual=function(e,t){return O(e,t)},x.isEmpty=function(e){return null==e||(E(e)&&(x.isArray(e)||x.isString(e)||x.isArguments(e))?0===e.length:0===x.keys(e).length)},x.isElement=function(e){return!(!e||1!==e.nodeType)},x.isArray=h||function(e){return"[object Array]"===d.call(e)},x.isObject=function(e){var t=typeof e;return"function"===t||"object"===t&&!!e},x.each(["Arguments","Function","String","Number","Date","RegExp","Error"],function(e){x["is"+e]=function(t){return d.call(t)==="[object "+e+"]"}}),x.isArguments(arguments)||(x.isArguments=function(e){return x.has(e,"callee")}),"function"!=typeof/./&&"object"!=typeof Int8Array&&(x.isFunction=function(e){return"function"==typeof e||!1}),x.isFinite=function(e){return isFinite(e)&&!isNaN(parseFloat(e))},x.isNaN=function(e){return x.isNumber(e)&&e!==+e},x.isBoolean=function(e){return!0===e||!1===e||"[object Boolean]"===d.call(e)},x.isNull=function(e){return null===e},x.isUndefined=function(e){return void 0===e},x.has=function(e,t){return null!=e&&p.call(e,t)},x.noConflict=function(){return o._=a,this},x.identity=function(e){return e},x.constant=function(e){return function(){return e}},x.noop=function(){},x.property=T,x.propertyOf=function(e){return null==e?function(){}:function(t){return e[t]}},x.matcher=x.matches=function(e){return e=x.extendOwn({},e),function(t){return x.isMatch(t,e)}},x.times=function(e,t,n){var r=Array(Math.max(0,e));t=b(t,n,1);for(var i=0;i<e;i++)r[i]=t(i);return r},x.random=function(e,t){return null==t&&(t=e,e=0),e+Math.floor(Math.random()*(t-e+1))},x.now=Date.now||function(){return(new Date).getTime()};var H={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"},F=x.invert(H),M=function(e){var t=function(t){return e[t]},n="(?:"+x.keys(e).join("|")+")",r=RegExp(n),i=RegExp(n,"g");return function(e){return e=null==e?"":""+e,r.test(e)?e.replace(i,t):e}};x.escape=M(H),x.unescape=M(F),x.result=function(e,t,n){var r=null==e?void 0:e[t];return void 0===r&&(r=n),x.isFunction(r)?r.call(e):r};var B=0;x.uniqueId=function(e){var t=++B+"";return e?e+t:t},x.templateSettings={"evaluate":/<%([\s\S]+?)%>/g,"interpolate":/<%=([\s\S]+?)%>/g,"escape":/<%-([\s\S]+?)%>/g};var I=/(.)^/,R={"'":"'","\\":"\\","\r":"r","\n":"n","\u2028":"u2028","\u2029":"u2029"},q=/\\|'|\r|\n|\u2028|\u2029/g,P=function(e){return"\\"+R[e]};x.template=function(e,t,n){!t&&n&&(t=n),t=x.defaults({},t,x.templateSettings);var r=RegExp([(t.escape||I).source,(t.interpolate||I).source,(t.evaluate||I).source].join("|")+"|$","g"),i=0,o="__p+='";e.replace(r,function(t,n,r,a,u){return o+=e.slice(i,u).replace(q,P),i=u+t.length,n?o+="'+\n((__t=("+n+"))==null?'':_.escape(__t))+\n'":r?o+="'+\n((__t=("+r+"))==null?'':__t)+\n'":a&&(o+="';\n"+a+"\n__p+='"),t}),o+="';\n",t.variable||(o="with(obj||{}){\n"+o+"}\n"),o="var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};\n"+o+"return __p;\n";try{var a=Function(t.variable||"obj","_",o)}catch(s){throw s.source=o,s}var u=function(e){return a.call(this,e,x)};return u.source="function("+(t.variable||"obj")+"){\n"+o+"}",u},x.chain=function(e){var t=x(e);return t._chain=!0,t};var z=function(e,t){return e._chain?x(t).chain():t};x.mixin=function(e){x.each(x.functions(e),function(t){var n=x[t]=e[t];x.prototype[t]=function(){var e=[this._wrapped];return l.apply(e,arguments),z(this,n.apply(x,e))}})},x.mixin(x),x.each(["pop","push","reverse","shift","sort","splice","unshift"],function(e){var t=u[e];x.prototype[e]=function(){var n=this._wrapped;return t.apply(n,arguments),"shift"!==e&&"splice"!==e||0!==n.length||delete n[0],z(this,n)}}),x.each(["concat","join","slice"],function(e){var t=u[e];x.prototype[e]=function(){return z(this,t.apply(this._wrapped,arguments))}}),x.prototype.value=function(){return this._wrapped},x.prototype.valueOf=x.prototype.toJSON=x.prototype.value,x.prototype.toString=function(){return""+this._wrapped},t=function(){return x}()}.call(this),n=function(){var e=window.JSON||{};return e.stringify=e.stringify||function(e){var t=typeof e;if("object"!==t||null===e)return"string"===t&&(e='"'+e+'"'),e+"";var n,r,i=[],o=e&&e.constructor===Array;for(n in e)r=e[n],t=typeof r,"string"===t?r='"'+r+'"':"object"===t&&null!==r&&(r=this.stringify(r)),i.push((o?"":'"'+n+'":')+r);return(o?"[":"{")+i+(o?"]":"}")},e.parse=e.parse||function(e){return""===e&&(e='""'),eval("var p="+e+";"),p},e}(),r=function(e){return function(){var t=function(t){e.parse("{}"),localStorage.setItem(t,t),localStorage.removeItem(t)};return function(){try{return t("test"),!0}catch(e){return!1}}()}}(n),i=function(e){var t=function(){};return t.prototype=Function.prototype,t.prototype.add=function(e,t){t=t||!1,t?e<this.fixedSize&&(this[e]=t):this.indexOf(e)<0&&this.push(e),this.length<=this.fixedSize||Array.prototype.splice.call(this,0,this.length-this.fixedSize)},t.prototype.load=function(e,t){t=t||!1,t?e<this.fixedSize&&(this[e]=t):this.indexOf(e)<0&&this.push(e),this.length<=this.fixedSize||Array.prototype.splice.call(this,0,this.length-this.fixedSize)},t.prototype.get=function(){return Array.prototype.splice.call(this,0,this.length-this.fixedSize),this.join(";")},function(e){return t.prototype.fixedSize=e,new t}}(),o=function(e){var t=function(e,t){var n=!!e,r=!!t;this.invert=function(){return n||!1},this.counter=function(){return r||!1}};return t.prototype.add=function(t,n){n=n||1,e.isNumber(this[t])?this.invert()?this[t]=++this[t]:this[t]>0?this[t]=--this[t]:this[t]=0:this.invert()?this[t]=n:this[t]=n-1},t.prototype.load=function(e,t){this[e]=t},t.prototype.get=function(){var t=[],n=this||{};return e.each(n,function(e,n,r){r.invert()?e>0&&(r.counter()?t.push([n.replace(/\D/g,""),e]):t.push(n.replace(/\D/g,""))):e<=0&&(r.counter()?t.push([n.replace(/\D/g,""),e]):t.push(n.replace(/\D/g,"")))}),t},t}(t),a=function(e){var t=function(){};return t.prototype.add=function(e,t,n,r,i){this[e]=[t,n,r,i]},t.prototype.load=function(t,n){e.isArray(n)&&(e.isUndefined(n[3])&&(n[3]=n[0]),this[t]=[n[0],n[1],n[2],n[3]])},t.prototype.remove=function(e){delete this[e]},t.prototype.get=function(){var e,t=[],n=[],r=Math.floor(Date.now());for(var i in this)this[i][0]>r&&t.push([i.split("...")[0],this[i][2],this[i][1],parseInt(this[i][3]),Math.abs(new Date(Math.floor(Date.now())).getDate()-new Date(1e3*this[i][3]).getDate())]);t.sort(function(e,t){return e[3]<t[3]?-1:e[3]>t[3]?1:0});for(e in t)"function"!=typeof t[e]&&n.push([t[e][0],t[e][2],t[e][4]]);return n},t}(t),u=function(e){var t=function(){};return t.prototype.add=function(t,n){var r=[0,0,0];e.isUndefined(this[t])?(r[n]+=1,this[t]=[n,r]):(r=this[t][1],r[n]+=1,r[0]=1,this[t]=[e.indexOf(r,e.max(r)),r]),this[t][0]<0&&(this[t][0]=0)},t.prototype.get=function(){var t=[];return e.each(this,function(n,r,i){e.isEmpty(n)||t.push([r+"~"+n[0]])}),t.join(";")},t.prototype.load=function(t,n){e.isArray(n)&&(this[t]=[n[0],n[1]])},t}(t),s=function(e){var t=function(){this.gender=void 0,this.hit_log=[0,0,0]};return t.prototype.add=function(t){void 0===this.gender?this.hit_log[t]+=1:e.isArray(this.hit_log)&&(this.hit_log[t]+=1,this.hit_log[0]=1,this.gender=e.indexOf(this.hit_log,e.max(this.hit_log))),this.gender<0&&(this.gender=0)},t.prototype.get=function(){return void 0===this.gender?0:this.gender},t.prototype.load=function(e,t){this[e]=t},t}(t),c=function(e){var t=function(){};return t.prototype.add=function(t,n){var r=[0,0,0,0,0,0,0,0,0];e.isUndefined(this[t])?(r[n]+=1,this[t]=[n,r]):(r=this[t][1],r[n]+=1,r[0]=1,this[t]=[e.indexOf(r,e.max(r)),r]),this[t][0]<0&&(this[t][0]=0)},t.prototype.get=function(){var t=[];return e.each(this,function(n,r,i){e.isEmpty(n)||t.push([r+"~"+n[0]])}),t.join(";")},t.prototype.load=function(t,n){e.isArray(n)&&(this[t]=[n[0],n[1]])},t}(t),l=function(e){var t=function(){this.hit_log=[0,0,0,0,0,0,0,0,0],this.cost=void 0};return t.prototype.add=function(t){void 0===this.cost?(this.cost=t,this.hit_log[t]+=1):(this.hit_log[t]+=1,this.hit_log[0]=1,this.cost=e.indexOf(this.hit_log,e.max(this.hit_log))),this.cost<0&&(this.cost=0)},t.prototype.get=function(){return void 0===this.cost?0:this.cost},t.prototype.load=function(e,t){this[e]=t},t}(t),f=function(e){var t=function(){};return t.prototype.add=function(t,n,r){e.isUndefined(this[t])?this[t]=[n,r]:this[t][1]=r},t.prototype.load=function(t,n){e.isArray(n)&&(this[t]=[n[0],n[1]])},t}(t),d=function(e){var t=function(){};return t.prototype.add=function(t,n){e.isUndefined(this.timeFirst)&&(this.timeFirst=t),this.timeLast=n},t.prototype.load=function(e,t){this[e]=t},t}(t),h=function(e,t,n,r,i,o,a,u,s,c,l,f){var d=function(){this.searchengines=new r(3),this.context=new r(3),this.retargeting=new o,this.exclude=new i,this.exclude_click=new i,this.retargeting_exclude=new i,this.retargeting_account_exclude=new i,this.retargeting_exclude_click=new i,this.retargeting_account_exclude_click=new i,this.retargeting_view=new i(!0,!0),this.history=new r(3),this.gender_accounts=new a,this.gender_user=new u,this.cost_accounts=new s,this.cost_user=new c,this.activity_accounts=new l,this.activity_user=new f};return d.prototype.clear=function(){return!!n()&&(localStorage.clear(),this.exclude_clean(!0),this.exclude_click_clean(!0),this.retargeting_clean(!0),this.retargeting_account_clean(!0),this.retargeting_click_clean(!0),this.load(),this.save(),!0)},d.prototype.load=function(){var r;return!!n()&&(e.each(this,function(n,i,o){try{r=t.parse(localStorage.getItem(i))}catch(a){r={}}e.each(r,function(e,t,n){o[i].load(t,n[t])})}),!0)},d.prototype.save=function(){return!!n()&&(e.each(this,function(e,n,r){localStorage.setItem(n,t.stringify(r[n]))}),!0)},d.prototype.exclude_clean=function(e){return e&&(this.load(),this.exclude=new i,this.save()),e},d.prototype.exclude_click_clean=function(e){return e&&(this.load(),this.exclude_click=new i,this.save()),e},d.prototype.exclude_get=function(){var t=this.exclude.get().concat(this.exclude_click.get());return t=e.uniq(t)},d.prototype.retargeting_clean=function(e){return e&&(this.load(),this.retargeting_exclude=new i,this.retargeting_view=new i(!0,!0),this.save()),e},d.prototype.retargeting_account_clean=function(e){return e&&(this.load(),this.retargeting_account_exclude=new i,this.save()),e},d.prototype.retargeting_click_clean=function(e){return e&&(this.load(),this.retargeting_click_exclude=new i,this.save()),e},d.prototype.retargeting_exclude_get=function(){var t=this.retargeting_exclude.get().concat(this.retargeting_exclude_click.get());return t=e.uniq(t)},d.prototype.retargeting_account_exclude_get=function(){var t=this.retargeting_account_exclude.get().concat(this.retargeting_account_exclude_click.get());return t=e.uniq(t)},new d}(t,n,r,i,o,a,u,s,c,l,f,d),g={"requiredData":{"advertises":{"param":"advertises","url":"/v1/advertises.json"},"offer_log":{"param":"log","url":"/logger.json"}}},y=[],v=window.document,m=function(e){return e.slice}(y),x=function(e){return e.concat}(y),b=function(e){return e.push}(y),w=function(e){return e.indexOf}(y),_={},C=function(e){return e.toString}(_),T=function(e){return e.hasOwnProperty}(_),S={},k=function(e,t,n,r,i,o,a,u,s,c){function l(e){var t=!!e&&"length"in e&&e.length,n=f.type(e);return"function"!==n&&!f.isWindow(e)&&("array"===n||0===t||"number"==typeof t&&t>0&&t-1 in e)}var f=function(e,t){return new f.fn.init(e,t)},d=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,p=/^-ms-/,h=/-([\da-z])/gi,g=function(e,t){return t.toUpperCase()};return f.fn=f.prototype={"jquery":"@VERSION","constructor":f,"selector":"","length":0,"toArray":function(){return n.call(this)},"get":function(e){return null!=e?e<0?this[e+this.length]:this[e]:n.call(this)},"pushStack":function(e){var t=f.merge(this.constructor(),e);return t.prevObject=this,t.context=this.context,t},"each":function(e){return f.each(this,e)},"map":function(e){return this.pushStack(f.map(this,function(t,n){return e.call(t,n,t)}))},"slice":function(){return this.pushStack(n.apply(this,arguments))},"first":function(){return this.eq(0)},"last":function(){return this.eq(-1)},"eq":function(e){var t=this.length,n=+e+(e<0?t:0);return this.pushStack(n>=0&&n<t?[this[n]]:[])},"end":function(){return this.prevObject||this.constructor()},"push":i,"sort":e.sort,"splice":e.splice},f.extend=f.fn.extend=function(){var e,t,n,r,i,o,a=arguments[0]||{},u=1,s=arguments.length,c=!1;for("boolean"==typeof a&&(c=a,a=arguments[u]||{},u++),"object"==typeof a||f.isFunction(a)||(a={}),u===s&&(a=this,u--);u<s;u++)if(null!=(i=arguments[u]))for(r in i)e=a[r],n=i[r],a!==n&&(c&&n&&(f.isPlainObject(n)||(t=f.isArray(n)))?(t?(t=!1,o=e&&f.isArray(e)?e:[]):o=e&&f.isPlainObject(e)?e:{},a[r]=f.extend(c,o,n)):n!==undefined&&(a[r]=n));return a},f.extend({"expando":"jQuery"+("@VERSION"+Math.random()).replace(/\D/g,""),"isReady":!0,
-"error":function(e){throw Error(e)},"noop":function(){},"isFunction":function(e){return"function"===f.type(e)},"isArray":Array.isArray||function(e){return"array"===f.type(e)},"isWindow":function(e){return null!=e&&e==e.window},"isNumeric":function(e){var t=e&&""+e;return!f.isArray(e)&&t-parseFloat(t)+1>=0},"isEmptyObject":function(e){var t;for(t in e)return!1;return!0},"isPlainObject":function(e){var t;if(!e||"object"!==f.type(e)||e.nodeType||f.isWindow(e))return!1;try{if(e.constructor&&!s.call(e,"constructor")&&!s.call(e.constructor.prototype,"isPrototypeOf"))return!1}catch(n){return!1}if(!c.ownFirst)for(t in e)return s.call(e,t);for(t in e);return t===undefined||s.call(e,t)},"type":function(e){return null==e?e+"":"object"==typeof e||"function"==typeof e?a[u.call(e)]||"object":typeof e},"globalEval":function(e){e&&f.trim(e)&&(window.execScript||function(e){window.eval.call(window,e)})(e)},"camelCase":function(e){return e.replace(p,"ms-").replace(h,g)},"nodeName":function(e,t){return e.nodeName&&e.nodeName.toLowerCase()===t.toLowerCase()},"each":function(e,t){var n,r=0;if(l(e))for(n=e.length;r<n&&!1!==t.call(e[r],r,e[r]);r++);else for(r in e)if(!1===t.call(e[r],r,e[r]))break;return e},"trim":function(e){return null==e?"":(e+"").replace(d,"")},"makeArray":function(e,t){var n=t||[];return null!=e&&(l(Object(e))?f.merge(n,"string"==typeof e?[e]:e):i.call(n,e)),n},"inArray":function(e,t,n){var r;if(t){if(o)return o.call(t,e,n);for(r=t.length,n=n?n<0?Math.max(0,r+n):n:0;n<r;n++)if(n in t&&t[n]===e)return n}return-1},"merge":function(e,t){for(var n=+t.length,r=0,i=e.length;r<n;)e[i++]=t[r++];if(n!==n)for(;t[r]!==undefined;)e[i++]=t[r++];return e.length=i,e},"grep":function(e,t,n){for(var r=[],i=0,o=e.length,a=!n;i<o;i++)!t(e[i],i)!==a&&r.push(e[i]);return r},"map":function(e,t,n){var i,o,a=0,u=[];if(l(e))for(i=e.length;a<i;a++)null!=(o=t(e[a],a,n))&&u.push(o);else for(a in e)null!=(o=t(e[a],a,n))&&u.push(o);return r.apply([],u)},"guid":1,"proxy":function(e,t){var r,i,o;return"string"==typeof t&&(o=e[t],t=e,e=o),f.isFunction(e)?(r=n.call(arguments,2),i=function(){return e.apply(t||this,r.concat(n.call(arguments)))},i.guid=e.guid=e.guid||f.guid++,i):undefined},"now":function(){return+new Date},"support":c}),"function"==typeof Symbol&&(f.fn[Symbol.iterator]=e[Symbol.iterator]),f.each("Boolean Number String Function Array Date RegExp Object Error Symbol".split(" "),function(e,t){a["[object "+t+"]"]=t.toLowerCase()}),f}(y,0,m,x,b,w,_,C,T,S),function(e){function t(e,t,n,r){var i,o,a,u,c,f,d,p,h=t&&t.ownerDocument,g=t?t.nodeType:9;if(n=n||[],"string"!=typeof e||!e||1!==g&&9!==g&&11!==g)return n;if(!r&&((t?t.ownerDocument||t:R)!==D&&j(t),t=t||D,O)){if(11!==g&&(f=ye.exec(e)))if(i=f[1]){if(9===g){if(!(a=t.getElementById(i)))return n;if(a.id===i)return n.push(a),n}else if(h&&(a=h.getElementById(i))&&B(t,a)&&a.id===i)return n.push(a),n}else{if(f[2])return Y.apply(n,t.getElementsByTagName(e)),n;if((i=f[3])&&x.getElementsByClassName&&t.getElementsByClassName)return Y.apply(n,t.getElementsByClassName(i)),n}if(x.qsa&&!$[e+" "]&&(!H||!H.test(e))){if(1!==g)h=t,p=e;else if("object"!==t.nodeName.toLowerCase()){for((u=t.getAttribute("id"))?u=u.replace(me,"\\$&"):t.setAttribute("id",u=I),d=C(e),o=d.length,c=fe.test(u)?"#"+u:"[id='"+u+"']";o--;)d[o]=c+" "+l(d[o]);p=d.join(","),h=ve.test(e)&&s(t.parentNode)||t}if(p)try{return Y.apply(n,h.querySelectorAll(p)),n}catch(y){}finally{u===I&&t.removeAttribute("id")}}}return S(e.replace(ae,"$1"),t,n,r)}function n(){function e(n,r){return t.push(n+" ")>b.cacheLength&&delete e[t.shift()],e[n+" "]=r}var t=[];return e}function r(e){return e[I]=!0,e}function i(e){var t=D.createElement("div");try{return!!e(t)}catch(n){return!1}finally{t.parentNode&&t.parentNode.removeChild(t),t=null}}function o(e,t){for(var n=e.split("|"),r=n.length;r--;)b.attrHandle[n[r]]=t}function a(e,t){var n=t&&e,r=n&&1===e.nodeType&&1===t.nodeType&&(~t.sourceIndex||U)-(~e.sourceIndex||U);if(r)return r;if(n)for(;n=n.nextSibling;)if(n===t)return-1;return e?1:-1}function u(e){return r(function(t){return t=+t,r(function(n,r){for(var i,o=e([],n.length,t),a=o.length;a--;)n[i=o[a]]&&(n[i]=!(r[i]=n[i]))})})}function s(e){return e&&"undefined"!=typeof e.getElementsByTagName&&e}function c(){}function l(e){for(var t=0,n=e.length,r="";t<n;t++)r+=e[t].value;return r}function f(e,t,n){var r=t.dir,i=n&&"parentNode"===r,o=P++;return t.first?function(t,n,o){for(;t=t[r];)if(1===t.nodeType||i)return e(t,n,o)}:function(t,n,a){var u,s,c,l=[q,o];if(a){for(;t=t[r];)if((1===t.nodeType||i)&&e(t,n,a))return!0}else for(;t=t[r];)if(1===t.nodeType||i){if(c=t[I]||(t[I]={}),s=c[t.uniqueID]||(c[t.uniqueID]={}),(u=s[r])&&u[0]===q&&u[1]===o)return l[2]=u[2];if(s[r]=l,l[2]=e(t,n,a))return!0}}}function d(e){return e.length>1?function(t,n,r){for(var i=e.length;i--;)if(!e[i](t,n,r))return!1;return!0}:e[0]}function p(e,n,r){for(var i=0,o=n.length;i<o;i++)t(e,n[i],r);return r}function h(e,t,n,r,i){for(var o,a=[],u=0,s=e.length,c=null!=t;u<s;u++)(o=e[u])&&(n&&!n(o,r,i)||(a.push(o),c&&t.push(u)));return a}function g(e,t,n,i,o,a){return i&&!i[I]&&(i=g(i)),o&&!o[I]&&(o=g(o,a)),r(function(r,a,u,s){var c,l,f,d=[],g=[],y=a.length,v=r||p(t||"*",u.nodeType?[u]:u,[]),m=!e||!r&&t?v:h(v,d,e,u,s),x=n?o||(r?e:y||i)?[]:a:m;if(n&&n(m,x,u,s),i)for(c=h(x,g),i(c,[],u,s),l=c.length;l--;)(f=c[l])&&(x[g[l]]=!(m[g[l]]=f));if(r){if(o||e){if(o){for(c=[],l=x.length;l--;)(f=x[l])&&c.push(m[l]=f);o(null,x=[],c,s)}for(l=x.length;l--;)(f=x[l])&&(c=o?Z(r,f):d[l])>-1&&(r[c]=!(a[c]=f))}}else x=h(x===a?x.splice(y,x.length):x),o?o(null,a,x,s):Y.apply(a,x)})}function y(e){for(var t,n,r,i=e.length,o=b.relative[e[0].type],a=o||b.relative[" "],u=o?1:0,s=f(function(e){return e===t},a,!0),c=f(function(e){return Z(t,e)>-1},a,!0),p=[function(e,n,r){var i=!o&&(r||n!==k)||((t=n).nodeType?s(e,n,r):c(e,n,r));return t=null,i}];u<i;u++)if(n=b.relative[e[u].type])p=[f(d(p),n)];else{if(n=b.filter[e[u].type].apply(null,e[u].matches),n[I]){for(r=++u;r<i&&!b.relative[e[r].type];r++);return g(u>1&&d(p),u>1&&l(e.slice(0,u-1).concat({"value":" "===e[u-2].type?"*":""})).replace(ae,"$1"),n,u<r&&y(e.slice(u,r)),r<i&&y(e=e.slice(r)),r<i&&l(e))}p.push(n)}return d(p)}function v(e,n){var i=n.length>0,o=e.length>0,a=function(r,a,u,s,c){var l,f,d,p=0,g="0",y=r&&[],v=[],m=k,x=r||o&&b.find.TAG("*",c),w=q+=null==m?1:Math.random()||.1,_=x.length;for(c&&(k=a===D||a||c);g!==_&&null!=(l=x[g]);g++){if(o&&l){for(f=0,a||l.ownerDocument===D||(j(l),u=!O);d=e[f++];)if(d(l,a||D,u)){s.push(l);break}c&&(q=w)}i&&((l=!d&&l)&&p--,r&&y.push(l))}if(p+=g,i&&g!==p){for(f=0;d=n[f++];)d(y,v,a,u);if(r){if(p>0)for(;g--;)y[g]||v[g]||(v[g]=K.call(s));v=h(v)}Y.apply(s,v),c&&!r&&v.length>0&&p+n.length>1&&t.uniqueSort(s)}return c&&(q=w,k=m),y};return i?r(a):a}var m,x,b,w,_,C,T,S,k,N,A,j,D,L,O,H,F,M,B,I="sizzle"+1*new Date,R=e.document,q=0,P=0,z=n(),W=n(),$=n(),X=function(e,t){return e===t&&(A=!0),0},U=1<<31,J={}.hasOwnProperty,V=[],K=V.pop,G=V.push,Y=V.push,Q=V.slice,Z=function(e,t){for(var n=0,r=e.length;n<r;n++)if(e[n]===t)return n;return-1},ee="checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",te="[\\x20\\t\\r\\n\\f]",ne="(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",re="\\["+te+"*("+ne+")(?:"+te+"*([*^$|!~]?=)"+te+"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|("+ne+"))|)"+te+"*\\]",ie=":("+ne+")(?:\\((('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|((?:\\\\.|[^\\\\()[\\]]|"+re+")*)|.*)\\)|)",oe=RegExp(te+"+","g"),ae=RegExp("^"+te+"+|((?:^|[^\\\\])(?:\\\\.)*)"+te+"+$","g"),ue=RegExp("^"+te+"*,"+te+"*"),se=RegExp("^"+te+"*([>+~]|"+te+")"+te+"*"),ce=RegExp("="+te+"*([^\\]'\"]*?)"+te+"*\\]","g"),le=RegExp(ie),fe=RegExp("^"+ne+"$"),de={"ID":RegExp("^#("+ne+")"),"CLASS":RegExp("^\\.("+ne+")"),"TAG":RegExp("^("+ne+"|[*])"),"ATTR":RegExp("^"+re),"PSEUDO":RegExp("^"+ie),"CHILD":RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("+te+"*(even|odd|(([+-]|)(\\d*)n|)"+te+"*(?:([+-]|)"+te+"*(\\d+)|))"+te+"*\\)|)","i"),"bool":RegExp("^(?:"+ee+")$","i"),"needsContext":RegExp("^"+te+"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\("+te+"*((?:-\\d)?\\d*)"+te+"*\\)|)(?=[^-]|$)","i")},pe=/^(?:input|select|textarea|button)$/i,he=/^h\d$/i,ge=/^[^{]+\{\s*\[native \w/,ye=/^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,ve=/[+~]/,me=/'|\\/g,xe=RegExp("\\\\([\\da-f]{1,6}"+te+"?|("+te+")|.)","ig"),be=function(e,t,n){var r="0x"+t-65536;return r!==r||n?t:r<0?String.fromCharCode(r+65536):String.fromCharCode(r>>10|55296,1023&r|56320)},we=function(){j()};try{Y.apply(V=Q.call(R.childNodes),R.childNodes),V[R.childNodes.length].nodeType}catch(_e){Y={"apply":V.length?function(e,t){G.apply(e,Q.call(t))}:function(e,t){for(var n=e.length,r=0;e[n++]=t[r++];);e.length=n-1}}}x=t.support={},_=t.isXML=function(e){var t=e&&(e.ownerDocument||e).documentElement;return!!t&&"HTML"!==t.nodeName},j=t.setDocument=function(e){var t,n,r=e?e.ownerDocument||e:R;return r!==D&&9===r.nodeType&&r.documentElement?(D=r,L=D.documentElement,O=!_(D),(n=D.defaultView)&&n.top!==n&&(n.addEventListener?n.addEventListener("unload",we,!1):n.attachEvent&&n.attachEvent("onunload",we)),x.attributes=i(function(e){return e.className="i",!e.getAttribute("className")}),x.getElementsByTagName=i(function(e){return e.appendChild(D.createComment("")),!e.getElementsByTagName("*").length}),x.getElementsByClassName=ge.test(D.getElementsByClassName),x.getById=i(function(e){return L.appendChild(e).id=I,!D.getElementsByName||!D.getElementsByName(I).length}),x.getById?(b.find.ID=function(e,t){if("undefined"!=typeof t.getElementById&&O){var n=t.getElementById(e);return n?[n]:[]}},b.filter.ID=function(e){var t=e.replace(xe,be);return function(e){return e.getAttribute("id")===t}}):(delete b.find.ID,b.filter.ID=function(e){var t=e.replace(xe,be);return function(e){var n="undefined"!=typeof e.getAttributeNode&&e.getAttributeNode("id");return n&&n.value===t}}),b.find.TAG=x.getElementsByTagName?function(e,t){return"undefined"!=typeof t.getElementsByTagName?t.getElementsByTagName(e):x.qsa?t.querySelectorAll(e):void 0}:function(e,t){var n,r=[],i=0,o=t.getElementsByTagName(e);if("*"===e){for(;n=o[i++];)1===n.nodeType&&r.push(n);return r}return o},b.find.CLASS=x.getElementsByClassName&&function(e,t){if("undefined"!=typeof t.getElementsByClassName&&O)return t.getElementsByClassName(e)},F=[],H=[],(x.qsa=ge.test(D.querySelectorAll))&&(i(function(e){L.appendChild(e).innerHTML="<a id='"+I+"'></a><select id='"+I+"-\r\\' msallowcapture=''><option selected=''></option></select>",e.querySelectorAll("[msallowcapture^='']").length&&H.push("[*^$]="+te+"*(?:''|\"\")"),e.querySelectorAll("[selected]").length||H.push("\\["+te+"*(?:value|"+ee+")"),e.querySelectorAll("[id~="+I+"-]").length||H.push("~="),e.querySelectorAll(":checked").length||H.push(":checked"),e.querySelectorAll("a#"+I+"+*").length||H.push(".#.+[+~]")}),i(function(e){var t=D.createElement("input");t.setAttribute("type","hidden"),e.appendChild(t).setAttribute("name","D"),e.querySelectorAll("[name=d]").length&&H.push("name"+te+"*[*^$|!~]?="),e.querySelectorAll(":enabled").length||H.push(":enabled",":disabled"),e.querySelectorAll("*,:x"),H.push(",.*:")})),(x.matchesSelector=ge.test(M=L.matches||L.webkitMatchesSelector||L.mozMatchesSelector||L.oMatchesSelector||L.msMatchesSelector))&&i(function(e){x.disconnectedMatch=M.call(e,"div"),M.call(e,"[s!='']:x"),F.push("!=",ie)}),H=H.length&&RegExp(H.join("|")),F=F.length&&RegExp(F.join("|")),t=ge.test(L.compareDocumentPosition),B=t||ge.test(L.contains)?function(e,t){var n=9===e.nodeType?e.documentElement:e,r=t&&t.parentNode;return e===r||!(!r||1!==r.nodeType||!(n.contains?n.contains(r):e.compareDocumentPosition&&16&e.compareDocumentPosition(r)))}:function(e,t){if(t)for(;t=t.parentNode;)if(t===e)return!0;return!1},X=t?function(e,t){if(e===t)return A=!0,0;var n=!e.compareDocumentPosition-!t.compareDocumentPosition;return n||(n=(e.ownerDocument||e)===(t.ownerDocument||t)?e.compareDocumentPosition(t):1,1&n||!x.sortDetached&&t.compareDocumentPosition(e)===n?e===D||e.ownerDocument===R&&B(R,e)?-1:t===D||t.ownerDocument===R&&B(R,t)?1:N?Z(N,e)-Z(N,t):0:4&n?-1:1)}:function(e,t){if(e===t)return A=!0,0;var n,r=0,i=e.parentNode,o=t.parentNode,u=[e],s=[t];if(!i||!o)return e===D?-1:t===D?1:i?-1:o?1:N?Z(N,e)-Z(N,t):0;if(i===o)return a(e,t);for(n=e;n=n.parentNode;)u.unshift(n);for(n=t;n=n.parentNode;)s.unshift(n);for(;u[r]===s[r];)r++;return r?a(u[r],s[r]):u[r]===R?-1:s[r]===R?1:0},D):D},t.matches=function(e,n){return t(e,null,null,n)},t.matchesSelector=function(e,n){if((e.ownerDocument||e)!==D&&j(e),n=n.replace(ce,"='$1']"),x.matchesSelector&&O&&!$[n+" "]&&(!F||!F.test(n))&&(!H||!H.test(n)))try{var r=M.call(e,n);if(r||x.disconnectedMatch||e.document&&11!==e.document.nodeType)return r}catch(_e){}return t(n,D,null,[e]).length>0},t.contains=function(e,t){return(e.ownerDocument||e)!==D&&j(e),B(e,t)},t.attr=function(e,t){(e.ownerDocument||e)!==D&&j(e);var n=b.attrHandle[t.toLowerCase()],r=n&&J.call(b.attrHandle,t.toLowerCase())?n(e,t,!O):undefined;return r!==undefined?r:x.attributes||!O?e.getAttribute(t):(r=e.getAttributeNode(t))&&r.specified?r.value:null},t.error=function(e){throw Error("Syntax error, unrecognized expression: "+e)},t.uniqueSort=function(e){var t,n=[],r=0,i=0;if(A=!x.detectDuplicates,N=!x.sortStable&&e.slice(0),e.sort(X),A){for(;t=e[i++];)t===e[i]&&(r=n.push(i));for(;r--;)e.splice(n[r],1)}return N=null,e},w=t.getText=function(e){var t,n="",r=0,i=e.nodeType;if(i){if(1===i||9===i||11===i){if("string"==typeof e.textContent)return e.textContent;for(e=e.firstChild;e;e=e.nextSibling)n+=w(e)}else if(3===i||4===i)return e.nodeValue}else for(;t=e[r++];)n+=w(t);return n},b=t.selectors={"cacheLength":50,"createPseudo":r,"match":de,"attrHandle":{},"find":{},"relative":{">":{"dir":"parentNode","first":!0}," ":{"dir":"parentNode"},"+":{"dir":"previousSibling","first":!0},"~":{"dir":"previousSibling"}},"preFilter":{"ATTR":function(e){return e[1]=e[1].replace(xe,be),e[3]=(e[3]||e[4]||e[5]||"").replace(xe,be),"~="===e[2]&&(e[3]=" "+e[3]+" "),e.slice(0,4)},"CHILD":function(e){return e[1]=e[1].toLowerCase(),"nth"===e[1].slice(0,3)?(e[3]||t.error(e[0]),e[4]=+(e[4]?e[5]+(e[6]||1):2*("even"===e[3]||"odd"===e[3])),e[5]=+(e[7]+e[8]||"odd"===e[3])):e[3]&&t.error(e[0]),e},"PSEUDO":function(e){var t,n=!e[6]&&e[2];return de.CHILD.test(e[0])?null:(e[3]?e[2]=e[4]||e[5]||"":n&&le.test(n)&&(t=C(n,!0))&&(t=n.indexOf(")",n.length-t)-n.length)&&(e[0]=e[0].slice(0,t),e[2]=n.slice(0,t)),e.slice(0,3))}},"filter":{"TAG":function(e){var t=e.replace(xe,be).toLowerCase();return"*"===e?function(){return!0}:function(e){return e.nodeName&&e.nodeName.toLowerCase()===t}},"CLASS":function(e){var t=z[e+" "];return t||(t=RegExp("(^|"+te+")"+e+"("+te+"|$)"))&&z(e,function(e){return t.test("string"==typeof e.className&&e.className||"undefined"!=typeof e.getAttribute&&e.getAttribute("class")||"")})},"ATTR":function(e,n,r){return function(i){var o=t.attr(i,e);return null==o?"!="===n:!n||(o+="","="===n?o===r:"!="===n?o!==r:"^="===n?r&&0===o.indexOf(r):"*="===n?r&&o.indexOf(r)>-1:"$="===n?r&&o.slice(-r.length)===r:"~="===n?(" "+o.replace(oe," ")+" ").indexOf(r)>-1:"|="===n&&(o===r||o.slice(0,r.length+1)===r+"-"))}},"CHILD":function(e,t,n,r,i){var o="nth"!==e.slice(0,3),a="last"!==e.slice(-4),u="of-type"===t;return 1===r&&0===i?function(e){return!!e.parentNode}:function(t,n,s){var c,l,f,d,p,h,g=o!==a?"nextSibling":"previousSibling",y=t.parentNode,v=u&&t.nodeName.toLowerCase(),m=!s&&!u,x=!1;if(y){if(o){for(;g;){for(d=t;d=d[g];)if(u?d.nodeName.toLowerCase()===v:1===d.nodeType)return!1;h=g="only"===e&&!h&&"nextSibling"}return!0}if(h=[a?y.firstChild:y.lastChild],a&&m){for(d=y,f=d[I]||(d[I]={}),l=f[d.uniqueID]||(f[d.uniqueID]={}),c=l[e]||[],p=c[0]===q&&c[1],x=p&&c[2],d=p&&y.childNodes[p];d=++p&&d&&d[g]||(x=p=0)||h.pop();)if(1===d.nodeType&&++x&&d===t){l[e]=[q,p,x];break}}else if(m&&(d=t,f=d[I]||(d[I]={}),l=f[d.uniqueID]||(f[d.uniqueID]={}),c=l[e]||[],p=c[0]===q&&c[1],x=p),!1===x)for(;(d=++p&&d&&d[g]||(x=p=0)||h.pop())&&((u?d.nodeName.toLowerCase()!==v:1!==d.nodeType)||!++x||(m&&(f=d[I]||(d[I]={}),l=f[d.uniqueID]||(f[d.uniqueID]={}),l[e]=[q,x]),d!==t)););return(x-=i)===r||x%r==0&&x/r>=0}}},"PSEUDO":function(e,n){var i,o=b.pseudos[e]||b.setFilters[e.toLowerCase()]||t.error("unsupported pseudo: "+e);return o[I]?o(n):o.length>1?(i=[e,e,"",n],b.setFilters.hasOwnProperty(e.toLowerCase())?r(function(e,t){for(var r,i=o(e,n),a=i.length;a--;)r=Z(e,i[a]),e[r]=!(t[r]=i[a])}):function(e){return o(e,0,i)}):o}},"pseudos":{"not":r(function(e){var t=[],n=[],i=T(e.replace(ae,"$1"));return i[I]?r(function(e,t,n,r){for(var o,a=i(e,null,r,[]),u=e.length;u--;)(o=a[u])&&(e[u]=!(t[u]=o))}):function(e,r,o){return t[0]=e,i(t,null,o,n),t[0]=null,!n.pop()}}),"has":r(function(e){return function(n){return t(e,n).length>0}}),"contains":r(function(e){return e=e.replace(xe,be),function(t){return(t.textContent||t.innerText||w(t)).indexOf(e)>-1}}),"lang":r(function(e){return fe.test(e||"")||t.error("unsupported lang: "+e),e=e.replace(xe,be).toLowerCase(),function(t){var n;do{if(n=O?t.lang:t.getAttribute("xml:lang")||t.getAttribute("lang"))return(n=n.toLowerCase())===e||0===n.indexOf(e+"-")}while((t=t.parentNode)&&1===t.nodeType);return!1}}),"target":function(t){var n=e.location&&e.location.hash;return n&&n.slice(1)===t.id},"root":function(e){return e===L},"focus":function(e){return e===D.activeElement&&(!D.hasFocus||D.hasFocus())&&!!(e.type||e.href||~e.tabIndex)},"enabled":function(e){return!1===e.disabled},"disabled":function(e){return!0===e.disabled},"checked":function(e){var t=e.nodeName.toLowerCase();return"input"===t&&!!e.checked||"option"===t&&!!e.selected},"selected":function(e){return e.parentNode&&e.parentNode.selectedIndex,!0===e.selected},"empty":function(e){for(e=e.firstChild;e;e=e.nextSibling)if(e.nodeType<6)return!1;return!0},"parent":function(e){return!b.pseudos.empty(e)},"header":function(e){return he.test(e.nodeName)},"input":function(e){return pe.test(e.nodeName)},"button":function(e){var t=e.nodeName.toLowerCase();return"input"===t&&"button"===e.type||"button"===t},"text":function(e){var t;return"input"===e.nodeName.toLowerCase()&&"text"===e.type&&(null==(t=e.getAttribute("type"))||"text"===t.toLowerCase())},"first":u(function(){return[0]}),"last":u(function(e,t){return[t-1]}),"eq":u(function(e,t,n){return[n<0?n+t:n]}),"even":u(function(e,t){for(var n=0;n<t;n+=2)e.push(n);return e}),"odd":u(function(e,t){for(var n=1;n<t;n+=2)e.push(n);return e}),"lt":u(function(e,t,n){for(var r=n<0?n+t:n;--r>=0;)e.push(r);return e}),"gt":u(function(e,t,n){for(var r=n<0?n+t:n;++r<t;)e.push(r);return e})}},b.pseudos.nth=b.pseudos.eq;for(m in{"radio":!0,"checkbox":!0,"file":!0,"password":!0,"image":!0})b.pseudos[m]=function(e){return function(t){return"input"===t.nodeName.toLowerCase()&&t.type===e}}(m);for(m in{"submit":!0,"reset":!0})b.pseudos[m]=function(e){return function(t){var n=t.nodeName.toLowerCase();return("input"===n||"button"===n)&&t.type===e}}(m);c.prototype=b.filters=b.pseudos,b.setFilters=new c,C=t.tokenize=function(e,n){var r,i,o,a,u,s,c,l=W[e+" "];if(l)return n?0:l.slice(0);for(u=e,s=[],c=b.preFilter;u;){r&&!(i=ue.exec(u))||(i&&(u=u.slice(i[0].length)||u),s.push(o=[])),r=!1,(i=se.exec(u))&&(r=i.shift(),o.push({"value":r,"type":i[0].replace(ae," ")}),u=u.slice(r.length));for(a in b.filter)!(i=de[a].exec(u))||c[a]&&!(i=c[a](i))||(r=i.shift(),o.push({"value":r,"type":a,"matches":i}),u=u.slice(r.length));if(!r)break}return n?u.length:u?t.error(e):W(e,s).slice(0)},T=t.compile=function(e,t){var n,r=[],i=[],o=$[e+" "];if(!o){for(t||(t=C(e)),n=t.length;n--;)o=y(t[n]),o[I]?r.push(o):i.push(o);o=$(e,v(i,r)),o.selector=e}return o},S=t.select=function(e,t,n,r){var i,o,a,u,c,f="function"==typeof e&&e,d=!r&&C(e=f.selector||e);if(n=n||[],1===d.length){if(o=d[0]=d[0].slice(0),o.length>2&&"ID"===(a=o[0]).type&&x.getById&&9===t.nodeType&&O&&b.relative[o[1].type]){if(!(t=(b.find.ID(a.matches[0].replace(xe,be),t)||[])[0]))return n;f&&(t=t.parentNode),e=e.slice(o.shift().value.length)}for(i=de.needsContext.test(e)?0:o.length;i--&&(a=o[i],!b.relative[u=a.type]);)if((c=b.find[u])&&(r=c(a.matches[0].replace(xe,be),ve.test(o[0].type)&&s(t.parentNode)||t))){if(o.splice(i,1),!(e=r.length&&l(o)))return Y.apply(n,r),n;break}}return(f||T(e,d))(r,t,!O,n,!t||ve.test(e)&&s(t.parentNode)||t),n},x.sortStable=I.split("").sort(X).join("")===I,x.detectDuplicates=!!A,j(),x.sortDetached=i(function(e){return 1&e.compareDocumentPosition(D.createElement("div"))}),i(function(e){return e.innerHTML="<a href='#'></a>","#"===e.firstChild.getAttribute("href")})||o("type|href|height|width",function(e,t,n){if(!n)return e.getAttribute(t,"type"===t.toLowerCase()?1:2)}),x.attributes&&i(function(e){return e.innerHTML="<input/>",e.firstChild.setAttribute("value",""),""===e.firstChild.getAttribute("value")})||o("value",function(e,t,n){if(!n&&"input"===e.nodeName.toLowerCase())return e.defaultValue}),i(function(e){return null==e.getAttribute("disabled")})||o(ee,function(e,t,n){var r;if(!n)return!0===e[t]?t.toLowerCase():(r=e.getAttributeNode(t))&&r.specified?r.value:null}),E=function(){return t}()}(window),N=function(e,t){e.find=t,e.expr=t.selectors,e.expr[":"]=e.expr.pseudos,e.uniqueSort=e.unique=t.uniqueSort,e.text=t.getText,e.isXMLDoc=t.isXML,e.contains=t.contains}(k,E),A=undefined,j=/\S+/g,D=function(e,t){function n(n){var r={};return e.each(n.match(t)||[],function(e,t){r[t]=!0}),r}return e.Callbacks=function(t){t="string"==typeof t?n(t):e.extend({},t);var r,i,o,a,u=[],s=[],c=-1,l=function(){for(a=t.once,o=r=!0;s.length;c=-1)for(i=s.shift();++c<u.length;)!1===u[c].apply(i[0],i[1])&&t.stopOnFalse&&(c=u.length,i=!1);t.memory||(i=!1),r=!1,a&&(u=i?[]:"")},f={"add":function(){return u&&(i&&!r&&(c=u.length-1,s.push(i)),function n(r){e.each(r,function(r,i){e.isFunction(i)?t.unique&&f.has(i)||u.push(i):i&&i.length&&"string"!==e.type(i)&&n(i)})}(arguments),i&&!r&&l()),this},"remove":function(){return e.each(arguments,function(t,n){for(var r;(r=e.inArray(n,u,r))>-1;)u.splice(r,1),r<=c&&c--}),this},"has":function(t){return t?e.inArray(t,u)>-1:u.length>0},"empty":function(){return u&&(u=[]),this},"disable":function(){return a=s=[],u=i="",this},"disabled":function(){return!u},"lock":function(){return a=!0,i||f.disable(),this},"locked":function(){return!!a},"fireWith":function(e,t){return a||(t=t||[],t=[e,t.slice?t.slice():t],s.push(t),r||l()),this},"fire":function(){return f.fireWith(this,arguments),this},"fired":function(){return!!o}};return f},e}(k,j),L=function(e,t){return e.extend({"Deferred":function(t){var n=[["resolve","done",e.Callbacks("once memory"),"resolved"],["reject","fail",e.Callbacks("once memory"),"rejected"],["notify","progress",e.Callbacks("memory")]],r="pending",i={"state":function(){return r},"always":function(){return o.done(arguments).fail(arguments),this},"then":function(){var t=arguments;return e.Deferred(function(r){e.each(n,function(n,a){var u=e.isFunction(t[n])&&t[n];o[a[1]](function(){var t=u&&u.apply(this,arguments);t&&e.isFunction(t.promise)?t.promise().progress(r.notify).done(r.resolve).fail(r.reject):r[a[0]+"With"](this===i?r.promise():this,u?[t]:arguments)})}),t=null}).promise()},"promise":function(t){return null!=t?e.extend(t,i):i}},o={};return i.pipe=i.then,e.each(n,function(e,t){var a=t[2],u=t[3];i[t[1]]=a.add,u&&a.add(function(){r=u},n[1^e][2].disable,n[2][2].lock),o[t[0]]=function(){return o[t[0]+"With"](this===o?i:this,arguments),this},o[t[0]+"With"]=a.fireWith}),i.promise(o),t&&t.call(o,o),o},"when":function(n){var r,i,o,a=0,u=t.call(arguments),s=u.length,c=1!==s||n&&e.isFunction(n.promise)?s:0,l=1===c?n:e.Deferred(),f=function(e,n,i){return function(o){n[e]=this,i[e]=arguments.length>1?t.call(arguments):o,i===r?l.notifyWith(n,i):--c||l.resolveWith(n,i)}};if(s>1)for(r=Array(s),i=Array(s),o=Array(s);a<s;a++)u[a]&&e.isFunction(u[a].promise)?u[a].promise().progress(f(a,i,r)).done(f(a,o,u)).fail(l.reject):--c;return c||l.resolveWith(o,u),l.promise()}}),e}(k,m),O=/^<([\w-]+)\s*\/?>(?:<\/\1>|)$/,H=function(e){return e.expr.match.needsContext}(k),F=function(e,t,n){function r(t,n,r){if(e.isFunction(n))return e.grep(t,function(e,t){return!!n.call(e,t,e)!==r});if(n.nodeType)return e.grep(t,function(e){return e===n!==r});if("string"==typeof n){if(i.test(n))return e.filter(n,t,r);n=e.filter(n,t)}return e.grep(t,function(t){return e.inArray(t,n)>-1!==r})}var i=/^.[^:#\[\.,]*$/;e.filter=function(t,n,r){var i=n[0];return r&&(t=":not("+t+")"),1===n.length&&1===i.nodeType?e.find.matchesSelector(i,t)?[i]:[]:e.find.matches(t,e.grep(n,function(e){return 1===e.nodeType}))},e.fn.extend({"find":function(t){var n,r=[],i=this,o=i.length;if("string"!=typeof t)return this.pushStack(e(t).filter(function(){for(n=0;n<o;n++)if(e.contains(i[n],this))return!0}));for(n=0;n<o;n++)e.find(t,i[n],r);return r=this.pushStack(o>1?e.unique(r):r),r.selector=this.selector?this.selector+" "+t:t,r},"filter":function(e){return this.pushStack(r(this,e||[],!1))},"not":function(e){return this.pushStack(r(this,e||[],!0))},"is":function(t){return!!r(this,"string"==typeof t&&n.test(t)?e(t):t||[],!1).length}})}(k,0,H),M=function(e,t,n){var r,i=/^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,o=e.fn.init=function(o,a,u){var s,c;if(!o)return this;if(u=u||r,"string"==typeof o){if(!(s="<"===o.charAt(0)&&">"===o.charAt(o.length-1)&&o.length>=3?[null,o,null]:i.exec(o))||!s[1]&&a)return!a||a.jquery?(a||u).find(o):this.constructor(a).find(o);if(s[1]){if(a=a instanceof e?a[0]:a,e.merge(this,e.parseHTML(s[1],a&&a.nodeType?a.ownerDocument||a:t,!0)),n.test(s[1])&&e.isPlainObject(a))for(s in a)e.isFunction(this[s])?this[s](a[s]):this.attr(s,a[s]);return this}if((c=t.getElementById(s[2]))&&c.parentNode){if(c.id!==s[2])return r.find(o);this.length=1,this[0]=c}return this.context=t,this.selector=o,this}return o.nodeType?(this.context=this[0]=o,this.length=1,this):e.isFunction(o)?"undefined"!=typeof u.ready?u.ready(o):o(e):(o.selector!==undefined&&(this.selector=o.selector,this.context=o.context),e.makeArray(o,this))};return o.prototype=e.fn,r=e(t),o}(k,v,O),B=function(e,t){function n(){t.addEventListener?(t.removeEventListener("DOMContentLoaded",r),window.removeEventListener("load",r)):(t.detachEvent("onreadystatechange",r),window.detachEvent("onload",r))}function r(){(t.addEventListener||"load"===window.event.type||"complete"===t.readyState)&&(n(),e.ready())}var i;e.fn.ready=function(t){return e.ready.promise().done(t),this},e.extend({"isReady":!1,"readyWait":1,"holdReady":function(t){t?e.readyWait++:e.ready(!0)},"ready":function(n){(!0===n?--e.readyWait:e.isReady)||(e.isReady=!0,!0!==n&&--e.readyWait>0||(i.resolveWith(t,[e]),e.fn.triggerHandler&&(e(t).triggerHandler("ready"),e(t).off("ready"))))}}),e.ready.promise=function(o){if(!i)if(i=e.Deferred(),"complete"===t.readyState||"loading"!==t.readyState&&!t.documentElement.doScroll)window.setTimeout(e.ready);else if(t.addEventListener)t.addEventListener("DOMContentLoaded",r),window.addEventListener("load",r);else{t.attachEvent("onreadystatechange",r),window.attachEvent("onload",r);var a=!1;try{a=null==window.frameElement&&t.documentElement}catch(u){}a&&a.doScroll&&function s(){if(!e.isReady){try{a.doScroll("left")}catch(u){return window.setTimeout(s,50)}n(),e.ready()}}()}return i.promise(o)},e.ready.promise()}(k,v),I=function(e,t,n){var r;for(r in e(t))break;return t.ownFirst="0"===r,t.inlineBlockNeedsLayout=!1,e(function(){var e,r,i,o;(i=n.getElementsByTagName("body")[0])&&i.style&&(r=n.createElement("div"),o=n.createElement("div"),o.style.cssText="position:absolute;border:0;width:0;height:0;top:0;left:-9999px",i.appendChild(o).appendChild(r),"undefined"!=typeof r.style.zoom&&(r.style.cssText="display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1",t.inlineBlockNeedsLayout=e=3===r.offsetWidth,e&&(i.style.zoom=1)),i.removeChild(o))}),t}(k,S,v),R=function(e,t){return function(){var n=e.createElement("div");t.deleteExpando=!0;try{delete n.test}catch(r){t.deleteExpando=!1}n=null}(),t}(v,S),q=function(e){return function(t){var n=e.noData[(t.nodeName+" ").toLowerCase()],r=+t.nodeType||1;return(1===r||9===r)&&(!n||!0!==n&&t.getAttribute("classid")===n)}}(k),P=function(e,t,n,r){function i(t,n,r){if(r===undefined&&1===t.nodeType){var i="data-"+n.replace(c,"-$1").toLowerCase();if("string"==typeof(r=t.getAttribute(i))){try{r="true"===r||"false"!==r&&("null"===r?null:+r+""===r?+r:s.test(r)?e.parseJSON(r):r)}catch(o){}e.data(t,n,r)}else r=undefined}return r}function o(t){var n;for(n in t)if(("data"!==n||!e.isEmptyObject(t[n]))&&"toJSON"!==n)return!1;return!0}function a(n,i,o,a){if(r(n)){var u,s,c=e.expando,l=n.nodeType,f=l?e.cache:n,d=l?n[c]:n[c]&&c;if(d&&f[d]&&(a||f[d].data)||o!==undefined||"string"!=typeof i)return d||(d=l?n[c]=t.pop()||e.guid++:c),f[d]||(f[d]=l?{}:{"toJSON":e.noop}),"object"!=typeof i&&"function"!=typeof i||(a?f[d]=e.extend(f[d],i):f[d].data=e.extend(f[d].data,i)),s=f[d],a||(s.data||(s.data={}),s=s.data),o!==undefined&&(s[e.camelCase(i)]=o),"string"==typeof i?null==(u=s[i])&&(u=s[e.camelCase(i)]):u=s,u}}function u(t,i,a){if(r(t)){var u,s,c=t.nodeType,l=c?e.cache:t,f=c?t[e.expando]:e.expando;if(l[f]){if(i&&(u=a?l[f]:l[f].data)){e.isArray(i)?i=i.concat(e.map(i,e.camelCase)):i in u?i=[i]:(i=e.camelCase(i),i=i in u?[i]:i.split(" ")),s=i.length;for(;s--;)delete u[i[s]];if(a?!o(u):!e.isEmptyObject(u))return}(a||(delete l[f].data,o(l[f])))&&(c?e.cleanData([t],!0):n.deleteExpando||l!=l.window?delete l[f]:l[f]=undefined)}}}var s=/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,c=/([A-Z])/g;return e.extend({"cache":{},"noData":{"applet ":!0,"embed ":!0,"object ":"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"},"hasData":function(t){return!!(t=t.nodeType?e.cache[t[e.expando]]:t[e.expando])&&!o(t)},"data":function(e,t,n){return a(e,t,n)},"removeData":function(e,t){return u(e,t)},"_data":function(e,t,n){return a(e,t,n,!0)},"_removeData":function(e,t){return u(e,t,!0)}}),e.fn.extend({"data":function(t,n){var r,o,a,u=this[0],s=u&&u.attributes;if(t===undefined){if(this.length&&(a=e.data(u),1===u.nodeType&&!e._data(u,"parsedAttrs"))){for(r=s.length;r--;)s[r]&&(o=s[r].name,0===o.indexOf("data-")&&(o=e.camelCase(o.slice(5)),i(u,o,a[o])));e._data(u,"parsedAttrs",!0)}return a}return"object"==typeof t?this.each(function(){e.data(this,t)}):arguments.length>1?this.each(function(){e.data(this,t,n)}):u?i(u,t,e.data(u,t)):undefined},"removeData":function(t){return this.each(function(){e.removeData(this,t)})}}),e}(k,y,R,q),z=function(e,t){return function(){var n,r=e.createElement("input"),i=e.createElement("div"),o=e.createElement("select"),a=o.appendChild(e.createElement("option"));i=e.createElement("div"),i.setAttribute("className","t"),i.innerHTML="  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>",n=i.getElementsByTagName("a")[0],r.setAttribute("type","checkbox"),i.appendChild(r),n=i.getElementsByTagName("a")[0],n.style.cssText="top:1px",t.getSetAttribute="t"!==i.className,t.style=/top/.test(n.getAttribute("style")),t.hrefNormalized="/a"===n.getAttribute("href"),t.checkOn=!!r.value,t.optSelected=a.selected,t.enctype=!!e.createElement("form").enctype,o.disabled=!0,t.optDisabled=!a.disabled,r=e.createElement("input"),r.setAttribute("value",""),t.input=""===r.getAttribute("value"),r.value="t",r.setAttribute("type","radio"),t.radioValue="t"===r.value}(),t}(v,S),W=function(e,t){var n=/\r/g,r=/[\x20\t\r\n\f]+/g;e.fn.extend({"val":function(t){var r,i,o,a=this[0];return arguments.length?(o=e.isFunction(t),this.each(function(n){var i;1===this.nodeType&&(i=o?t.call(this,n,e(this).val()):t,null==i?i="":"number"==typeof i?i+="":e.isArray(i)&&(i=e.map(i,function(e){return null==e?"":e+""})),(r=e.valHooks[this.type]||e.valHooks[this.nodeName.toLowerCase()])&&"set"in r&&r.set(this,i,"value")!==undefined||(this.value=i))})):a?(r=e.valHooks[a.type]||e.valHooks[a.nodeName.toLowerCase()])&&"get"in r&&(i=r.get(a,"value"))!==undefined?i:(i=a.value,"string"==typeof i?i.replace(n,""):null==i?"":i):void 0}}),e.extend({"valHooks":{"option":{"get":function(t){var n=e.find.attr(t,"value");return null!=n?n:e.trim(e.text(t)).replace(r," ")}},
-"select":{"get":function(n){for(var r,i,o=n.options,a=n.selectedIndex,u="select-one"===n.type||a<0,s=u?null:[],c=u?a+1:o.length,l=a<0?c:u?a:0;l<c;l++)if(i=o[l],(i.selected||l===a)&&(t.optDisabled?!i.disabled:null===i.getAttribute("disabled"))&&(!i.parentNode.disabled||!e.nodeName(i.parentNode,"optgroup"))){if(r=e(i).val(),u)return r;s.push(r)}return s},"set":function(t,n){for(var r,i,o=t.options,a=e.makeArray(n),u=o.length;u--;)if(i=o[u],e.inArray(e.valHooks.option.get(i),a)>-1)try{i.selected=r=!0}catch(s){i.scrollHeight}else i.selected=!1;return r||(t.selectedIndex=-1),o}}}}),e.each(["radio","checkbox"],function(){e.valHooks[this]={"set":function(t,n){if(e.isArray(n))return t.checked=e.inArray(e(t).val(),n)>-1}},t.checkOn||(e.valHooks[this].get=function(e){return null===e.getAttribute("value")?"on":e.value})})}(k,z),$=function(e){var t=function(n,r,i,o,a,u,s){var c=0,l=n.length,f=null==i;if("object"===e.type(i)){a=!0;for(c in i)t(n,r,c,i[c],!0,u,s)}else if(o!==undefined&&(a=!0,e.isFunction(o)||(s=!0),f&&(s?(r.call(n,o),r=null):(f=r,r=function(t,n,r){return f.call(e(t),r)})),r))for(;c<l;c++)r(n[c],i,s?o:o.call(n[c],c,r(n[c],i)));return a?n:f?r.call(n):l?r(n[0],i):u};return t}(k),X=function(e,t,n,r){var i,o,a=e.expr.attrHandle,u=/^(?:checked|selected)$/i,s=n.getSetAttribute,c=n.input;e.fn.extend({"attr":function(n,r){return t(this,e.attr,n,r,arguments.length>1)},"removeAttr":function(t){return this.each(function(){e.removeAttr(this,t)})}}),e.extend({"attr":function(t,n,r){var a,u,s=t.nodeType;if(3!==s&&8!==s&&2!==s)return"undefined"==typeof t.getAttribute?e.prop(t,n,r):(1===s&&e.isXMLDoc(t)||(n=n.toLowerCase(),u=e.attrHooks[n]||(e.expr.match.bool.test(n)?o:i)),r!==undefined?null===r?void e.removeAttr(t,n):u&&"set"in u&&(a=u.set(t,r,n))!==undefined?a:(t.setAttribute(n,r+""),r):u&&"get"in u&&null!==(a=u.get(t,n))?a:(a=e.find.attr(t,n),null==a?undefined:a))},"attrHooks":{"type":{"set":function(t,r){if(!n.radioValue&&"radio"===r&&e.nodeName(t,"input")){var i=t.value;return t.setAttribute("type",r),i&&(t.value=i),r}}}},"removeAttr":function(t,n){var i,o,a=0,l=n&&n.match(r);if(l&&1===t.nodeType)for(;i=l[a++];)o=e.propFix[i]||i,e.expr.match.bool.test(i)?c&&s||!u.test(i)?t[o]=!1:t[e.camelCase("default-"+i)]=t[o]=!1:e.attr(t,i,""),t.removeAttribute(s?i:o)}}),o={"set":function(t,n,r){return!1===n?e.removeAttr(t,r):c&&s||!u.test(r)?t.setAttribute(!s&&e.propFix[r]||r,r):t[e.camelCase("default-"+r)]=t[r]=!0,r}},e.each(e.expr.match.bool.source.match(/\w+/g),function(t,n){var r=a[n]||e.find.attr;c&&s||!u.test(n)?a[n]=function(e,t,n){var i,o;return n||(o=a[t],a[t]=i,i=null!=r(e,t,n)?t.toLowerCase():null,a[t]=o),i}:a[n]=function(t,n,r){if(!r)return t[e.camelCase("default-"+n)]?n.toLowerCase():null}}),c&&s||(e.attrHooks.value={"set":function(t,n,r){if(!e.nodeName(t,"input"))return i&&i.set(t,n,r);t.defaultValue=n}}),s||(i={"set":function(e,t,n){var r=e.getAttributeNode(n);if(r||e.setAttributeNode(r=e.ownerDocument.createAttribute(n)),r.value=t+="","value"===n||t===e.getAttribute(n))return t}},a.id=a.name=a.coords=function(e,t,n){var r;if(!n)return(r=e.getAttributeNode(t))&&""!==r.value?r.value:null},e.valHooks.button={"get":function(e,t){var n=e.getAttributeNode(t);if(n&&n.specified)return n.value},"set":i.set},e.attrHooks.contenteditable={"set":function(e,t,n){i.set(e,""!==t&&t,n)}},e.each(["width","height"],function(t,n){e.attrHooks[n]={"set":function(e,t){if(""===t)return e.setAttribute(n,"auto"),t}}})),n.style||(e.attrHooks.style={"get":function(e){return e.style.cssText||undefined},"set":function(e,t){return e.style.cssText=t+""}})}(k,$,z,j),U=function(e,t,n){var r=/^(?:input|select|textarea|button|object)$/i,i=/^(?:a|area)$/i;e.fn.extend({"prop":function(n,r){return t(this,e.prop,n,r,arguments.length>1)},"removeProp":function(t){return t=e.propFix[t]||t,this.each(function(){try{this[t]=undefined,delete this[t]}catch(e){}})}}),e.extend({"prop":function(t,n,r){var i,o,a=t.nodeType;if(3!==a&&8!==a&&2!==a)return 1===a&&e.isXMLDoc(t)||(n=e.propFix[n]||n,o=e.propHooks[n]),r!==undefined?o&&"set"in o&&(i=o.set(t,r,n))!==undefined?i:t[n]=r:o&&"get"in o&&null!==(i=o.get(t,n))?i:t[n]},"propHooks":{"tabIndex":{"get":function(t){var n=e.find.attr(t,"tabindex");return n?parseInt(n,10):r.test(t.nodeName)||i.test(t.nodeName)&&t.href?0:-1}}},"propFix":{"for":"htmlFor","class":"className"}}),n.hrefNormalized||e.each(["href","src"],function(t,n){e.propHooks[n]={"get":function(e){return e.getAttribute(n,4)}}}),n.optSelected||(e.propHooks.selected={"get":function(e){var t=e.parentNode;return t&&(t.selectedIndex,t.parentNode&&t.parentNode.selectedIndex),null},"set":function(e){var t=e.parentNode;t&&(t.selectedIndex,t.parentNode&&t.parentNode.selectedIndex)}}),e.each(["tabIndex","readOnly","maxLength","cellSpacing","cellPadding","rowSpan","colSpan","useMap","frameBorder","contentEditable"],function(){e.propFix[this.toLowerCase()]=this}),n.enctype||(e.propFix.enctype="encoding")}(k,$,z),J=function(e,t){function n(t){return e.attr(t,"class")||""}var r=/[\t\r\n\f]/g;e.fn.extend({"addClass":function(i){var o,a,u,s,c,l,f,d=0;if(e.isFunction(i))return this.each(function(t){e(this).addClass(i.call(this,t,n(this)))});if("string"==typeof i&&i)for(o=i.match(t)||[];a=this[d++];)if(s=n(a),u=1===a.nodeType&&(" "+s+" ").replace(r," ")){for(l=0;c=o[l++];)u.indexOf(" "+c+" ")<0&&(u+=c+" ");f=e.trim(u),s!==f&&e.attr(a,"class",f)}return this},"removeClass":function(i){var o,a,u,s,c,l,f,d=0;if(e.isFunction(i))return this.each(function(t){e(this).removeClass(i.call(this,t,n(this)))});if(!arguments.length)return this.attr("class","");if("string"==typeof i&&i)for(o=i.match(t)||[];a=this[d++];)if(s=n(a),u=1===a.nodeType&&(" "+s+" ").replace(r," ")){for(l=0;c=o[l++];)for(;u.indexOf(" "+c+" ")>-1;)u=u.replace(" "+c+" "," ");f=e.trim(u),s!==f&&e.attr(a,"class",f)}return this},"toggleClass":function(r,i){var o=typeof r;return"boolean"==typeof i&&"string"===o?i?this.addClass(r):this.removeClass(r):e.isFunction(r)?this.each(function(t){e(this).toggleClass(r.call(this,t,n(this),i),i)}):this.each(function(){var i,a,u,s;if("string"===o)for(a=0,u=e(this),s=r.match(t)||[];i=s[a++];)u.hasClass(i)?u.removeClass(i):u.addClass(i);else r!==undefined&&"boolean"!==o||(i=n(this),i&&e._data(this,"__className__",i),e.attr(this,"class",i||!1===r?"":e._data(this,"__className__")||""))})},"hasClass":function(e){var t,i,o=0;for(t=" "+e+" ";i=this[o++];)if(1===i.nodeType&&(" "+n(i)+" ").replace(r," ").indexOf(t)>-1)return!0;return!1}})}(k,j),V=function(e){return e}(k),K=/[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,G=/^margin/,Y=function(e){return RegExp("^(?:([+-])=|)("+e+")([a-z%]*)$","i")}(K),Q=function(e){return RegExp("^("+e+")(?!px)[a-z%]+$","i")}(K),Z=["Top","Right","Bottom","Left"],ee=function(e){return function(t,n){return t=n||t,"none"===e.css(t,"display")||!e.contains(t.ownerDocument,t)}}(k),te=function(e,t,n,r){var i,o,a={};for(o in t)a[o]=e.style[o],e.style[o]=t[o];i=n.apply(e,r||[]);for(o in t)e.style[o]=a[o];return i},ne=function(e){return e.documentElement}(v),re=function(e,t,n,r){return function(){function n(){var e,n,r=t.documentElement;r.appendChild(l),f.style.cssText="-webkit-box-sizing:border-box;box-sizing:border-box;position:relative;display:block;margin:auto;border:1px;padding:1px;top:1%;width:50%",i=a=c=!1,o=s=!0,window.getComputedStyle&&(n=window.getComputedStyle(f),i="1%"!==(n||{}).top,c="2px"===(n||{}).marginLeft,a="4px"===(n||{"width":"4px"}).width,f.style.marginRight="50%",o="4px"===(n||{"marginRight":"4px"}).marginRight,e=f.appendChild(t.createElement("div")),e.style.cssText=f.style.cssText="-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;display:block;margin:0;border:0;padding:0",e.style.marginRight=e.style.width="0",f.style.width="1px",s=!parseFloat((window.getComputedStyle(e)||{}).marginRight),f.removeChild(e)),f.style.display="none",u=0===f.getClientRects().length,u&&(f.style.display="",f.innerHTML="<table><tr><td></td><td>t</td></tr></table>",f.childNodes[0].style.borderCollapse="separate",e=f.getElementsByTagName("td"),e[0].style.cssText="margin:0;border:0;padding:0;display:none",(u=0===e[0].offsetHeight)&&(e[0].style.display="",e[1].style.display="none",u=0===e[0].offsetHeight)),r.removeChild(l)}var i,o,a,u,s,c,l=t.createElement("div"),f=t.createElement("div");f.style&&(f.style.cssText="float:left;opacity:.5",r.opacity="0.5"===f.style.opacity,r.cssFloat=!!f.style.cssFloat,f.style.backgroundClip="content-box",f.cloneNode(!0).style.backgroundClip="",r.clearCloneStyle="content-box"===f.style.backgroundClip,l=t.createElement("div"),l.style.cssText="border:0;width:8px;height:0;top:0;left:-9999px;padding:0;margin-top:1px;position:absolute",f.innerHTML="",l.appendChild(f),r.boxSizing=""===f.style.boxSizing||""===f.style.MozBoxSizing||""===f.style.WebkitBoxSizing,e.extend(r,{"reliableHiddenOffsets":function(){return null==i&&n(),u},"boxSizingReliable":function(){return null==i&&n(),a},"pixelMarginRight":function(){return null==i&&n(),o},"pixelPosition":function(){return null==i&&n(),i},"reliableMarginRight":function(){return null==i&&n(),s},"reliableMarginLeft":function(){return null==i&&n(),c}}))}(),r}(k,v,0,S),ie=function(e,t,n,r,i,o){var a,u,s=/^(top|right|bottom|left)$/;return window.getComputedStyle?(a=function(e){var t=e.ownerDocument.defaultView;return t&&t.opener||(t=window),t.getComputedStyle(e)},u=function(e,n,u){var s,c,l,f,d=e.style;return u=u||a(e),f=u?u.getPropertyValue(n)||u[n]:undefined,""!==f&&f!==undefined||t.contains(e.ownerDocument,e)||(f=t.style(e,n)),u&&!o.pixelMarginRight()&&r.test(f)&&i.test(n)&&(s=d.width,c=d.minWidth,l=d.maxWidth,d.minWidth=d.maxWidth=d.width=f,f=u.width,d.width=s,d.minWidth=c,d.maxWidth=l),f===undefined?f:f+""}):n.currentStyle&&(a=function(e){return e.currentStyle},u=function(e,t,n){var i,o,u,c,l=e.style;return n=n||a(e),c=n?n[t]:undefined,null==c&&l&&l[t]&&(c=l[t]),r.test(c)&&!s.test(t)&&(i=l.left,o=e.runtimeStyle,u=o&&o.left,u&&(o.left=e.currentStyle.left),l.left="fontSize"===t?"1em":c,c=l.pixelLeft+"px",l.left=i,u&&(o.left=u)),c===undefined?c:c+""||"auto"}),e.getStyles=a,e.curCSS=u,e}(ie,k,ne,Q,G,re),oe=function(e,t){function n(n,r,i,o){var a,u=1,s=20,c=o?function(){return o.cur()}:function(){return e.css(n,r,"")},l=c(),f=i&&i[3]||(e.cssNumber[r]?"":"px"),d=(e.cssNumber[r]||"px"!==f&&+l)&&t.exec(e.css(n,r));if(d&&d[3]!==f){f=f||d[3],i=i||[],d=+l||1;do{u=u||".5",d/=u,e.style(n,r,d+f)}while(u!==(u=c()/l)&&1!==u&&--s)}return i&&(d=+d||+l||0,a=i[1]?d+(i[1]+1)*i[2]:+i[2],o&&(o.unit=f,o.start=d,o.end=a)),a}return n}(k,Y),ae=/^(?:checkbox|radio)$/i,ue=/<([\w:-]+)/,se=/^$|\/(?:java|ecma)script/i,ce=/^\s+/,le="abbr|article|aside|audio|bdi|canvas|data|datalist|details|dialog|figcaption|figure|footer|header|hgroup|main|mark|meter|nav|output|picture|progress|section|summary|template|time|video",fe=function(e){function t(t){var n=e.split("|"),r=t.createDocumentFragment();if(r.createElement)for(;n.length;)r.createElement(n.pop());return r}return t}(le),de=function(e,t,n){return function(){var r=t.createElement("div"),i=t.createDocumentFragment(),o=t.createElement("input");r.innerHTML="  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>",n.leadingWhitespace=3===r.firstChild.nodeType,n.tbody=!r.getElementsByTagName("tbody").length,n.htmlSerialize=!!r.getElementsByTagName("link").length,n.html5Clone="<:nav></:nav>"!==t.createElement("nav").cloneNode(!0).outerHTML,o.type="checkbox",o.checked=!0,i.appendChild(o),n.appendChecked=o.checked,r.innerHTML="<textarea>x</textarea>",n.noCloneChecked=!!r.cloneNode(!0).lastChild.defaultValue,i.appendChild(r),o=t.createElement("input"),o.setAttribute("type","radio"),o.setAttribute("checked","checked"),o.setAttribute("name","t"),r.appendChild(o),n.checkClone=r.cloneNode(!0).cloneNode(!0).lastChild.checked,n.noCloneEvent=!!r.addEventListener,r[e.expando]=1,n.attributes=!r.getAttribute(e.expando)}(),n}(k,v,S),pe=function(e){var t={"option":[1,"<select multiple='multiple'>","</select>"],"legend":[1,"<fieldset>","</fieldset>"],"area":[1,"<map>","</map>"],"param":[1,"<object>","</object>"],"thead":[1,"<table>","</table>"],"tr":[2,"<table><tbody>","</tbody></table>"],"col":[2,"<table><tbody></tbody><colgroup>","</colgroup></table>"],"td":[3,"<table><tbody><tr>","</tr></tbody></table>"],"_default":e.htmlSerialize?[0,"",""]:[1,"X<div>","</div>"]};return t.optgroup=t.option,t.tbody=t.tfoot=t.colgroup=t.caption=t.thead,t.th=t.td,t}(de),he=function(e){function t(n,r){var i,o,a=0,u="undefined"!=typeof n.getElementsByTagName?n.getElementsByTagName(r||"*"):"undefined"!=typeof n.querySelectorAll?n.querySelectorAll(r||"*"):undefined;if(!u)for(u=[],i=n.childNodes||n;null!=(o=i[a]);a++)!r||e.nodeName(o,r)?u.push(o):e.merge(u,t(o,r));return r===undefined||r&&e.nodeName(n,r)?e.merge([n],u):u}return t}(k),ge=function(e){function t(t,n){for(var r,i=0;null!=(r=t[i]);i++)e._data(r,"globalEval",!n||e._data(n[i],"globalEval"))}return t}(k),ye=function(e,t,n,r,i,o,a,u,s,c){function l(e){t.test(e.type)&&(e.defaultChecked=e.checked)}function f(t,f,h,g,y){for(var v,m,x,b,w,_,C,T=t.length,S=o(f),k=[],E=0;E<T;E++)if((m=t[E])||0===m)if("object"===e.type(m))e.merge(k,m.nodeType?[m]:m);else if(d.test(m)){for(b=b||S.appendChild(f.createElement("div")),w=(n.exec(m)||["",""])[1].toLowerCase(),C=a[w]||a._default,b.innerHTML=C[1]+e.htmlPrefilter(m)+C[2],v=C[0];v--;)b=b.lastChild;if(!c.leadingWhitespace&&i.test(m)&&k.push(f.createTextNode(i.exec(m)[0])),!c.tbody)for(m="table"!==w||p.test(m)?"<table>"!==C[1]||p.test(m)?0:b:b.firstChild,v=m&&m.childNodes.length;v--;)e.nodeName(_=m.childNodes[v],"tbody")&&!_.childNodes.length&&m.removeChild(_);for(e.merge(k,b.childNodes),b.textContent="";b.firstChild;)b.removeChild(b.firstChild);b=S.lastChild}else k.push(f.createTextNode(m));for(b&&S.removeChild(b),c.appendChecked||e.grep(u(k,"input"),l),E=0;m=k[E++];)if(g&&e.inArray(m,g)>-1)y&&y.push(m);else if(x=e.contains(m.ownerDocument,m),b=u(S.appendChild(m),"script"),x&&s(b),h)for(v=0;m=b[v++];)r.test(m.type||"")&&h.push(m);return b=null,S}var d=/<|&#?\w+;/,p=/<tbody/i;return f}(k,ae,ue,se,ce,fe,pe,he,ge,de),ve=function(e){return function(t,n,r){for(var i=[],o=r!==undefined;(t=t[n])&&9!==t.nodeType;)if(1===t.nodeType){if(o&&e(t).is(r))break;i.push(t)}return i}}(k),me=function(e,t){for(var n=[];e;e=e.nextSibling)1===e.nodeType&&e!==t&&n.push(e);return n},xe=function(e,t,n,r){function i(e,t){do{e=e[t]}while(e&&1!==e.nodeType);return e}var o=/^(?:parents|prev(?:Until|All))/,a={"children":!0,"contents":!0,"next":!0,"prev":!0};return e.fn.extend({"has":function(t){var n,r=e(t,this),i=r.length;return this.filter(function(){for(n=0;n<i;n++)if(e.contains(this,r[n]))return!0})},"closest":function(t,n){for(var i,o=0,a=this.length,u=[],s=r.test(t)||"string"!=typeof t?e(t,n||this.context):0;o<a;o++)for(i=this[o];i&&i!==n;i=i.parentNode)if(i.nodeType<11&&(s?s.index(i)>-1:1===i.nodeType&&e.find.matchesSelector(i,t))){u.push(i);break}return this.pushStack(u.length>1?e.uniqueSort(u):u)},"index":function(t){return t?"string"==typeof t?e.inArray(this[0],e(t)):e.inArray(t.jquery?t[0]:t,this):this[0]&&this[0].parentNode?this.first().prevAll().length:-1},"add":function(t,n){return this.pushStack(e.uniqueSort(e.merge(this.get(),e(t,n))))},"addBack":function(e){return this.add(null==e?this.prevObject:this.prevObject.filter(e))}}),e.each({"parent":function(e){var t=e.parentNode;return t&&11!==t.nodeType?t:null},"parents":function(e){return t(e,"parentNode")},"parentsUntil":function(e,n,r){return t(e,"parentNode",r)},"next":function(e){return i(e,"nextSibling")},"prev":function(e){return i(e,"previousSibling")},"nextAll":function(e){return t(e,"nextSibling")},"prevAll":function(e){return t(e,"previousSibling")},"nextUntil":function(e,n,r){return t(e,"nextSibling",r)},"prevUntil":function(e,n,r){return t(e,"previousSibling",r)},"siblings":function(e){return n((e.parentNode||{}).firstChild,e)},"children":function(e){return n(e.firstChild)},"contents":function(t){return e.nodeName(t,"iframe")?t.contentDocument||t.contentWindow.document:e.merge([],t.childNodes)}},function(t,n){e.fn[t]=function(r,i){var u=e.map(this,n,r);return"Until"!==t.slice(-5)&&(i=r),i&&"string"==typeof i&&(u=e.filter(i,u)),this.length>1&&(a[t]||(u=e.uniqueSort(u)),o.test(t)&&(u=u.reverse())),this.pushStack(u)}}),e}(k,ve,me,H),be=function(e,t){return function(){var n,r,i=e.createElement("div");for(n in{"submit":!0,"change":!0,"focusin":!0})r="on"+n,(t[n]=r in window)||(i.setAttribute(r,"t"),t[n]=!1===i.attributes[r].expando);i=null}(),t}(v,S),we=function(e,t,n,r,i,o,a){function u(){return!0}function s(){return!1}function c(){try{return t.activeElement}catch(e){}}function l(t,n,r,i,o,a){var u,c;if("object"==typeof n){"string"!=typeof r&&(i=i||r,r=undefined);for(c in n)l(t,c,r,i,n[c],a);return t}if(null==i&&null==o?(o=r,i=r=undefined):null==o&&("string"==typeof r?(o=i,i=undefined):(o=i,i=r,r=undefined)),!1===o)o=s;else if(!o)return t;return 1===a&&(u=o,o=function(t){return e().off(t),u.apply(this,arguments)},o.guid=u.guid||(u.guid=e.guid++)),t.each(function(){e.event.add(this,n,o,i,r)})}var f=/^(?:input|select|textarea)$/i,d=/^key/,p=/^(?:mouse|pointer|contextmenu|drag|drop)|click/,h=/^(?:focusinfocus|focusoutblur)$/,g=/^([^.]*)(?:\.(.+)|)/;return e.event={"global":{},"add":function(t,r,i,o,a){var u,s,c,l,f,d,p,h,y,v,m,x=e._data(t);if(x){for(i.handler&&(l=i,i=l.handler,a=l.selector),i.guid||(i.guid=e.guid++),(s=x.events)||(s=x.events={}),(d=x.handle)||(d=x.handle=function(t){return void 0===e||t&&e.event.triggered===t.type?undefined:e.event.dispatch.apply(d.elem,arguments)},d.elem=t),r=(r||"").match(n)||[""],c=r.length;c--;)u=g.exec(r[c])||[],y=m=u[1],v=(u[2]||"").split(".").sort(),y&&(f=e.event.special[y]||{},y=(a?f.delegateType:f.bindType)||y,f=e.event.special[y]||{},p=e.extend({"type":y,"origType":m,"data":o,"handler":i,"guid":i.guid,"selector":a,"needsContext":a&&e.expr.match.needsContext.test(a),"namespace":v.join(".")},l),(h=s[y])||(h=s[y]=[],h.delegateCount=0,f.setup&&!1!==f.setup.call(t,o,v,d)||(t.addEventListener?t.addEventListener(y,d,!1):t.attachEvent&&t.attachEvent("on"+y,d))),f.add&&(f.add.call(t,p),p.handler.guid||(p.handler.guid=i.guid)),a?h.splice(h.delegateCount++,0,p):h.push(p),e.event.global[y]=!0);t=null}},"remove":function(t,r,i,o,a){var u,s,c,l,f,d,p,h,y,v,m,x=e.hasData(t)&&e._data(t);if(x&&(d=x.events)){for(r=(r||"").match(n)||[""],f=r.length;f--;)if(c=g.exec(r[f])||[],y=m=c[1],v=(c[2]||"").split(".").sort(),y){for(p=e.event.special[y]||{},y=(o?p.delegateType:p.bindType)||y,h=d[y]||[],c=c[2]&&RegExp("(^|\\.)"+v.join("\\.(?:.*\\.|)")+"(\\.|$)"),l=u=h.length;u--;)s=h[u],!a&&m!==s.origType||i&&i.guid!==s.guid||c&&!c.test(s.namespace)||o&&o!==s.selector&&("**"!==o||!s.selector)||(h.splice(u,1),s.selector&&h.delegateCount--,p.remove&&p.remove.call(t,s));l&&!h.length&&(p.teardown&&!1!==p.teardown.call(t,v,x.handle)||e.removeEvent(t,y,x.handle),delete d[y])}else for(y in d)e.event.remove(t,y+r[f],i,o,!0);e.isEmptyObject(d)&&(delete x.handle,e._removeData(t,"events"))}},"trigger":function(n,i,o,u){var s,c,l,f,d,p,g,y=[o||t],v=r.call(n,"type")?n.type:n,m=r.call(n,"namespace")?n.namespace.split("."):[];if(l=p=o=o||t,3!==o.nodeType&&8!==o.nodeType&&!h.test(v+e.event.triggered)&&(v.indexOf(".")>-1&&(m=v.split("."),v=m.shift(),m.sort()),c=v.indexOf(":")<0&&"on"+v,n=n[e.expando]?n:new e.Event(v,"object"==typeof n&&n),n.isTrigger=u?2:3,n.namespace=m.join("."),n.rnamespace=n.namespace?RegExp("(^|\\.)"+m.join("\\.(?:.*\\.|)")+"(\\.|$)"):null,n.result=undefined,n.target||(n.target=o),i=null==i?[n]:e.makeArray(i,[n]),d=e.event.special[v]||{},u||!d.trigger||!1!==d.trigger.apply(o,i))){if(!u&&!d.noBubble&&!e.isWindow(o)){for(f=d.delegateType||v,h.test(f+v)||(l=l.parentNode);l;l=l.parentNode)y.push(l),p=l;p===(o.ownerDocument||t)&&y.push(p.defaultView||p.parentWindow||window)}for(g=0;(l=y[g++])&&!n.isPropagationStopped();)n.type=g>1?f:d.bindType||v,s=(e._data(l,"events")||{})[n.type]&&e._data(l,"handle"),s&&s.apply(l,i),(s=c&&l[c])&&s.apply&&a(l)&&(n.result=s.apply(l,i),!1===n.result&&n.preventDefault());if(n.type=v,!u&&!n.isDefaultPrevented()&&(!d._default||!1===d._default.apply(y.pop(),i))&&a(o)&&c&&o[v]&&!e.isWindow(o)){p=o[c],p&&(o[c]=null),e.event.triggered=v;try{o[v]()}catch(x){}e.event.triggered=undefined,p&&(o[c]=p)}return n.result}},"dispatch":function(t){t=e.event.fix(t);var n,r,o,a,u,s=[],c=i.call(arguments),l=(e._data(this,"events")||{})[t.type]||[],f=e.event.special[t.type]||{};if(c[0]=t,t.delegateTarget=this,!f.preDispatch||!1!==f.preDispatch.call(this,t)){for(s=e.event.handlers.call(this,t,l),n=0;(a=s[n++])&&!t.isPropagationStopped();)for(t.currentTarget=a.elem,r=0;(u=a.handlers[r++])&&!t.isImmediatePropagationStopped();)t.rnamespace&&!t.rnamespace.test(u.namespace)||(t.handleObj=u,t.data=u.data,(o=((e.event.special[u.origType]||{}).handle||u.handler).apply(a.elem,c))!==undefined&&!1===(t.result=o)&&(t.preventDefault(),t.stopPropagation()));return f.postDispatch&&f.postDispatch.call(this,t),t.result}},"handlers":function(t,n){var r,i,o,a,u=[],s=n.delegateCount,c=t.target;if(s&&c.nodeType&&("click"!==t.type||isNaN(t.button)||t.button<1))for(;c!=this;c=c.parentNode||this)if(1===c.nodeType&&(!0!==c.disabled||"click"!==t.type)){for(i=[],r=0;r<s;r++)a=n[r],o=a.selector+" ",i[o]===undefined&&(i[o]=a.needsContext?e(o,this).index(c)>-1:e.find(o,this,null,[c]).length),i[o]&&i.push(a);i.length&&u.push({"elem":c,"handlers":i})}return s<n.length&&u.push({"elem":this,"handlers":n.slice(s)}),u},"fix":function(n){if(n[e.expando])return n;var r,i,o,a=n.type,u=n,s=this.fixHooks[a];for(s||(this.fixHooks[a]=s=p.test(a)?this.mouseHooks:d.test(a)?this.keyHooks:{}),o=s.props?this.props.concat(s.props):this.props,n=new e.Event(u),r=o.length;r--;)i=o[r],n[i]=u[i];return n.target||(n.target=u.srcElement||t),3===n.target.nodeType&&(n.target=n.target.parentNode),n.metaKey=!!n.metaKey,s.filter?s.filter(n,u):n},"props":"altKey bubbles cancelable ctrlKey currentTarget detail eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),"fixHooks":{},"keyHooks":{"props":"char charCode key keyCode".split(" "),"filter":function(e,t){return null==e.which&&(e.which=null!=t.charCode?t.charCode:t.keyCode),e}},"mouseHooks":{"props":"button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(" "),"filter":function(e,n){var r,i,o,a=n.button,u=n.fromElement;return null==e.pageX&&null!=n.clientX&&(i=e.target.ownerDocument||t,o=i.documentElement,r=i.body,e.pageX=n.clientX+(o&&o.scrollLeft||r&&r.scrollLeft||0)-(o&&o.clientLeft||r&&r.clientLeft||0),e.pageY=n.clientY+(o&&o.scrollTop||r&&r.scrollTop||0)-(o&&o.clientTop||r&&r.clientTop||0)),!e.relatedTarget&&u&&(e.relatedTarget=u===e.target?n.toElement:u),e.which||a===undefined||(e.which=1&a?1:2&a?3:4&a?2:0),e}},"special":{"load":{"noBubble":!0},"focus":{"trigger":function(){if(this!==c()&&this.focus)try{return this.focus(),!1}catch(e){}},"delegateType":"focusin"},"blur":{"trigger":function(){if(this===c()&&this.blur)return this.blur(),!1},"delegateType":"focusout"},"click":{"trigger":function(){if(e.nodeName(this,"input")&&"checkbox"===this.type&&this.click)return this.click(),!1},"_default":function(t){return e.nodeName(t.target,"a")}},"beforeunload":{"postDispatch":function(e){e.result!==undefined&&e.originalEvent&&(e.originalEvent.returnValue=e.result)}}},"simulate":function(t,n,r){var i=e.extend(new e.Event,r,{"type":t,"isSimulated":!0});e.event.trigger(i,null,n),i.isDefaultPrevented()&&r.preventDefault()}},e.removeEvent=t.removeEventListener?function(e,t,n){e.removeEventListener&&e.removeEventListener(t,n)}:function(e,t,n){var r="on"+t;e.detachEvent&&("undefined"==typeof e[r]&&(e[r]=null),e.detachEvent(r,n))},e.Event=function(t,n){if(!(this instanceof e.Event))return new e.Event(t,n);t&&t.type?(this.originalEvent=t,this.type=t.type,this.isDefaultPrevented=t.defaultPrevented||t.defaultPrevented===undefined&&!1===t.returnValue?u:s):this.type=t,n&&e.extend(this,n),this.timeStamp=t&&t.timeStamp||e.now(),this[e.expando]=!0},e.Event.prototype={"constructor":e.Event,"isDefaultPrevented":s,"isPropagationStopped":s,"isImmediatePropagationStopped":s,"preventDefault":function(){var e=this.originalEvent;this.isDefaultPrevented=u,e&&(e.preventDefault?e.preventDefault():e.returnValue=!1)},"stopPropagation":function(){var e=this.originalEvent;this.isPropagationStopped=u,e&&!this.isSimulated&&(e.stopPropagation&&e.stopPropagation(),e.cancelBubble=!0)},"stopImmediatePropagation":function(){var e=this.originalEvent;this.isImmediatePropagationStopped=u,e&&e.stopImmediatePropagation&&e.stopImmediatePropagation(),this.stopPropagation()}},e.each({"mouseenter":"mouseover","mouseleave":"mouseout","pointerenter":"pointerover","pointerleave":"pointerout"},function(t,n){e.event.special[t]={"delegateType":n,"bindType":n,"handle":function(t){var r,i=this,o=t.relatedTarget,a=t.handleObj;return o&&(o===i||e.contains(i,o))||(t.type=a.origType,r=a.handler.apply(this,arguments),t.type=n),r}}}),o.submit||(e.event.special.submit={"setup":function(){if(e.nodeName(this,"form"))return!1;e.event.add(this,"click._submit keypress._submit",function(t){var n=t.target,r=e.nodeName(n,"input")||e.nodeName(n,"button")?e.prop(n,"form"):undefined;r&&!e._data(r,"submit")&&(e.event.add(r,"submit._submit",function(e){e._submitBubble=!0}),e._data(r,"submit",!0))})},"postDispatch":function(t){t._submitBubble&&(delete t._submitBubble,this.parentNode&&!t.isTrigger&&e.event.simulate("submit",this.parentNode,t))},"teardown":function(){if(e.nodeName(this,"form"))return!1;e.event.remove(this,"._submit")}}),o.change||(e.event.special.change={"setup":function(){if(f.test(this.nodeName))return"checkbox"!==this.type&&"radio"!==this.type||(e.event.add(this,"propertychange._change",function(e){"checked"===e.originalEvent.propertyName&&(this._justChanged=!0)}),e.event.add(this,"click._change",function(t){this._justChanged&&!t.isTrigger&&(this._justChanged=!1),e.event.simulate("change",this,t)})),!1;e.event.add(this,"beforeactivate._change",function(t){var n=t.target;f.test(n.nodeName)&&!e._data(n,"change")&&(e.event.add(n,"change._change",function(t){!this.parentNode||t.isSimulated||t.isTrigger||e.event.simulate("change",this.parentNode,t)}),e._data(n,"change",!0))})},"handle":function(e){var t=e.target;if(this!==t||e.isSimulated||e.isTrigger||"radio"!==t.type&&"checkbox"!==t.type)return e.handleObj.handler.apply(this,arguments)},"teardown":function(){return e.event.remove(this,"._change"),!f.test(this.nodeName)}}),o.focusin||e.each({"focus":"focusin","blur":"focusout"},function(t,n){var r=function(t){e.event.simulate(n,t.target,e.event.fix(t))};e.event.special[n]={"setup":function(){var i=this.ownerDocument||this,o=e._data(i,n);o||i.addEventListener(t,r,!0),e._data(i,n,(o||0)+1)},"teardown":function(){var i=this.ownerDocument||this,o=e._data(i,n)-1;o?e._data(i,n,o):(i.removeEventListener(t,r,!0),e._removeData(i,n))}}}),e.fn.extend({"on":function(e,t,n,r){return l(this,e,t,n,r)},"one":function(e,t,n,r){return l(this,e,t,n,r,1)},"off":function(t,n,r){var i,o;if(t&&t.preventDefault&&t.handleObj)return i=t.handleObj,e(t.delegateTarget).off(i.namespace?i.origType+"."+i.namespace:i.origType,i.selector,i.handler),this;if("object"==typeof t){for(o in t)this.off(o,n,t[o]);return this}return!1!==n&&"function"!=typeof n||(r=n,n=undefined),!1===r&&(r=s),this.each(function(){e.event.remove(this,t,r,n)})},"trigger":function(t,n){return this.each(function(){e.event.trigger(t,n,this)})},"triggerHandler":function(t,n){var r=this[0];if(r)return e.event.trigger(t,n,r,!0)}}),e}(k,v,j,T,m,be,q),_e=function(e,t,n,r,i,o,a,u,s,c,l,f,d,p,h,g,y,v){function m(t,n){return e.nodeName(t,"table")&&e.nodeName(11!==n.nodeType?n:n.firstChild,"tr")?t.getElementsByTagName("tbody")[0]||t.appendChild(t.ownerDocument.createElement("tbody")):t}function x(t){return t.type=(null!==e.find.attr(t,"type"))+"/"+t.type,t}function b(e){var t=j.exec(e.type);return t?e.type=t[1]:e.removeAttribute("type"),e}function w(t,n){if(1===n.nodeType&&e.hasData(t)){var r,i,o,a=e._data(t),u=e._data(n,a),s=a.events;if(s){delete u.handle,u.events={};for(r in s)for(i=0,o=s[r].length;i<o;i++)e.event.add(n,r,s[r][i])}u.data&&(u.data=e.extend({},u.data))}}function _(t,n){var r,i,o;if(1===n.nodeType){if(r=n.nodeName.toLowerCase(),!y.noCloneEvent&&n[e.expando]){o=e._data(n);for(i in o.events)e.removeEvent(n,i,o.handle);n.removeAttribute(e.expando)}"script"===r&&n.text!==t.text?(x(n).text=t.text,b(n)):"object"===r?(n.parentNode&&(n.outerHTML=t.outerHTML),y.html5Clone&&t.innerHTML&&!e.trim(n.innerHTML)&&(n.innerHTML=t.innerHTML)):"input"===r&&a.test(t.type)?(n.defaultChecked=n.checked=t.checked,n.value!==t.value&&(n.value=t.value)):"option"===r?n.defaultSelected=n.selected=t.defaultSelected:"input"!==r&&"textarea"!==r||(n.defaultValue=t.defaultValue)}}function C(t,r,i,o){r=n.apply([],r);var a,u,c,l,f,d,h=0,v=t.length,m=v-1,w=r[0],_=e.isFunction(w);if(_||v>1&&"string"==typeof w&&!y.checkClone&&A.test(w))return t.each(function(e){var n=t.eq(e);_&&(r[0]=w.call(this,e,n.html())),C(n,r,i,o)});if(v&&(d=g(r,t[0].ownerDocument,!1,t,o),a=d.firstChild,1===d.childNodes.length&&(d=a),a||o)){for(l=e.map(p(d,"script"),x),c=l.length;h<v;h++)u=d,h!==m&&(u=e.clone(u,!0,!0),c&&e.merge(l,p(u,"script"))),i.call(t[h],u,h);if(c)for(f=l[l.length-1].ownerDocument,e.map(l,b),h=0;h<c;h++)u=l[h],s.test(u.type||"")&&!e._data(u,"globalEval")&&e.contains(f,u)&&(u.src?e._evalUrl&&e._evalUrl(u.src):e.globalEval((u.text||u.textContent||u.innerHTML||"").replace(D,"")));d=a=null}return t}function T(t,n,r){for(var i,o=n?e.filter(n,t):t,a=0;null!=(i=o[a]);a++)r||1!==i.nodeType||e.cleanData(p(i)),i.parentNode&&(r&&e.contains(i.ownerDocument,i)&&h(p(i,"script")),i.parentNode.removeChild(i));return t}var S=/ jQuery\d+="(?:null|\d+)"/g,k=RegExp("<(?:"+l+")[\\s/>]","i"),E=/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:-]+)[^>]*)\/>/gi,N=/<script|<style|<link/i,A=/checked\s*(?:[^=]|=\s*.checked.)/i,j=/^true\/(.*)/,D=/^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,L=f(t),O=L.appendChild(t.createElement("div"));return e.extend({"htmlPrefilter":function(e){return e.replace(E,"<$1></$2>")},"clone":function(t,n,r){var i,o,a,u,s,c=e.contains(t.ownerDocument,t);if(y.html5Clone||e.isXMLDoc(t)||!k.test("<"+t.nodeName+">")?a=t.cloneNode(!0):(O.innerHTML=t.outerHTML,O.removeChild(a=O.firstChild)),!(y.noCloneEvent&&y.noCloneChecked||1!==t.nodeType&&11!==t.nodeType||e.isXMLDoc(t)))for(i=p(a),s=p(t),u=0;null!=(o=s[u]);++u)i[u]&&_(o,i[u]);if(n)if(r)for(s=s||p(t),i=i||p(a),u=0;null!=(o=s[u]);u++)w(o,i[u]);else w(t,a);return i=p(a,"script"),i.length>0&&h(i,!c&&p(t,"script")),i=s=o=null,a},"cleanData":function(t,n){for(var r,o,a,u,s=0,c=e.expando,l=e.cache,f=y.attributes,d=e.event.special;null!=(r=t[s]);s++)if((n||v(r))&&(a=r[c],u=a&&l[a])){if(u.events)for(o in u.events)d[o]?e.event.remove(r,o):e.removeEvent(r,o,u.handle);l[a]&&(delete l[a],f||"undefined"==typeof r.removeAttribute?r[c]=undefined:r.removeAttribute(c),i.push(a))}}}),e.fn.extend({"domManip":C,"detach":function(e){return T(this,e,!0)},"remove":function(e){return T(this,e)},"text":function(n){return o(this,function(n){return n===undefined?e.text(this):this.empty().append((this[0]&&this[0].ownerDocument||t).createTextNode(n))},null,n,arguments.length)},"append":function(){return C(this,arguments,function(e){1!==this.nodeType&&11!==this.nodeType&&9!==this.nodeType||m(this,e).appendChild(e)})},"prepend":function(){return C(this,arguments,function(e){if(1===this.nodeType||11===this.nodeType||9===this.nodeType){var t=m(this,e);t.insertBefore(e,t.firstChild)}})},"before":function(){return C(this,arguments,function(e){this.parentNode&&this.parentNode.insertBefore(e,this)})},"after":function(){return C(this,arguments,function(e){this.parentNode&&this.parentNode.insertBefore(e,this.nextSibling)})},"empty":function(){for(var t,n=0;null!=(t=this[n]);n++){for(1===t.nodeType&&e.cleanData(p(t,!1));t.firstChild;)t.removeChild(t.firstChild)
-;t.options&&e.nodeName(t,"select")&&(t.options.length=0)}return this},"clone":function(t,n){return t=null!=t&&t,n=null==n?t:n,this.map(function(){return e.clone(this,t,n)})},"html":function(t){return o(this,function(t){var n=this[0]||{},r=0,i=this.length;if(t===undefined)return 1===n.nodeType?n.innerHTML.replace(S,""):undefined;if("string"==typeof t&&!N.test(t)&&(y.htmlSerialize||!k.test(t))&&(y.leadingWhitespace||!c.test(t))&&!d[(u.exec(t)||["",""])[1].toLowerCase()]){t=e.htmlPrefilter(t);try{for(;r<i;r++)n=this[r]||{},1===n.nodeType&&(e.cleanData(p(n,!1)),n.innerHTML=t);n=0}catch(o){}}n&&this.empty().append(t)},null,t,arguments.length)},"replaceWith":function(){var t=[];return C(this,arguments,function(n){var r=this.parentNode;e.inArray(this,t)<0&&(e.cleanData(p(this)),r&&r.replaceChild(n,this))},t)}}),e.each({"appendTo":"append","prependTo":"prepend","insertBefore":"before","insertAfter":"after","replaceAll":"replaceWith"},function(t,n){e.fn[t]=function(t){for(var i,o=0,a=[],u=e(t),s=u.length-1;o<=s;o++)i=o===s?this:this.clone(!0),e(u[o])[n](i),r.apply(a,i.get());return this.pushStack(a)}}),e}(k,v,x,b,y,$,ae,ue,se,ce,le,fe,pe,he,ge,ye,de,q),Ce=function(e,t){function n(t,n){var r=e(n.createElement(t)).appendTo(n.body),i=e.css(r[0],"display");return r.detach(),i}function r(r){var a=t,u=o[r];return u||(u=n(r,a),"none"!==u&&u||(i=(i||e("<iframe frameborder='0' width='0' height='0'/>")).appendTo(a.documentElement),a=(i[0].contentWindow||i[0].contentDocument).document,a.write(),a.close(),u=n(r,a),i.detach()),o[r]=u),u}var i,o={"HTML":"block","BODY":"block"};return r}(k,v),Te=function(){function e(e,t){return{"get":function(){return e()?void delete this.get:(this.get=t).apply(this,arguments)}}}return e}(),Se=function(e,t,n,r,i,o,a,u,s,c,l,f,d,p,h){function g(e){if(e in N)return e;for(var t=e.charAt(0).toUpperCase()+e.slice(1),n=E.length;n--;)if((e=E[n]+t)in N)return e}function y(t,n){for(var r,i,o,a=[],u=0,c=t.length;u<c;u++)i=t[u],i.style&&(a[u]=e._data(i,"olddisplay"),r=i.style.display,n?(a[u]||"none"!==r||(i.style.display=""),""===i.style.display&&s(i)&&(a[u]=e._data(i,"olddisplay",d(i.nodeName)))):(o=s(i),(r&&"none"!==r||!o)&&e._data(i,"olddisplay",o?r:e.css(i,"display"))));for(u=0;u<c;u++)i=t[u],i.style&&(n&&"none"!==i.style.display&&""!==i.style.display||(i.style.display=n?a[u]||"":"none"));return t}function v(e,t,n){var r=T.exec(t);return r?Math.max(0,r[1]-(n||0))+(r[2]||"px"):t}function m(t,n,r,i,o){for(var a=r===(i?"border":"content")?4:"width"===n?1:0,s=0;a<4;a+=2)"margin"===r&&(s+=e.css(t,r+u[a],!0,o)),i?("content"===r&&(s-=e.css(t,"padding"+u[a],!0,o)),"margin"!==r&&(s-=e.css(t,"border"+u[a]+"Width",!0,o))):(s+=e.css(t,"padding"+u[a],!0,o),"padding"!==r&&(s+=e.css(t,"border"+u[a]+"Width",!0,o)));return s}function x(t,n,r){var i=!0,o="width"===n?t.offsetWidth:t.offsetHeight,u=b(t),s=h.boxSizing&&"border-box"===e.css(t,"boxSizing",!1,u);if(o<=0||null==o){if(o=l(t,n,u),(o<0||null==o)&&(o=t.style[n]),a.test(o))return o;i=s&&(h.boxSizingReliable()||o===t.style[n]),o=parseFloat(o)||0}return o+m(t,n,r||(s?"border":"content"),i,u)+"px"}var b=l.getStyles,w=/alpha\([^)]*\)/i,_=/opacity\s*=\s*([^)]*)/i,C=/^(none|table(?!-c[ea]).+)/,T=RegExp("^("+t+")(.*)$","i"),S={"position":"absolute","visibility":"hidden","display":"block"},k={"letterSpacing":"0","fontWeight":"400"},E=["Webkit","O","Moz","ms"],N=i.createElement("div").style;return l=l.curCSS,e.extend({"cssHooks":{"opacity":{"get":function(e,t){if(t){var n=l(e,"opacity");return""===n?"1":n}}}},"cssNumber":{"animationIterationCount":!0,"columnCount":!0,"fillOpacity":!0,"flexGrow":!0,"flexShrink":!0,"fontWeight":!0,"lineHeight":!0,"opacity":!0,"order":!0,"orphans":!0,"widows":!0,"zIndex":!0,"zoom":!0},"cssProps":{"float":h.cssFloat?"cssFloat":"styleFloat"},"style":function(t,n,r,i){if(t&&3!==t.nodeType&&8!==t.nodeType&&t.style){var a,u,s,c=e.camelCase(n),l=t.style;if(n=e.cssProps[c]||(e.cssProps[c]=g(c)||c),s=e.cssHooks[n]||e.cssHooks[c],r===undefined)return s&&"get"in s&&(a=s.get(t,!1,i))!==undefined?a:l[n];if(u=typeof r,"string"===u&&(a=o.exec(r))&&a[1]&&(r=f(t,n,a),u="number"),null!=r&&r===r&&("number"===u&&(r+=a&&a[3]||(e.cssNumber[c]?"":"px")),h.clearCloneStyle||""!==r||0!==n.indexOf("background")||(l[n]="inherit"),!(s&&"set"in s&&(r=s.set(t,r,i))===undefined)))try{l[n]=r}catch(d){}}},"css":function(t,n,r,i){var o,a,u,s=e.camelCase(n);return n=e.cssProps[s]||(e.cssProps[s]=g(s)||s),u=e.cssHooks[n]||e.cssHooks[s],u&&"get"in u&&(a=u.get(t,!0,r)),a===undefined&&(a=l(t,n,i)),"normal"===a&&n in k&&(a=k[n]),""===r||r?(o=parseFloat(a),!0===r||isFinite(o)?o||0:a):a}}),e.each(["height","width"],function(t,n){e.cssHooks[n]={"get":function(t,r,i){if(r)return C.test(e.css(t,"display"))&&0===t.offsetWidth?c(t,S,function(){return x(t,n,i)}):x(t,n,i)},"set":function(t,r,i){var o=i&&b(t);return v(t,r,i?m(t,n,i,h.boxSizing&&"border-box"===e.css(t,"boxSizing",!1,o),o):0)}}}),h.opacity||(e.cssHooks.opacity={"get":function(e,t){return _.test((t&&e.currentStyle?e.currentStyle.filter:e.style.filter)||"")?.01*parseFloat(RegExp.$1)+"":t?"1":""},"set":function(t,n){var r=t.style,i=t.currentStyle,o=e.isNumeric(n)?"alpha(opacity="+100*n+")":"",a=i&&i.filter||r.filter||"";r.zoom=1,(n>=1||""===n)&&""===e.trim(a.replace(w,""))&&r.removeAttribute&&(r.removeAttribute("filter"),""===n||i&&!i.filter)||(r.filter=w.test(a)?a.replace(w,o):a+" "+o)}}),e.cssHooks.marginRight=p(h.reliableMarginRight,function(e,t){if(t)return c(e,{"display":"inline-block"},l,[e,"marginRight"])}),e.cssHooks.marginLeft=p(h.reliableMarginLeft,function(t,n){if(n)return(parseFloat(l(t,"marginLeft"))||(e.contains(t.ownerDocument,t)?t.getBoundingClientRect().left-c(t,{"marginLeft":0},function(){return t.getBoundingClientRect().left}):0))+"px"}),e.each({"margin":"","padding":"","border":"Width"},function(t,n){e.cssHooks[t+n]={"expand":function(e){for(var r=0,i={},o="string"==typeof e?e.split(" "):[e];r<4;r++)i[t+u[r]+n]=o[r]||o[r-2]||o[0];return i}},r.test(t)||(e.cssHooks[t+n].set=v)}),e.fn.extend({"css":function(t,r){return n(this,function(t,n,r){var i,o,a={},u=0;if(e.isArray(n)){for(i=b(t),o=n.length;u<o;u++)a[n[u]]=e.css(t,n[u],!1,i);return a}return r!==undefined?e.style(t,n,r):e.css(t,n)},t,r,arguments.length>1)},"show":function(){return y(this,!0)},"hide":function(){return y(this)},"toggle":function(t){return"boolean"==typeof t?t?this.show():this.hide():this.each(function(){s(this)?e(this).show():e(this).hide()})}}),e}(k,K,$,G,v,Y,Q,Z,ee,te,ie,oe,Ce,Te,re),ke=function(e,t,n){function r(t){return t.style&&t.style.display||e.css(t,"display")}function i(n){if(!e.contains(n.ownerDocument||t,n))return!0;for(;n&&1===n.nodeType;){if("none"===r(n)||"hidden"===n.type)return!0;n=n.parentNode}return!1}e.expr.filters.hidden=function(e){return n.reliableHiddenOffsets()?e.offsetWidth<=0&&e.offsetHeight<=0&&!e.getClientRects().length:i(e)},e.expr.filters.visible=function(t){return!e.expr.filters.hidden(t)}}(k,v,re),Ee=window.location,Ne=function(e){return e.now()}(k),Ae=/\?/,je=function(e){var t=/(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g;return e.parseJSON=function(n){if(window.JSON&&window.JSON.parse)return window.JSON.parse(n+"");var r,i=null,o=e.trim(n+"");return o&&!e.trim(o.replace(t,function(e,t,n,o){return r&&t&&(i=0),0===i?e:(r=n||t,i+=!o-!n,"")}))?Function("return "+o)():e.error("Invalid JSON: "+n)},e.parseJSON}(k),De=function(e,t,n,r,i,o){function a(t){return function(r,i){"string"!=typeof r&&(i=r,r="*");var o,a=0,u=r.toLowerCase().match(n)||[];if(e.isFunction(i))for(;o=u[a++];)"+"===o.charAt(0)?(o=o.slice(1)||"*",(t[o]=t[o]||[]).unshift(i)):(t[o]=t[o]||[]).push(i)}}function u(t,n,r,i){function o(s){var c;return a[s]=!0,e.each(t[s]||[],function(e,t){var s=t(n,r,i);return"string"!=typeof s||u||a[s]?u?!(c=s):void 0:(n.dataTypes.unshift(s),o(s),!1)}),c}var a={},u=t===x;return o(n.dataTypes[0])||!a["*"]&&o("*")}function s(t,n){var r,i,o=e.ajaxSettings.flatOptions||{};for(i in n)n[i]!==undefined&&((o[i]?t:r||(r={}))[i]=n[i]);return r&&e.extend(!0,t,r),t}function c(e,t,n){for(var r,i,o,a,u=e.contents,s=e.dataTypes;"*"===s[0];)s.shift(),i===undefined&&(i=e.mimeType||t.getResponseHeader("Content-Type"));if(i)for(a in u)if(u[a]&&u[a].test(i)){s.unshift(a);break}if(s[0]in n)o=s[0];else{for(a in n){if(!s[0]||e.converters[a+" "+s[0]]){o=a;break}r||(r=a)}o=o||r}if(o)return o!==s[0]&&s.unshift(o),n[o]}function l(e,t,n,r){var i,o,a,u,s,c={},l=e.dataTypes.slice();if(l[1])for(a in e.converters)c[a.toLowerCase()]=e.converters[a];for(o=l.shift();o;)if(e.responseFields[o]&&(n[e.responseFields[o]]=t),!s&&r&&e.dataFilter&&(t=e.dataFilter(t,e.dataType)),s=o,o=l.shift())if("*"===o)o=s;else if("*"!==s&&s!==o){if(!(a=c[s+" "+o]||c["* "+o]))for(i in c)if(u=i.split(" "),u[1]===o&&(a=c[s+" "+u[0]]||c["* "+u[0]])){!0===a?a=c[i]:!0!==c[i]&&(o=u[0],l.unshift(u[1]));break}if(!0!==a)if(a&&e["throws"])t=a(t);else try{t=a(t)}catch(f){return{"state":"parsererror","error":a?f:"No conversion from "+s+" to "+o}}}return{"state":"success","data":t}}var f=/#.*$/,d=/([?&])_=[^&]*/,p=/^(.*?):[ \t]*([^\r\n]*)\r?$/gm,h=/^(?:about|app|app-storage|.+-extension|file|res|widget):$/,g=/^(?:GET|HEAD)$/,y=/^\/\//,v=/^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,m={},x={},b="*/".concat("*"),w=r.href,_=v.exec(w.toLowerCase())||[];return e.extend({"active":0,"lastModified":{},"etag":{},"ajaxSettings":{"url":w,"type":"GET","isLocal":h.test(_[1]),"global":!0,"processData":!0,"async":!0,"contentType":"application/x-www-form-urlencoded; charset=UTF-8","accepts":{"*":b,"text":"text/plain","html":"text/html","xml":"application/xml, text/xml","json":"application/json, text/javascript"},"contents":{"xml":/\bxml\b/,"html":/\bhtml/,"json":/\bjson\b/},"responseFields":{"xml":"responseXML","text":"responseText","json":"responseJSON"},"converters":{"* text":String,"text html":!0,"text json":e.parseJSON,"text xml":e.parseXML},"flatOptions":{"url":!0,"context":!0}},"ajaxSetup":function(t,n){return n?s(s(t,e.ajaxSettings),n):s(e.ajaxSettings,t)},"ajaxPrefilter":a(m),"ajaxTransport":a(x),"ajax":function(t,r){function a(t,n,r,i){var o,a,u,s,f,d=n;2!==B&&(B=2,S&&window.clearTimeout(S),E=undefined,T=i||"",R.readyState=t>0?4:0,o=t>=200&&t<300||304===t,r&&(s=c(A,R,r)),s=l(A,s,R,o),o?(A.ifModified&&(f=R.getResponseHeader("Last-Modified"),f&&(e.lastModified[C]=f),(f=R.getResponseHeader("etag"))&&(e.etag[C]=f)),204===t||"HEAD"===A.type?d="nocontent":304===t?d="notmodified":(d=s.state,a=s.data,u=s.error,o=!u)):(u=d,!t&&d||(d="error",t<0&&(t=0))),R.status=t,R.statusText=(n||d)+"",o?L.resolveWith(j,[a,d,R]):L.rejectWith(j,[R,d,u]),R.statusCode(H),H=undefined,k&&D.trigger(o?"ajaxSuccess":"ajaxError",[R,A,o?a:u]),O.fireWith(j,[R,d]),k&&(D.trigger("ajaxComplete",[R,A]),--e.active||e.event.trigger("ajaxStop")))}"object"==typeof t&&(r=t,t=undefined),r=r||{};var s,h,C,T,S,k,E,N,A=e.ajaxSetup({},r),j=A.context||A,D=A.context&&(j.nodeType||j.jquery)?e(j):e.event,L=e.Deferred(),O=e.Callbacks("once memory"),H=A.statusCode||{},F={},M={},B=0,I="canceled",R={"readyState":0,"getResponseHeader":function(e){var t;if(2===B){if(!N)for(N={};t=p.exec(T);)N[t[1].toLowerCase()]=t[2];t=N[e.toLowerCase()]}return null==t?null:t},"getAllResponseHeaders":function(){return 2===B?T:null},"setRequestHeader":function(e,t){var n=e.toLowerCase();return B||(e=M[n]=M[n]||e,F[e]=t),this},"overrideMimeType":function(e){return B||(A.mimeType=e),this},"statusCode":function(e){var t;if(e)if(B<2)for(t in e)H[t]=[H[t],e[t]];else R.always(e[R.status]);return this},"abort":function(e){var t=e||I;return E&&E.abort(t),a(0,t),this}};if(L.promise(R).complete=O.add,R.success=R.done,R.error=R.fail,A.url=((t||A.url||w)+"").replace(f,"").replace(y,_[1]+"//"),A.type=r.method||r.type||A.method||A.type,A.dataTypes=e.trim(A.dataType||"*").toLowerCase().match(n)||[""],null==A.crossDomain&&(s=v.exec(A.url.toLowerCase()),A.crossDomain=!(!s||s[1]===_[1]&&s[2]===_[2]&&(s[3]||("http:"===s[1]?"80":"443"))===(_[3]||("http:"===_[1]?"80":"443")))),A.data&&A.processData&&"string"!=typeof A.data&&(A.data=e.param(A.data,A.traditional)),u(m,A,r,R),2===B)return R;k=e.event&&A.global,k&&0==e.active++&&e.event.trigger("ajaxStart"),A.type=A.type.toUpperCase(),A.hasContent=!g.test(A.type),C=A.url,A.hasContent||(A.data&&(C=A.url+=(o.test(C)?"&":"?")+A.data,delete A.data),!1===A.cache&&(A.url=d.test(C)?C.replace(d,"$1_="+i++):C+(o.test(C)?"&":"?")+"_="+i++)),A.ifModified&&(e.lastModified[C]&&R.setRequestHeader("If-Modified-Since",e.lastModified[C]),e.etag[C]&&R.setRequestHeader("If-None-Match",e.etag[C])),(A.data&&A.hasContent&&!1!==A.contentType||r.contentType)&&R.setRequestHeader("Content-Type",A.contentType),R.setRequestHeader("Accept",A.dataTypes[0]&&A.accepts[A.dataTypes[0]]?A.accepts[A.dataTypes[0]]+("*"!==A.dataTypes[0]?", "+b+"; q=0.01":""):A.accepts["*"]);for(h in A.headers)R.setRequestHeader(h,A.headers[h]);if(A.beforeSend&&(!1===A.beforeSend.call(j,R,A)||2===B))return R.abort();I="abort";for(h in{"success":1,"error":1,"complete":1})R[h](A[h]);if(E=u(x,A,r,R)){if(R.readyState=1,k&&D.trigger("ajaxSend",[R,A]),2===B)return R;A.async&&A.timeout>0&&(S=window.setTimeout(function(){R.abort("timeout")},A.timeout));try{B=1,E.send(F,a)}catch(q){if(!(B<2))throw q;a(-1,q)}}else a(-1,"No Transport");return R},"getJSON":function(t,n,r){return e.get(t,n,r,"json")},"getScript":function(t,n){return e.get(t,undefined,n,"script")}}),e.each(["get","post"],function(t,n){e[n]=function(t,r,i,o){return e.isFunction(r)&&(o=o||i,i=r,r=undefined),e.ajax(e.extend({"url":t,"type":n,"dataType":o,"data":r,"success":i},e.isPlainObject(t)&&t))}}),e}(k,0,j,Ee,Ne,Ae),Le=function(e,t,n){function r(){try{return new window.XMLHttpRequest}catch(e){}}function i(){try{return new window.ActiveXObject("Microsoft.XMLHTTP")}catch(e){}}e.ajaxSettings.xhr=window.ActiveXObject!==undefined?function(){return this.isLocal?i():t.documentMode>8?r():/^(get|post|head|put|delete|options)$/i.test(this.type)&&r()||i()}:r;var o=0,a={},u=e.ajaxSettings.xhr();window.attachEvent&&window.attachEvent("onunload",function(){for(var e in a)a[e](undefined,!0)}),n.cors=!!u&&"withCredentials"in u,(u=n.ajax=!!u)&&e.ajaxTransport(function(t){if(!t.crossDomain||n.cors){var r;return{"send":function(n,i){var u,s=t.xhr(),c=++o;if(s.open(t.type,t.url,t.async,t.username,t.password),t.xhrFields)for(u in t.xhrFields)s[u]=t.xhrFields[u];t.mimeType&&s.overrideMimeType&&s.overrideMimeType(t.mimeType),t.crossDomain||n["X-Requested-With"]||(n["X-Requested-With"]="XMLHttpRequest");for(u in n)n[u]!==undefined&&s.setRequestHeader(u,n[u]+"");s.send(t.hasContent&&t.data||null),r=function(n,o){var u,l,f;if(r&&(o||4===s.readyState))if(delete a[c],r=undefined,s.onreadystatechange=e.noop,o)4!==s.readyState&&s.abort();else{f={},u=s.status,"string"==typeof s.responseText&&(f.text=s.responseText);try{l=s.statusText}catch(d){l=""}u||!t.isLocal||t.crossDomain?1223===u&&(u=204):u=f.text?200:404}f&&i(u,l,f,s.getAllResponseHeaders())},t.async?4===s.readyState?window.setTimeout(r):s.onreadystatechange=a[c]=r:r()},"abort":function(){r&&r(undefined,!0)}}}})}(k,v,S),Oe=function(e,t,n,r){return e.parseHTML=function(i,o,a){if(!i||"string"!=typeof i)return null;"boolean"==typeof o&&(a=o,o=!1),o=o||t;var u=n.exec(i),s=!a&&[];return u?[o.createElement(u[1])]:(u=r([i],o,s),s&&s.length&&e(s).remove(),e.merge([],u.childNodes))},e.parseHTML}(k,v,O,ye),He=function(e){e.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "),function(t,n){e.fn[n]=function(e,t){return arguments.length>0?this.on(n,null,e,t):this.trigger(n)}}),e.fn.extend({"hover":function(e,t){return this.mouseenter(e).mouseleave(t||e)}})}(k),Fe=function(e){var t=e.fn.load;e.fn.load=function(n,r,i){if("string"!=typeof n&&t)return t.apply(this,arguments);var o,a,u,s=this,c=n.indexOf(" ");return c>-1&&(o=e.trim(n.slice(c,n.length)),n=n.slice(0,c)),e.isFunction(r)?(i=r,r=undefined):r&&"object"==typeof r&&(a="POST"),s.length>0&&e.ajax({"url":n,"type":a||"GET","dataType":"html","data":r}).done(function(t){u=arguments,s.html(o?e("<div>").append(e.parseHTML(t)).find(o):t)}).always(i&&function(e,t){s.each(function(){i.apply(this,u||[e.responseText,t,e])})}),this}}(k),Me=function(e,t){return e.each({"Height":"height","Width":"width"},function(n,r){e.each({"padding":"inner"+n,"content":r,"":"outer"+n},function(i,o){e.fn[o]=function(o,a){var u=arguments.length&&(i||"boolean"!=typeof o),s=i||(!0===o||!0===a?"margin":"border");return t(this,function(t,r,i){var o;return e.isWindow(t)?t.document.documentElement["client"+n]:9===t.nodeType?(o=t.documentElement,Math.max(t.body["scroll"+n],o["scroll"+n],t.body["offset"+n],o["offset"+n],o["client"+n])):i===undefined?e.css(t,r,s):e.style(t,r,i,s)},r,u?o:undefined,u,null)}})}),e}(k,$),Be=function(e){e.fn.extend({"bind":function(e,t,n){return this.on(e,null,t,n)},"unbind":function(e,t){return this.off(e,null,t)},"delegate":function(e,t,n,r){return this.on(t,e,n,r)},"undelegate":function(e,t,n){return 1===arguments.length?this.off(e,"**"):this.off(t,e||"**",n)}}),e.fn.size=function(){return this.length},e.fn.andSelf=e.fn.addBack}(k),Ie=function(e){return Date.now||(Date.now=function(){return(new Date).getTime()}),e.ajaxSetup({"dataType":"json","type":"POST","contentType":"application/json; charset=utf-8","cache":!1,"beforeSend":function(e,t){t.params&&t.param&&(t.data=t.params.generateRequestData(t.param))}}),e.fn.ellipsis=function(){var t=function(e,t){return e.height()>t.height()},n=function(e,t){return e.width()>t.width()},r=function(e,t){return e};return this.each(function(){var i=e(this);if("hidden"===i.css("overflow")){var o=r(i.html(),Math.floor(i.width()/(parseInt(i.css("font-size"))/1.91))),a=i.hasClass("multiline"),u=e(this.cloneNode(!0)).hide().css("position","absolute").css("overflow","visible").width(a?i.width():"auto").height(a?"auto":i.height()),s=a?t:n;for(u.html(o);o.length>0&&s(u,i);)o=o.substr(0,o.length-1),u.html(o+"...");i.html(u.html()),u.remove()}})},e}(k),Re=function(e,t){return function(n){return e.ajax(t.requiredData.advertises.url,{"params":n.params,"param":t.requiredData.advertises.param})}}(Ie,g),qe=function(e,t,n){return function(){return e.when(n(this)).then(t.bind(function(e){this.advertise.parse(e)},this)),!0}}(Ie,t,Re),Pe=function(e,t){return function(n){return e.ajax(t.requiredData.offer_log.url,{"params":n.params,"param":t.requiredData.offer_log.param})}}(Ie,g),ze=function(e,t,n){var r=function(e){this.app=e,this.informer_id="",this.informer_id_int=0,this.footer_html="",this.header_html="",this.offers=[],this.css=""};return r.prototype.parse=function(e){e.block.id===undefined?this.app.render.not_found():(this.informer_id=e.block.guid,this.informer_id_int=e.block.id,this.footer_html=e.block.footer_html,this.header_html=e.block.header_html,this.css=e.css,this.offers=e.offers,this.app.render.render(),this.app.uh.exclude_clean(e.clean.place),e.clean.place&&(this.app.uh.retargeting_clean(e.clean.dynamic_retargeting),this.app.uh.retargeting_account_clean(e.clean.account_retargeting)),0===this.offers.length&&(this.app.uh.exclude_clean(!0),this.app.uh.retargeting_clean(!0),this.app.uh.retargeting_account_clean(!0),this.app.uh.exclude_click_clean(!0),this.app.uh.retargeting_click_clean(!0)))},r.prototype.get=function(e){var n=t.find(this.offers,function(t){return t.id===e});return n===undefined&&(n=this.offers[0]),n},r.prototype.click=function(e){var t=this.get(e),n=window.open(t.url,"_blank");n&&n.moveTo(0,0),this.app.uh.load(),t.camp.retargeting?this.app.uh.retargeting_exclude_click.add(t.id,1):this.app.uh.exclude_click.add(t.id,1),this.app.uh.save(),this.app.loader()},r.prototype.view=function(){this.app.uh.load(),t.each(this.offers,function(e){e.retargeting?(this.app.uh.retargeting_exclude.add(e.id,e.unique_impression_lot),this.app.uh.retargeting_view.add(e.id)):this.app.uh.exclude.add(e.id,e.unique_impression_lot)},this),this.app.uh.save(),n(this.app)},r}(0,t,Pe),We=function(e,t,n){var r=function(t){this.app=t,this.w_h=e(window).height(),this.w_w=e(window).width()};return r.prototype.generateRequestData=function(r){this.app.uh.load();var i={};return"advertises"===r?(i.w=this.w_w,i.h=this.w_h,i.block_id=this.app.adsparams.block_id,i.auto=this.app.adsparams.auto,i.country=this.app.adsparams.country,i.region=this.app.adsparams.region,i.ip=this.app.adsparams.ip,i.is_webp=this.app.adsparams.is_webp,i.time_start=this.app.time_start,i.cost=this.app.uh.cost_user.get(),i.gender=this.app.uh.gender_user.get(),i.retargeting=this.app.uh.retargeting.get(),i.index=parseInt(this.app.adsparams.index),n.isNumber(i.index)||(i.index=0),i.exclude=this.app.uh.exclude_get(),i.retargeting_account_exclude=this.app.uh.retargeting_account_exclude_get(),i.retargeting_dynamic_exclude=this.app.uh.retargeting_exclude_get(),i.retargeting=this.app.uh.retargeting.get()):"log"===r&&(i.params={},i.params.informer_id=this.app.advertise.informer_id,i.params.informer_id_int=this.app.advertise.informer_id_int,i.params.ip=this.app.adsparams.ip,i.params.cookie=this.app.adsparams.cookie,i.params.request=this.app.adsparams.request,i.params.test=this.app.adsparams.test,i.items=e.map(this.app.advertise.offers,function(e){var t={};return t.guid=e.guid,t.id=e.id,t.campaign_social=e.campaign_social,t.token=e.token,t.campaign_guid=e.guid_cam,t.campaign_id=e.id_cam,t.retargeting=e.retargeting,t.branch=e.branch,t})),t.stringify(i)},r}(Ie,n,t),$e=function(e,t){return function(n){var r=n.find("div[data-id]"),i=this.app;t.each(r,function(t,n,r){e(t).on("mousedown",function(t){if(1===t.which||2===t.which){var n=e(t.currentTarget),r=n.data("id");i.advertise.click(r)}})},this)}}(Ie,t),Xe=function(e,t){return function(n){var r=n.find(".imageCon");t.each(r,function(t,n,r){var i=e(t),o=i.find("img").length,a=i.find("img").width(),u=i.find("img").height(),s=o*a;u<=0&&(u="auto"),i.css({"width":a,"height":u}),o>1?(i.find("ul").css({"width":s,"marginLeft":-a,"zoom":1}),i.find("li").css({"zoom":1}),i.find("img").css({"zoom":1}),i.find("li:last-child").prependTo(i.find("ul")),i.find("div.control_prev").unbind(),i.find("div.control_next").unbind(),i.find("div.control_prev").click(function(t){t.stopPropagation();var n=e(t.target).parent(),r=n.find("img").width();n.find("ul").animate({"left":+r},900,"easeOutCirc",function(){n.find("li:last-child").prependTo(n.find("ul")),n.find("ul").css({"left":"","zoom":1})})}),i.find("div.control_next").click(function(t){t.stopPropagation();var n=e(t.target).parent(),r=n.find("img").width();n.find("ul").animate({"left":-r},900,"easeOutCirc",function(){n.find("li:first-child").appendTo(n.find("ul")),n.find("ul").css({"left":"","zoom":1})})})):(i.find("ul").css({"width":s}),i.find("div.control_prev").hide(),i.find("div.control_next").hide())},this)}}(Ie,t),Ue=function(e,t){return function(){document.createStyleSheet?document.createStyleSheet("").cssText=this.app.advertise.css:e('<style type="text/css">'+this.app.advertise.css+"</style>").appendTo("head")}}(Ie),Je=function(e){function t(e,t){return e===undefined||""===e?t:e}function n(e,n,r,i){if(n===i)return!0;if(e===r){if("http"===e)return t(n,"80")===t(i,"80");if("https"===e)return t(n,"443")===t(i,"443")}return!1}var r,i,o,a,u,s=["Msxml2.XMLHTTP","Microsoft.XMLHTTP","Msxml2.XMLHTTP.4.0"],c=/^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,l=/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,f="undefined"!=typeof location&&location.href,d=f&&location.protocol&&location.protocol.replace(/\:/,""),p=f&&location.hostname,h=f&&(location.port||undefined),g={},y=e.config&&e.config()||{};return r={"version":"2.0.15","strip":function(e){if(e){e=e.replace(c,"");var t=e.match(l);t&&(e=t[1])}else e="";return e},"jsEscape":function(e){return e.replace(/(['\\])/g,"\\$1").replace(/[\f]/g,"\\f").replace(/[\b]/g,"\\b").replace(/[\n]/g,"\\n").replace(/[\t]/g,"\\t").replace(/[\r]/g,"\\r").replace(/[\u2028]/g,"\\u2028").replace(/[\u2029]/g,"\\u2029")},"createXhr":y.createXhr||function(){var e,t,n;if("undefined"!=typeof XMLHttpRequest)return new XMLHttpRequest;if("undefined"!=typeof ActiveXObject)for(t=0;t<3;t+=1){n=s[t];try{e=new ActiveXObject(n)}catch(r){}if(e){s=[n];break}}return e},"parseName":function(e){var t,n,r,i=!1,o=e.lastIndexOf("."),a=0===e.indexOf("./")||0===e.indexOf("../");return-1!==o&&(!a||o>1)?(t=e.substring(0,o),n=e.substring(o+1)):t=e,r=n||t,o=r.indexOf("!"),-1!==o&&(i="strip"===r.substring(o+1),r=r.substring(0,o),n?n=r:t=r),{"moduleName":t,"ext":n,"strip":i}},"xdRegExp":/^((\w+)\:)?\/\/([^\/\\]+)/,"useXhr":function(e,t,i,o){var a,u,s,c=r.xdRegExp.exec(e);return!c||(a=c[2],u=c[3],u=u.split(":"),s=u[1],u=u[0],(!a||a===t)&&(!u||u.toLowerCase()===i.toLowerCase())&&(!s&&!u||n(a,s,t,o)))},"finishLoad":function(e,t,n,i){n=t?r.strip(n):n,y.isBuild&&(g[e]=n),i(n)},"load":function(e,t,n,i){if(i&&i.isBuild&&!i.inlineText)return void n();y.isBuild=i&&i.isBuild;var o=r.parseName(e),a=o.moduleName+(o.ext?"."+o.ext:""),u=t.toUrl(a),s=y.useXhr||r.useXhr;if(0===u.indexOf("empty:"))return void n();!f||s(u,d,p,h)?r.get(u,function(t){r.finishLoad(e,o.strip,t,n)},function(e){n.error&&n.error(e)}):t([a],function(e){r.finishLoad(o.moduleName+"."+o.ext,o.strip,e,n)})},"write":function(e,t,n,i){if(g.hasOwnProperty(t)){var o=r.jsEscape(g[t]);n.asModule(e+"!"+t,"define(function () { return '"+o+"';});\n")}},"writeFile":function(e,t,n,i,o){var a=r.parseName(t),u=a.ext?"."+a.ext:"",s=a.moduleName+u,c=n.toUrl(a.moduleName+u)+".js";r.load(s,n,function(t){var n=function(e){return i(c,e)};n.asModule=function(e,t){return i.asModule(e,c,t)},r.write(e,s,n,o)},o)}},"node"===y.env||!y.env&&"undefined"!=typeof process&&process.versions&&process.versions.node&&!process.versions["node-webkit"]&&!process.versions["atom-shell"]?(i=require.nodeRequire("fs"),r.get=function(e,t,n){try{var r=i.readFileSync(e,"utf8");"\ufeff"===r[0]&&(r=r.substring(1)),t(r)}catch(o){n&&n(o)}}):"xhr"===y.env||!y.env&&r.createXhr()?r.get=function(e,t,n,i){var o,a=r.createXhr();if(a.open("GET",e,!0),i)for(o in i)i.hasOwnProperty(o)&&a.setRequestHeader(o.toLowerCase(),i[o]);y.onXhr&&y.onXhr(a,e),a.onreadystatechange=function(r){var i,o;4===a.readyState&&(i=a.status||0,i>399&&i<600?(o=Error(e+" HTTP status: "+i),o.xhr=a,n&&n(o)):t(a.responseText),y.onXhrComplete&&y.onXhrComplete(a,e))},a.send(null)}:"rhino"===y.env||!y.env&&"undefined"!=typeof Packages&&"undefined"!=typeof java?r.get=function(e,t){var n,r,i=new java.io.File(e),o=java.lang.System.getProperty("line.separator"),a=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(i),"utf-8")),u="";try{for(n=new java.lang.StringBuffer,r=a.readLine(),r&&r.length()&&65279===r.charAt(0)&&(r=r.substring(1)),null!==r&&n.append(r);null!==(r=a.readLine());)n.append(o),n.append(r);u=""+n}finally{a.close()}t(u)}:("xpconnect"===y.env||!y.env&&"undefined"!=typeof Components&&Components.classes&&Components.interfaces)&&(o=Components.classes,a=Components.interfaces,Components.utils["import"]("resource://gre/modules/FileUtils.jsm"),u="@mozilla.org/windows-registry-key;1"in o,r.get=function(e,t){var n,r,i,s={};u&&(e=e.replace(/\//g,"\\")),i=new FileUtils.File(e);try{n=o["@mozilla.org/network/file-input-stream;1"].createInstance(a.nsIFileInputStream),n.init(i,1,0,!1),r=o["@mozilla.org/intl/converter-input-stream;1"].createInstance(a.nsIConverterInputStream),r.init(n,"utf-8",n.available(),a.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER),r.readString(n.available(),s),r.close(),n.close(),t(s.value)}catch(c){throw Error((i&&i.path||"")+": "+c)}}),r}({}),Ve=function(e,t){var n={};return{"version":"0.1.0","load":function(r,i,o,a){var u=function(t){e.extend(e.templateSettings,a.underscoreTemplateSettings||{}),t=e.template(t),t=a.isBuild?n[r]=t.source:Function("obj","return "+t.source)(),o(t)};t.load(r,i,u,a)},"write":function(e,t,r){n.hasOwnProperty(t)&&r('define("'+e+"!"+t+'", ["underscore"], function(_) { return '+n[t]+";});\n")}}}(t,Je),Ke=function(e){return function(e){var t,n="",r=Array.prototype.join,i=function(){n+=r.call(arguments,"")};with(e||{})n+="<div id=\"mainContainer\">\n<div id='mainHeader'>"+(null==(t=mainHeader)?"":t)+"</div>\n<div id='adsContainer'>"+(null==(t=ads)?"":t)+"</div>\n<div id='mainFooter'>"+(null==(t=mainFooter)?"":t)+"</div>\n</div>";return n}}(t),Ge=function(e){return function(e){var t,n="",r=Array.prototype.join,i=function(){n+=r.call(arguments,"")};with(e||{}){n+="";for(var o in offers){n+="\n<div data-id='"+(null==(t=offers[o].id)?"":t)+"' class='"+(null==(t=offers[o].style_class)?"":t)+"'>\n<div class='ellipsis multiline header'>"+(null==(t=offers[o].title)?"":t)+"</div>\n<div class='ellipsis multiline description'>"+(null==(t=offers[o].description)?"":t)+"</div>\n<div class='ellipsis cost'>"+(null==(t=offers[o].price)?"":t)+"</div>\n<div class='imageCon' data-image-id='"+(null==(t=offers[o].id)?"":t)+"' data-image-index='"+(null==(t=o)?"":t)+"'>\n<div class='control_next'>>></div>\n<div class='control_prev'><<</div>\n<ul>\n";for(var a in offers[o].images)n+='\n<li><img src="'+(null==(t=offers[o].images[a])?"":t)+'" alt=""/></li>\n';n+='\n</ul>\n</div>\n<div class="ellipsis button">'+(null==(t=offers[o].button)?"":t)+"</div>\n</div>\n"}n+=""}return n}}(t),Ye=function(e){return function(e){var t,n="",r=Array.prototype.join,i=function(){n+=r.call(arguments,"")};with(e||{})n+='<style type="text/css">\nhtml, body {\npadding: 0; margin: 0; border: 0;\n}\n#info {\nmargin: auto;\nbackground-repeat: no-repeat;\noverflow: hidden;\nbackground-image: url(\'https://cdn.yottos.com/logos/colorLogo.gif\');\nheight: 10px;\nwidth: 100px;\n}\n#text{\npadding: 15px;\nmargin: auto;\nwidth: 80%;\ntext-align:center;\nfont-size:1.5em;\ncolor:#F1991B;\nletter-spacing: -1px;\nfont-weight:700;\ntext-transform:uppercase;\nanimation:blur .75s ease-out infinite;\ntext-shadow:0px 0px 5px #fff,\n0px 0px 7px #fff;\n}\n@keyframes blur{\nfrom{\ntext-shadow:0px 0px 10px #fff,\n0px 0px 10px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 50px #fff,\n0px 0px 50px #fff,\n0px 0px 50px #7B96B8,\n0px 0px 150px #7B96B8,\n0px 10px 100px #7B96B8,\n0px 10px 100px #7B96B8,\n0px 10px 100px #7B96B8,\n0px 10px 100px #7B96B8,\n0px -10px 100px #7B96B8,\n0px -10px 100px #7B96B8;}\n}\n</style>\n<div id="text"><a href="https://yottos.com/webmasters" target="_blank" style="\n    color: #F1991B;\n        text-decoration: blink;">\u041a\u0430\u043a \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0440\u0435\u043a\u043b\u0430\u043c\u0443 \u043d\u0430 \u0441\u0432\u043e\u0435\u043c \u0441\u0430\u0439\u0442\u0435?</a></div>\n<div id="info"><a href="https://yottos.com/webmasters" target="_blank" title="\u0420\u0435\u043a\u043b\u0430\u043c\u0430 \u043e\u0442 Yottos"></a></div>';return n}}(t),Qe=function(e,t,n){return{"advBlockTemplate":e,"advTemplate":t,"advBlockNotFoundTemplate":n}}(Ke,Ge,Ye),Ze=function(e,t,n,r,i){return function(o){var a=Object({"app":o});return a.redirect=t,a.slider=n,a.apply_css=r,a.render=function(){e("body").html(i.advBlockTemplate({"mainHeader":this.app.advertise.header_html,"ads":i.advTemplate({"offers":this.app.advertise.offers}),"mainFooter":this.app.advertise.footer_html})),this.apply_css();var t=e("#adsContainer");this.redirect(t),this.slider(t),e(".ellipsis").ellipsis(),this.app.advertise.view()},a.not_found=function(){!function(e,t,n,r,i,o,a){e.GoogleAnalyticsObject=i,e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},e[i].l=1*new Date,o=t.createElement(n),a=t.getElementsByTagName(n)[0],o.async=1,o.src="https://cdn.yottos.com/ua_5703702_12.js",a.parentNode.insertBefore(o,a)}(window,document,"script",0,"ga"),e("body").html(i.advBlockNotFoundTemplate())},a}}(Ie,$e,Xe,Ue,Qe),et=function(e,t,n,r,i,o,a){return new function(){this.uh=t,this.adsparams=window.adsparams,this.name="y_iframe_"+this.adsparams.rand+"_"+this.adsparams.index,
-this.params=new o(this),this.settings=n,this.time_start=(new Date).getTime(),this.uh.load(),this.loader=r,this.advertise=new i(this),this.render=new a(this),this.post_listener=function(e){if(e&&e.data&&"string"==typeof e.data){var t=e.data.split(":")[0],n=e.data.split(":")[1];this.name===t&&this[n]&&this[n](e.origin)}},this.ping=function(e){e=e||this.adsparams.origin,parent&&parent.postMessage&&parent.postMessage(this.name+":ping",e)},e._.on_event("message",window,this.post_listener,this),this.ping()}}(e,h,g,qe,ze,We,Ze),function(e){(window.adsbyyottos=window.adsbyyottos||e).loader()}(et),tt=undefined}()}();
+;(function () {
+    var ytl, underscore, json3, user_history_test, user_history_fixed_queue, user_history_exclude_offers,
+        user_history_retargeting_offers, user_history_gender_account, user_history_gender_user,
+        user_history_cost_account, user_history_cost_user, user_history_activity_account, user_history_activity_user,
+        user_history_main, settings, jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_concat,
+        jquery_var_push, jquery_var_indexOf, jquery_var_class2type, jquery_var_toString, jquery_var_hasOwn,
+        jquery_var_support, jquery_core, jquery_sizzle, jquery_selector_sizzle, jquery_selector, jquery_var_rnotwhite,
+        jquery_callbacks, jquery_deferred, jquery_core_var_rsingleTag, jquery_traversing_var_rneedsContext,
+        jquery_traversing_findFilter, jquery_core_init, jquery_core_ready, jquery_support, jquery_data_support,
+        jquery_data_var_acceptData, jquery_data, jquery_attributes_support, jquery_attributes_val, jquery_core_access,
+        jquery_attributes_attr, jquery_attributes_prop, jquery_attributes_classes, jquery_attributes, jquery_var_pnum,
+        jquery_css_var_rmargin, jquery_var_rcssNum, jquery_css_var_rnumnonpx, jquery_css_var_cssExpand,
+        jquery_css_var_isHidden, jquery_css_var_swap, jquery_var_documentElement, jquery_css_support,
+        jquery_css_curCSS = {}, jquery_css_adjustCSS, jquery_manipulation_var_rcheckableType,
+        jquery_manipulation_var_rtagName, jquery_manipulation_var_rscriptType,
+        jquery_manipulation_var_rleadingWhitespace, jquery_manipulation_var_nodeNames,
+        jquery_manipulation_createSafeFragment, jquery_manipulation_support, jquery_manipulation_wrapMap,
+        jquery_manipulation_getAll, jquery_manipulation_setGlobalEval, jquery_manipulation_buildFragment,
+        jquery_traversing_var_dir, jquery_traversing_var_siblings, jquery_traversing, jquery_event_support,
+        jquery_event, jquery_manipulation, jquery_css_defaultDisplay, jquery_css_addGetHookIf, jquery_css,
+        jquery_css_hiddenVisibleSelectors, jquery_ajax_var_location, jquery_ajax_var_nonce, jquery_ajax_var_rquery,
+        jquery_ajax_parseJSON, jquery_ajax, jquery_ajax_xhr, jquery_core_parseHTML, jquery_event_alias,
+        jquery_ajax_load, jquery_dimensions, jquery_deprecated, jquery, loader_advertise, loader_main, models_advertise,
+        models_params, render_bind_redirect, render_bind_slider, render_apply_css, text, tpl,
+        tpl_templates_advBlockTemplatehtml, tpl_templates_advTemplatehtml, tpl_templates_advBlockNotFoundTemplatehtml,
+        templates_main, render_main, loader_offers_log, loader, main;
+    (function () {
+        ytl = function () {
+            var prototype = 'prototype';
+            var ArrayProto = Array[prototype], ObjProto = Object[prototype], FuncProto = Function[prototype];
+            var toString = ObjProto.toString;
+            var slice = ArrayProto.slice;
+            var nativeIsArray = Array.isArray;
+            var nativeKeys = Object.keys;
+            var nativeBind = FuncProto.bind;
+            var nativeCreate = Object.create;
+            var passiveSupported = false;
+            var modern = window.addEventListener;
+            var add = modern ? 'addEventListener' : 'attachEvent';
+            var rem = modern ? 'removeEventListener' : 'detachEvent';
+            var pre = modern ? '' : 'on';
+            try {
+                var options = Object.defineProperty({}, 'passive', {
+                    get: function () {
+                        passiveSupported = true;
+                    }
+                });
+                window[add](pre + 'test', null, options);
+                window[rem](pre + 'test', null, options);
+            } catch (err) {
+            }
+            var Ctor = function () {
+            };
+            var _ = function (obj) {
+                if (obj instanceof _) {
+                    return obj;
+                }
+                if (!(this instanceof _)) {
+                    return new _(obj);
+                }
+                this._wrapped = obj;
+            };
+            var optimizeCb = function (
+                func,
+                context,
+                argCount
+            ) {
+                if (context === void 0) {
+                    return func;
+                }
+                switch (argCount == null ? 3 : argCount) {
+                    case 1:
+                        return function (value) {
+                            return func.call(context, value);
+                        };
+                    case 2:
+                        return function (
+                            value,
+                            other
+                        ) {
+                            return func.call(context, value, other);
+                        };
+                    case 3:
+                        return function (
+                            value,
+                            index,
+                            collection
+                        ) {
+                            return func.call(context, value, index, collection);
+                        };
+                    case 4:
+                        return function (
+                            accumulator,
+                            value,
+                            index,
+                            collection
+                        ) {
+                            return func.call(context, accumulator, value, index, collection);
+                        };
+                }
+                return function () {
+                    return func.apply(context, arguments);
+                };
+            };
+            var cb = function (
+                value,
+                context,
+                argCount
+            ) {
+                if (value === null) {
+                    return _.identity;
+                }
+                if (_.isFunction(value)) {
+                    return optimizeCb(value, context, argCount);
+                }
+                if (_.isObject(value)) {
+                    return _.matcher(value);
+                }
+                return _.property(value);
+            };
+            _.iteratee = function (
+                value,
+                context
+            ) {
+                return cb(value, context, Infinity);
+            };
+            var baseCreate = function (prototype) {
+                if (!_.isObject(prototype)) {
+                    return {};
+                }
+                if (nativeCreate) {
+                    return nativeCreate(prototype);
+                }
+                Ctor[prototype] = prototype;
+                var result = new Ctor();
+                Ctor[prototype] = null;
+                return result;
+            };
+            var property = function (key) {
+                return function (obj) {
+                    return obj === null ? void 0 : obj[key];
+                };
+            };
+            var createAssigner = function (
+                keysFunc,
+                undefinedOnly
+            ) {
+                return function (obj) {
+                    var length = arguments.length;
+                    if (length < 2 || obj === null) {
+                        return obj;
+                    }
+                    for (var index = 1; index < length; index++) {
+                        var source = arguments[index], keys = keysFunc(source), l = keys.length;
+                        for (var i = 0; i < l; i++) {
+                            var key = keys[i];
+                            if (!undefinedOnly || obj[key] === void 0) {
+                                obj[key] = source[key];
+                            }
+                        }
+                    }
+                    return obj;
+                };
+            };
+            var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+            var getLength = property('length');
+            var isArrayLike = function (collection) {
+                var length = getLength(collection);
+                return typeof length === 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+            };
+            var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+            var nonEnumerableProps = [
+                'valueOf',
+                'isPrototypeOf',
+                'toString',
+                'propertyIsEnumerable',
+                'hasOwnProperty',
+                'toLocaleString'
+            ];
+
+            function collectNonEnumProps(
+                obj,
+                keys
+            ) {
+                var nonEnumIdx = nonEnumerableProps.length;
+                var constructor = obj.constructor;
+                var proto = _.isFunction(constructor) && constructor[prototype] || ObjProto;
+                // Constructor is a special case.
+                var prop = 'constructor';
+                if (_.has(obj, prop) && !_.contains(keys, prop)) {
+                    keys.push(prop);
+                }
+                while (nonEnumIdx--) {
+                    prop = nonEnumerableProps[nonEnumIdx];
+                    if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
+                        keys.push(prop);
+                    }
+                }
+            }
+
+            _.keys = function (obj) {
+                if (!_.isObject(obj)) {
+                    return [];
+                }
+                if (nativeKeys) {
+                    return nativeKeys(obj);
+                }
+                var keys = [];
+                for (var key in obj) {
+                    if (_.has(obj, key)) {
+                        keys.push(key);
+                    }
+                }
+                if (hasEnumBug) {
+                    collectNonEnumProps(obj, keys);
+                }
+                return keys;
+            };
+            _.each = _.forEach = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                iteratee = optimizeCb(iteratee, context);
+                var i, length;
+                if (isArrayLike(obj)) {
+                    for (i = 0, length = obj.length; i < length; i++) {
+                        iteratee(obj[i], i, obj);
+                    }
+                } else {
+                    var keys = _.keys(obj);
+                    for (i = 0, length = keys.length; i < length; i++) {
+                        iteratee(obj[keys[i]], keys[i], obj);
+                    }
+                }
+                return obj;
+            };
+
+            function createReduce(dir) {
+                function iterator(
+                    obj,
+                    iteratee,
+                    memo,
+                    keys,
+                    index,
+                    length
+                ) {
+                    for (; index >= 0 && index < length; index += dir) {
+                        var currentKey = keys ? keys[index] : index;
+                        memo = iteratee(memo, obj[currentKey], currentKey, obj);
+                    }
+                    return memo;
+                }
+
+                return function (
+                    obj,
+                    iteratee,
+                    memo,
+                    context
+                ) {
+                    iteratee = optimizeCb(iteratee, context, 4);
+                    var keys = !isArrayLike(obj) && _.keys(obj), length = (keys || obj).length,
+                        index = dir > 0 ? 0 : length - 1;
+                    if (arguments.length < 3) {
+                        memo = obj[keys ? keys[index] : index];
+                        index += dir;
+                    }
+                    return iterator(obj, iteratee, memo, keys, index, length);
+                };
+            }
+
+            _.reduce = _.foldl = _.inject = createReduce(1);
+            _.reduceRight = _.foldr = createReduce(-1);
+            _.filter = _.select = function (
+                obj,
+                predicate,
+                context
+            ) {
+                var results = [];
+                predicate = cb(predicate, context);
+                _.each(obj, function (
+                    value,
+                    index,
+                    list
+                ) {
+                    if (predicate(value, index, list)) {
+                        results.push(value);
+                    }
+                });
+                return results;
+            };
+            _.some = _.any = function (
+                obj,
+                predicate,
+                context
+            ) {
+                predicate = cb(predicate, context);
+                var keys = !isArrayLike(obj) && _.keys(obj), length = (keys || obj).length;
+                for (var index = 0; index < length; index++) {
+                    var currentKey = keys ? keys[index] : index;
+                    if (predicate(obj[currentKey], currentKey, obj)) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            _.size = function (obj) {
+                if (obj == null) {
+                    return 0;
+                }
+                return isArrayLike(obj) ? obj.length : _.keys(obj).length;
+            };
+            var executeBound = function (
+                sourceFunc,
+                boundFunc,
+                context,
+                callingContext,
+                args
+            ) {
+                if (!(callingContext instanceof boundFunc)) {
+                    return sourceFunc.apply(context, args);
+                }
+                var self = baseCreate(sourceFunc[prototype]);
+                var result = sourceFunc.apply(self, args);
+                if (_.isObject(result)) {
+                    return result;
+                }
+                return self;
+            };
+            // Create a function bound to a given object (assigning `this`, and arguments,
+            // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
+            // available.
+            _.bind = function (
+                func,
+                context
+            ) {
+                if (nativeBind && func.bind === nativeBind)
+                    return nativeBind.apply(func, slice.call(arguments, 1));
+                if (!_.isFunction(func)) {
+                    throw new TypeError('Bind must be called on a function');
+                }
+                var args = slice.call(arguments, 2);
+                var bound = function () {
+                    return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));
+                };
+                return bound;
+            };
+            _.allKeys = function (obj) {
+                if (!_.isObject(obj)) {
+                    return [];
+                }
+                var keys = [];
+                for (var key in obj) {
+                    keys.push(key);
+                }
+                // Ahem, IE < 9.
+                if (hasEnumBug) {
+                    collectNonEnumProps(obj, keys);
+                }
+                return keys;
+            };
+            _.extend = createAssigner(_.allKeys);
+            _.extendOwn = _.assign = createAssigner(_.keys);
+            _.isArray = nativeIsArray || function (obj) {
+                return toString.call(obj) === '[object Array]';
+            };
+            _.isObject = function (obj) {
+                var type = typeof obj;
+                return type === 'function' || type === 'object' && !!obj;
+            };
+            _.each([
+                'Arguments',
+                'Function',
+                'String',
+                'Number',
+                'Date',
+                'RegExp',
+                'Error'
+            ], function (name) {
+                _['is' + name] = function (obj) {
+                    return toString.call(obj) === '[object ' + name + ']';
+                };
+            });
+            _.isNull = function (obj) {
+                return obj === null;
+            };
+            var result = function (
+                instance,
+                obj
+            ) {
+                return instance._chain ? _(obj).chain() : obj;
+            };
+            _.each([
+                'pop',
+                'push',
+                'reverse',
+                'shift',
+                'sort',
+                'splice',
+                'unshift'
+            ], function (name) {
+                var method = ArrayProto[name];
+                _[prototype][name] = function () {
+                    var obj = this._wrapped;
+                    method.apply(obj, arguments);
+                    if ((name === 'shift' || name === 'splice') && obj.length === 0) {
+                        delete obj[0];
+                    }
+                    return result(this, obj);
+                };
+            });
+            _.each([
+                'concat',
+                'join',
+                'slice'
+            ], function (name) {
+                var method = ArrayProto[name];
+                _[prototype][name] = function () {
+                    return result(this, method.apply(this._wrapped, arguments));
+                };
+            });
+            _[prototype].value = function () {
+                return this._wrapped;
+            };
+            _[prototype].valueOf = _[prototype].toJSON = _[prototype].value;
+            _[prototype].toString = function () {
+                return '' + this._wrapped;
+            };
+            _.on_event = function (
+                evnt,
+                elem,
+                callback,
+                context,
+                once
+            ) {
+                var func = _.bind(callback, context || elem);
+                var opt = {once: once || false};
+                if (passiveSupported) {
+                    opt.passive = true;
+                }
+                elem[add](pre + evnt, func, opt);
+            };
+            _.on_load = function (
+                win,
+                callback,
+                context
+            ) {
+                var fn = _.bind(callback, context || win);
+                var done = false;
+                var top = true;
+                var doc = win.document;
+                var root = doc.documentElement;
+                var init = function (e) {
+                    if (e.type === 'readystatechange' && doc.readyState !== 'complete') {
+                        return;
+                    }
+                    (e.type === 'load' ? win : doc)[rem](pre + e.type, init, false);
+                    if (!done && (done = true)) {
+                        fn.call(win, e.type || e);
+                    }
+                };
+                var poll = function () {
+                    try {
+                        root.doScroll('left');
+                    } catch (e) {
+                        setTimeout(poll, 50);
+                        return;
+                    }
+                    init('poll');
+                };
+                if (doc.readyState === 'complete') {
+                    fn.call(win, 'lazy');
+                } else {
+                    if (!modern && root.doScroll) {
+                        try {
+                            top = !win.frameElement;
+                        } catch (e) {
+                        }
+                        if (top) {
+                            poll();
+                        }
+                    }
+                    doc[add](pre + 'DOMContentLoaded', init, false);
+                    doc[add](pre + 'readystatechange', init, false);
+                    win[add](pre + 'load', init, false);
+                }
+            };
+            var YottosLib = function () {
+            };
+            YottosLib[prototype].JSON = window.JSON || {};
+            YottosLib[prototype].JSON.stringify = YottosLib[prototype].JSON.stringify || function (obj) {
+                var t = typeof obj;
+                if (t !== 'object' || obj === null) {
+                    if (t === 'string') {
+                        obj = '"' + obj + '"';
+                    }
+                    return String(obj);
+                } else {
+                    var n, v, json = [], arr = obj && obj.constructor === Array;
+                    for (n in obj) {
+                        v = obj[n];
+                        t = typeof v;
+                        if (t === 'string') {
+                            v = '"' + v + '"';
+                        } else if (t === 'object' && v !== null) {
+                            v = this.stringify(v);
+                        }
+                        json.push((arr ? '' : '"' + n + '":') + String(v));
+                    }
+                    return (arr ? '[' : '{') + String(json) + (arr ? ']' : '}');
+                }
+            };
+            YottosLib[prototype].JSON.parse = YottosLib[prototype].JSON.parse || function (str) {
+                if (str === '') {
+                    str = '""';
+                }
+                eval('var p=' + str + ';');
+                return p;
+            };
+            YottosLib[prototype].b = {_keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='};
+            YottosLib[prototype].b.e = function (input) {
+                var output = '';
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = this._u_e(input);
+                while (i < input.length) {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = (chr1 & 3) << 4 | chr2 >> 4;
+                    enc3 = (chr2 & 15) << 2 | chr3 >> 6;
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+                    output = output + this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) + this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+                }
+                return output;
+            };
+            YottosLib[prototype].b.d = function (input) {
+                var output = '';
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
+                while (i < input.length) {
+                    enc1 = this._keyStr.indexOf(input.charAt(i++));
+                    enc2 = this._keyStr.indexOf(input.charAt(i++));
+                    enc3 = this._keyStr.indexOf(input.charAt(i++));
+                    enc4 = this._keyStr.indexOf(input.charAt(i++));
+                    chr1 = enc1 << 2 | enc2 >> 4;
+                    chr2 = (enc2 & 15) << 4 | enc3 >> 2;
+                    chr3 = (enc3 & 3) << 6 | enc4;
+                    output = output + String.fromCharCode(chr1);
+                    if (enc3 !== 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 !== 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+                }
+                output = this._u_d(output);
+                return output;
+            };
+            YottosLib[prototype].b._u_e = function (string) {
+                string = string.replace(/\r\n/g, '\n');
+                var utftext = '';
+                for (var n = 0; n < string.length; n++) {
+                    var c = string.charCodeAt(n);
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    } else if (c > 127 && c < 2048) {
+                        utftext += String.fromCharCode(c >> 6 | 192);
+                        utftext += String.fromCharCode(c & 63 | 128);
+                    } else {
+                        utftext += String.fromCharCode(c >> 12 | 224);
+                        utftext += String.fromCharCode(c >> 6 & 63 | 128);
+                        utftext += String.fromCharCode(c & 63 | 128);
+                    }
+                }
+                return utftext;
+            };
+            YottosLib[prototype].b._u_d = function (utftext) {
+                var string = '';
+                var i = 0;
+                var c = 0;
+                var c1 = 0;
+                var c2 = 0;
+                var c3 = 0;
+                while (i < utftext.length) {
+                    c = utftext.charCodeAt(i);
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    } else if (c > 191 && c < 224) {
+                        c2 = utftext.charCodeAt(i + 1);
+                        string += String.fromCharCode((c & 31) << 6 | c2 & 63);
+                        i += 2;
+                    } else {
+                        c2 = utftext.charCodeAt(i + 1);
+                        c3 = utftext.charCodeAt(i + 2);
+                        string += String.fromCharCode((c & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
+                        i += 3;
+                    }
+                }
+                return string;
+            };
+            YottosLib[prototype]._ = _;
+            YottosLib[prototype].post_exists = function () {
+                var post = false;
+                var postMessage = 'postMessage';
+                if (window[postMessage]) {
+                    post = true;
+                }
+                return post;
+            };
+            return new YottosLib();
+        }();
+        //     Underscore.js 1.8.3
+        //     http://underscorejs.org
+        //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+        //     Underscore may be freely distributed under the MIT license.
+        (function () {
+            // Baseline setup
+            // --------------
+            // Establish the root object, `window` in the browser, or `exports` on the server.
+            var root = this;
+            // Save the previous value of the `_` variable.
+            var previousUnderscore = root._;
+            // Save bytes in the minified (but not gzipped) version:
+            var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+            // Create quick reference variables for speed access to core prototypes.
+            var push = ArrayProto.push, slice = ArrayProto.slice, toString = ObjProto.toString,
+                hasOwnProperty = ObjProto.hasOwnProperty;
+            // All **ECMAScript 5** native function implementations that we hope to use
+            // are declared here.
+            var nativeIsArray = Array.isArray, nativeKeys = Object.keys, nativeBind = FuncProto.bind,
+                nativeCreate = Object.create;
+            // Naked function reference for surrogate-prototype-swapping.
+            var Ctor = function () {
+            };
+            // Create a safe reference to the Underscore object for use below.
+            var _ = function (obj) {
+                if (obj instanceof _)
+                    return obj;
+                if (!(this instanceof _))
+                    return new _(obj);
+                this._wrapped = obj;
+            };
+            // Export the Underscore object for **Node.js**, with
+            // backwards-compatibility for the old `require()` API. If we're in
+            // the browser, add `_` as a global object.
+            if (typeof exports !== 'undefined') {
+                if (typeof module !== 'undefined' && module.exports) {
+                    exports = module.exports = _;
+                }
+                exports._ = _;
+            } else {
+                root._ = _;
+            }
+            // Current version.
+            _.VERSION = '1.8.3';
+            // Internal function that returns an efficient (for current engines) version
+            // of the passed-in callback, to be repeatedly applied in other Underscore
+            // functions.
+            var optimizeCb = function (
+                func,
+                context,
+                argCount
+            ) {
+                if (context === void 0)
+                    return func;
+                switch (argCount == null ? 3 : argCount) {
+                    case 1:
+                        return function (value) {
+                            return func.call(context, value);
+                        };
+                    case 2:
+                        return function (
+                            value,
+                            other
+                        ) {
+                            return func.call(context, value, other);
+                        };
+                    case 3:
+                        return function (
+                            value,
+                            index,
+                            collection
+                        ) {
+                            return func.call(context, value, index, collection);
+                        };
+                    case 4:
+                        return function (
+                            accumulator,
+                            value,
+                            index,
+                            collection
+                        ) {
+                            return func.call(context, accumulator, value, index, collection);
+                        };
+                }
+                return function () {
+                    return func.apply(context, arguments);
+                };
+            };
+            // A mostly-internal function to generate callbacks that can be applied
+            // to each element in a collection, returning the desired result — either
+            // identity, an arbitrary callback, a property matcher, or a property accessor.
+            var cb = function (
+                value,
+                context,
+                argCount
+            ) {
+                if (value == null)
+                    return _.identity;
+                if (_.isFunction(value))
+                    return optimizeCb(value, context, argCount);
+                if (_.isObject(value))
+                    return _.matcher(value);
+                return _.property(value);
+            };
+            _.iteratee = function (
+                value,
+                context
+            ) {
+                return cb(value, context, Infinity);
+            };
+            // An internal function for creating assigner functions.
+            var createAssigner = function (
+                keysFunc,
+                undefinedOnly
+            ) {
+                return function (obj) {
+                    var length = arguments.length;
+                    if (length < 2 || obj == null)
+                        return obj;
+                    for (var index = 1; index < length; index++) {
+                        var source = arguments[index], keys = keysFunc(source), l = keys.length;
+                        for (var i = 0; i < l; i++) {
+                            var key = keys[i];
+                            if (!undefinedOnly || obj[key] === void 0)
+                                obj[key] = source[key];
+                        }
+                    }
+                    return obj;
+                };
+            };
+            // An internal function for creating a new object that inherits from another.
+            var baseCreate = function (prototype) {
+                if (!_.isObject(prototype))
+                    return {};
+                if (nativeCreate)
+                    return nativeCreate(prototype);
+                Ctor.prototype = prototype;
+                var result = new Ctor();
+                Ctor.prototype = null;
+                return result;
+            };
+            var property = function (key) {
+                return function (obj) {
+                    return obj == null ? void 0 : obj[key];
+                };
+            };
+            // Helper for collection methods to determine whether a collection
+            // should be iterated as an array or as an object
+            // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
+            // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
+            var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+            var getLength = property('length');
+            var isArrayLike = function (collection) {
+                var length = getLength(collection);
+                return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+            };
+            // Collection Functions
+            // --------------------
+            // The cornerstone, an `each` implementation, aka `forEach`.
+            // Handles raw objects in addition to array-likes. Treats all
+            // sparse array-likes as if they were dense.
+            _.each = _.forEach = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                iteratee = optimizeCb(iteratee, context);
+                var i, length;
+                if (isArrayLike(obj)) {
+                    for (i = 0, length = obj.length; i < length; i++) {
+                        iteratee(obj[i], i, obj);
+                    }
+                } else {
+                    var keys = _.keys(obj);
+                    for (i = 0, length = keys.length; i < length; i++) {
+                        iteratee(obj[keys[i]], keys[i], obj);
+                    }
+                }
+                return obj;
+            };
+            // Return the results of applying the iteratee to each element.
+            _.map = _.collect = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                iteratee = cb(iteratee, context);
+                var keys = !isArrayLike(obj) && _.keys(obj), length = (keys || obj).length, results = Array(length);
+                for (var index = 0; index < length; index++) {
+                    var currentKey = keys ? keys[index] : index;
+                    results[index] = iteratee(obj[currentKey], currentKey, obj);
+                }
+                return results;
+            };
+
+            // Create a reducing function iterating left or right.
+            function createReduce(dir) {
+                // Optimized iterator function as using arguments.length
+                // in the main function will deoptimize the, see #1991.
+                function iterator(
+                    obj,
+                    iteratee,
+                    memo,
+                    keys,
+                    index,
+                    length
+                ) {
+                    for (; index >= 0 && index < length; index += dir) {
+                        var currentKey = keys ? keys[index] : index;
+                        memo = iteratee(memo, obj[currentKey], currentKey, obj);
+                    }
+                    return memo;
+                }
+
+                return function (
+                    obj,
+                    iteratee,
+                    memo,
+                    context
+                ) {
+                    iteratee = optimizeCb(iteratee, context, 4);
+                    var keys = !isArrayLike(obj) && _.keys(obj), length = (keys || obj).length,
+                        index = dir > 0 ? 0 : length - 1;
+                    // Determine the initial value if none is provided.
+                    if (arguments.length < 3) {
+                        memo = obj[keys ? keys[index] : index];
+                        index += dir;
+                    }
+                    return iterator(obj, iteratee, memo, keys, index, length);
+                };
+            }
+
+            // **Reduce** builds up a single result from a list of values, aka `inject`,
+            // or `foldl`.
+            _.reduce = _.foldl = _.inject = createReduce(1);
+            // The right-associative version of reduce, also known as `foldr`.
+            _.reduceRight = _.foldr = createReduce(-1);
+            // Return the first value which passes a truth test. Aliased as `detect`.
+            _.find = _.detect = function (
+                obj,
+                predicate,
+                context
+            ) {
+                var key;
+                if (isArrayLike(obj)) {
+                    key = _.findIndex(obj, predicate, context);
+                } else {
+                    key = _.findKey(obj, predicate, context);
+                }
+                if (key !== void 0 && key !== -1)
+                    return obj[key];
+            };
+            // Return all the elements that pass a truth test.
+            // Aliased as `select`.
+            _.filter = _.select = function (
+                obj,
+                predicate,
+                context
+            ) {
+                var results = [];
+                predicate = cb(predicate, context);
+                _.each(obj, function (
+                    value,
+                    index,
+                    list
+                ) {
+                    if (predicate(value, index, list))
+                        results.push(value);
+                });
+                return results;
+            };
+            // Return all the elements for which a truth test fails.
+            _.reject = function (
+                obj,
+                predicate,
+                context
+            ) {
+                return _.filter(obj, _.negate(cb(predicate)), context);
+            };
+            // Determine whether all of the elements match a truth test.
+            // Aliased as `all`.
+            _.every = _.all = function (
+                obj,
+                predicate,
+                context
+            ) {
+                predicate = cb(predicate, context);
+                var keys = !isArrayLike(obj) && _.keys(obj), length = (keys || obj).length;
+                for (var index = 0; index < length; index++) {
+                    var currentKey = keys ? keys[index] : index;
+                    if (!predicate(obj[currentKey], currentKey, obj))
+                        return false;
+                }
+                return true;
+            };
+            // Determine if at least one element in the object matches a truth test.
+            // Aliased as `any`.
+            _.some = _.any = function (
+                obj,
+                predicate,
+                context
+            ) {
+                predicate = cb(predicate, context);
+                var keys = !isArrayLike(obj) && _.keys(obj), length = (keys || obj).length;
+                for (var index = 0; index < length; index++) {
+                    var currentKey = keys ? keys[index] : index;
+                    if (predicate(obj[currentKey], currentKey, obj))
+                        return true;
+                }
+                return false;
+            };
+            // Determine if the array or object contains a given item (using `===`).
+            // Aliased as `includes` and `include`.
+            _.contains = _.includes = _.include = function (
+                obj,
+                item,
+                fromIndex,
+                guard
+            ) {
+                if (!isArrayLike(obj))
+                    obj = _.values(obj);
+                if (typeof fromIndex != 'number' || guard)
+                    fromIndex = 0;
+                return _.indexOf(obj, item, fromIndex) >= 0;
+            };
+            // Invoke a method (with arguments) on every item in a collection.
+            _.invoke = function (
+                obj,
+                method
+            ) {
+                var args = slice.call(arguments, 2);
+                var isFunc = _.isFunction(method);
+                return _.map(obj, function (value) {
+                    var func = isFunc ? method : value[method];
+                    return func == null ? func : func.apply(value, args);
+                });
+            };
+            // Convenience version of a common use case of `map`: fetching a property.
+            _.pluck = function (
+                obj,
+                key
+            ) {
+                return _.map(obj, _.property(key));
+            };
+            // Convenience version of a common use case of `filter`: selecting only objects
+            // containing specific `key:value` pairs.
+            _.where = function (
+                obj,
+                attrs
+            ) {
+                return _.filter(obj, _.matcher(attrs));
+            };
+            // Convenience version of a common use case of `find`: getting the first object
+            // containing specific `key:value` pairs.
+            _.findWhere = function (
+                obj,
+                attrs
+            ) {
+                return _.find(obj, _.matcher(attrs));
+            };
+            // Return the maximum element (or element-based computation).
+            _.max = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                var result = -Infinity, lastComputed = -Infinity, value, computed;
+                if (iteratee == null && obj != null) {
+                    obj = isArrayLike(obj) ? obj : _.values(obj);
+                    for (var i = 0, length = obj.length; i < length; i++) {
+                        value = obj[i];
+                        if (value > result) {
+                            result = value;
+                        }
+                    }
+                } else {
+                    iteratee = cb(iteratee, context);
+                    _.each(obj, function (
+                        value,
+                        index,
+                        list
+                    ) {
+                        computed = iteratee(value, index, list);
+                        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+                            result = value;
+                            lastComputed = computed;
+                        }
+                    });
+                }
+                return result;
+            };
+            // Return the minimum element (or element-based computation).
+            _.min = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                var result = Infinity, lastComputed = Infinity, value, computed;
+                if (iteratee == null && obj != null) {
+                    obj = isArrayLike(obj) ? obj : _.values(obj);
+                    for (var i = 0, length = obj.length; i < length; i++) {
+                        value = obj[i];
+                        if (value < result) {
+                            result = value;
+                        }
+                    }
+                } else {
+                    iteratee = cb(iteratee, context);
+                    _.each(obj, function (
+                        value,
+                        index,
+                        list
+                    ) {
+                        computed = iteratee(value, index, list);
+                        if (computed < lastComputed || computed === Infinity && result === Infinity) {
+                            result = value;
+                            lastComputed = computed;
+                        }
+                    });
+                }
+                return result;
+            };
+            // Shuffle a collection, using the modern version of the
+            // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+            _.shuffle = function (obj) {
+                var set = isArrayLike(obj) ? obj : _.values(obj);
+                var length = set.length;
+                var shuffled = Array(length);
+                for (var index = 0, rand; index < length; index++) {
+                    rand = _.random(0, index);
+                    if (rand !== index)
+                        shuffled[index] = shuffled[rand];
+                    shuffled[rand] = set[index];
+                }
+                return shuffled;
+            };
+            // Sample **n** random values from a collection.
+            // If **n** is not specified, returns a single random element.
+            // The internal `guard` argument allows it to work with `map`.
+            _.sample = function (
+                obj,
+                n,
+                guard
+            ) {
+                if (n == null || guard) {
+                    if (!isArrayLike(obj))
+                        obj = _.values(obj);
+                    return obj[_.random(obj.length - 1)];
+                }
+                return _.shuffle(obj).slice(0, Math.max(0, n));
+            };
+            // Sort the object's values by a criterion produced by an iteratee.
+            _.sortBy = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                iteratee = cb(iteratee, context);
+                return _.pluck(_.map(obj, function (
+                    value,
+                    index,
+                    list
+                ) {
+                    return {
+                        value: value,
+                        index: index,
+                        criteria: iteratee(value, index, list)
+                    };
+                }).sort(function (
+                    left,
+                    right
+                ) {
+                    var a = left.criteria;
+                    var b = right.criteria;
+                    if (a !== b) {
+                        if (a > b || a === void 0)
+                            return 1;
+                        if (a < b || b === void 0)
+                            return -1;
+                    }
+                    return left.index - right.index;
+                }), 'value');
+            };
+            // An internal function used for aggregate "group by" operations.
+            var group = function (behavior) {
+                return function (
+                    obj,
+                    iteratee,
+                    context
+                ) {
+                    var result = {};
+                    iteratee = cb(iteratee, context);
+                    _.each(obj, function (
+                        value,
+                        index
+                    ) {
+                        var key = iteratee(value, index, obj);
+                        behavior(result, value, key);
+                    });
+                    return result;
+                };
+            };
+            // Groups the object's values by a criterion. Pass either a string attribute
+            // to group by, or a function that returns the criterion.
+            _.groupBy = group(function (
+                result,
+                value,
+                key
+            ) {
+                if (_.has(result, key))
+                    result[key].push(value);
+                else
+                    result[key] = [value];
+            });
+            // Indexes the object's values by a criterion, similar to `groupBy`, but for
+            // when you know that your index values will be unique.
+            _.indexBy = group(function (
+                result,
+                value,
+                key
+            ) {
+                result[key] = value;
+            });
+            // Counts instances of an object that group by a certain criterion. Pass
+            // either a string attribute to count by, or a function that returns the
+            // criterion.
+            _.countBy = group(function (
+                result,
+                value,
+                key
+            ) {
+                if (_.has(result, key))
+                    result[key]++;
+                else
+                    result[key] = 1;
+            });
+            // Safely create a real, live array from anything iterable.
+            _.toArray = function (obj) {
+                if (!obj)
+                    return [];
+                if (_.isArray(obj))
+                    return slice.call(obj);
+                if (isArrayLike(obj))
+                    return _.map(obj, _.identity);
+                return _.values(obj);
+            };
+            // Return the number of elements in an object.
+            _.size = function (obj) {
+                if (obj == null)
+                    return 0;
+                return isArrayLike(obj) ? obj.length : _.keys(obj).length;
+            };
+            // Split a collection into two arrays: one whose elements all satisfy the given
+            // predicate, and one whose elements all do not satisfy the predicate.
+            _.partition = function (
+                obj,
+                predicate,
+                context
+            ) {
+                predicate = cb(predicate, context);
+                var pass = [], fail = [];
+                _.each(obj, function (
+                    value,
+                    key,
+                    obj
+                ) {
+                    (predicate(value, key, obj) ? pass : fail).push(value);
+                });
+                return [
+                    pass,
+                    fail
+                ];
+            };
+            // Array Functions
+            // ---------------
+            // Get the first element of an array. Passing **n** will return the first N
+            // values in the array. Aliased as `head` and `take`. The **guard** check
+            // allows it to work with `_.map`.
+            _.first = _.head = _.take = function (
+                array,
+                n,
+                guard
+            ) {
+                if (array == null)
+                    return void 0;
+                if (n == null || guard)
+                    return array[0];
+                return _.initial(array, array.length - n);
+            };
+            // Returns everything but the last entry of the array. Especially useful on
+            // the arguments object. Passing **n** will return all the values in
+            // the array, excluding the last N.
+            _.initial = function (
+                array,
+                n,
+                guard
+            ) {
+                return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
+            };
+            // Get the last element of an array. Passing **n** will return the last N
+            // values in the array.
+            _.last = function (
+                array,
+                n,
+                guard
+            ) {
+                if (array == null)
+                    return void 0;
+                if (n == null || guard)
+                    return array[array.length - 1];
+                return _.rest(array, Math.max(0, array.length - n));
+            };
+            // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
+            // Especially useful on the arguments object. Passing an **n** will return
+            // the rest N values in the array.
+            _.rest = _.tail = _.drop = function (
+                array,
+                n,
+                guard
+            ) {
+                return slice.call(array, n == null || guard ? 1 : n);
+            };
+            // Trim out all falsy values from an array.
+            _.compact = function (array) {
+                return _.filter(array, _.identity);
+            };
+            // Internal implementation of a recursive `flatten` function.
+            var flatten = function (
+                input,
+                shallow,
+                strict,
+                startIndex
+            ) {
+                var output = [], idx = 0;
+                for (var i = startIndex || 0, length = getLength(input); i < length; i++) {
+                    var value = input[i];
+                    if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
+                        //flatten current level of array or arguments object
+                        if (!shallow)
+                            value = flatten(value, shallow, strict);
+                        var j = 0, len = value.length;
+                        output.length += len;
+                        while (j < len) {
+                            output[idx++] = value[j++];
+                        }
+                    } else if (!strict) {
+                        output[idx++] = value;
+                    }
+                }
+                return output;
+            };
+            // Flatten out an array, either recursively (by default), or just one level.
+            _.flatten = function (
+                array,
+                shallow
+            ) {
+                return flatten(array, shallow, false);
+            };
+            // Return a version of the array that does not contain the specified value(s).
+            _.without = function (array) {
+                return _.difference(array, slice.call(arguments, 1));
+            };
+            // Produce a duplicate-free version of the array. If the array has already
+            // been sorted, you have the option of using a faster algorithm.
+            // Aliased as `unique`.
+            _.uniq = _.unique = function (
+                array,
+                isSorted,
+                iteratee,
+                context
+            ) {
+                if (!_.isBoolean(isSorted)) {
+                    context = iteratee;
+                    iteratee = isSorted;
+                    isSorted = false;
+                }
+                if (iteratee != null)
+                    iteratee = cb(iteratee, context);
+                var result = [];
+                var seen = [];
+                for (var i = 0, length = getLength(array); i < length; i++) {
+                    var value = array[i], computed = iteratee ? iteratee(value, i, array) : value;
+                    if (isSorted) {
+                        if (!i || seen !== computed)
+                            result.push(value);
+                        seen = computed;
+                    } else if (iteratee) {
+                        if (!_.contains(seen, computed)) {
+                            seen.push(computed);
+                            result.push(value);
+                        }
+                    } else if (!_.contains(result, value)) {
+                        result.push(value);
+                    }
+                }
+                return result;
+            };
+            // Produce an array that contains the union: each distinct element from all of
+            // the passed-in arrays.
+            _.union = function () {
+                return _.uniq(flatten(arguments, true, true));
+            };
+            // Produce an array that contains every item shared between all the
+            // passed-in arrays.
+            _.intersection = function (array) {
+                var result = [];
+                var argsLength = arguments.length;
+                for (var i = 0, length = getLength(array); i < length; i++) {
+                    var item = array[i];
+                    if (_.contains(result, item))
+                        continue;
+                    for (var j = 1; j < argsLength; j++) {
+                        if (!_.contains(arguments[j], item))
+                            break;
+                    }
+                    if (j === argsLength)
+                        result.push(item);
+                }
+                return result;
+            };
+            // Take the difference between one array and a number of other arrays.
+            // Only the elements present in just the first array will remain.
+            _.difference = function (array) {
+                var rest = flatten(arguments, true, true, 1);
+                return _.filter(array, function (value) {
+                    return !_.contains(rest, value);
+                });
+            };
+            // Zip together multiple lists into a single array -- elements that share
+            // an index go together.
+            _.zip = function () {
+                return _.unzip(arguments);
+            };
+            // Complement of _.zip. Unzip accepts an array of arrays and groups
+            // each array's elements on shared indices
+            _.unzip = function (array) {
+                var length = array && _.max(array, getLength).length || 0;
+                var result = Array(length);
+                for (var index = 0; index < length; index++) {
+                    result[index] = _.pluck(array, index);
+                }
+                return result;
+            };
+            // Converts lists into objects. Pass either a single array of `[key, value]`
+            // pairs, or two parallel arrays of the same length -- one of keys, and one of
+            // the corresponding values.
+            _.object = function (
+                list,
+                values
+            ) {
+                var result = {};
+                for (var i = 0, length = getLength(list); i < length; i++) {
+                    if (values) {
+                        result[list[i]] = values[i];
+                    } else {
+                        result[list[i][0]] = list[i][1];
+                    }
+                }
+                return result;
+            };
+
+            // Generator function to create the findIndex and findLastIndex functions
+            function createPredicateIndexFinder(dir) {
+                return function (
+                    array,
+                    predicate,
+                    context
+                ) {
+                    predicate = cb(predicate, context);
+                    var length = getLength(array);
+                    var index = dir > 0 ? 0 : length - 1;
+                    for (; index >= 0 && index < length; index += dir) {
+                        if (predicate(array[index], index, array))
+                            return index;
+                    }
+                    return -1;
+                };
+            }
+
+            // Returns the first index on an array-like that passes a predicate test
+            _.findIndex = createPredicateIndexFinder(1);
+            _.findLastIndex = createPredicateIndexFinder(-1);
+            // Use a comparator function to figure out the smallest index at which
+            // an object should be inserted so as to maintain order. Uses binary search.
+            _.sortedIndex = function (
+                array,
+                obj,
+                iteratee,
+                context
+            ) {
+                iteratee = cb(iteratee, context, 1);
+                var value = iteratee(obj);
+                var low = 0, high = getLength(array);
+                while (low < high) {
+                    var mid = Math.floor((low + high) / 2);
+                    if (iteratee(array[mid]) < value)
+                        low = mid + 1;
+                    else
+                        high = mid;
+                }
+                return low;
+            };
+
+            // Generator function to create the indexOf and lastIndexOf functions
+            function createIndexFinder(
+                dir,
+                predicateFind,
+                sortedIndex
+            ) {
+                return function (
+                    array,
+                    item,
+                    idx
+                ) {
+                    var i = 0, length = getLength(array);
+                    if (typeof idx == 'number') {
+                        if (dir > 0) {
+                            i = idx >= 0 ? idx : Math.max(idx + length, i);
+                        } else {
+                            length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+                        }
+                    } else if (sortedIndex && idx && length) {
+                        idx = sortedIndex(array, item);
+                        return array[idx] === item ? idx : -1;
+                    }
+                    if (item !== item) {
+                        idx = predicateFind(slice.call(array, i, length), _.isNaN);
+                        return idx >= 0 ? idx + i : -1;
+                    }
+                    for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
+                        if (array[idx] === item)
+                            return idx;
+                    }
+                    return -1;
+                };
+            }
+
+            // Return the position of the first occurrence of an item in an array,
+            // or -1 if the item is not included in the array.
+            // If the array is large and already in sort order, pass `true`
+            // for **isSorted** to use binary search.
+            _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
+            _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
+            // Generate an integer Array containing an arithmetic progression. A port of
+            // the native Python `range()` function. See
+            // [the Python documentation](http://docs.python.org/library/functions.html#range).
+            _.range = function (
+                start,
+                stop,
+                step
+            ) {
+                if (stop == null) {
+                    stop = start || 0;
+                    start = 0;
+                }
+                step = step || 1;
+                var length = Math.max(Math.ceil((stop - start) / step), 0);
+                var range = Array(length);
+                for (var idx = 0; idx < length; idx++, start += step) {
+                    range[idx] = start;
+                }
+                return range;
+            };
+            // Function (ahem) Functions
+            // ------------------
+            // Determines whether to execute a function as a constructor
+            // or a normal function with the provided arguments
+            var executeBound = function (
+                sourceFunc,
+                boundFunc,
+                context,
+                callingContext,
+                args
+            ) {
+                if (!(callingContext instanceof boundFunc))
+                    return sourceFunc.apply(context, args);
+                var self = baseCreate(sourceFunc.prototype);
+                var result = sourceFunc.apply(self, args);
+                if (_.isObject(result))
+                    return result;
+                return self;
+            };
+            // Create a function bound to a given object (assigning `this`, and arguments,
+            // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
+            // available.
+            _.bind = function (
+                func,
+                context
+            ) {
+                if (nativeBind && func.bind === nativeBind)
+                    return nativeBind.apply(func, slice.call(arguments, 1));
+                if (!_.isFunction(func))
+                    throw new TypeError('Bind must be called on a function');
+                var args = slice.call(arguments, 2);
+                var bound = function () {
+                    return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));
+                };
+                return bound;
+            };
+            // Partially apply a function by creating a version that has had some of its
+            // arguments pre-filled, without changing its dynamic `this` context. _ acts
+            // as a placeholder, allowing any combination of arguments to be pre-filled.
+            _.partial = function (func) {
+                var boundArgs = slice.call(arguments, 1);
+                var bound = function () {
+                    var position = 0, length = boundArgs.length;
+                    var args = Array(length);
+                    for (var i = 0; i < length; i++) {
+                        args[i] = boundArgs[i] === _ ? arguments[position++] : boundArgs[i];
+                    }
+                    while (position < arguments.length)
+                        args.push(arguments[position++]);
+                    return executeBound(func, bound, this, this, args);
+                };
+                return bound;
+            };
+            // Bind a number of an object's methods to that object. Remaining arguments
+            // are the method names to be bound. Useful for ensuring that all callbacks
+            // defined on an object belong to it.
+            _.bindAll = function (obj) {
+                var i, length = arguments.length, key;
+                if (length <= 1)
+                    throw new Error('bindAll must be passed function names');
+                for (i = 1; i < length; i++) {
+                    key = arguments[i];
+                    obj[key] = _.bind(obj[key], obj);
+                }
+                return obj;
+            };
+            // Memoize an expensive function by storing its results.
+            _.memoize = function (
+                func,
+                hasher
+            ) {
+                var memoize = function (key) {
+                    var cache = memoize.cache;
+                    var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+                    if (!_.has(cache, address))
+                        cache[address] = func.apply(this, arguments);
+                    return cache[address];
+                };
+                memoize.cache = {};
+                return memoize;
+            };
+            // Delays a function for the given number of milliseconds, and then calls
+            // it with the arguments supplied.
+            _.delay = function (
+                func,
+                wait
+            ) {
+                var args = slice.call(arguments, 2);
+                return setTimeout(function () {
+                    return func.apply(null, args);
+                }, wait);
+            };
+            // Defers a function, scheduling it to run after the current call stack has
+            // cleared.
+            _.defer = _.partial(_.delay, _, 1);
+            // Returns a function, that, when invoked, will only be triggered at most once
+            // during a given window of time. Normally, the throttled function will run
+            // as much as it can, without ever going more than once per `wait` duration;
+            // but if you'd like to disable the execution on the leading edge, pass
+            // `{leading: false}`. To disable execution on the trailing edge, ditto.
+            _.throttle = function (
+                func,
+                wait,
+                options
+            ) {
+                var context, args, result;
+                var timeout = null;
+                var previous = 0;
+                if (!options)
+                    options = {};
+                var later = function () {
+                    previous = options.leading === false ? 0 : _.now();
+                    timeout = null;
+                    result = func.apply(context, args);
+                    if (!timeout)
+                        context = args = null;
+                };
+                return function () {
+                    var now = _.now();
+                    if (!previous && options.leading === false)
+                        previous = now;
+                    var remaining = wait - (now - previous);
+                    context = this;
+                    args = arguments;
+                    if (remaining <= 0 || remaining > wait) {
+                        if (timeout) {
+                            clearTimeout(timeout);
+                            timeout = null;
+                        }
+                        previous = now;
+                        result = func.apply(context, args);
+                        if (!timeout)
+                            context = args = null;
+                    } else if (!timeout && options.trailing !== false) {
+                        timeout = setTimeout(later, remaining);
+                    }
+                    return result;
+                };
+            };
+            // Returns a function, that, as long as it continues to be invoked, will not
+            // be triggered. The function will be called after it stops being called for
+            // N milliseconds. If `immediate` is passed, trigger the function on the
+            // leading edge, instead of the trailing.
+            _.debounce = function (
+                func,
+                wait,
+                immediate
+            ) {
+                var timeout, args, context, timestamp, result;
+                var later = function () {
+                    var last = _.now() - timestamp;
+                    if (last < wait && last >= 0) {
+                        timeout = setTimeout(later, wait - last);
+                    } else {
+                        timeout = null;
+                        if (!immediate) {
+                            result = func.apply(context, args);
+                            if (!timeout)
+                                context = args = null;
+                        }
+                    }
+                };
+                return function () {
+                    context = this;
+                    args = arguments;
+                    timestamp = _.now();
+                    var callNow = immediate && !timeout;
+                    if (!timeout)
+                        timeout = setTimeout(later, wait);
+                    if (callNow) {
+                        result = func.apply(context, args);
+                        context = args = null;
+                    }
+                    return result;
+                };
+            };
+            // Returns the first function passed as an argument to the second,
+            // allowing you to adjust arguments, run code before and after, and
+            // conditionally execute the original function.
+            _.wrap = function (
+                func,
+                wrapper
+            ) {
+                return _.partial(wrapper, func);
+            };
+            // Returns a negated version of the passed-in predicate.
+            _.negate = function (predicate) {
+                return function () {
+                    return !predicate.apply(this, arguments);
+                };
+            };
+            // Returns a function that is the composition of a list of functions, each
+            // consuming the return value of the function that follows.
+            _.compose = function () {
+                var args = arguments;
+                var start = args.length - 1;
+                return function () {
+                    var i = start;
+                    var result = args[start].apply(this, arguments);
+                    while (i--)
+                        result = args[i].call(this, result);
+                    return result;
+                };
+            };
+            // Returns a function that will only be executed on and after the Nth call.
+            _.after = function (
+                times,
+                func
+            ) {
+                return function () {
+                    if (--times < 1) {
+                        return func.apply(this, arguments);
+                    }
+                };
+            };
+            // Returns a function that will only be executed up to (but not including) the Nth call.
+            _.before = function (
+                times,
+                func
+            ) {
+                var memo;
+                return function () {
+                    if (--times > 0) {
+                        memo = func.apply(this, arguments);
+                    }
+                    if (times <= 1)
+                        func = null;
+                    return memo;
+                };
+            };
+            // Returns a function that will be executed at most one time, no matter how
+            // often you call it. Useful for lazy initialization.
+            _.once = _.partial(_.before, 2);
+            // Object Functions
+            // ----------------
+            // Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
+            var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+            var nonEnumerableProps = [
+                'valueOf',
+                'isPrototypeOf',
+                'toString',
+                'propertyIsEnumerable',
+                'hasOwnProperty',
+                'toLocaleString'
+            ];
+
+            function collectNonEnumProps(
+                obj,
+                keys
+            ) {
+                var nonEnumIdx = nonEnumerableProps.length;
+                var constructor = obj.constructor;
+                var proto = _.isFunction(constructor) && constructor.prototype || ObjProto;
+                // Constructor is a special case.
+                var prop = 'constructor';
+                if (_.has(obj, prop) && !_.contains(keys, prop))
+                    keys.push(prop);
+                while (nonEnumIdx--) {
+                    prop = nonEnumerableProps[nonEnumIdx];
+                    if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
+                        keys.push(prop);
+                    }
+                }
+            }
+
+            // Retrieve the names of an object's own properties.
+            // Delegates to **ECMAScript 5**'s native `Object.keys`
+            _.keys = function (obj) {
+                if (!_.isObject(obj))
+                    return [];
+                if (nativeKeys)
+                    return nativeKeys(obj);
+                var keys = [];
+                for (var key in obj)
+                    if (_.has(obj, key))
+                        keys.push(key);
+                // Ahem, IE < 9.
+                if (hasEnumBug)
+                    collectNonEnumProps(obj, keys);
+                return keys;
+            };
+            // Retrieve all the property names of an object.
+            _.allKeys = function (obj) {
+                if (!_.isObject(obj))
+                    return [];
+                var keys = [];
+                for (var key in obj)
+                    keys.push(key);
+                // Ahem, IE < 9.
+                if (hasEnumBug)
+                    collectNonEnumProps(obj, keys);
+                return keys;
+            };
+            // Retrieve the values of an object's properties.
+            _.values = function (obj) {
+                var keys = _.keys(obj);
+                var length = keys.length;
+                var values = Array(length);
+                for (var i = 0; i < length; i++) {
+                    values[i] = obj[keys[i]];
+                }
+                return values;
+            };
+            // Returns the results of applying the iteratee to each element of the object
+            // In contrast to _.map it returns an object
+            _.mapObject = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                iteratee = cb(iteratee, context);
+                var keys = _.keys(obj), length = keys.length, results = {}, currentKey;
+                for (var index = 0; index < length; index++) {
+                    currentKey = keys[index];
+                    results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
+                }
+                return results;
+            };
+            // Convert an object into a list of `[key, value]` pairs.
+            _.pairs = function (obj) {
+                var keys = _.keys(obj);
+                var length = keys.length;
+                var pairs = Array(length);
+                for (var i = 0; i < length; i++) {
+                    pairs[i] = [
+                        keys[i],
+                        obj[keys[i]]
+                    ];
+                }
+                return pairs;
+            };
+            // Invert the keys and values of an object. The values must be serializable.
+            _.invert = function (obj) {
+                var result = {};
+                var keys = _.keys(obj);
+                for (var i = 0, length = keys.length; i < length; i++) {
+                    result[obj[keys[i]]] = keys[i];
+                }
+                return result;
+            };
+            // Return a sorted list of the function names available on the object.
+            // Aliased as `methods`
+            _.functions = _.methods = function (obj) {
+                var names = [];
+                for (var key in obj) {
+                    if (_.isFunction(obj[key]))
+                        names.push(key);
+                }
+                return names.sort();
+            };
+            // Extend a given object with all the properties in passed-in object(s).
+            _.extend = createAssigner(_.allKeys);
+            // Assigns a given object with all the own properties in the passed-in object(s)
+            // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+            _.extendOwn = _.assign = createAssigner(_.keys);
+            // Returns the first key on an object that passes a predicate test
+            _.findKey = function (
+                obj,
+                predicate,
+                context
+            ) {
+                predicate = cb(predicate, context);
+                var keys = _.keys(obj), key;
+                for (var i = 0, length = keys.length; i < length; i++) {
+                    key = keys[i];
+                    if (predicate(obj[key], key, obj))
+                        return key;
+                }
+            };
+            // Return a copy of the object only containing the whitelisted properties.
+            _.pick = function (
+                object,
+                oiteratee,
+                context
+            ) {
+                var result = {}, obj = object, iteratee, keys;
+                if (obj == null)
+                    return result;
+                if (_.isFunction(oiteratee)) {
+                    keys = _.allKeys(obj);
+                    iteratee = optimizeCb(oiteratee, context);
+                } else {
+                    keys = flatten(arguments, false, false, 1);
+                    iteratee = function (
+                        value,
+                        key,
+                        obj
+                    ) {
+                        return key in obj;
+                    };
+                    obj = Object(obj);
+                }
+                for (var i = 0, length = keys.length; i < length; i++) {
+                    var key = keys[i];
+                    var value = obj[key];
+                    if (iteratee(value, key, obj))
+                        result[key] = value;
+                }
+                return result;
+            };
+            // Return a copy of the object without the blacklisted properties.
+            _.omit = function (
+                obj,
+                iteratee,
+                context
+            ) {
+                if (_.isFunction(iteratee)) {
+                    iteratee = _.negate(iteratee);
+                } else {
+                    var keys = _.map(flatten(arguments, false, false, 1), String);
+                    iteratee = function (
+                        value,
+                        key
+                    ) {
+                        return !_.contains(keys, key);
+                    };
+                }
+                return _.pick(obj, iteratee, context);
+            };
+            // Fill in a given object with default properties.
+            _.defaults = createAssigner(_.allKeys, true);
+            // Creates an object that inherits from the given prototype object.
+            // If additional properties are provided then they will be added to the
+            // created object.
+            _.create = function (
+                prototype,
+                props
+            ) {
+                var result = baseCreate(prototype);
+                if (props)
+                    _.extendOwn(result, props);
+                return result;
+            };
+            // Create a (shallow-cloned) duplicate of an object.
+            _.clone = function (obj) {
+                if (!_.isObject(obj))
+                    return obj;
+                return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
+            };
+            // Invokes interceptor with the obj, and then returns obj.
+            // The primary purpose of this method is to "tap into" a method chain, in
+            // order to perform operations on intermediate results within the chain.
+            _.tap = function (
+                obj,
+                interceptor
+            ) {
+                interceptor(obj);
+                return obj;
+            };
+            // Returns whether an object has a given set of `key:value` pairs.
+            _.isMatch = function (
+                object,
+                attrs
+            ) {
+                var keys = _.keys(attrs), length = keys.length;
+                if (object == null)
+                    return !length;
+                var obj = Object(object);
+                for (var i = 0; i < length; i++) {
+                    var key = keys[i];
+                    if (attrs[key] !== obj[key] || !(key in obj))
+                        return false;
+                }
+                return true;
+            };
+            // Internal recursive comparison function for `isEqual`.
+            var eq = function (
+                a,
+                b,
+                aStack,
+                bStack
+            ) {
+                // Identical objects are equal. `0 === -0`, but they aren't identical.
+                // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
+                if (a === b)
+                    return a !== 0 || 1 / a === 1 / b;
+                // A strict comparison is necessary because `null == undefined`.
+                if (a == null || b == null)
+                    return a === b;
+                // Unwrap any wrapped objects.
+                if (a instanceof _)
+                    a = a._wrapped;
+                if (b instanceof _)
+                    b = b._wrapped;
+                // Compare `[[Class]]` names.
+                var className = toString.call(a);
+                if (className !== toString.call(b))
+                    return false;
+                switch (className) {
+                    // Strings, numbers, regular expressions, dates, and booleans are compared by value.
+                    case '[object RegExp]':
+                    // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
+                    case '[object String]':
+                        // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+                        // equivalent to `new String("5")`.
+                        return '' + a === '' + b;
+                    case '[object Number]':
+                        // `NaN`s are equivalent, but non-reflexive.
+                        // Object(NaN) is equivalent to NaN
+                        if (+a !== +a)
+                            return +b !== +b;
+                        // An `egal` comparison is performed for other numeric values.
+                        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
+                    case '[object Date]':
+                    case '[object Boolean]':
+                        // Coerce dates and booleans to numeric primitive values. Dates are compared by their
+                        // millisecond representations. Note that invalid dates with millisecond representations
+                        // of `NaN` are not equivalent.
+                        return +a === +b;
+                }
+                var areArrays = className === '[object Array]';
+                if (!areArrays) {
+                    if (typeof a != 'object' || typeof b != 'object')
+                        return false;
+                    // Objects with different constructors are not equivalent, but `Object`s or `Array`s
+                    // from different frames are.
+                    var aCtor = a.constructor, bCtor = b.constructor;
+                    if (aCtor !== bCtor && !(_.isFunction(aCtor) && aCtor instanceof aCtor && _.isFunction(bCtor) && bCtor instanceof bCtor) && ('constructor' in a && 'constructor' in b)) {
+                        return false;
+                    }
+                }
+                // Assume equality for cyclic structures. The algorithm for detecting cyclic
+                // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+                // Initializing stack of traversed objects.
+                // It's done here since we only need them for objects and arrays comparison.
+                aStack = aStack || [];
+                bStack = bStack || [];
+                var length = aStack.length;
+                while (length--) {
+                    // Linear search. Performance is inversely proportional to the number of
+                    // unique nested structures.
+                    if (aStack[length] === a)
+                        return bStack[length] === b;
+                }
+                // Add the first object to the stack of traversed objects.
+                aStack.push(a);
+                bStack.push(b);
+                // Recursively compare objects and arrays.
+                if (areArrays) {
+                    // Compare array lengths to determine if a deep comparison is necessary.
+                    length = a.length;
+                    if (length !== b.length)
+                        return false;
+                    // Deep compare the contents, ignoring non-numeric properties.
+                    while (length--) {
+                        if (!eq(a[length], b[length], aStack, bStack))
+                            return false;
+                    }
+                } else {
+                    // Deep compare objects.
+                    var keys = _.keys(a), key;
+                    length = keys.length;
+                    // Ensure that both objects contain the same number of properties before comparing deep equality.
+                    if (_.keys(b).length !== length)
+                        return false;
+                    while (length--) {
+                        // Deep compare each member
+                        key = keys[length];
+                        if (!(_.has(b, key) && eq(a[key], b[key], aStack, bStack)))
+                            return false;
+                    }
+                }
+                // Remove the first object from the stack of traversed objects.
+                aStack.pop();
+                bStack.pop();
+                return true;
+            };
+            // Perform a deep comparison to check if two objects are equal.
+            _.isEqual = function (
+                a,
+                b
+            ) {
+                return eq(a, b);
+            };
+            // Is a given array, string, or object empty?
+            // An "empty" object has no enumerable own-properties.
+            _.isEmpty = function (obj) {
+                if (obj == null)
+                    return true;
+                if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj)))
+                    return obj.length === 0;
+                return _.keys(obj).length === 0;
+            };
+            // Is a given value a DOM element?
+            _.isElement = function (obj) {
+                return !!(obj && obj.nodeType === 1);
+            };
+            // Is a given value an array?
+            // Delegates to ECMA5's native Array.isArray
+            _.isArray = nativeIsArray || function (obj) {
+                return toString.call(obj) === '[object Array]';
+            };
+            // Is a given variable an object?
+            _.isObject = function (obj) {
+                var type = typeof obj;
+                return type === 'function' || type === 'object' && !!obj;
+            };
+            // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
+            _.each([
+                'Arguments',
+                'Function',
+                'String',
+                'Number',
+                'Date',
+                'RegExp',
+                'Error'
+            ], function (name) {
+                _['is' + name] = function (obj) {
+                    return toString.call(obj) === '[object ' + name + ']';
+                };
+            });
+            // Define a fallback version of the method in browsers (ahem, IE < 9), where
+            // there isn't any inspectable "Arguments" type.
+            if (!_.isArguments(arguments)) {
+                _.isArguments = function (obj) {
+                    return _.has(obj, 'callee');
+                };
+            }
+            // Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
+            // IE 11 (#1621), and in Safari 8 (#1929).
+            if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+                _.isFunction = function (obj) {
+                    return typeof obj == 'function' || false;
+                };
+            }
+            // Is a given object a finite number?
+            _.isFinite = function (obj) {
+                return isFinite(obj) && !isNaN(parseFloat(obj));
+            };
+            // Is the given value `NaN`? (NaN is the only number which does not equal itself).
+            _.isNaN = function (obj) {
+                return _.isNumber(obj) && obj !== +obj;
+            };
+            // Is a given value a boolean?
+            _.isBoolean = function (obj) {
+                return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
+            };
+            // Is a given value equal to null?
+            _.isNull = function (obj) {
+                return obj === null;
+            };
+            // Is a given variable undefined?
+            _.isUndefined = function (obj) {
+                return obj === void 0;
+            };
+            // Shortcut function for checking if an object has a given property directly
+            // on itself (in other words, not on a prototype).
+            _.has = function (
+                obj,
+                key
+            ) {
+                return obj != null && hasOwnProperty.call(obj, key);
+            };
+            // Utility Functions
+            // -----------------
+            // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
+            // previous owner. Returns a reference to the Underscore object.
+            _.noConflict = function () {
+                root._ = previousUnderscore;
+                return this;
+            };
+            // Keep the identity function around for default iteratees.
+            _.identity = function (value) {
+                return value;
+            };
+            // Predicate-generating functions. Often useful outside of Underscore.
+            _.constant = function (value) {
+                return function () {
+                    return value;
+                };
+            };
+            _.noop = function () {
+            };
+            _.property = property;
+            // Generates a function for a given object that returns a given property.
+            _.propertyOf = function (obj) {
+                return obj == null ? function () {
+                } : function (key) {
+                    return obj[key];
+                };
+            };
+            // Returns a predicate for checking whether an object has a given set of
+            // `key:value` pairs.
+            _.matcher = _.matches = function (attrs) {
+                attrs = _.extendOwn({}, attrs);
+                return function (obj) {
+                    return _.isMatch(obj, attrs);
+                };
+            };
+            // Run a function **n** times.
+            _.times = function (
+                n,
+                iteratee,
+                context
+            ) {
+                var accum = Array(Math.max(0, n));
+                iteratee = optimizeCb(iteratee, context, 1);
+                for (var i = 0; i < n; i++)
+                    accum[i] = iteratee(i);
+                return accum;
+            };
+            // Return a random integer between min and max (inclusive).
+            _.random = function (
+                min,
+                max
+            ) {
+                if (max == null) {
+                    max = min;
+                    min = 0;
+                }
+                return min + Math.floor(Math.random() * (max - min + 1));
+            };
+            // A (possibly faster) way to get the current timestamp as an integer.
+            _.now = Date.now || function () {
+                return new Date().getTime();
+            };
+            // List of HTML entities for escaping.
+            var escapeMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                '\'': '&#x27;',
+                '`': '&#x60;'
+            };
+            var unescapeMap = _.invert(escapeMap);
+            // Functions for escaping and unescaping strings to/from HTML interpolation.
+            var createEscaper = function (map) {
+                var escaper = function (match) {
+                    return map[match];
+                };
+                // Regexes for identifying a key that needs to be escaped
+                var source = '(?:' + _.keys(map).join('|') + ')';
+                var testRegexp = RegExp(source);
+                var replaceRegexp = RegExp(source, 'g');
+                return function (string) {
+                    string = string == null ? '' : '' + string;
+                    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
+                };
+            };
+            _.escape = createEscaper(escapeMap);
+            _.unescape = createEscaper(unescapeMap);
+            // If the value of the named `property` is a function then invoke it with the
+            // `object` as context; otherwise, return it.
+            _.result = function (
+                object,
+                property,
+                fallback
+            ) {
+                var value = object == null ? void 0 : object[property];
+                if (value === void 0) {
+                    value = fallback;
+                }
+                return _.isFunction(value) ? value.call(object) : value;
+            };
+            // Generate a unique integer id (unique within the entire client session).
+            // Useful for temporary DOM ids.
+            var idCounter = 0;
+            _.uniqueId = function (prefix) {
+                var id = ++idCounter + '';
+                return prefix ? prefix + id : id;
+            };
+            // By default, Underscore uses ERB-style template delimiters, change the
+            // following template settings to use alternative delimiters.
+            _.templateSettings = {
+                evaluate: /<%([\s\S]+?)%>/g,
+                interpolate: /<%=([\s\S]+?)%>/g,
+                escape: /<%-([\s\S]+?)%>/g
+            };
+            // When customizing `templateSettings`, if you don't want to define an
+            // interpolation, evaluation or escaping regex, we need one that is
+            // guaranteed not to match.
+            var noMatch = /(.)^/;
+            // Certain characters need to be escaped so that they can be put into a
+            // string literal.
+            var escapes = {
+                '\'': '\'',
+                '\\': '\\',
+                '\r': 'r',
+                '\n': 'n',
+                '\u2028': 'u2028',
+                '\u2029': 'u2029'
+            };
+            var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
+            var escapeChar = function (match) {
+                return '\\' + escapes[match];
+            };
+            // JavaScript micro-templating, similar to John Resig's implementation.
+            // Underscore templating handles arbitrary delimiters, preserves whitespace,
+            // and correctly escapes quotes within interpolated code.
+            // NB: `oldSettings` only exists for backwards compatibility.
+            _.template = function (
+                text,
+                settings,
+                oldSettings
+            ) {
+                if (!settings && oldSettings)
+                    settings = oldSettings;
+                settings = _.defaults({}, settings, _.templateSettings);
+                // Combine delimiters into one regular expression via alternation.
+                var matcher = RegExp([
+                    (settings.escape || noMatch).source,
+                    (settings.interpolate || noMatch).source,
+                    (settings.evaluate || noMatch).source
+                ].join('|') + '|$', 'g');
+                // Compile the template source, escaping string literals appropriately.
+                var index = 0;
+                var source = '__p+=\'';
+                text.replace(matcher, function (
+                    match,
+                    escape,
+                    interpolate,
+                    evaluate,
+                    offset
+                ) {
+                    source += text.slice(index, offset).replace(escaper, escapeChar);
+                    index = offset + match.length;
+                    if (escape) {
+                        source += '\'+\n((__t=(' + escape + '))==null?\'\':_.escape(__t))+\n\'';
+                    } else if (interpolate) {
+                        source += '\'+\n((__t=(' + interpolate + '))==null?\'\':__t)+\n\'';
+                    } else if (evaluate) {
+                        source += '\';\n' + evaluate + '\n__p+=\'';
+                    }
+                    // Adobe VMs need the match returned to produce the correct offest.
+                    return match;
+                });
+                source += '\';\n';
+                // If a variable is not specified, place data values in local scope.
+                if (!settings.variable)
+                    source = 'with(obj||{}){\n' + source + '}\n';
+                source = 'var __t,__p=\'\',__j=Array.prototype.join,' + 'print=function(){__p+=__j.call(arguments,\'\');};\n' + source + 'return __p;\n';
+                try {
+                    var render = new Function(settings.variable || 'obj', '_', source);
+                } catch (e) {
+                    e.source = source;
+                    throw e;
+                }
+                var template = function (data) {
+                    return render.call(this, data, _);
+                };
+                // Provide the compiled source as a convenience for precompilation.
+                var argument = settings.variable || 'obj';
+                template.source = 'function(' + argument + '){\n' + source + '}';
+                return template;
+            };
+            // Add a "chain" function. Start chaining a wrapped Underscore object.
+            _.chain = function (obj) {
+                var instance = _(obj);
+                instance._chain = true;
+                return instance;
+            };
+            // OOP
+            // ---------------
+            // If Underscore is called as a function, it returns a wrapped object that
+            // can be used OO-style. This wrapper holds altered versions of all the
+            // underscore functions. Wrapped objects may be chained.
+            // Helper function to continue chaining intermediate results.
+            var result = function (
+                instance,
+                obj
+            ) {
+                return instance._chain ? _(obj).chain() : obj;
+            };
+            // Add your own custom functions to the Underscore object.
+            _.mixin = function (obj) {
+                _.each(_.functions(obj), function (name) {
+                    var func = _[name] = obj[name];
+                    _.prototype[name] = function () {
+                        var args = [this._wrapped];
+                        push.apply(args, arguments);
+                        return result(this, func.apply(_, args));
+                    };
+                });
+            };
+            // Add all of the Underscore functions to the wrapper object.
+            _.mixin(_);
+            // Add all mutator Array functions to the wrapper.
+            _.each([
+                'pop',
+                'push',
+                'reverse',
+                'shift',
+                'sort',
+                'splice',
+                'unshift'
+            ], function (name) {
+                var method = ArrayProto[name];
+                _.prototype[name] = function () {
+                    var obj = this._wrapped;
+                    method.apply(obj, arguments);
+                    if ((name === 'shift' || name === 'splice') && obj.length === 0)
+                        delete obj[0];
+                    return result(this, obj);
+                };
+            });
+            // Add all accessor Array functions to the wrapper.
+            _.each([
+                'concat',
+                'join',
+                'slice'
+            ], function (name) {
+                var method = ArrayProto[name];
+                _.prototype[name] = function () {
+                    return result(this, method.apply(this._wrapped, arguments));
+                };
+            });
+            // Extracts the result from a wrapped and chained object.
+            _.prototype.value = function () {
+                return this._wrapped;
+            };
+            // Provide unwrapping proxy for some methods used in engine operations
+            // such as arithmetic and JSON stringification.
+            _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
+            _.prototype.toString = function () {
+                return '' + this._wrapped;
+            };
+            // AMD registration happens at the end for compatibility with AMD loaders
+            // that may not enforce next-turn semantics on modules. Even though general
+            // practice for AMD registration is to be anonymous, underscore registers
+            // as a named module because, like jQuery, it is a base library that is
+            // popular enough to be bundled in a third party lib, but not be part of
+            // an AMD load request. Those cases could generate an error when an
+            // anonymous define() is called outside of a loader request.
+            if (true) {
+                underscore = function () {
+                    return _;
+                }();
+            }
+        }.call(this));
+        json3 = function () {
+            var JSON = window.JSON || {};
+            JSON.stringify = JSON.stringify || function (obj) {
+                var t = typeof obj;
+                if (t !== 'object' || obj === null) {
+                    if (t === 'string') {
+                        obj = '"' + obj + '"';
+                    }
+                    return String(obj);
+                } else {
+                    var n, v, json = [], arr = obj && obj.constructor === Array;
+                    for (n in obj) {
+                        v = obj[n];
+                        t = typeof v;
+                        if (t === 'string') {
+                            v = '"' + v + '"';
+                        } else if (t === 'object' && v !== null) {
+                            v = this.stringify(v);
+                        }
+                        json.push((arr ? '' : '"' + n + '":') + String(v));
+                    }
+                    return (arr ? '[' : '{') + String(json) + (arr ? ']' : '}');
+                }
+            };
+            JSON.parse = JSON.parse || function (str) {
+                if (str === '') {
+                    str = '""';
+                }
+                eval('var p=' + str + ';');
+                return p;
+            };
+            return JSON;
+        }();
+        user_history_test = function (JSON) {
+            return function () {
+                var storageTest = function (test) {
+                    JSON.parse('{}');
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
+                };
+                var test = function () {
+                    try {
+                        storageTest('test');
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                };
+                var result = test();
+                return result;
+            };
+        }(json3);
+        user_history_fixed_queue = function (_) {
+            var FixedArray = function () {
+            };
+            FixedArray.prototype = Function.prototype;
+            FixedArray.prototype.add = function (
+                arg1,
+                arg2
+            ) {
+                arg2 = arg2 || false;
+                if (arg2) {
+                    if (arg1 < this.fixedSize) {
+                        this[arg1] = arg2;
+                    }
+                } else {
+                    if (this.indexOf(arg1) < 0) {
+                        this.push(arg1);
+                    }
+                }
+                if (this.length <= this.fixedSize) {
+                    return;
+                }
+                Array.prototype.splice.call(this, 0, this.length - this.fixedSize);
+            };
+            FixedArray.prototype.load = function (
+                arg1,
+                arg2
+            ) {
+                arg2 = arg2 || false;
+                if (arg2) {
+                    if (arg1 < this.fixedSize) {
+                        this[arg1] = arg2;
+                    }
+                } else {
+                    if (this.indexOf(arg1) < 0) {
+                        this.push(arg1);
+                    }
+                }
+                if (this.length <= this.fixedSize) {
+                    return;
+                }
+                Array.prototype.splice.call(this, 0, this.length - this.fixedSize);
+            };
+            FixedArray.prototype.get = function () {
+                Array.prototype.splice.call(this, 0, this.length - this.fixedSize);
+                return this.join(';');
+            };
+            var FixedQueue = function (size) {
+                FixedArray.prototype.fixedSize = size;
+                var queue = new FixedArray();
+                return queue;
+            };
+            return FixedQueue;
+        }(underscore);
+        user_history_exclude_offers = function (_) {
+            var ExcludeOffers = function (
+                invert,
+                counter
+            ) {
+                var invert_ = Boolean(invert || false);
+                var counter_ = Boolean(counter || false);
+                this.invert = function () {
+                    return invert_ || false;
+                };
+                this.counter = function () {
+                    return counter_ || false;
+                };
+            };
+            ExcludeOffers.prototype.add = function (
+                guid,
+                countViews
+            ) {
+                countViews = countViews || 1;
+                if (_.isNumber(this[guid])) {
+                    if (this.invert()) {
+                        this[guid] = ++this[guid];
+                    } else {
+                        if (this[guid] > 0) {
+                            this[guid] = --this[guid];
+                        } else {
+                            this[guid] = 0;
+                        }
+                    }
+                } else {
+                    if (this.invert()) {
+                        this[guid] = countViews;
+                    } else {
+                        this[guid] = countViews - 1;
+                    }
+                }
+            };
+            ExcludeOffers.prototype.load = function (
+                guid,
+                countViews
+            ) {
+                this[guid] = countViews;
+            };
+            ExcludeOffers.prototype.get = function () {
+                var keys = [];
+                var obj = this || {};
+                _.each(obj, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (uh.invert()) {
+                        if (value > 0) {
+                            if (uh.counter()) {
+                                keys.push([
+                                    key.replace(/\D/g, ''),
+                                    value
+                                ]);
+                            } else {
+                                keys.push(key.replace(/\D/g, ''));
+                            }
+                        }
+                    } else {
+                        if (value <= 0) {
+                            if (uh.counter()) {
+                                keys.push([
+                                    key.replace(/\D/g, ''),
+                                    value
+                                ]);
+                            } else {
+                                keys.push(key.replace(/\D/g, ''));
+                            }
+                        }
+                    }
+                });
+                return keys;
+            };
+            return ExcludeOffers;
+        }(underscore);
+        user_history_retargeting_offers = function (_) {
+            var RetargetingOffers = function () {
+            };
+            RetargetingOffers.prototype.add = function (
+                guid,
+                arg1,
+                arg2,
+                arg3,
+                arg4
+            ) {
+                this[guid] = [
+                    arg1,
+                    arg2,
+                    arg3,
+                    arg4
+                ];
+            };
+            RetargetingOffers.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                if (_.isArray(arg1)) {
+                    if (_.isUndefined(arg1[3])) {
+                        arg1[3] = arg1[0];
+                    }
+                    this[guid] = [
+                        arg1[0],
+                        arg1[1],
+                        arg1[2],
+                        arg1[3]
+                    ];
+                }
+            };
+            RetargetingOffers.prototype.remove = function (key) {
+                delete this[key];
+            };
+            RetargetingOffers.prototype.get = function () {
+                var x;
+                var keys = [];
+                var res = [];
+                var time = Math.floor(Date.now());
+                for (var key in this) {
+                    var value = this[key];
+                    if (value[0] > time) {
+                        keys.push([
+                            key.split('...')[0],
+                            this[key][2],
+                            this[key][1],
+                            parseInt(this[key][3]),
+                            Math.abs(new Date(Math.floor(Date.now())).getDate() - new Date(this[key][3] * 1000).getDate())
+                        ]);
+                    }
+                }
+                keys.sort(function (
+                    a,
+                    b
+                ) {
+                    if (a[3] < b[3]) {
+                        return -1;
+                    }
+                    if (a[3] > b[3]) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                for (x in keys) {
+                    if (typeof keys[x] !== 'function') {
+                        res.push([
+                            keys[x][0],
+                            keys[x][2],
+                            keys[x][4]
+                        ]);
+                    }
+                }
+                return res;
+            };
+            return RetargetingOffers;
+        }(underscore);
+        user_history_gender_account = function (_) {
+            var GenderAccount = function () {
+            };
+            GenderAccount.prototype.add = function (
+                guid,
+                val
+            ) {
+                var hit_log = new Array(0, 0, 0);
+                if (_.isUndefined(this[guid])) {
+                    hit_log[val] += 1;
+                    this[guid] = [
+                        val,
+                        hit_log
+                    ];
+                } else {
+                    hit_log = this[guid][1];
+                    hit_log[val] += 1;
+                    hit_log[0] = 1;
+                    this[guid] = [
+                        _.indexOf(hit_log, _.max(hit_log)),
+                        hit_log
+                    ];
+                }
+                if (this[guid][0] < 0) {
+                    this[guid][0] = 0;
+                }
+            };
+            GenderAccount.prototype.get = function () {
+                var res = [];
+                _.each(this, function (
+                    element,
+                    name,
+                    uh
+                ) {
+                    if (!_.isEmpty(element)) {
+                        res.push([name + '~' + element[0]]);
+                    }
+                });
+                return res.join(';');
+            };
+            GenderAccount.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                if (_.isArray(arg1)) {
+                    this[guid] = [
+                        arg1[0],
+                        arg1[1]
+                    ];
+                }
+            };
+            return GenderAccount;
+        }(underscore);
+        user_history_gender_user = function (_) {
+            var GenderUser = function () {
+                this.gender = void 0;
+                this.hit_log = new Array(0, 0, 0);
+            };
+            GenderUser.prototype.add = function (val) {
+                if (this.gender === void 0) {
+                    this.hit_log[val] += 1;
+                } else {
+                    if (_.isArray(this['hit_log'])) {
+                        this.hit_log[val] += 1;
+                        this.hit_log[0] = 1;
+                        this.gender = _.indexOf(this.hit_log, _.max(this.hit_log));
+                    }
+                }
+                if (this.gender < 0) {
+                    this.gender = 0;
+                }
+            };
+            GenderUser.prototype.get = function () {
+                if (this.gender === void 0) {
+                    return 0;
+                }
+                return this.gender;
+            };
+            GenderUser.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                this[guid] = arg1;
+            };
+            return GenderUser;
+        }(underscore);
+        user_history_cost_account = function (_) {
+            var CostAccount = function () {
+            };
+            CostAccount.prototype.add = function (
+                guid,
+                val
+            ) {
+                var hit_log = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+                if (_.isUndefined(this[guid])) {
+                    hit_log[val] += 1;
+                    this[guid] = [
+                        val,
+                        hit_log
+                    ];
+                } else {
+                    hit_log = this[guid][1];
+                    hit_log[val] += 1;
+                    hit_log[0] = 1;
+                    this[guid] = [
+                        _.indexOf(hit_log, _.max(hit_log)),
+                        hit_log
+                    ];
+                }
+                if (this[guid][0] < 0) {
+                    this[guid][0] = 0;
+                }
+            };
+            CostAccount.prototype.get = function () {
+                var res = [];
+                _.each(this, function (
+                    element,
+                    name,
+                    uh
+                ) {
+                    if (!_.isEmpty(element)) {
+                        res.push([name + '~' + element[0]]);
+                    }
+                });
+                return res.join(';');
+            };
+            CostAccount.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                if (_.isArray(arg1)) {
+                    this[guid] = [
+                        arg1[0],
+                        arg1[1]
+                    ];
+                }
+            };
+            return CostAccount;
+        }(underscore);
+        user_history_cost_user = function (_) {
+            var CostUser = function () {
+                this.hit_log = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+                this.cost = void 0;
+            };
+            CostUser.prototype.add = function (val) {
+                if (this.cost === void 0) {
+                    this.cost = val;
+                    this.hit_log[val] += 1;
+                } else {
+                    this.hit_log[val] += 1;
+                    this.hit_log[0] = 1;
+                    this.cost = _.indexOf(this.hit_log, _.max(this.hit_log));
+                }
+                if (this.cost < 0) {
+                    this.cost = 0;
+                }
+            };
+            CostUser.prototype.get = function () {
+                if (this.cost === void 0) {
+                    return 0;
+                }
+                return this.cost;
+            };
+            CostUser.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                this[guid] = arg1;
+            };
+            return CostUser;
+        }(underscore);
+        user_history_activity_account = function (_) {
+            var ActivityAccount = function () {
+            };
+            ActivityAccount.prototype.add = function (
+                guid,
+                timeFirst,
+                timeLast
+            ) {
+                if (_.isUndefined(this[guid])) {
+                    this[guid] = [
+                        timeFirst,
+                        timeLast
+                    ];
+                } else {
+                    this[guid][1] = timeLast;
+                }
+            };
+            ActivityAccount.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                if (_.isArray(arg1)) {
+                    this[guid] = [
+                        arg1[0],
+                        arg1[1]
+                    ];
+                }
+            };
+            return ActivityAccount;
+        }(underscore);
+        user_history_activity_user = function (_) {
+            var ActivityUser = function () {
+            };
+            ActivityUser.prototype.add = function (
+                timeFirst,
+                timeLast
+            ) {
+                if (_.isUndefined(this.timeFirst)) {
+                    this.timeFirst = timeFirst;
+                }
+                this.timeLast = timeLast;
+            };
+            ActivityUser.prototype.load = function (
+                guid,
+                arg1
+            ) {
+                this[guid] = arg1;
+            };
+            return ActivityUser;
+        }(underscore);
+        user_history_main = function (
+            _,
+            JSON,
+            test,
+            FixedQueue,
+            ExcludeOffers,
+            RetargetingOffers,
+            GenderAccount,
+            GenderUser,
+            CostAccount,
+            CostUser,
+            ActivityAccount,
+            ActivityUser
+        ) {
+            var UserHistory = function () {
+                this.searchengines = new FixedQueue(3);
+                this.context = new FixedQueue(3);
+                this.retargeting = new RetargetingOffers();
+                this.exclude = new ExcludeOffers();
+                this.exclude_click = new ExcludeOffers();
+                this.retargeting_exclude = new ExcludeOffers();
+                this.retargeting_account_exclude = new ExcludeOffers();
+                this.retargeting_exclude_click = new ExcludeOffers();
+                this.retargeting_account_exclude_click = new ExcludeOffers();
+                this.retargeting_view = new ExcludeOffers(true, true);
+                this.history = new FixedQueue(3);
+                this.gender_accounts = new GenderAccount();
+                this.gender_user = new GenderUser();
+                this.cost_accounts = new CostAccount();
+                this.cost_user = new CostUser();
+                this.activity_accounts = new ActivityAccount();
+                this.activity_user = new ActivityUser();
+            };
+            UserHistory.prototype.clear = function () {
+                if (test()) {
+                    localStorage.clear();
+                    this.exclude_clean(true);
+                    this.exclude_click_clean(true);
+                    this.retargeting_clean(true);
+                    this.retargeting_account_clean(true);
+                    this.retargeting_click_clean(true);
+                    this.load();
+                    this.save();
+                    return true;
+                }
+                return false;
+            };
+            UserHistory.prototype.load = function () {
+                var retrievedObject;
+                if (test()) {
+                    _.each(this, function (
+                        uh_element,
+                        uh_name,
+                        uh
+                    ) {
+                        try {
+                            retrievedObject = JSON.parse(localStorage.getItem(uh_name));
+                        } catch (e) {
+                            retrievedObject = {};
+                        }
+                        _.each(retrievedObject, function (
+                            element,
+                            index,
+                            list
+                        ) {
+                            uh[uh_name].load(index, list[index]);
+                        });
+                    });
+                    return true;
+                }
+                return false;
+            };
+            UserHistory.prototype.save = function () {
+                if (test()) {
+                    _.each(this, function (
+                        uh_element,
+                        uh_name,
+                        uh
+                    ) {
+                        localStorage.setItem(uh_name, JSON.stringify(uh[uh_name]));
+                    });
+                    return true;
+                }
+                return false;
+            };
+            UserHistory.prototype.exclude_clean = function (cl) {
+                if (cl) {
+                    this.load();
+                    this.exclude = new ExcludeOffers();
+                    this.save();
+                }
+                return cl;
+            };
+            UserHistory.prototype.exclude_click_clean = function (cl) {
+                if (cl) {
+                    this.load();
+                    this.exclude_click = new ExcludeOffers();
+                    this.save();
+                }
+                return cl;
+            };
+            UserHistory.prototype.exclude_get = function () {
+                var keys = this.exclude.get().concat(this.exclude_click.get());
+                keys = _.uniq(keys);
+                return keys;
+            };
+            UserHistory.prototype.retargeting_clean = function (cl) {
+                if (cl) {
+                    this.load();
+                    this.retargeting_exclude = new ExcludeOffers();
+                    this.retargeting_view = new ExcludeOffers(true, true);
+                    this.save();
+                }
+                return cl;
+            };
+            UserHistory.prototype.retargeting_account_clean = function (cl) {
+                if (cl) {
+                    this.load();
+                    this.retargeting_account_exclude = new ExcludeOffers();
+                    this.save();
+                }
+                return cl;
+            };
+            UserHistory.prototype.retargeting_click_clean = function (cl) {
+                if (cl) {
+                    this.load();
+                    this.retargeting_click_exclude = new ExcludeOffers();
+                    this.save();
+                }
+                return cl;
+            };
+            UserHistory.prototype.retargeting_exclude_get = function () {
+                var keys = this.retargeting_exclude.get().concat(this.retargeting_exclude_click.get());
+                keys = _.uniq(keys);
+                return keys;
+            };
+            UserHistory.prototype.retargeting_account_exclude_get = function () {
+                var keys = this.retargeting_account_exclude.get().concat(this.retargeting_account_exclude_click.get());
+                keys = _.uniq(keys);
+                return keys;
+            };
+            return new UserHistory();
+        }(underscore, json3, user_history_test, user_history_fixed_queue, user_history_exclude_offers, user_history_retargeting_offers, user_history_gender_account, user_history_gender_user, user_history_cost_account, user_history_cost_user, user_history_activity_account, user_history_activity_user);
+        settings = {
+            requiredData: {
+                advertises: {
+                    param: 'advertises',
+                    url: '/v1/advertises.json'
+                },
+                offer_log: {
+                    param: 'log',
+                    url: '/logger.json'
+                }
+            }
+        };
+        jquery_var_deletedIds = [];
+        jquery_var_document = window.document;
+        jquery_var_slice = function (deletedIds) {
+            return deletedIds.slice;
+        }(jquery_var_deletedIds);
+        jquery_var_concat = function (deletedIds) {
+            return deletedIds.concat;
+        }(jquery_var_deletedIds);
+        jquery_var_push = function (deletedIds) {
+            return deletedIds.push;
+        }(jquery_var_deletedIds);
+        jquery_var_indexOf = function (deletedIds) {
+            return deletedIds.indexOf;
+        }(jquery_var_deletedIds);
+        jquery_var_class2type = {};
+        jquery_var_toString = function (class2type) {
+            return class2type.toString;
+        }(jquery_var_class2type);
+        jquery_var_hasOwn = function (class2type) {
+            return class2type.hasOwnProperty;
+        }(jquery_var_class2type);
+        jquery_var_support = {};
+        jquery_core = function (
+            deletedIds,
+            document,
+            slice,
+            concat,
+            push,
+            indexOf,
+            class2type,
+            toString,
+            hasOwn,
+            support
+        ) {
+            var version = '@VERSION',
+                // Define a local copy of jQuery
+                jQuery = function (
+                    selector,
+                    context
+                ) {
+                    // The jQuery object is actually just the init constructor 'enhanced'
+                    // Need init if jQuery is called (just allow error to be thrown if not included)
+                    return new jQuery.fn.init(selector, context);
+                },
+                // Support: Android<4.1, IE<9
+                // Make sure we trim BOM and NBSP
+                rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
+                // Matches dashed string for camelizing
+                rmsPrefix = /^-ms-/, rdashAlpha = /-([\da-z])/gi,
+                // Used by jQuery.camelCase as callback to replace()
+                fcamelCase = function (
+                    all,
+                    letter
+                ) {
+                    return letter.toUpperCase();
+                };
+            jQuery.fn = jQuery.prototype = {
+                // The current version of jQuery being used
+                jquery: version,
+                constructor: jQuery,
+                // Start with an empty selector
+                selector: '',
+                // The default length of a jQuery object is 0
+                length: 0,
+                toArray: function () {
+                    return slice.call(this);
+                },
+                // Get the Nth element in the matched element set OR
+                // Get the whole matched element set as a clean array
+                get: function (num) {
+                    return num != null ? num < 0 ? this[num + this.length] : this[num] : // Return all the elements in a clean array
+                        slice.call(this);
+                },
+                // Take an array of elements and push it onto the stack
+                // (returning the new matched element set)
+                pushStack: function (elems) {
+                    // Build a new jQuery matched element set
+                    var ret = jQuery.merge(this.constructor(), elems);
+                    // Add the old object onto the stack (as a reference)
+                    ret.prevObject = this;
+                    ret.context = this.context;
+                    // Return the newly-formed element set
+                    return ret;
+                },
+                // Execute a callback for every element in the matched set.
+                each: function (callback) {
+                    return jQuery.each(this, callback);
+                },
+                map: function (callback) {
+                    return this.pushStack(jQuery.map(this, function (
+                        elem,
+                        i
+                    ) {
+                        return callback.call(elem, i, elem);
+                    }));
+                },
+                slice: function () {
+                    return this.pushStack(slice.apply(this, arguments));
+                },
+                first: function () {
+                    return this.eq(0);
+                },
+                last: function () {
+                    return this.eq(-1);
+                },
+                eq: function (i) {
+                    var len = this.length, j = +i + (i < 0 ? len : 0);
+                    return this.pushStack(j >= 0 && j < len ? [this[j]] : []);
+                },
+                end: function () {
+                    return this.prevObject || this.constructor();
+                },
+                // For internal use only.
+                // Behaves like an Array's method, not like a jQuery method.
+                push: push,
+                sort: deletedIds.sort,
+                splice: deletedIds.splice
+            };
+            jQuery.extend = jQuery.fn.extend = function () {
+                var src, copyIsArray, copy, name, options, clone, target = arguments[0] || {}, i = 1,
+                    length = arguments.length, deep = false;
+                // Handle a deep copy situation
+                if (typeof target === 'boolean') {
+                    deep = target;
+                    // skip the boolean and the target
+                    target = arguments[i] || {};
+                    i++;
+                }
+                // Handle case when target is a string or something (possible in deep copy)
+                if (typeof target !== 'object' && !jQuery.isFunction(target)) {
+                    target = {};
+                }
+                // extend jQuery itself if only one argument is passed
+                if (i === length) {
+                    target = this;
+                    i--;
+                }
+                for (; i < length; i++) {
+                    // Only deal with non-null/undefined values
+                    if ((options = arguments[i]) != null) {
+                        // Extend the base object
+                        for (name in options) {
+                            src = target[name];
+                            copy = options[name];
+                            // Prevent never-ending loop
+                            if (target === copy) {
+                                continue;
+                            }
+                            // Recurse if we're merging plain objects or arrays
+                            if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)))) {
+                                if (copyIsArray) {
+                                    copyIsArray = false;
+                                    clone = src && jQuery.isArray(src) ? src : [];
+                                } else {
+                                    clone = src && jQuery.isPlainObject(src) ? src : {};
+                                }
+                                // Never move original objects, clone them
+                                target[name] = jQuery.extend(deep, clone, copy);  // Don't bring in undefined values
+                            } else if (copy !== undefined) {
+                                target[name] = copy;
+                            }
+                        }
+                    }
+                }
+                // Return the modified object
+                return target;
+            };
+            jQuery.extend({
+                // Unique for each copy of jQuery on the page
+                expando: 'jQuery' + (version + Math.random()).replace(/\D/g, ''),
+                // Assume jQuery is ready without the ready module
+                isReady: true,
+                error: function (msg) {
+                    throw new Error(msg);
+                },
+                noop: function () {
+                },
+                // See test/unit/core.js for details concerning isFunction.
+                // Since version 1.3, DOM methods and functions like alert
+                // aren't supported. They return false on IE (#2968).
+                isFunction: function (obj) {
+                    return jQuery.type(obj) === 'function';
+                },
+                isArray: Array.isArray || function (obj) {
+                    return jQuery.type(obj) === 'array';
+                },
+                isWindow: function (obj) {
+                    /* jshint eqeqeq: false */
+                    return obj != null && obj == obj.window;
+                },
+                isNumeric: function (obj) {
+                    // parseFloat NaNs numeric-cast false positives (null|true|false|"")
+                    // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
+                    // subtraction forces infinities to NaN
+                    // adding 1 corrects loss of precision from parseFloat (#15100)
+                    var realStringObj = obj && obj.toString();
+                    return !jQuery.isArray(obj) && realStringObj - parseFloat(realStringObj) + 1 >= 0;
+                },
+                isEmptyObject: function (obj) {
+                    var name;
+                    for (name in obj) {
+                        return false;
+                    }
+                    return true;
+                },
+                isPlainObject: function (obj) {
+                    var key;
+                    // Must be an Object.
+                    // Because of IE, we also have to check the presence of the constructor property.
+                    // Make sure that DOM nodes and window objects don't pass through, as well
+                    if (!obj || jQuery.type(obj) !== 'object' || obj.nodeType || jQuery.isWindow(obj)) {
+                        return false;
+                    }
+                    try {
+                        // Not own constructor property must be Object
+                        if (obj.constructor && !hasOwn.call(obj, 'constructor') && !hasOwn.call(obj.constructor.prototype, 'isPrototypeOf')) {
+                            return false;
+                        }
+                    } catch (e) {
+                        return false;
+                    }
+                    // Support: IE<9
+                    // Handle iteration over inherited properties before own properties.
+                    if (!support.ownFirst) {
+                        for (key in obj) {
+                            return hasOwn.call(obj, key);
+                        }
+                    }
+                    // Own properties are enumerated firstly, so to speed up,
+                    // if last one is own, then all properties are own.
+                    for (key in obj) {
+                    }
+                    return key === undefined || hasOwn.call(obj, key);
+                },
+                type: function (obj) {
+                    if (obj == null) {
+                        return obj + '';
+                    }
+                    return typeof obj === 'object' || typeof obj === 'function' ? class2type[toString.call(obj)] || 'object' : typeof obj;
+                },
+                // Workarounds based on findings by Jim Driscoll
+                // http://weblogs.java.net/blog/driscoll/archive/2009/09/08/eval-javascript-global-context
+                globalEval: function (data) {
+                    if (data && jQuery.trim(data)) {
+                        // We use execScript on Internet Explorer
+                        // We use an anonymous function so that context is window
+                        // rather than jQuery in Firefox
+                        (window.execScript || function (data) {
+                            window['eval'].call(window, data);  // jscs:ignore requireDotNotation
+                        })(data);
+                    }
+                },
+                // Convert dashed to camelCase; used by the css and data modules
+                // Microsoft forgot to hump their vendor prefix (#9572)
+                camelCase: function (string) {
+                    return string.replace(rmsPrefix, 'ms-').replace(rdashAlpha, fcamelCase);
+                },
+                nodeName: function (
+                    elem,
+                    name
+                ) {
+                    return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
+                },
+                each: function (
+                    obj,
+                    callback
+                ) {
+                    var length, i = 0;
+                    if (isArrayLike(obj)) {
+                        length = obj.length;
+                        for (; i < length; i++) {
+                            if (callback.call(obj[i], i, obj[i]) === false) {
+                                break;
+                            }
+                        }
+                    } else {
+                        for (i in obj) {
+                            if (callback.call(obj[i], i, obj[i]) === false) {
+                                break;
+                            }
+                        }
+                    }
+                    return obj;
+                },
+                // Support: Android<4.1, IE<9
+                trim: function (text) {
+                    return text == null ? '' : (text + '').replace(rtrim, '');
+                },
+                // results is for internal usage only
+                makeArray: function (
+                    arr,
+                    results
+                ) {
+                    var ret = results || [];
+                    if (arr != null) {
+                        if (isArrayLike(Object(arr))) {
+                            jQuery.merge(ret, typeof arr === 'string' ? [arr] : arr);
+                        } else {
+                            push.call(ret, arr);
+                        }
+                    }
+                    return ret;
+                },
+                inArray: function (
+                    elem,
+                    arr,
+                    i
+                ) {
+                    var len;
+                    if (arr) {
+                        if (indexOf) {
+                            return indexOf.call(arr, elem, i);
+                        }
+                        len = arr.length;
+                        i = i ? i < 0 ? Math.max(0, len + i) : i : 0;
+                        for (; i < len; i++) {
+                            // Skip accessing in sparse arrays
+                            if (i in arr && arr[i] === elem) {
+                                return i;
+                            }
+                        }
+                    }
+                    return -1;
+                },
+                merge: function (
+                    first,
+                    second
+                ) {
+                    var len = +second.length, j = 0, i = first.length;
+                    while (j < len) {
+                        first[i++] = second[j++];
+                    }
+                    // Support: IE<9
+                    // Workaround casting of .length to NaN on otherwise arraylike objects (e.g., NodeLists)
+                    if (len !== len) {
+                        while (second[j] !== undefined) {
+                            first[i++] = second[j++];
+                        }
+                    }
+                    first.length = i;
+                    return first;
+                },
+                grep: function (
+                    elems,
+                    callback,
+                    invert
+                ) {
+                    var callbackInverse, matches = [], i = 0, length = elems.length, callbackExpect = !invert;
+                    // Go through the array, only saving the items
+                    // that pass the validator function
+                    for (; i < length; i++) {
+                        callbackInverse = !callback(elems[i], i);
+                        if (callbackInverse !== callbackExpect) {
+                            matches.push(elems[i]);
+                        }
+                    }
+                    return matches;
+                },
+                // arg is for internal usage only
+                map: function (
+                    elems,
+                    callback,
+                    arg
+                ) {
+                    var length, value, i = 0, ret = [];
+                    // Go through the array, translating each of the items to their new values
+                    if (isArrayLike(elems)) {
+                        length = elems.length;
+                        for (; i < length; i++) {
+                            value = callback(elems[i], i, arg);
+                            if (value != null) {
+                                ret.push(value);
+                            }
+                        }  // Go through every key on the object,
+                    } else {
+                        for (i in elems) {
+                            value = callback(elems[i], i, arg);
+                            if (value != null) {
+                                ret.push(value);
+                            }
+                        }
+                    }
+                    // Flatten any nested arrays
+                    return concat.apply([], ret);
+                },
+                // A global GUID counter for objects
+                guid: 1,
+                // Bind a function to a context, optionally partially applying any
+                // arguments.
+                proxy: function (
+                    fn,
+                    context
+                ) {
+                    var args, proxy, tmp;
+                    if (typeof context === 'string') {
+                        tmp = fn[context];
+                        context = fn;
+                        fn = tmp;
+                    }
+                    // Quick check to determine if target is callable, in the spec
+                    // this throws a TypeError, but we will just return undefined.
+                    if (!jQuery.isFunction(fn)) {
+                        return undefined;
+                    }
+                    // Simulated bind
+                    args = slice.call(arguments, 2);
+                    proxy = function () {
+                        return fn.apply(context || this, args.concat(slice.call(arguments)));
+                    };
+                    // Set the guid of unique handler to the same of original handler, so it can be removed
+                    proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+                    return proxy;
+                },
+                now: function () {
+                    return +new Date();
+                },
+                // jQuery.support is not used in Core but other projects attach their
+                // properties to it so it needs to exist.
+                support: support
+            });
+            // JSHint would error on this code due to the Symbol not being defined in ES5.
+            // Defining this global in .jshintrc would create a danger of using the global
+            // unguarded in another place, it seems safer to just disable JSHint for these
+            // three lines.
+            /* jshint ignore: start */
+            if (typeof Symbol === 'function') {
+                jQuery.fn[Symbol.iterator] = deletedIds[Symbol.iterator];
+            }
+            /* jshint ignore: end */
+            // Populate the class2type map
+            jQuery.each('Boolean Number String Function Array Date RegExp Object Error Symbol'.split(' '), function (
+                i,
+                name
+            ) {
+                class2type['[object ' + name + ']'] = name.toLowerCase();
+            });
+
+            function isArrayLike(obj) {
+                // Support: iOS 8.2 (not reproducible in simulator)
+                // `in` check used to prevent JIT error (gh-2145)
+                // hasOwn isn't used here due to false negatives
+                // regarding Nodelist length in IE
+                var length = !!obj && 'length' in obj && obj.length, type = jQuery.type(obj);
+                if (type === 'function' || jQuery.isWindow(obj)) {
+                    return false;
+                }
+                return type === 'array' || length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj;
+            }
+
+            return jQuery;
+        }(jquery_var_deletedIds, jquery_var_document, jquery_var_slice, jquery_var_concat, jquery_var_push, jquery_var_indexOf, jquery_var_class2type, jquery_var_toString, jquery_var_hasOwn, jquery_var_support);
+        /*!
+         * Sizzle CSS Selector Engine v2.2.1
+         * http://sizzlejs.com/
+         *
+         * Copyright jQuery Foundation and other contributors
+         * Released under the MIT license
+         * http://jquery.org/license
+         *
+         * Date: 2015-10-17
+         */
+        (function (window) {
+            var i, support, Expr, getText, isXML, tokenize, compile, select, outermostContext, sortInput, hasDuplicate,
+                // Local document vars
+                setDocument, document, docElem, documentIsHTML, rbuggyQSA, rbuggyMatches, matches, contains,
+                // Instance-specific data
+                expando = 'sizzle' + 1 * new Date(), preferredDoc = window.document, dirruns = 0, done = 0,
+                classCache = createCache(), tokenCache = createCache(), compilerCache = createCache(),
+                sortOrder = function (
+                    a,
+                    b
+                ) {
+                    if (a === b) {
+                        hasDuplicate = true;
+                    }
+                    return 0;
+                },
+                // General-purpose constants
+                MAX_NEGATIVE = 1 << 31,
+                // Instance methods
+                hasOwn = {}.hasOwnProperty, arr = [], pop = arr.pop, push_native = arr.push, push = arr.push,
+                slice = arr.slice,
+                // Use a stripped-down indexOf as it's faster than native
+                // http://jsperf.com/thor-indexof-vs-for/5
+                indexOf = function (
+                    list,
+                    elem
+                ) {
+                    var i = 0, len = list.length;
+                    for (; i < len; i++) {
+                        if (list[i] === elem) {
+                            return i;
+                        }
+                    }
+                    return -1;
+                },
+                booleans = 'checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped',
+                // Regular expressions
+                // http://www.w3.org/TR/css3-selectors/#whitespace
+                whitespace = '[\\x20\\t\\r\\n\\f]',
+                // http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
+                identifier = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
+                // Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
+                attributes = '\\[' + whitespace + '*(' + identifier + ')(?:' + whitespace + // Operator (capture 2)
+                    '*([*^$|!~]?=)' + whitespace + // "Attribute values must be CSS identifiers [capture 5] or strings
+                                                   // [capture 3 or capture 4]"
+                    '*(?:\'((?:\\\\.|[^\\\\\'])*)\'|"((?:\\\\.|[^\\\\"])*)"|(' + identifier + '))|)' + whitespace + '*\\]',
+                pseudos = ':(' + identifier + ')(?:\\((' + // To reduce the number of selectors needing tokenize in the preFilter, prefer
+                                 // arguments:
+                    // 1. quoted (capture 3; capture 4 or capture 5)
+                    '(\'((?:\\\\.|[^\\\\\'])*)\'|"((?:\\\\.|[^\\\\"])*)")|' + // 2. simple (capture 6)
+                    '((?:\\\\.|[^\\\\()[\\]]|' + attributes + ')*)|' + // 3. anything else (capture 2)
+                    '.*' + ')\\)|)',
+                // Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the
+                // latter
+                rwhitespace = new RegExp(whitespace + '+', 'g'),
+                rtrim = new RegExp('^' + whitespace + '+|((?:^|[^\\\\])(?:\\\\.)*)' + whitespace + '+$', 'g'),
+                rcomma = new RegExp('^' + whitespace + '*,' + whitespace + '*'),
+                rcombinators = new RegExp('^' + whitespace + '*([>+~]|' + whitespace + ')' + whitespace + '*'),
+                rattributeQuotes = new RegExp('=' + whitespace + '*([^\\]\'"]*?)' + whitespace + '*\\]', 'g'),
+                rpseudo = new RegExp(pseudos), ridentifier = new RegExp('^' + identifier + '$'), matchExpr = {
+                    'ID': new RegExp('^#(' + identifier + ')'),
+                    'CLASS': new RegExp('^\\.(' + identifier + ')'),
+                    'TAG': new RegExp('^(' + identifier + '|[*])'),
+                    'ATTR': new RegExp('^' + attributes),
+                    'PSEUDO': new RegExp('^' + pseudos),
+                    'CHILD': new RegExp('^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(' + whitespace + '*(even|odd|(([+-]|)(\\d*)n|)' + whitespace + '*(?:([+-]|)' + whitespace + '*(\\d+)|))' + whitespace + '*\\)|)', 'i'),
+                    'bool': new RegExp('^(?:' + booleans + ')$', 'i'),
+                    // For use in libraries implementing .is()
+                    // We use this for POS matching in `select`
+                    'needsContext': new RegExp('^' + whitespace + '*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(' + whitespace + '*((?:-\\d)?\\d*)' + whitespace + '*\\)|)(?=[^-]|$)', 'i')
+                }, rinputs = /^(?:input|select|textarea|button)$/i, rheader = /^h\d$/i, rnative = /^[^{]+\{\s*\[native \w/,
+                // Easily-parseable/retrievable ID or TAG or CLASS selectors
+                rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/, rsibling = /[+~]/, rescape = /'|\\/g,
+                // CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
+                runescape = new RegExp('\\\\([\\da-f]{1,6}' + whitespace + '?|(' + whitespace + ')|.)', 'ig'),
+                funescape = function (_,
+                                      escaped,
+                                      escapedWhitespace
+                ) {
+                    var high = '0x' + escaped - 65536;
+                    // NaN means non-codepoint
+                    // Support: Firefox<24
+                    // Workaround erroneous numeric interpretation of +"0x"
+                    return high !== high || escapedWhitespace ? escaped : high < 0 ? // BMP codepoint
+                        String.fromCharCode(high + 65536) : // Supplemental Plane codepoint (surrogate pair)
+                        String.fromCharCode(high >> 10 | 55296, high & 1023 | 56320);
+                },
+                // Used for iframes
+                // See setDocument()
+                // Removing the function wrapper causes a "Permission Denied"
+                // error in IE
+                unloadHandler = function () {
+                    setDocument();
+                };
+            // Optimize for push.apply( _, NodeList )
+            try {
+                push.apply(arr = slice.call(preferredDoc.childNodes), preferredDoc.childNodes);
+                // Support: Android<4.0
+                // Detect silently failing push.apply
+                arr[preferredDoc.childNodes.length].nodeType;
+            } catch (e) {
+                push = {
+                    apply: arr.length ? function (
+                        target,
+                        els
+                    ) {
+                        push_native.apply(target, slice.call(els));
+                    } : function (
+                        target,
+                        els
+                    ) {
+                        var j = target.length, i = 0;
+                        while (target[j++] = els[i++]) {
+                        }
+                        target.length = j - 1;
+                    }
+                };
+            }
+
+            function Sizzle(
+                selector,
+                context,
+                results,
+                seed
+            ) {
+                var m, i, elem, nid, nidselect, match, groups, newSelector,
+                    newContext = context && context.ownerDocument,
+                    // nodeType defaults to 9, since context defaults to document
+                    nodeType = context ? context.nodeType : 9;
+                results = results || [];
+                // Return early from calls with invalid selector or context
+                if (typeof selector !== 'string' || !selector || nodeType !== 1 && nodeType !== 9 && nodeType !== 11) {
+                    return results;
+                }
+                // Try to shortcut find operations (as opposed to filters) in HTML documents
+                if (!seed) {
+                    if ((context ? context.ownerDocument || context : preferredDoc) !== document) {
+                        setDocument(context);
+                    }
+                    context = context || document;
+                    if (documentIsHTML) {
+                        // If the selector is sufficiently simple, try using a "get*By*" DOM method
+                        // (excepting DocumentFragment context, where the methods don't exist)
+                        if (nodeType !== 11 && (match = rquickExpr.exec(selector))) {
+                            // ID selector
+                            if (m = match[1]) {
+                                // Document context
+                                if (nodeType === 9) {
+                                    if (elem = context.getElementById(m)) {
+                                        // Support: IE, Opera, Webkit
+                                        // TODO: identify versions
+                                        // getElementById can match elements by name instead of ID
+                                        if (elem.id === m) {
+                                            results.push(elem);
+                                            return results;
+                                        }
+                                    } else {
+                                        return results;
+                                    }  // Element context
+                                } else {
+                                    // Support: IE, Opera, Webkit
+                                    // TODO: identify versions
+                                    // getElementById can match elements by name instead of ID
+                                    if (newContext && (elem = newContext.getElementById(m)) && contains(context, elem) && elem.id === m) {
+                                        results.push(elem);
+                                        return results;
+                                    }
+                                }  // Type selector
+                            } else if (match[2]) {
+                                push.apply(results, context.getElementsByTagName(selector));
+                                return results;  // Class selector
+                            } else if ((m = match[3]) && support.getElementsByClassName && context.getElementsByClassName) {
+                                push.apply(results, context.getElementsByClassName(m));
+                                return results;
+                            }
+                        }
+                        // Take advantage of querySelectorAll
+                        if (support.qsa && !compilerCache[selector + ' '] && (!rbuggyQSA || !rbuggyQSA.test(selector))) {
+                            if (nodeType !== 1) {
+                                newContext = context;
+                                newSelector = selector;  // qSA looks outside Element context, which is not what we want
+                                                         // Thanks to Andrew Dupont for this workaround technique
+                                                         // Support: IE <=8
+                                                         // Exclude object elements
+                            } else if (context.nodeName.toLowerCase() !== 'object') {
+                                // Capture the context ID, setting it first if necessary
+                                if (nid = context.getAttribute('id')) {
+                                    nid = nid.replace(rescape, '\\$&');
+                                } else {
+                                    context.setAttribute('id', nid = expando);
+                                }
+                                // Prefix every selector in the list
+                                groups = tokenize(selector);
+                                i = groups.length;
+                                nidselect = ridentifier.test(nid) ? '#' + nid : '[id=\'' + nid + '\']';
+                                while (i--) {
+                                    groups[i] = nidselect + ' ' + toSelector(groups[i]);
+                                }
+                                newSelector = groups.join(',');
+                                // Expand context for sibling selectors
+                                newContext = rsibling.test(selector) && testContext(context.parentNode) || context;
+                            }
+                            if (newSelector) {
+                                try {
+                                    push.apply(results, newContext.querySelectorAll(newSelector));
+                                    return results;
+                                } catch (qsaError) {
+                                } finally {
+                                    if (nid === expando) {
+                                        context.removeAttribute('id');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // All others
+                return select(selector.replace(rtrim, '$1'), context, results, seed);
+            }
+
+            /**
+             * Create key-value caches of limited size
+             * @returns {function(string, object)} Returns the Object data after storing it on itself with
+             *    property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
+             *    deleting the oldest entry
+             */
+            function createCache() {
+                var keys = [];
+
+                function cache(
+                    key,
+                    value
+                ) {
+                    // Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
+                    if (keys.push(key + ' ') > Expr.cacheLength) {
+                        // Only keep the most recent entries
+                        delete cache[keys.shift()];
+                    }
+                    return cache[key + ' '] = value;
+                }
+
+                return cache;
+            }
+
+            /**
+             * Mark a function for special use by Sizzle
+             * @param {Function} fn The function to mark
+             */
+            function markFunction(fn) {
+                fn[expando] = true;
+                return fn;
+            }
+
+            /**
+             * Support testing using an element
+             * @param {Function} fn Passed the created div and expects a boolean result
+             */
+            function assert(fn) {
+                var div = document.createElement('div');
+                try {
+                    return !!fn(div);
+                } catch (e) {
+                    return false;
+                } finally {
+                    // Remove from its parent by default
+                    if (div.parentNode) {
+                        div.parentNode.removeChild(div);
+                    }
+                    // release memory in IE
+                    div = null;
+                }
+            }
+
+            /**
+             * Adds the same handler for all of the specified attrs
+             * @param {String} attrs Pipe-separated list of attributes
+             * @param {Function} handler The method that will be applied
+             */
+            function addHandle(
+                attrs,
+                handler
+            ) {
+                var arr = attrs.split('|'), i = arr.length;
+                while (i--) {
+                    Expr.attrHandle[arr[i]] = handler;
+                }
+            }
+
+            /**
+             * Checks document order of two siblings
+             * @param {Element} a
+             * @param {Element} b
+             * @returns {Number} Returns less than 0 if a precedes b, greater than 0 if a follows b
+             */
+            function siblingCheck(
+                a,
+                b
+            ) {
+                var cur = b && a,
+                    diff = cur && a.nodeType === 1 && b.nodeType === 1 && (~b.sourceIndex || MAX_NEGATIVE) - (~a.sourceIndex || MAX_NEGATIVE);
+                // Use IE sourceIndex if available on both nodes
+                if (diff) {
+                    return diff;
+                }
+                // Check if b follows a
+                if (cur) {
+                    while (cur = cur.nextSibling) {
+                        if (cur === b) {
+                            return -1;
+                        }
+                    }
+                }
+                return a ? 1 : -1;
+            }
+
+            /**
+             * Returns a function to use in pseudos for input types
+             * @param {String} type
+             */
+            function createInputPseudo(type) {
+                return function (elem) {
+                    var name = elem.nodeName.toLowerCase();
+                    return name === 'input' && elem.type === type;
+                };
+            }
+
+            /**
+             * Returns a function to use in pseudos for buttons
+             * @param {String} type
+             */
+            function createButtonPseudo(type) {
+                return function (elem) {
+                    var name = elem.nodeName.toLowerCase();
+                    return (name === 'input' || name === 'button') && elem.type === type;
+                };
+            }
+
+            /**
+             * Returns a function to use in pseudos for positionals
+             * @param {Function} fn
+             */
+            function createPositionalPseudo(fn) {
+                return markFunction(function (argument) {
+                    argument = +argument;
+                    return markFunction(function (
+                        seed,
+                        matches
+                    ) {
+                        var j, matchIndexes = fn([], seed.length, argument), i = matchIndexes.length;
+                        // Match elements found at the specified indexes
+                        while (i--) {
+                            if (seed[j = matchIndexes[i]]) {
+                                seed[j] = !(matches[j] = seed[j]);
+                            }
+                        }
+                    });
+                });
+            }
+
+            /**
+             * Checks a node for validity as a Sizzle context
+             * @param {Element|Object=} context
+             * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
+             */
+            function testContext(context) {
+                return context && typeof context.getElementsByTagName !== 'undefined' && context;
+            }
+
+            // Expose support vars for convenience
+            support = Sizzle.support = {};
+            /**
+             * Detects XML nodes
+             * @param {Element|Object} elem An element or a document
+             * @returns {Boolean} True iff elem is a non-HTML XML node
+             */
+            isXML = Sizzle.isXML = function (elem) {
+                // documentElement is verified for cases where it doesn't yet exist
+                // (such as loading iframes in IE - #4833)
+                var documentElement = elem && (elem.ownerDocument || elem).documentElement;
+                return documentElement ? documentElement.nodeName !== 'HTML' : false;
+            };
+            /**
+             * Sets document-related variables once based on the current document
+             * @param {Element|Object} [doc] An element or document object to use to set the document
+             * @returns {Object} Returns the current document
+             */
+            setDocument = Sizzle.setDocument = function (node) {
+                var hasCompare, parent, doc = node ? node.ownerDocument || node : preferredDoc;
+                // Return early if doc is invalid or already selected
+                if (doc === document || doc.nodeType !== 9 || !doc.documentElement) {
+                    return document;
+                }
+                // Update global variables
+                document = doc;
+                docElem = document.documentElement;
+                documentIsHTML = !isXML(document);
+                // Support: IE 9-11, Edge
+                // Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
+                if ((parent = document.defaultView) && parent.top !== parent) {
+                    // Support: IE 11
+                    if (parent.addEventListener) {
+                        parent.addEventListener('unload', unloadHandler, false);  // Support: IE 9 - 10 only
+                    } else if (parent.attachEvent) {
+                        parent.attachEvent('onunload', unloadHandler);
+                    }
+                }
+                /* Attributes
+                 ---------------------------------------------------------------------- */
+                // Support: IE<8
+                // Verify that getAttribute really returns attributes and not properties
+                // (excepting IE8 booleans)
+                support.attributes = assert(function (div) {
+                    div.className = 'i';
+                    return !div.getAttribute('className');
+                });
+                /* getElement(s)By*
+                 ---------------------------------------------------------------------- */
+                // Check if getElementsByTagName("*") returns only elements
+                support.getElementsByTagName = assert(function (div) {
+                    div.appendChild(document.createComment(''));
+                    return !div.getElementsByTagName('*').length;
+                });
+                // Support: IE<9
+                support.getElementsByClassName = rnative.test(document.getElementsByClassName);
+                // Support: IE<10
+                // Check if getElementById returns elements by name
+                // The broken getElementById methods don't pick up programatically-set names,
+                // so use a roundabout getElementsByName test
+                support.getById = assert(function (div) {
+                    docElem.appendChild(div).id = expando;
+                    return !document.getElementsByName || !document.getElementsByName(expando).length;
+                });
+                // ID find and filter
+                if (support.getById) {
+                    Expr.find['ID'] = function (
+                        id,
+                        context
+                    ) {
+                        if (typeof context.getElementById !== 'undefined' && documentIsHTML) {
+                            var m = context.getElementById(id);
+                            return m ? [m] : [];
+                        }
+                    };
+                    Expr.filter['ID'] = function (id) {
+                        var attrId = id.replace(runescape, funescape);
+                        return function (elem) {
+                            return elem.getAttribute('id') === attrId;
+                        };
+                    };
+                } else {
+                    // Support: IE6/7
+                    // getElementById is not reliable as a find shortcut
+                    delete Expr.find['ID'];
+                    Expr.filter['ID'] = function (id) {
+                        var attrId = id.replace(runescape, funescape);
+                        return function (elem) {
+                            var node = typeof elem.getAttributeNode !== 'undefined' && elem.getAttributeNode('id');
+                            return node && node.value === attrId;
+                        };
+                    };
+                }
+                // Tag
+                Expr.find['TAG'] = support.getElementsByTagName ? function (
+                    tag,
+                    context
+                ) {
+                    if (typeof context.getElementsByTagName !== 'undefined') {
+                        return context.getElementsByTagName(tag);  // DocumentFragment nodes don't have gEBTN
+                    } else if (support.qsa) {
+                        return context.querySelectorAll(tag);
+                    }
+                } : function (
+                    tag,
+                    context
+                ) {
+                    var elem, tmp = [], i = 0,
+                        // By happy coincidence, a (broken) gEBTN appears on DocumentFragment nodes too
+                        results = context.getElementsByTagName(tag);
+                    // Filter out possible comments
+                    if (tag === '*') {
+                        while (elem = results[i++]) {
+                            if (elem.nodeType === 1) {
+                                tmp.push(elem);
+                            }
+                        }
+                        return tmp;
+                    }
+                    return results;
+                };
+                // Class
+                Expr.find['CLASS'] = support.getElementsByClassName && function (
+                    className,
+                    context
+                ) {
+                    if (typeof context.getElementsByClassName !== 'undefined' && documentIsHTML) {
+                        return context.getElementsByClassName(className);
+                    }
+                };
+                /* QSA/matchesSelector
+                 ---------------------------------------------------------------------- */
+                // QSA and matchesSelector support
+                // matchesSelector(:active) reports false when true (IE9/Opera 11.5)
+                rbuggyMatches = [];
+                // qSa(:focus) reports false when true (Chrome 21)
+                // We allow this because of a bug in IE8/9 that throws an error
+                // whenever `document.activeElement` is accessed on an iframe
+                // So, we allow :focus to pass through QSA all the time to avoid the IE error
+                // See http://bugs.jquery.com/ticket/13378
+                rbuggyQSA = [];
+                if (support.qsa = rnative.test(document.querySelectorAll)) {
+                    // Build QSA regex
+                    // Regex strategy adopted from Diego Perini
+                    assert(function (div) {
+                        // Select is set to empty string on purpose
+                        // This is to test IE's treatment of not explicitly
+                        // setting a boolean content attribute,
+                        // since its presence should be enough
+                        // http://bugs.jquery.com/ticket/12359
+                        docElem.appendChild(div).innerHTML = '<a id=\'' + expando + '\'></a>' + '<select id=\'' + expando + '-\r\\\' msallowcapture=\'\'>' + '<option selected=\'\'></option></select>';
+                        // Support: IE8, Opera 11-12.16
+                        // Nothing should be selected when empty strings follow ^= or $= or *=
+                        // The test attribute must be unknown in Opera but "safe" for WinRT
+                        // http://msdn.microsoft.com/en-us/library/ie/hh465388.aspx#attribute_section
+                        if (div.querySelectorAll('[msallowcapture^=\'\']').length) {
+                            rbuggyQSA.push('[*^$]=' + whitespace + '*(?:\'\'|"")');
+                        }
+                        // Support: IE8
+                        // Boolean attributes and "value" are not treated correctly
+                        if (!div.querySelectorAll('[selected]').length) {
+                            rbuggyQSA.push('\\[' + whitespace + '*(?:value|' + booleans + ')');
+                        }
+                        // Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
+                        if (!div.querySelectorAll('[id~=' + expando + '-]').length) {
+                            rbuggyQSA.push('~=');
+                        }
+                        // Webkit/Opera - :checked should return selected option elements
+                        // http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
+                        // IE8 throws error here and will not see later tests
+                        if (!div.querySelectorAll(':checked').length) {
+                            rbuggyQSA.push(':checked');
+                        }
+                        // Support: Safari 8+, iOS 8+
+                        // https://bugs.webkit.org/show_bug.cgi?id=136851
+                        // In-page `selector#id sibing-combinator selector` fails
+                        if (!div.querySelectorAll('a#' + expando + '+*').length) {
+                            rbuggyQSA.push('.#.+[+~]');
+                        }
+                    });
+                    assert(function (div) {
+                        // Support: Windows 8 Native Apps
+                        // The type and name attributes are restricted during .innerHTML assignment
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'hidden');
+                        div.appendChild(input).setAttribute('name', 'D');
+                        // Support: IE8
+                        // Enforce case-sensitivity of name attribute
+                        if (div.querySelectorAll('[name=d]').length) {
+                            rbuggyQSA.push('name' + whitespace + '*[*^$|!~]?=');
+                        }
+                        // FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
+                        // IE8 throws error here and will not see later tests
+                        if (!div.querySelectorAll(':enabled').length) {
+                            rbuggyQSA.push(':enabled', ':disabled');
+                        }
+                        // Opera 10-11 does not throw on post-comma invalid pseudos
+                        div.querySelectorAll('*,:x');
+                        rbuggyQSA.push(',.*:');
+                    });
+                }
+                if (support.matchesSelector = rnative.test(matches = docElem.matches || docElem.webkitMatchesSelector || docElem.mozMatchesSelector || docElem.oMatchesSelector || docElem.msMatchesSelector)) {
+                    assert(function (div) {
+                        // Check to see if it's possible to do matchesSelector
+                        // on a disconnected node (IE 9)
+                        support.disconnectedMatch = matches.call(div, 'div');
+                        // This should fail with an exception
+                        // Gecko does not error, returns false instead
+                        matches.call(div, '[s!=\'\']:x');
+                        rbuggyMatches.push('!=', pseudos);
+                    });
+                }
+                rbuggyQSA = rbuggyQSA.length && new RegExp(rbuggyQSA.join('|'));
+                rbuggyMatches = rbuggyMatches.length && new RegExp(rbuggyMatches.join('|'));
+                /* Contains
+                 ---------------------------------------------------------------------- */
+                hasCompare = rnative.test(docElem.compareDocumentPosition);
+                // Element contains another
+                // Purposefully self-exclusive
+                // As in, an element does not contain itself
+                contains = hasCompare || rnative.test(docElem.contains) ? function (
+                    a,
+                    b
+                ) {
+                    var adown = a.nodeType === 9 ? a.documentElement : a, bup = b && b.parentNode;
+                    return a === bup || !!(bup && bup.nodeType === 1 && (adown.contains ? adown.contains(bup) : a.compareDocumentPosition && a.compareDocumentPosition(bup) & 16));
+                } : function (
+                    a,
+                    b
+                ) {
+                    if (b) {
+                        while (b = b.parentNode) {
+                            if (b === a) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                };
+                /* Sorting
+                 ---------------------------------------------------------------------- */
+                // Document order sorting
+                sortOrder = hasCompare ? function (
+                    a,
+                    b
+                ) {
+                    // Flag for duplicate removal
+                    if (a === b) {
+                        hasDuplicate = true;
+                        return 0;
+                    }
+                    // Sort on method existence if only one input has compareDocumentPosition
+                    var compare = !a.compareDocumentPosition - !b.compareDocumentPosition;
+                    if (compare) {
+                        return compare;
+                    }
+                    // Calculate position if both inputs belong to the same document
+                    compare = (a.ownerDocument || a) === (b.ownerDocument || b) ? a.compareDocumentPosition(b) : // Otherwise we know they are
+                                                                                   // disconnected
+                        1;
+                    // Disconnected nodes
+                    if (compare & 1 || !support.sortDetached && b.compareDocumentPosition(a) === compare) {
+                        // Choose the first element that is related to our preferred document
+                        if (a === document || a.ownerDocument === preferredDoc && contains(preferredDoc, a)) {
+                            return -1;
+                        }
+                        if (b === document || b.ownerDocument === preferredDoc && contains(preferredDoc, b)) {
+                            return 1;
+                        }
+                        // Maintain original order
+                        return sortInput ? indexOf(sortInput, a) - indexOf(sortInput, b) : 0;
+                    }
+                    return compare & 4 ? -1 : 1;
+                } : function (
+                    a,
+                    b
+                ) {
+                    // Exit early if the nodes are identical
+                    if (a === b) {
+                        hasDuplicate = true;
+                        return 0;
+                    }
+                    var cur, i = 0, aup = a.parentNode, bup = b.parentNode, ap = [a], bp = [b];
+                    // Parentless nodes are either documents or disconnected
+                    if (!aup || !bup) {
+                        return a === document ? -1 : b === document ? 1 : aup ? -1 : bup ? 1 : sortInput ? indexOf(sortInput, a) - indexOf(sortInput, b) : 0;  // If the nodes are siblings, we can do a quick check
+                    } else if (aup === bup) {
+                        return siblingCheck(a, b);
+                    }
+                    // Otherwise we need full lists of their ancestors for comparison
+                    cur = a;
+                    while (cur = cur.parentNode) {
+                        ap.unshift(cur);
+                    }
+                    cur = b;
+                    while (cur = cur.parentNode) {
+                        bp.unshift(cur);
+                    }
+                    // Walk down the tree looking for a discrepancy
+                    while (ap[i] === bp[i]) {
+                        i++;
+                    }
+                    return i ? // Do a sibling check if the nodes have a common ancestor
+                        siblingCheck(ap[i], bp[i]) : // Otherwise nodes in our document sort first
+                        ap[i] === preferredDoc ? -1 : bp[i] === preferredDoc ? 1 : 0;
+                };
+                return document;
+            };
+            Sizzle.matches = function (
+                expr,
+                elements
+            ) {
+                return Sizzle(expr, null, null, elements);
+            };
+            Sizzle.matchesSelector = function (
+                elem,
+                expr
+            ) {
+                // Set document vars if needed
+                if ((elem.ownerDocument || elem) !== document) {
+                    setDocument(elem);
+                }
+                // Make sure that attribute selectors are quoted
+                expr = expr.replace(rattributeQuotes, '=\'$1\']');
+                if (support.matchesSelector && documentIsHTML && !compilerCache[expr + ' '] && (!rbuggyMatches || !rbuggyMatches.test(expr)) && (!rbuggyQSA || !rbuggyQSA.test(expr))) {
+                    try {
+                        var ret = matches.call(elem, expr);
+                        // IE 9's matchesSelector returns false on disconnected nodes
+                        if (ret || support.disconnectedMatch || // As well, disconnected nodes are said to be in a document
+                            // fragment in IE 9
+                            elem.document && elem.document.nodeType !== 11) {
+                            return ret;
+                        }
+                    } catch (e) {
+                    }
+                }
+                return Sizzle(expr, document, null, [elem]).length > 0;
+            };
+            Sizzle.contains = function (
+                context,
+                elem
+            ) {
+                // Set document vars if needed
+                if ((context.ownerDocument || context) !== document) {
+                    setDocument(context);
+                }
+                return contains(context, elem);
+            };
+            Sizzle.attr = function (
+                elem,
+                name
+            ) {
+                // Set document vars if needed
+                if ((elem.ownerDocument || elem) !== document) {
+                    setDocument(elem);
+                }
+                var fn = Expr.attrHandle[name.toLowerCase()],
+                    // Don't get fooled by Object.prototype properties (jQuery #13807)
+                    val = fn && hasOwn.call(Expr.attrHandle, name.toLowerCase()) ? fn(elem, name, !documentIsHTML) : undefined;
+                return val !== undefined ? val : support.attributes || !documentIsHTML ? elem.getAttribute(name) : (val = elem.getAttributeNode(name)) && val.specified ? val.value : null;
+            };
+            Sizzle.error = function (msg) {
+                throw new Error('Syntax error, unrecognized expression: ' + msg);
+            };
+            /**
+             * Document sorting and removing duplicates
+             * @param {ArrayLike} results
+             */
+            Sizzle.uniqueSort = function (results) {
+                var elem, duplicates = [], j = 0, i = 0;
+                // Unless we *know* we can detect duplicates, assume their presence
+                hasDuplicate = !support.detectDuplicates;
+                sortInput = !support.sortStable && results.slice(0);
+                results.sort(sortOrder);
+                if (hasDuplicate) {
+                    while (elem = results[i++]) {
+                        if (elem === results[i]) {
+                            j = duplicates.push(i);
+                        }
+                    }
+                    while (j--) {
+                        results.splice(duplicates[j], 1);
+                    }
+                }
+                // Clear input after sorting to release objects
+                // See https://github.com/jquery/sizzle/pull/225
+                sortInput = null;
+                return results;
+            };
+            /**
+             * Utility function for retrieving the text value of an array of DOM nodes
+             * @param {Array|Element} elem
+             */
+            getText = Sizzle.getText = function (elem) {
+                var node, ret = '', i = 0, nodeType = elem.nodeType;
+                if (!nodeType) {
+                    // If no nodeType, this is expected to be an array
+                    while (node = elem[i++]) {
+                        // Do not traverse comment nodes
+                        ret += getText(node);
+                    }
+                } else if (nodeType === 1 || nodeType === 9 || nodeType === 11) {
+                    // Use textContent for elements
+                    // innerText usage removed for consistency of new lines (jQuery #11153)
+                    if (typeof elem.textContent === 'string') {
+                        return elem.textContent;
+                    } else {
+                        // Traverse its children
+                        for (elem = elem.firstChild; elem; elem = elem.nextSibling) {
+                            ret += getText(elem);
+                        }
+                    }
+                } else if (nodeType === 3 || nodeType === 4) {
+                    return elem.nodeValue;
+                }
+                // Do not include comment or processing instruction nodes
+                return ret;
+            };
+            Expr = Sizzle.selectors = {
+                // Can be adjusted by the user
+                cacheLength: 50,
+                createPseudo: markFunction,
+                match: matchExpr,
+                attrHandle: {},
+                find: {},
+                relative: {
+                    '>': {
+                        dir: 'parentNode',
+                        first: true
+                    },
+                    ' ': {dir: 'parentNode'},
+                    '+': {
+                        dir: 'previousSibling',
+                        first: true
+                    },
+                    '~': {dir: 'previousSibling'}
+                },
+                preFilter: {
+                    'ATTR': function (match) {
+                        match[1] = match[1].replace(runescape, funescape);
+                        // Move the given value to match[3] whether quoted or unquoted
+                        match[3] = (match[3] || match[4] || match[5] || '').replace(runescape, funescape);
+                        if (match[2] === '~=') {
+                            match[3] = ' ' + match[3] + ' ';
+                        }
+                        return match.slice(0, 4);
+                    },
+                    'CHILD': function (match) {
+                        /* matches from matchExpr["CHILD"]
+                         1 type (only|nth|...)
+                         2 what (child|of-type)
+                         3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
+                         4 xn-component of xn+y argument ([+-]?\d*n|)
+                         5 sign of xn-component
+                         6 x of xn-component
+                         7 sign of y-component
+                         8 y of y-component
+                         */
+                        match[1] = match[1].toLowerCase();
+                        if (match[1].slice(0, 3) === 'nth') {
+                            // nth-* requires argument
+                            if (!match[3]) {
+                                Sizzle.error(match[0]);
+                            }
+                            // numeric x and y parameters for Expr.filter.CHILD
+                            // remember that false/true cast respectively to 0/1
+                            match[4] = +(match[4] ? match[5] + (match[6] || 1) : 2 * (match[3] === 'even' || match[3] === 'odd'));
+                            match[5] = +(match[7] + match[8] || match[3] === 'odd');  // other types prohibit arguments
+                        } else if (match[3]) {
+                            Sizzle.error(match[0]);
+                        }
+                        return match;
+                    },
+                    'PSEUDO': function (match) {
+                        var excess, unquoted = !match[6] && match[2];
+                        if (matchExpr['CHILD'].test(match[0])) {
+                            return null;
+                        }
+                        // Accept quoted arguments as-is
+                        if (match[3]) {
+                            match[2] = match[4] || match[5] || '';  // Strip excess characters from unquoted arguments
+                        } else if (unquoted && rpseudo.test(unquoted) && (excess = tokenize(unquoted, true)) && (excess = unquoted.indexOf(')', unquoted.length - excess) - unquoted.length)) {
+                            // excess is a negative index
+                            match[0] = match[0].slice(0, excess);
+                            match[2] = unquoted.slice(0, excess);
+                        }
+                        // Return only captures needed by the pseudo filter method (type and argument)
+                        return match.slice(0, 3);
+                    }
+                },
+                filter: {
+                    'TAG': function (nodeNameSelector) {
+                        var nodeName = nodeNameSelector.replace(runescape, funescape).toLowerCase();
+                        return nodeNameSelector === '*' ? function () {
+                            return true;
+                        } : function (elem) {
+                            return elem.nodeName && elem.nodeName.toLowerCase() === nodeName;
+                        };
+                    },
+                    'CLASS': function (className) {
+                        var pattern = classCache[className + ' '];
+                        return pattern || (pattern = new RegExp('(^|' + whitespace + ')' + className + '(' + whitespace + '|$)')) && classCache(className, function (elem) {
+                            return pattern.test(typeof elem.className === 'string' && elem.className || typeof elem.getAttribute !== 'undefined' && elem.getAttribute('class') || '');
+                        });
+                    },
+                    'ATTR': function (
+                        name,
+                        operator,
+                        check
+                    ) {
+                        return function (elem) {
+                            var result = Sizzle.attr(elem, name);
+                            if (result == null) {
+                                return operator === '!=';
+                            }
+                            if (!operator) {
+                                return true;
+                            }
+                            result += '';
+                            return operator === '=' ? result === check : operator === '!=' ? result !== check : operator === '^=' ? check && result.indexOf(check) === 0 : operator === '*=' ? check && result.indexOf(check) > -1 : operator === '$=' ? check && result.slice(-check.length) === check : operator === '~=' ? (' ' + result.replace(rwhitespace, ' ') + ' ').indexOf(check) > -1 : operator === '|=' ? result === check || result.slice(0, check.length + 1) === check + '-' : false;
+                        };
+                    },
+                    'CHILD': function (
+                        type,
+                        what,
+                        argument,
+                        first,
+                        last
+                    ) {
+                        var simple = type.slice(0, 3) !== 'nth', forward = type.slice(-4) !== 'last',
+                            ofType = what === 'of-type';
+                        return first === 1 && last === 0 ? // Shortcut for :nth-*(n)
+                            function (elem) {
+                                return !!elem.parentNode;
+                            } : function (
+                                elem,
+                                context,
+                                xml
+                            ) {
+                                var cache, uniqueCache, outerCache, node, nodeIndex, start,
+                                    dir = simple !== forward ? 'nextSibling' : 'previousSibling',
+                                    parent = elem.parentNode, name = ofType && elem.nodeName.toLowerCase(),
+                                    useCache = !xml && !ofType, diff = false;
+                                if (parent) {
+                                    // :(first|last|only)-(child|of-type)
+                                    if (simple) {
+                                        while (dir) {
+                                            node = elem;
+                                            while (node = node[dir]) {
+                                                if (ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1) {
+                                                    return false;
+                                                }
+                                            }
+                                            // Reverse direction for :only-* (if we haven't yet done so)
+                                            start = dir = type === 'only' && !start && 'nextSibling';
+                                        }
+                                        return true;
+                                    }
+                                    start = [forward ? parent.firstChild : parent.lastChild];
+                                    // non-xml :nth-child(...) stores cache data on `parent`
+                                    if (forward && useCache) {
+                                        // Seek `elem` from a previously-cached index
+                                        // ...in a gzip-friendly way
+                                        node = parent;
+                                        outerCache = node[expando] || (node[expando] = {});
+                                        // Support: IE <9 only
+                                        // Defend against cloned attroperties (jQuery gh-1709)
+                                        uniqueCache = outerCache[node.uniqueID] || (outerCache[node.uniqueID] = {});
+                                        cache = uniqueCache[type] || [];
+                                        nodeIndex = cache[0] === dirruns && cache[1];
+                                        diff = nodeIndex && cache[2];
+                                        node = nodeIndex && parent.childNodes[nodeIndex];
+                                        while (node = ++nodeIndex && node && node[dir] || (diff = nodeIndex = 0) || start.pop()) {
+                                            // When found, cache indexes on `parent` and break
+                                            if (node.nodeType === 1 && ++diff && node === elem) {
+                                                uniqueCache[type] = [
+                                                    dirruns,
+                                                    nodeIndex,
+                                                    diff
+                                                ];
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        // Use previously-cached element index if available
+                                        if (useCache) {
+                                            // ...in a gzip-friendly way
+                                            node = elem;
+                                            outerCache = node[expando] || (node[expando] = {});
+                                            // Support: IE <9 only
+                                            // Defend against cloned attroperties (jQuery gh-1709)
+                                            uniqueCache = outerCache[node.uniqueID] || (outerCache[node.uniqueID] = {});
+                                            cache = uniqueCache[type] || [];
+                                            nodeIndex = cache[0] === dirruns && cache[1];
+                                            diff = nodeIndex;
+                                        }
+                                        // xml :nth-child(...)
+                                        // or :nth-last-child(...) or :nth(-last)?-of-type(...)
+                                        if (diff === false) {
+                                            // Use the same loop as above to seek `elem` from the start
+                                            while (node = ++nodeIndex && node && node[dir] || (diff = nodeIndex = 0) || start.pop()) {
+                                                if ((ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1) && ++diff) {
+                                                    // Cache the index of each encountered element
+                                                    if (useCache) {
+                                                        outerCache = node[expando] || (node[expando] = {});
+                                                        // Support: IE <9 only
+                                                        // Defend against cloned attroperties (jQuery gh-1709)
+                                                        uniqueCache = outerCache[node.uniqueID] || (outerCache[node.uniqueID] = {});
+                                                        uniqueCache[type] = [
+                                                            dirruns,
+                                                            diff
+                                                        ];
+                                                    }
+                                                    if (node === elem) {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // Incorporate the offset, then check against cycle size
+                                    diff -= last;
+                                    return diff === first || diff % first === 0 && diff / first >= 0;
+                                }
+                            };
+                    },
+                    'PSEUDO': function (
+                        pseudo,
+                        argument
+                    ) {
+                        // pseudo-class names are case-insensitive
+                        // http://www.w3.org/TR/selectors/#pseudo-classes
+                        // Prioritize by case sensitivity in case custom pseudos are added with uppercase letters
+                        // Remember that setFilters inherits from pseudos
+                        var args,
+                            fn = Expr.pseudos[pseudo] || Expr.setFilters[pseudo.toLowerCase()] || Sizzle.error('unsupported pseudo: ' + pseudo);
+                        // The user may use createPseudo to indicate that
+                        // arguments are needed to create the filter function
+                        // just as Sizzle does
+                        if (fn[expando]) {
+                            return fn(argument);
+                        }
+                        // But maintain support for old signatures
+                        if (fn.length > 1) {
+                            args = [
+                                pseudo,
+                                pseudo,
+                                '',
+                                argument
+                            ];
+                            return Expr.setFilters.hasOwnProperty(pseudo.toLowerCase()) ? markFunction(function (
+                                seed,
+                                matches
+                            ) {
+                                var idx, matched = fn(seed, argument), i = matched.length;
+                                while (i--) {
+                                    idx = indexOf(seed, matched[i]);
+                                    seed[idx] = !(matches[idx] = matched[i]);
+                                }
+                            }) : function (elem) {
+                                return fn(elem, 0, args);
+                            };
+                        }
+                        return fn;
+                    }
+                },
+                pseudos: {
+                    // Potentially complex pseudos
+                    'not': markFunction(function (selector) {
+                        // Trim the selector passed to compile
+                        // to avoid treating leading and trailing
+                        // spaces as combinators
+                        var input = [], results = [], matcher = compile(selector.replace(rtrim, '$1'));
+                        return matcher[expando] ? markFunction(function (
+                            seed,
+                            matches,
+                            context,
+                            xml
+                        ) {
+                            var elem, unmatched = matcher(seed, null, xml, []), i = seed.length;
+                            // Match elements unmatched by `matcher`
+                            while (i--) {
+                                if (elem = unmatched[i]) {
+                                    seed[i] = !(matches[i] = elem);
+                                }
+                            }
+                        }) : function (
+                            elem,
+                            context,
+                            xml
+                        ) {
+                            input[0] = elem;
+                            matcher(input, null, xml, results);
+                            // Don't keep the element (issue #299)
+                            input[0] = null;
+                            return !results.pop();
+                        };
+                    }),
+                    'has': markFunction(function (selector) {
+                        return function (elem) {
+                            return Sizzle(selector, elem).length > 0;
+                        };
+                    }),
+                    'contains': markFunction(function (text) {
+                        text = text.replace(runescape, funescape);
+                        return function (elem) {
+                            return (elem.textContent || elem.innerText || getText(elem)).indexOf(text) > -1;
+                        };
+                    }),
+                    // "Whether an element is represented by a :lang() selector
+                    // is based solely on the element's language value
+                    // being equal to the identifier C,
+                    // or beginning with the identifier C immediately followed by "-".
+                    // The matching of C against the element's language value is performed case-insensitively.
+                    // The identifier C does not have to be a valid language name."
+                    // http://www.w3.org/TR/selectors/#lang-pseudo
+                    'lang': markFunction(function (lang) {
+                        // lang value must be a valid identifier
+                        if (!ridentifier.test(lang || '')) {
+                            Sizzle.error('unsupported lang: ' + lang);
+                        }
+                        lang = lang.replace(runescape, funescape).toLowerCase();
+                        return function (elem) {
+                            var elemLang;
+                            do {
+                                if (elemLang = documentIsHTML ? elem.lang : elem.getAttribute('xml:lang') || elem.getAttribute('lang')) {
+                                    elemLang = elemLang.toLowerCase();
+                                    return elemLang === lang || elemLang.indexOf(lang + '-') === 0;
+                                }
+                            } while ((elem = elem.parentNode) && elem.nodeType === 1);
+                            return false;
+                        };
+                    }),
+                    // Miscellaneous
+                    'target': function (elem) {
+                        var hash = window.location && window.location.hash;
+                        return hash && hash.slice(1) === elem.id;
+                    },
+                    'root': function (elem) {
+                        return elem === docElem;
+                    },
+                    'focus': function (elem) {
+                        return elem === document.activeElement && (!document.hasFocus || document.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
+                    },
+                    // Boolean properties
+                    'enabled': function (elem) {
+                        return elem.disabled === false;
+                    },
+                    'disabled': function (elem) {
+                        return elem.disabled === true;
+                    },
+                    'checked': function (elem) {
+                        // In CSS3, :checked should return both checked and selected elements
+                        // http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
+                        var nodeName = elem.nodeName.toLowerCase();
+                        return nodeName === 'input' && !!elem.checked || nodeName === 'option' && !!elem.selected;
+                    },
+                    'selected': function (elem) {
+                        // Accessing this property makes selected-by-default
+                        // options in Safari work properly
+                        if (elem.parentNode) {
+                            elem.parentNode.selectedIndex;
+                        }
+                        return elem.selected === true;
+                    },
+                    // Contents
+                    'empty': function (elem) {
+                        // http://www.w3.org/TR/selectors/#empty-pseudo
+                        // :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
+                        //   but not by others (comment: 8; processing instruction: 7; etc.)
+                        // nodeType < 6 works because attributes (2) do not appear as children
+                        for (elem = elem.firstChild; elem; elem = elem.nextSibling) {
+                            if (elem.nodeType < 6) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    },
+                    'parent': function (elem) {
+                        return !Expr.pseudos['empty'](elem);
+                    },
+                    // Element/input types
+                    'header': function (elem) {
+                        return rheader.test(elem.nodeName);
+                    },
+                    'input': function (elem) {
+                        return rinputs.test(elem.nodeName);
+                    },
+                    'button': function (elem) {
+                        var name = elem.nodeName.toLowerCase();
+                        return name === 'input' && elem.type === 'button' || name === 'button';
+                    },
+                    'text': function (elem) {
+                        var attr;
+                        return elem.nodeName.toLowerCase() === 'input' && elem.type === 'text' && ((attr = elem.getAttribute('type')) == null || attr.toLowerCase() === 'text');
+                    },
+                    // Position-in-collection
+                    'first': createPositionalPseudo(function () {
+                        return [0];
+                    }),
+                    'last': createPositionalPseudo(function (
+                        matchIndexes,
+                        length
+                    ) {
+                        return [length - 1];
+                    }),
+                    'eq': createPositionalPseudo(function (
+                        matchIndexes,
+                        length,
+                        argument
+                    ) {
+                        return [argument < 0 ? argument + length : argument];
+                    }),
+                    'even': createPositionalPseudo(function (
+                        matchIndexes,
+                        length
+                    ) {
+                        var i = 0;
+                        for (; i < length; i += 2) {
+                            matchIndexes.push(i);
+                        }
+                        return matchIndexes;
+                    }),
+                    'odd': createPositionalPseudo(function (
+                        matchIndexes,
+                        length
+                    ) {
+                        var i = 1;
+                        for (; i < length; i += 2) {
+                            matchIndexes.push(i);
+                        }
+                        return matchIndexes;
+                    }),
+                    'lt': createPositionalPseudo(function (
+                        matchIndexes,
+                        length,
+                        argument
+                    ) {
+                        var i = argument < 0 ? argument + length : argument;
+                        for (; --i >= 0;) {
+                            matchIndexes.push(i);
+                        }
+                        return matchIndexes;
+                    }),
+                    'gt': createPositionalPseudo(function (
+                        matchIndexes,
+                        length,
+                        argument
+                    ) {
+                        var i = argument < 0 ? argument + length : argument;
+                        for (; ++i < length;) {
+                            matchIndexes.push(i);
+                        }
+                        return matchIndexes;
+                    })
+                }
+            };
+            Expr.pseudos['nth'] = Expr.pseudos['eq'];
+            // Add button/input type pseudos
+            for (i in {
+                radio: true,
+                checkbox: true,
+                file: true,
+                password: true,
+                image: true
+            }) {
+                Expr.pseudos[i] = createInputPseudo(i);
+            }
+            for (i in {
+                submit: true,
+                reset: true
+            }) {
+                Expr.pseudos[i] = createButtonPseudo(i);
+            }
+
+            // Easy API for creating new setFilters
+            function setFilters() {
+            }
+
+            setFilters.prototype = Expr.filters = Expr.pseudos;
+            Expr.setFilters = new setFilters();
+            tokenize = Sizzle.tokenize = function (
+                selector,
+                parseOnly
+            ) {
+                var matched, match, tokens, type, soFar, groups, preFilters, cached = tokenCache[selector + ' '];
+                if (cached) {
+                    return parseOnly ? 0 : cached.slice(0);
+                }
+                soFar = selector;
+                groups = [];
+                preFilters = Expr.preFilter;
+                while (soFar) {
+                    // Comma and first run
+                    if (!matched || (match = rcomma.exec(soFar))) {
+                        if (match) {
+                            // Don't consume trailing commas as valid
+                            soFar = soFar.slice(match[0].length) || soFar;
+                        }
+                        groups.push(tokens = []);
+                    }
+                    matched = false;
+                    // Combinators
+                    if (match = rcombinators.exec(soFar)) {
+                        matched = match.shift();
+                        tokens.push({
+                            value: matched,
+                            // Cast descendant combinators to space
+                            type: match[0].replace(rtrim, ' ')
+                        });
+                        soFar = soFar.slice(matched.length);
+                    }
+                    // Filters
+                    for (type in Expr.filter) {
+                        if ((match = matchExpr[type].exec(soFar)) && (!preFilters[type] || (match = preFilters[type](match)))) {
+                            matched = match.shift();
+                            tokens.push({
+                                value: matched,
+                                type: type,
+                                matches: match
+                            });
+                            soFar = soFar.slice(matched.length);
+                        }
+                    }
+                    if (!matched) {
+                        break;
+                    }
+                }
+                // Return the length of the invalid excess
+                // if we're just parsing
+                // Otherwise, throw an error or return tokens
+                return parseOnly ? soFar.length : soFar ? Sizzle.error(selector) : // Cache the tokens
+                    tokenCache(selector, groups).slice(0);
+            };
+
+            function toSelector(tokens) {
+                var i = 0, len = tokens.length, selector = '';
+                for (; i < len; i++) {
+                    selector += tokens[i].value;
+                }
+                return selector;
+            }
+
+            function addCombinator(
+                matcher,
+                combinator,
+                base
+            ) {
+                var dir = combinator.dir, checkNonElements = base && dir === 'parentNode', doneName = done++;
+                return combinator.first ? // Check against closest ancestor/preceding element
+                    function (
+                        elem,
+                        context,
+                        xml
+                    ) {
+                        while (elem = elem[dir]) {
+                            if (elem.nodeType === 1 || checkNonElements) {
+                                return matcher(elem, context, xml);
+                            }
+                        }
+                    } : // Check against all ancestor/preceding elements
+                    function (
+                        elem,
+                        context,
+                        xml
+                    ) {
+                        var oldCache, uniqueCache, outerCache, newCache = [
+                            dirruns,
+                            doneName
+                        ];
+                        // We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching
+                        if (xml) {
+                            while (elem = elem[dir]) {
+                                if (elem.nodeType === 1 || checkNonElements) {
+                                    if (matcher(elem, context, xml)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        } else {
+                            while (elem = elem[dir]) {
+                                if (elem.nodeType === 1 || checkNonElements) {
+                                    outerCache = elem[expando] || (elem[expando] = {});
+                                    // Support: IE <9 only
+                                    // Defend against cloned attroperties (jQuery gh-1709)
+                                    uniqueCache = outerCache[elem.uniqueID] || (outerCache[elem.uniqueID] = {});
+                                    if ((oldCache = uniqueCache[dir]) && oldCache[0] === dirruns && oldCache[1] === doneName) {
+                                        // Assign to newCache so results back-propagate to previous elements
+                                        return newCache[2] = oldCache[2];
+                                    } else {
+                                        // Reuse newcache so results back-propagate to previous elements
+                                        uniqueCache[dir] = newCache;
+                                        // A match means we're done; a fail means we have to keep checking
+                                        if (newCache[2] = matcher(elem, context, xml)) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    };
+            }
+
+            function elementMatcher(matchers) {
+                return matchers.length > 1 ? function (
+                    elem,
+                    context,
+                    xml
+                ) {
+                    var i = matchers.length;
+                    while (i--) {
+                        if (!matchers[i](elem, context, xml)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                } : matchers[0];
+            }
+
+            function multipleContexts(
+                selector,
+                contexts,
+                results
+            ) {
+                var i = 0, len = contexts.length;
+                for (; i < len; i++) {
+                    Sizzle(selector, contexts[i], results);
+                }
+                return results;
+            }
+
+            function condense(
+                unmatched,
+                map,
+                filter,
+                context,
+                xml
+            ) {
+                var elem, newUnmatched = [], i = 0, len = unmatched.length, mapped = map != null;
+                for (; i < len; i++) {
+                    if (elem = unmatched[i]) {
+                        if (!filter || filter(elem, context, xml)) {
+                            newUnmatched.push(elem);
+                            if (mapped) {
+                                map.push(i);
+                            }
+                        }
+                    }
+                }
+                return newUnmatched;
+            }
+
+            function setMatcher(
+                preFilter,
+                selector,
+                matcher,
+                postFilter,
+                postFinder,
+                postSelector
+            ) {
+                if (postFilter && !postFilter[expando]) {
+                    postFilter = setMatcher(postFilter);
+                }
+                if (postFinder && !postFinder[expando]) {
+                    postFinder = setMatcher(postFinder, postSelector);
+                }
+                return markFunction(function (
+                    seed,
+                    results,
+                    context,
+                    xml
+                ) {
+                    var temp, i, elem, preMap = [], postMap = [], preexisting = results.length,
+                        // Get initial elements from seed or context
+                        elems = seed || multipleContexts(selector || '*', context.nodeType ? [context] : context, []),
+                        // Prefilter to get matcher input, preserving a map for seed-results synchronization
+                        matcherIn = preFilter && (seed || !selector) ? condense(elems, preMap, preFilter, context, xml) : elems,
+                        matcherOut = matcher ? // If we have a postFinder, or filtered seed, or non-seed postFilter or preexisting results,
+                            postFinder || (seed ? preFilter : preexisting || postFilter) ? // ...intermediate processing is necessary
+                                [] : // ...otherwise use results directly
+                                results : matcherIn;
+                    // Find primary matches
+                    if (matcher) {
+                        matcher(matcherIn, matcherOut, context, xml);
+                    }
+                    // Apply postFilter
+                    if (postFilter) {
+                        temp = condense(matcherOut, postMap);
+                        postFilter(temp, [], context, xml);
+                        // Un-match failing elements by moving them back to matcherIn
+                        i = temp.length;
+                        while (i--) {
+                            if (elem = temp[i]) {
+                                matcherOut[postMap[i]] = !(matcherIn[postMap[i]] = elem);
+                            }
+                        }
+                    }
+                    if (seed) {
+                        if (postFinder || preFilter) {
+                            if (postFinder) {
+                                // Get the final matcherOut by condensing this intermediate into postFinder contexts
+                                temp = [];
+                                i = matcherOut.length;
+                                while (i--) {
+                                    if (elem = matcherOut[i]) {
+                                        // Restore matcherIn since elem is not yet a final match
+                                        temp.push(matcherIn[i] = elem);
+                                    }
+                                }
+                                postFinder(null, matcherOut = [], temp, xml);
+                            }
+                            // Move matched elements from seed to results to keep them synchronized
+                            i = matcherOut.length;
+                            while (i--) {
+                                if ((elem = matcherOut[i]) && (temp = postFinder ? indexOf(seed, elem) : preMap[i]) > -1) {
+                                    seed[temp] = !(results[temp] = elem);
+                                }
+                            }
+                        }  // Add elements to results, through postFinder if defined
+                    } else {
+                        matcherOut = condense(matcherOut === results ? matcherOut.splice(preexisting, matcherOut.length) : matcherOut);
+                        if (postFinder) {
+                            postFinder(null, results, matcherOut, xml);
+                        } else {
+                            push.apply(results, matcherOut);
+                        }
+                    }
+                });
+            }
+
+            function matcherFromTokens(tokens) {
+                var checkContext, matcher, j, len = tokens.length, leadingRelative = Expr.relative[tokens[0].type],
+                    implicitRelative = leadingRelative || Expr.relative[' '], i = leadingRelative ? 1 : 0,
+                    // The foundational matcher ensures that elements are reachable from top-level context(s)
+                    matchContext = addCombinator(function (elem) {
+                        return elem === checkContext;
+                    }, implicitRelative, true), matchAnyContext = addCombinator(function (elem) {
+                        return indexOf(checkContext, elem) > -1;
+                    }, implicitRelative, true), matchers = [
+                        function (
+                            elem,
+                            context,
+                            xml
+                        ) {
+                            var ret = !leadingRelative && (xml || context !== outermostContext) || ((checkContext = context).nodeType ? matchContext(elem, context, xml) : matchAnyContext(elem, context, xml));
+                            // Avoid hanging onto element (issue #299)
+                            checkContext = null;
+                            return ret;
+                        }
+                    ];
+                for (; i < len; i++) {
+                    if (matcher = Expr.relative[tokens[i].type]) {
+                        matchers = [addCombinator(elementMatcher(matchers), matcher)];
+                    } else {
+                        matcher = Expr.filter[tokens[i].type].apply(null, tokens[i].matches);
+                        // Return special upon seeing a positional matcher
+                        if (matcher[expando]) {
+                            // Find the next relative operator (if any) for proper handling
+                            j = ++i;
+                            for (; j < len; j++) {
+                                if (Expr.relative[tokens[j].type]) {
+                                    break;
+                                }
+                            }
+                            return setMatcher(i > 1 && elementMatcher(matchers), i > 1 && toSelector(// If the preceding token was a descendant combinator, insert an implicit any-element `*`
+                                tokens.slice(0, i - 1).concat({value: tokens[i - 2].type === ' ' ? '*' : ''})).replace(rtrim, '$1'), matcher, i < j && matcherFromTokens(tokens.slice(i, j)), j < len && matcherFromTokens(tokens = tokens.slice(j)), j < len && toSelector(tokens));
+                        }
+                        matchers.push(matcher);
+                    }
+                }
+                return elementMatcher(matchers);
+            }
+
+            function matcherFromGroupMatchers(
+                elementMatchers,
+                setMatchers
+            ) {
+                var bySet = setMatchers.length > 0, byElement = elementMatchers.length > 0,
+                    superMatcher = function (seed,
+                                             context,
+                                             xml,
+                                             results,
+                                             outermost
+                    ) {
+                        var elem, j, matcher, matchedCount = 0, i = '0', unmatched = seed && [], setMatched = [],
+                            contextBackup = outermostContext,
+                            // We must always have either seed elements or outermost context
+                            elems = seed || byElement && Expr.find['TAG']('*', outermost),
+                            // Use integer dirruns iff this is the outermost matcher
+                            dirrunsUnique = dirruns += contextBackup == null ? 1 : Math.random() || 0.1,
+                            len = elems.length;
+                        if (outermost) {
+                            outermostContext = context === document || context || outermost;
+                        }
+                        // Add elements passing elementMatchers directly to results
+                        // Support: IE<9, Safari
+                        // Tolerate NodeList properties (IE: "length"; Safari: <number>) matching elements by id
+                        for (; i !== len && (elem = elems[i]) != null; i++) {
+                            if (byElement && elem) {
+                                j = 0;
+                                if (!context && elem.ownerDocument !== document) {
+                                    setDocument(elem);
+                                    xml = !documentIsHTML;
+                                }
+                                while (matcher = elementMatchers[j++]) {
+                                    if (matcher(elem, context || document, xml)) {
+                                        results.push(elem);
+                                        break;
+                                    }
+                                }
+                                if (outermost) {
+                                    dirruns = dirrunsUnique;
+                                }
+                            }
+                            // Track unmatched elements for set filters
+                            if (bySet) {
+                                // They will have gone through all possible matchers
+                                if (elem = !matcher && elem) {
+                                    matchedCount--;
+                                }
+                                // Lengthen the array for every element, matched or not
+                                if (seed) {
+                                    unmatched.push(elem);
+                                }
+                            }
+                        }
+                        // `i` is now the count of elements visited above, and adding it to `matchedCount`
+                        // makes the latter nonnegative.
+                        matchedCount += i;
+                        // Apply set filters to unmatched elements
+                        // NOTE: This can be skipped if there are no unmatched elements (i.e., `matchedCount`
+                        // equals `i`), unless we didn't visit _any_ elements in the above loop because we have
+                        // no element matchers and no seed.
+                        // Incrementing an initially-string "0" `i` allows `i` to remain a string only in that
+                        // case, which will result in a "00" `matchedCount` that differs from `i` but is also
+                        // numerically zero.
+                        if (bySet && i !== matchedCount) {
+                            j = 0;
+                            while (matcher = setMatchers[j++]) {
+                                matcher(unmatched, setMatched, context, xml);
+                            }
+                            if (seed) {
+                                // Reintegrate element matches to eliminate the need for sorting
+                                if (matchedCount > 0) {
+                                    while (i--) {
+                                        if (!(unmatched[i] || setMatched[i])) {
+                                            setMatched[i] = pop.call(results);
+                                        }
+                                    }
+                                }
+                                // Discard index placeholder values to get only actual matches
+                                setMatched = condense(setMatched);
+                            }
+                            // Add matches to results
+                            push.apply(results, setMatched);
+                            // Seedless set matches succeeding multiple successful matchers stipulate sorting
+                            if (outermost && !seed && setMatched.length > 0 && matchedCount + setMatchers.length > 1) {
+                                Sizzle.uniqueSort(results);
+                            }
+                        }
+                        // Override manipulation of globals by nested matchers
+                        if (outermost) {
+                            dirruns = dirrunsUnique;
+                            outermostContext = contextBackup;
+                        }
+                        return unmatched;
+                    };
+                return bySet ? markFunction(superMatcher) : superMatcher;
+            }
+
+            compile = Sizzle.compile = function (
+                selector,
+                match
+            ) {
+                var i, setMatchers = [], elementMatchers = [], cached = compilerCache[selector + ' '];
+                if (!cached) {
+                    // Generate a function of recursive functions that can be used to check each element
+                    if (!match) {
+                        match = tokenize(selector);
+                    }
+                    i = match.length;
+                    while (i--) {
+                        cached = matcherFromTokens(match[i]);
+                        if (cached[expando]) {
+                            setMatchers.push(cached);
+                        } else {
+                            elementMatchers.push(cached);
+                        }
+                    }
+                    // Cache the compiled function
+                    cached = compilerCache(selector, matcherFromGroupMatchers(elementMatchers, setMatchers));
+                    // Save selector and tokenization
+                    cached.selector = selector;
+                }
+                return cached;
+            };
+            /**
+             * A low-level selection function that works with Sizzle's compiled
+             *  selector functions
+             * @param {String|Function} selector A selector or a pre-compiled
+             *  selector function built with Sizzle.compile
+             * @param {Element} context
+             * @param {Array} [results]
+             * @param {Array} [seed] A set of elements to match against
+             */
+            select = Sizzle.select = function (
+                selector,
+                context,
+                results,
+                seed
+            ) {
+                var i, tokens, token, type, find, compiled = typeof selector === 'function' && selector,
+                    match = !seed && tokenize(selector = compiled.selector || selector);
+                results = results || [];
+                // Try to minimize operations if there is only one selector in the list and no seed
+                // (the latter of which guarantees us context)
+                if (match.length === 1) {
+                    // Reduce context if the leading compound selector is an ID
+                    tokens = match[0] = match[0].slice(0);
+                    if (tokens.length > 2 && (token = tokens[0]).type === 'ID' && support.getById && context.nodeType === 9 && documentIsHTML && Expr.relative[tokens[1].type]) {
+                        context = (Expr.find['ID'](token.matches[0].replace(runescape, funescape), context) || [])[0];
+                        if (!context) {
+                            return results;  // Precompiled matchers will still verify ancestry, so step up a level
+                        } else if (compiled) {
+                            context = context.parentNode;
+                        }
+                        selector = selector.slice(tokens.shift().value.length);
+                    }
+                    // Fetch a seed set for right-to-left matching
+                    i = matchExpr['needsContext'].test(selector) ? 0 : tokens.length;
+                    while (i--) {
+                        token = tokens[i];
+                        // Abort if we hit a combinator
+                        if (Expr.relative[type = token.type]) {
+                            break;
+                        }
+                        if (find = Expr.find[type]) {
+                            // Search, expanding context for leading sibling combinators
+                            if (seed = find(token.matches[0].replace(runescape, funescape), rsibling.test(tokens[0].type) && testContext(context.parentNode) || context)) {
+                                // If seed is empty or no tokens remain, we can return early
+                                tokens.splice(i, 1);
+                                selector = seed.length && toSelector(tokens);
+                                if (!selector) {
+                                    push.apply(results, seed);
+                                    return results;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                // Compile and execute a filtering function if one is not provided
+                // Provide `match` to avoid retokenization if we modified the selector above
+                (compiled || compile(selector, match))(seed, context, !documentIsHTML, results, !context || rsibling.test(selector) && testContext(context.parentNode) || context);
+                return results;
+            };
+            // One-time assignments
+            // Sort stability
+            support.sortStable = expando.split('').sort(sortOrder).join('') === expando;
+            // Support: Chrome 14-35+
+            // Always assume duplicates if they aren't passed to the comparison function
+            support.detectDuplicates = !!hasDuplicate;
+            // Initialize against the default document
+            setDocument();
+            // Support: Webkit<537.32 - Safari 6.0.3/Chrome 25 (fixed in Chrome 27)
+            // Detached nodes confoundingly follow *each other*
+            support.sortDetached = assert(function (div1) {
+                // Should return 1, but returns 4 (following)
+                return div1.compareDocumentPosition(document.createElement('div')) & 1;
+            });
+            // Support: IE<8
+            // Prevent attribute/property "interpolation"
+            // http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
+            if (!assert(function (div) {
+                    div.innerHTML = '<a href=\'#\'></a>';
+                    return div.firstChild.getAttribute('href') === '#';
+                })) {
+                addHandle('type|href|height|width', function (
+                    elem,
+                    name,
+                    isXML
+                ) {
+                    if (!isXML) {
+                        return elem.getAttribute(name, name.toLowerCase() === 'type' ? 1 : 2);
+                    }
+                });
+            }
+            // Support: IE<9
+            // Use defaultValue in place of getAttribute("value")
+            if (!support.attributes || !assert(function (div) {
+                    div.innerHTML = '<input/>';
+                    div.firstChild.setAttribute('value', '');
+                    return div.firstChild.getAttribute('value') === '';
+                })) {
+                addHandle('value', function (
+                    elem,
+                    name,
+                    isXML
+                ) {
+                    if (!isXML && elem.nodeName.toLowerCase() === 'input') {
+                        return elem.defaultValue;
+                    }
+                });
+            }
+            // Support: IE<9
+            // Use getAttributeNode to fetch booleans when getAttribute lies
+            if (!assert(function (div) {
+                    return div.getAttribute('disabled') == null;
+                })) {
+                addHandle(booleans, function (
+                    elem,
+                    name,
+                    isXML
+                ) {
+                    var val;
+                    if (!isXML) {
+                        return elem[name] === true ? name.toLowerCase() : (val = elem.getAttributeNode(name)) && val.specified ? val.value : null;
+                    }
+                });
+            }
+            // EXPOSE
+            if (true) {
+                jquery_sizzle = function () {
+                    return Sizzle;
+                }();
+            } else if (typeof module !== 'undefined' && module.exports) {
+                module.exports = Sizzle;
+            } else {
+                window.Sizzle = Sizzle;
+            }  // EXPOSE
+        }(window));
+        jquery_selector_sizzle = function (
+            jQuery,
+            Sizzle
+        ) {
+            jQuery.find = Sizzle;
+            jQuery.expr = Sizzle.selectors;
+            jQuery.expr[':'] = jQuery.expr.pseudos;
+            jQuery.uniqueSort = jQuery.unique = Sizzle.uniqueSort;
+            jQuery.text = Sizzle.getText;
+            jQuery.isXMLDoc = Sizzle.isXML;
+            jQuery.contains = Sizzle.contains;
+        }(jquery_core, jquery_sizzle);
+        jquery_selector = undefined;
+        jquery_var_rnotwhite = /\S+/g;
+        jquery_callbacks = function (
+            jQuery,
+            rnotwhite
+        ) {
+            // Convert String-formatted options into Object-formatted ones
+            function createOptions(options) {
+                var object = {};
+                jQuery.each(options.match(rnotwhite) || [], function (
+                    _,
+                    flag
+                ) {
+                    object[flag] = true;
+                });
+                return object;
+            }
+
+            /*
+             * Create a callback list using the following parameters:
+             *
+             *	options: an optional list of space-separated options that will change how
+             *			the callback list behaves or a more traditional option object
+             *
+             * By default a callback list will act like an event callback list and can be
+             * "fired" multiple times.
+             *
+             * Possible options:
+             *
+             *	once:			will ensure the callback list can only be fired once (like a Deferred)
+             *
+             *	memory:			will keep track of previous values and will call any callback added
+             *					after the list has been fired right away with the latest "memorized"
+             *					values (like a Deferred)
+             *
+             *	unique:			will ensure a callback can only be added once (no duplicate in the list)
+             *
+             *	stopOnFalse:	interrupt callings when a callback returns false
+             *
+             */
+            jQuery.Callbacks = function (options) {
+                // Convert options from String-formatted to Object-formatted if needed
+                // (we check in cache first)
+                options = typeof options === 'string' ? createOptions(options) : jQuery.extend({}, options);
+                var
+                    // Flag to know if list is currently firing
+                    firing,
+                    // Last fire value for non-forgettable lists
+                    memory,
+                    // Flag to know if list was already fired
+                    fired,
+                    // Flag to prevent firing
+                    locked,
+                    // Actual callback list
+                    list = [],
+                    // Queue of execution data for repeatable lists
+                    queue = [],
+                    // Index of currently firing callback (modified by add/remove as needed)
+                    firingIndex = -1,
+                    // Fire callbacks
+                    fire = function () {
+                        // Enforce single-firing
+                        locked = options.once;
+                        // Execute callbacks for all pending executions,
+                        // respecting firingIndex overrides and runtime changes
+                        fired = firing = true;
+                        for (; queue.length; firingIndex = -1) {
+                            memory = queue.shift();
+                            while (++firingIndex < list.length) {
+                                // Run callback and check for early termination
+                                if (list[firingIndex].apply(memory[0], memory[1]) === false && options.stopOnFalse) {
+                                    // Jump to end and forget the data so .add doesn't re-fire
+                                    firingIndex = list.length;
+                                    memory = false;
+                                }
+                            }
+                        }
+                        // Forget the data if we're done with it
+                        if (!options.memory) {
+                            memory = false;
+                        }
+                        firing = false;
+                        // Clean up if we're done firing for good
+                        if (locked) {
+                            // Keep an empty list if we have data for future add calls
+                            if (memory) {
+                                list = [];  // Otherwise, this object is spent
+                            } else {
+                                list = '';
+                            }
+                        }
+                    },
+                    // Actual Callbacks object
+                    self = {
+                        // Add a callback or a collection of callbacks to the list
+                        add: function () {
+                            if (list) {
+                                // If we have memory from a past run, we should fire after adding
+                                if (memory && !firing) {
+                                    firingIndex = list.length - 1;
+                                    queue.push(memory);
+                                }
+                                (function add(args) {
+                                    jQuery.each(args, function (
+                                        _,
+                                        arg
+                                    ) {
+                                        if (jQuery.isFunction(arg)) {
+                                            if (!options.unique || !self.has(arg)) {
+                                                list.push(arg);
+                                            }
+                                        } else if (arg && arg.length && jQuery.type(arg) !== 'string') {
+                                            // Inspect recursively
+                                            add(arg);
+                                        }
+                                    });
+                                }(arguments));
+                                if (memory && !firing) {
+                                    fire();
+                                }
+                            }
+                            return this;
+                        },
+                        // Remove a callback from the list
+                        remove: function () {
+                            jQuery.each(arguments, function (
+                                _,
+                                arg
+                            ) {
+                                var index;
+                                while ((index = jQuery.inArray(arg, list, index)) > -1) {
+                                    list.splice(index, 1);
+                                    // Handle firing indexes
+                                    if (index <= firingIndex) {
+                                        firingIndex--;
+                                    }
+                                }
+                            });
+                            return this;
+                        },
+                        // Check if a given callback is in the list.
+                        // If no argument is given, return whether or not list has callbacks attached.
+                        has: function (fn) {
+                            return fn ? jQuery.inArray(fn, list) > -1 : list.length > 0;
+                        },
+                        // Remove all callbacks from the list
+                        empty: function () {
+                            if (list) {
+                                list = [];
+                            }
+                            return this;
+                        },
+                        // Disable .fire and .add
+                        // Abort any current/pending executions
+                        // Clear all callbacks and values
+                        disable: function () {
+                            locked = queue = [];
+                            list = memory = '';
+                            return this;
+                        },
+                        disabled: function () {
+                            return !list;
+                        },
+                        // Disable .fire
+                        // Also disable .add unless we have memory (since it would have no effect)
+                        // Abort any pending executions
+                        lock: function () {
+                            locked = true;
+                            if (!memory) {
+                                self.disable();
+                            }
+                            return this;
+                        },
+                        locked: function () {
+                            return !!locked;
+                        },
+                        // Call all callbacks with the given context and arguments
+                        fireWith: function (
+                            context,
+                            args
+                        ) {
+                            if (!locked) {
+                                args = args || [];
+                                args = [
+                                    context,
+                                    args.slice ? args.slice() : args
+                                ];
+                                queue.push(args);
+                                if (!firing) {
+                                    fire();
+                                }
+                            }
+                            return this;
+                        },
+                        // Call all the callbacks with the given arguments
+                        fire: function () {
+                            self.fireWith(this, arguments);
+                            return this;
+                        },
+                        // To know if the callbacks have already been called at least once
+                        fired: function () {
+                            return !!fired;
+                        }
+                    };
+                return self;
+            };
+            return jQuery;
+        }(jquery_core, jquery_var_rnotwhite);
+        jquery_deferred = function (
+            jQuery,
+            slice
+        ) {
+            jQuery.extend({
+                Deferred: function (func) {
+                    var tuples = [
+                        // action, add listener, listener list, final state
+                        [
+                            'resolve',
+                            'done',
+                            jQuery.Callbacks('once memory'),
+                            'resolved'
+                        ],
+                        [
+                            'reject',
+                            'fail',
+                            jQuery.Callbacks('once memory'),
+                            'rejected'
+                        ],
+                        [
+                            'notify',
+                            'progress',
+                            jQuery.Callbacks('memory')
+                        ]
+                    ], state = 'pending', promise = {
+                        state: function () {
+                            return state;
+                        },
+                        always: function () {
+                            deferred.done(arguments).fail(arguments);
+                            return this;
+                        },
+                        then: function () {
+                            var fns = arguments;
+                            return jQuery.Deferred(function (newDefer) {
+                                jQuery.each(tuples, function (
+                                    i,
+                                    tuple
+                                ) {
+                                    var fn = jQuery.isFunction(fns[i]) && fns[i];
+                                    // deferred[ done | fail | progress ] for forwarding actions to newDefer
+                                    deferred[tuple[1]](function () {
+                                        var returned = fn && fn.apply(this, arguments);
+                                        if (returned && jQuery.isFunction(returned.promise)) {
+                                            returned.promise().progress(newDefer.notify).done(newDefer.resolve).fail(newDefer.reject);
+                                        } else {
+                                            newDefer[tuple[0] + 'With'](this === promise ? newDefer.promise() : this, fn ? [returned] : arguments);
+                                        }
+                                    });
+                                });
+                                fns = null;
+                            }).promise();
+                        },
+                        // Get a promise for this deferred
+                        // If obj is provided, the promise aspect is added to the object
+                        promise: function (obj) {
+                            return obj != null ? jQuery.extend(obj, promise) : promise;
+                        }
+                    }, deferred = {};
+                    // Keep pipe for back-compat
+                    promise.pipe = promise.then;
+                    // Add list-specific methods
+                    jQuery.each(tuples, function (
+                        i,
+                        tuple
+                    ) {
+                        var list = tuple[2], stateString = tuple[3];
+                        // promise[ done | fail | progress ] = list.add
+                        promise[tuple[1]] = list.add;
+                        // Handle state
+                        if (stateString) {
+                            list.add(function () {
+                                // state = [ resolved | rejected ]
+                                state = stateString;  // [ reject_list | resolve_list ].disable; progress_list.lock
+                            }, tuples[i ^ 1][2].disable, tuples[2][2].lock);
+                        }
+                        // deferred[ resolve | reject | notify ]
+                        deferred[tuple[0]] = function () {
+                            deferred[tuple[0] + 'With'](this === deferred ? promise : this, arguments);
+                            return this;
+                        };
+                        deferred[tuple[0] + 'With'] = list.fireWith;
+                    });
+                    // Make the deferred a promise
+                    promise.promise(deferred);
+                    // Call given func if any
+                    if (func) {
+                        func.call(deferred, deferred);
+                    }
+                    // All done!
+                    return deferred;
+                },
+                // Deferred helper
+                when: function (subordinate) {
+                    var i = 0, resolveValues = slice.call(arguments), length = resolveValues.length,
+                        // the count of uncompleted subordinates
+                        remaining = length !== 1 || subordinate && jQuery.isFunction(subordinate.promise) ? length : 0,
+                        // the master Deferred.
+                        // If resolveValues consist of only a single Deferred, just use that.
+                        deferred = remaining === 1 ? subordinate : jQuery.Deferred(),
+                        // Update function for both resolve and progress values
+                        updateFunc = function (
+                            i,
+                            contexts,
+                            values
+                        ) {
+                            return function (value) {
+                                contexts[i] = this;
+                                values[i] = arguments.length > 1 ? slice.call(arguments) : value;
+                                if (values === progressValues) {
+                                    deferred.notifyWith(contexts, values);
+                                } else if (!--remaining) {
+                                    deferred.resolveWith(contexts, values);
+                                }
+                            };
+                        }, progressValues, progressContexts, resolveContexts;
+                    // add listeners to Deferred subordinates; treat others as resolved
+                    if (length > 1) {
+                        progressValues = new Array(length);
+                        progressContexts = new Array(length);
+                        resolveContexts = new Array(length);
+                        for (; i < length; i++) {
+                            if (resolveValues[i] && jQuery.isFunction(resolveValues[i].promise)) {
+                                resolveValues[i].promise().progress(updateFunc(i, progressContexts, progressValues)).done(updateFunc(i, resolveContexts, resolveValues)).fail(deferred.reject);
+                            } else {
+                                --remaining;
+                            }
+                        }
+                    }
+                    // if we're not waiting on anything, resolve the master
+                    if (!remaining) {
+                        deferred.resolveWith(resolveContexts, resolveValues);
+                    }
+                    return deferred.promise();
+                }
+            });
+            return jQuery;
+        }(jquery_core, jquery_var_slice);
+        jquery_core_var_rsingleTag = /^<([\w-]+)\s*\/?>(?:<\/\1>|)$/;
+        jquery_traversing_var_rneedsContext = function (jQuery) {
+            return jQuery.expr.match.needsContext;
+        }(jquery_core);
+        jquery_traversing_findFilter = function (
+            jQuery,
+            indexOf,
+            rneedsContext
+        ) {
+            var risSimple = /^.[^:#\[\.,]*$/;
+
+            // Implement the identical functionality for filter and not
+            function winnow(
+                elements,
+                qualifier,
+                not
+            ) {
+                if (jQuery.isFunction(qualifier)) {
+                    return jQuery.grep(elements, function (
+                        elem,
+                        i
+                    ) {
+                        /* jshint -W018 */
+                        return !!qualifier.call(elem, i, elem) !== not;
+                    });
+                }
+                if (qualifier.nodeType) {
+                    return jQuery.grep(elements, function (elem) {
+                        return elem === qualifier !== not;
+                    });
+                }
+                if (typeof qualifier === 'string') {
+                    if (risSimple.test(qualifier)) {
+                        return jQuery.filter(qualifier, elements, not);
+                    }
+                    qualifier = jQuery.filter(qualifier, elements);
+                }
+                return jQuery.grep(elements, function (elem) {
+                    return jQuery.inArray(elem, qualifier) > -1 !== not;
+                });
+            }
+
+            jQuery.filter = function (
+                expr,
+                elems,
+                not
+            ) {
+                var elem = elems[0];
+                if (not) {
+                    expr = ':not(' + expr + ')';
+                }
+                return elems.length === 1 && elem.nodeType === 1 ? jQuery.find.matchesSelector(elem, expr) ? [elem] : [] : jQuery.find.matches(expr, jQuery.grep(elems, function (elem) {
+                    return elem.nodeType === 1;
+                }));
+            };
+            jQuery.fn.extend({
+                find: function (selector) {
+                    var i, ret = [], self = this, len = self.length;
+                    if (typeof selector !== 'string') {
+                        return this.pushStack(jQuery(selector).filter(function () {
+                            for (i = 0; i < len; i++) {
+                                if (jQuery.contains(self[i], this)) {
+                                    return true;
+                                }
+                            }
+                        }));
+                    }
+                    for (i = 0; i < len; i++) {
+                        jQuery.find(selector, self[i], ret);
+                    }
+                    // Needed because $( selector, context ) becomes $( context ).find( selector )
+                    ret = this.pushStack(len > 1 ? jQuery.unique(ret) : ret);
+                    ret.selector = this.selector ? this.selector + ' ' + selector : selector;
+                    return ret;
+                },
+                filter: function (selector) {
+                    return this.pushStack(winnow(this, selector || [], false));
+                },
+                not: function (selector) {
+                    return this.pushStack(winnow(this, selector || [], true));
+                },
+                is: function (selector) {
+                    return !!winnow(this, // If this is a positional/relative selector, check membership in the returned set
+                        // so $("p:first").is("p:last") won't return true for a doc with two "p".
+                        typeof selector === 'string' && rneedsContext.test(selector) ? jQuery(selector) : selector || [], false).length;
+                }
+            });
+        }(jquery_core, jquery_var_indexOf, jquery_traversing_var_rneedsContext);
+        jquery_core_init = function (
+            jQuery,
+            document,
+            rsingleTag
+        ) {
+            // A central reference to the root jQuery(document)
+            var rootjQuery,
+                // A simple way to check for HTML strings
+                // Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
+                // Strict HTML recognition (#11290: must start with <)
+                rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/, init = jQuery.fn.init = function (selector,
+                                                                                                      context,
+                                                                                                      root
+                ) {
+                    var match, elem;
+                    // HANDLE: $(""), $(null), $(undefined), $(false)
+                    if (!selector) {
+                        return this;
+                    }
+                    // init accepts an alternate rootjQuery
+                    // so migrate can support jQuery.sub (gh-2101)
+                    root = root || rootjQuery;
+                    // Handle HTML strings
+                    if (typeof selector === 'string') {
+                        if (selector.charAt(0) === '<' && selector.charAt(selector.length - 1) === '>' && selector.length >= 3) {
+                            // Assume that strings that start and end with <> are HTML and skip the regex check
+                            match = [
+                                null,
+                                selector,
+                                null
+                            ];
+                        } else {
+                            match = rquickExpr.exec(selector);
+                        }
+                        // Match html or make sure no context is specified for #id
+                        if (match && (match[1] || !context)) {
+                            // HANDLE: $(html) -> $(array)
+                            if (match[1]) {
+                                context = context instanceof jQuery ? context[0] : context;
+                                // scripts is true for back-compat
+                                // Intentionally let the error be thrown if parseHTML is not present
+                                jQuery.merge(this, jQuery.parseHTML(match[1], context && context.nodeType ? context.ownerDocument || context : document, true));
+                                // HANDLE: $(html, props)
+                                if (rsingleTag.test(match[1]) && jQuery.isPlainObject(context)) {
+                                    for (match in context) {
+                                        // Properties of context are called as methods if possible
+                                        if (jQuery.isFunction(this[match])) {
+                                            this[match](context[match]);  // ...and otherwise set as attributes
+                                        } else {
+                                            this.attr(match, context[match]);
+                                        }
+                                    }
+                                }
+                                return this;  // HANDLE: $(#id)
+                            } else {
+                                elem = document.getElementById(match[2]);
+                                // Check parentNode to catch when Blackberry 4.6 returns
+                                // nodes that are no longer in the document #6963
+                                if (elem && elem.parentNode) {
+                                    // Handle the case where IE and Opera return items
+                                    // by name instead of ID
+                                    if (elem.id !== match[2]) {
+                                        return rootjQuery.find(selector);
+                                    }
+                                    // Otherwise, we inject the element directly into the jQuery object
+                                    this.length = 1;
+                                    this[0] = elem;
+                                }
+                                this.context = document;
+                                this.selector = selector;
+                                return this;
+                            }  // HANDLE: $(expr, $(...))
+                        } else if (!context || context.jquery) {
+                            return (context || root).find(selector);  // HANDLE: $(expr, context)
+                                                                      // (which is just equivalent to:
+                                                                      // $(context).find(expr)
+                        } else {
+                            return this.constructor(context).find(selector);
+                        }  // HANDLE: $(DOMElement)
+                    } else if (selector.nodeType) {
+                        this.context = this[0] = selector;
+                        this.length = 1;
+                        return this;  // HANDLE: $(function)
+                                      // Shortcut for document ready
+                    } else if (jQuery.isFunction(selector)) {
+                        return typeof root.ready !== 'undefined' ? root.ready(selector) : // Execute immediately if ready is not present
+                            selector(jQuery);
+                    }
+                    if (selector.selector !== undefined) {
+                        this.selector = selector.selector;
+                        this.context = selector.context;
+                    }
+                    return jQuery.makeArray(selector, this);
+                };
+            // Give the init function the jQuery prototype for later instantiation
+            init.prototype = jQuery.fn;
+            // Initialize central reference
+            rootjQuery = jQuery(document);
+            return init;
+        }(jquery_core, jquery_var_document, jquery_core_var_rsingleTag);
+        jquery_core_ready = function (
+            jQuery,
+            document
+        ) {
+            // The deferred used on DOM ready
+            var readyList;
+            jQuery.fn.ready = function (fn) {
+                // Add the callback
+                jQuery.ready.promise().done(fn);
+                return this;
+            };
+            jQuery.extend({
+                // Is the DOM ready to be used? Set to true once it occurs.
+                isReady: false,
+                // A counter to track how many items to wait for before
+                // the ready event fires. See #6781
+                readyWait: 1,
+                // Hold (or release) the ready event
+                holdReady: function (hold) {
+                    if (hold) {
+                        jQuery.readyWait++;
+                    } else {
+                        jQuery.ready(true);
+                    }
+                },
+                // Handle when the DOM is ready
+                ready: function (wait) {
+                    // Abort if there are pending holds or we're already ready
+                    if (wait === true ? --jQuery.readyWait : jQuery.isReady) {
+                        return;
+                    }
+                    // Remember that the DOM is ready
+                    jQuery.isReady = true;
+                    // If a normal DOM Ready event fired, decrement, and wait if need be
+                    if (wait !== true && --jQuery.readyWait > 0) {
+                        return;
+                    }
+                    // If there are functions bound, to execute
+                    readyList.resolveWith(document, [jQuery]);
+                    // Trigger any bound ready events
+                    if (jQuery.fn.triggerHandler) {
+                        jQuery(document).triggerHandler('ready');
+                        jQuery(document).off('ready');
+                    }
+                }
+            });
+
+            /**
+             * Clean-up method for dom ready events
+             */
+            function detach() {
+                if (document.addEventListener) {
+                    document.removeEventListener('DOMContentLoaded', completed);
+                    window.removeEventListener('load', completed);
+                } else {
+                    document.detachEvent('onreadystatechange', completed);
+                    window.detachEvent('onload', completed);
+                }
+            }
+
+            /**
+             * The ready event handler and self cleanup method
+             */
+            function completed() {
+                // readyState === "complete" is good enough for us to call the dom ready in oldIE
+                if (document.addEventListener || window.event.type === 'load' || document.readyState === 'complete') {
+                    detach();
+                    jQuery.ready();
+                }
+            }
+
+            jQuery.ready.promise = function (obj) {
+                if (!readyList) {
+                    readyList = jQuery.Deferred();
+                    // Catch cases where $(document).ready() is called
+                    // after the browser event has already occurred.
+                    // Support: IE6-10
+                    // Older IE sometimes signals "interactive" too soon
+                    if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
+                        // Handle it asynchronously to allow scripts the opportunity to delay ready
+                        window.setTimeout(jQuery.ready);  // Standards-based browsers support DOMContentLoaded
+                    } else if (document.addEventListener) {
+                        // Use the handy event callback
+                        document.addEventListener('DOMContentLoaded', completed);
+                        // A fallback to window.onload, that will always work
+                        window.addEventListener('load', completed);  // If IE event model is used
+                    } else {
+                        // Ensure firing before onload, maybe late but safe also for iframes
+                        document.attachEvent('onreadystatechange', completed);
+                        // A fallback to window.onload, that will always work
+                        window.attachEvent('onload', completed);
+                        // If IE and not a frame
+                        // continually check to see if the document is ready
+                        var top = false;
+                        try {
+                            top = window.frameElement == null && document.documentElement;
+                        } catch (e) {
+                        }
+                        if (top && top.doScroll) {
+                            (function doScrollCheck() {
+                                if (!jQuery.isReady) {
+                                    try {
+                                        // Use the trick by Diego Perini
+                                        // http://javascript.nwbox.com/IEContentLoaded/
+                                        top.doScroll('left');
+                                    } catch (e) {
+                                        return window.setTimeout(doScrollCheck, 50);
+                                    }
+                                    // detach all dom ready events
+                                    detach();
+                                    // and execute any waiting functions
+                                    jQuery.ready();
+                                }
+                            }());
+                        }
+                    }
+                }
+                return readyList.promise(obj);
+            };
+            // Kick off the DOM ready check even if the user does not
+            jQuery.ready.promise();
+        }(jquery_core, jquery_var_document);
+        jquery_support = function (
+            jQuery,
+            support,
+            document
+        ) {
+            // Support: IE<9
+            // Iteration over object's inherited properties before its own
+            var i;
+            for (i in jQuery(support)) {
+                break;
+            }
+            support.ownFirst = i === '0';
+            // Note: most support tests are defined in their respective modules.
+            // false until the test is run
+            support.inlineBlockNeedsLayout = false;
+            // Execute ASAP in case we need to set body.style.zoom
+            jQuery(function () {
+                // Minified: var a,b,c,d
+                var val, div, body, container;
+                body = document.getElementsByTagName('body')[0];
+                if (!body || !body.style) {
+                    // Return for frameset docs that don't have a body
+                    return;
+                }
+                // Setup
+                div = document.createElement('div');
+                container = document.createElement('div');
+                container.style.cssText = 'position:absolute;border:0;width:0;height:0;top:0;left:-9999px';
+                body.appendChild(container).appendChild(div);
+                if (typeof div.style.zoom !== 'undefined') {
+                    // Support: IE<8
+                    // Check if natively block-level elements act like inline-block
+                    // elements when setting their display to 'inline' and giving
+                    // them layout
+                    div.style.cssText = 'display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1';
+                    support.inlineBlockNeedsLayout = val = div.offsetWidth === 3;
+                    if (val) {
+                        // Prevent IE 6 from affecting layout for positioned elements #11048
+                        // Prevent IE from shrinking the body in IE 7 mode #12869
+                        // Support: IE<8
+                        body.style.zoom = 1;
+                    }
+                }
+                body.removeChild(container);
+            });
+            return support;
+        }(jquery_core, jquery_var_support, jquery_var_document);
+        jquery_data_support = function (
+            document,
+            support
+        ) {
+            (function () {
+                var div = document.createElement('div');
+                // Support: IE<9
+                support.deleteExpando = true;
+                try {
+                    delete div.test;
+                } catch (e) {
+                    support.deleteExpando = false;
+                }
+                // Null elements to avoid leaks in IE.
+                div = null;
+            }());
+            return support;
+        }(jquery_var_document, jquery_var_support);
+        jquery_data_var_acceptData = function (jQuery) {
+            /**
+             * Determines whether an object can have data
+             */
+            return function (elem) {
+                var noData = jQuery.noData[(elem.nodeName + ' ').toLowerCase()], nodeType = +elem.nodeType || 1;
+                // Do not set data on non-element DOM nodes because it will not be cleared (#8335).
+                return nodeType !== 1 && nodeType !== 9 ? false : // Nodes accept data unless otherwise specified; rejection can be conditional
+                    !noData || noData !== true && elem.getAttribute('classid') === noData;
+            };
+        }(jquery_core);
+        jquery_data = function (
+            jQuery,
+            deletedIds,
+            support,
+            acceptData
+        ) {
+            var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/, rmultiDash = /([A-Z])/g;
+
+            function dataAttr(
+                elem,
+                key,
+                data
+            ) {
+                // If nothing was found internally, try to fetch any
+                // data from the HTML5 data-* attribute
+                if (data === undefined && elem.nodeType === 1) {
+                    var name = 'data-' + key.replace(rmultiDash, '-$1').toLowerCase();
+                    data = elem.getAttribute(name);
+                    if (typeof data === 'string') {
+                        try {
+                            data = data === 'true' ? true : data === 'false' ? false : data === 'null' ? null : // Only convert to a number if it doesn't change the string
+                                +data + '' === data ? +data : rbrace.test(data) ? jQuery.parseJSON(data) : data;
+                        } catch (e) {
+                        }
+                        // Make sure we set the data so it isn't changed later
+                        jQuery.data(elem, key, data);
+                    } else {
+                        data = undefined;
+                    }
+                }
+                return data;
+            }
+
+            // checks a cache object for emptiness
+            function isEmptyDataObject(obj) {
+                var name;
+                for (name in obj) {
+                    // if the public data object is empty, the private is still empty
+                    if (name === 'data' && jQuery.isEmptyObject(obj[name])) {
+                        continue;
+                    }
+                    if (name !== 'toJSON') {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function internalData(
+                elem,
+                name,
+                data,
+                pvt
+            ) {
+                if (!acceptData(elem)) {
+                    return;
+                }
+                var ret, thisCache, internalKey = jQuery.expando,
+                    // We have to handle DOM nodes and JS objects differently because IE6-7
+                    // can't GC object references properly across the DOM-JS boundary
+                    isNode = elem.nodeType,
+                    // Only DOM nodes need the global jQuery cache; JS object data is
+                    // attached directly to the object so GC can occur automatically
+                    cache = isNode ? jQuery.cache : elem,
+                    // Only defining an ID for JS objects if its cache already exists allows
+                    // the code to shortcut on the same path as a DOM node with no cache
+                    id = isNode ? elem[internalKey] : elem[internalKey] && internalKey;
+                // Avoid doing any more work than we need to when trying to get data on an
+                // object that has no data at all
+                if ((!id || !cache[id] || !pvt && !cache[id].data) && data === undefined && typeof name === 'string') {
+                    return;
+                }
+                if (!id) {
+                    // Only DOM nodes need a new unique ID for each element since their data
+                    // ends up in the global cache
+                    if (isNode) {
+                        id = elem[internalKey] = deletedIds.pop() || jQuery.guid++;
+                    } else {
+                        id = internalKey;
+                    }
+                }
+                if (!cache[id]) {
+                    // Avoid exposing jQuery metadata on plain JS objects when the object
+                    // is serialized using JSON.stringify
+                    cache[id] = isNode ? {} : {toJSON: jQuery.noop};
+                }
+                // An object can be passed to jQuery.data instead of a key/value pair; this gets
+                // shallow copied over onto the existing cache
+                if (typeof name === 'object' || typeof name === 'function') {
+                    if (pvt) {
+                        cache[id] = jQuery.extend(cache[id], name);
+                    } else {
+                        cache[id].data = jQuery.extend(cache[id].data, name);
+                    }
+                }
+                thisCache = cache[id];
+                // jQuery data() is stored in a separate object inside the object's internal data
+                // cache in order to avoid key collisions between internal data and user-defined
+                // data.
+                if (!pvt) {
+                    if (!thisCache.data) {
+                        thisCache.data = {};
+                    }
+                    thisCache = thisCache.data;
+                }
+                if (data !== undefined) {
+                    thisCache[jQuery.camelCase(name)] = data;
+                }
+                // Check for both converted-to-camel and non-converted data property names
+                // If a data property was specified
+                if (typeof name === 'string') {
+                    // First Try to find as-is property data
+                    ret = thisCache[name];
+                    // Test for null|undefined property data
+                    if (ret == null) {
+                        // Try to find the camelCased property
+                        ret = thisCache[jQuery.camelCase(name)];
+                    }
+                } else {
+                    ret = thisCache;
+                }
+                return ret;
+            }
+
+            function internalRemoveData(
+                elem,
+                name,
+                pvt
+            ) {
+                if (!acceptData(elem)) {
+                    return;
+                }
+                var thisCache, i, isNode = elem.nodeType,
+                    // See jQuery.data for more information
+                    cache = isNode ? jQuery.cache : elem, id = isNode ? elem[jQuery.expando] : jQuery.expando;
+                // If there is already no cache entry for this object, there is no
+                // purpose in continuing
+                if (!cache[id]) {
+                    return;
+                }
+                if (name) {
+                    thisCache = pvt ? cache[id] : cache[id].data;
+                    if (thisCache) {
+                        // Support array or space separated string names for data keys
+                        if (!jQuery.isArray(name)) {
+                            // try the string as a key before any manipulation
+                            if (name in thisCache) {
+                                name = [name];
+                            } else {
+                                // split the camel cased version by spaces unless a key with the spaces exists
+                                name = jQuery.camelCase(name);
+                                if (name in thisCache) {
+                                    name = [name];
+                                } else {
+                                    name = name.split(' ');
+                                }
+                            }
+                        } else {
+                            // If "name" is an array of keys...
+                            // When data is initially created, via ("key", "val") signature,
+                            // keys will be converted to camelCase.
+                            // Since there is no way to tell _how_ a key was added, remove
+                            // both plain key and camelCase key. #12786
+                            // This will only penalize the array argument path.
+                            name = name.concat(jQuery.map(name, jQuery.camelCase));
+                        }
+                        i = name.length;
+                        while (i--) {
+                            delete thisCache[name[i]];
+                        }
+                        // If there is no data left in the cache, we want to continue
+                        // and let the cache object itself get destroyed
+                        if (pvt ? !isEmptyDataObject(thisCache) : !jQuery.isEmptyObject(thisCache)) {
+                            return;
+                        }
+                    }
+                }
+                // See jQuery.data for more information
+                if (!pvt) {
+                    delete cache[id].data;
+                    // Don't destroy the parent cache unless the internal data object
+                    // had been the only thing left in it
+                    if (!isEmptyDataObject(cache[id])) {
+                        return;
+                    }
+                }
+                // Destroy the cache
+                if (isNode) {
+                    jQuery.cleanData([elem], true);  // Use delete when supported for expandos or `cache` is not a
+                                                     // window per isWindow (#10080)
+                    /* jshint eqeqeq: false */
+                } else if (support.deleteExpando || cache != cache.window) {
+                    /* jshint eqeqeq: true */
+                    delete cache[id];  // When all else fails, undefined
+                } else {
+                    cache[id] = undefined;
+                }
+            }
+
+            jQuery.extend({
+                cache: {},
+                // The following elements (space-suffixed to avoid Object.prototype collisions)
+                // throw uncatchable exceptions if you attempt to set expando properties
+                noData: {
+                    'applet ': true,
+                    'embed ': true,
+                    // ...but Flash objects (which have this classid) *can* handle expandos
+                    'object ': 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000'
+                },
+                hasData: function (elem) {
+                    elem = elem.nodeType ? jQuery.cache[elem[jQuery.expando]] : elem[jQuery.expando];
+                    return !!elem && !isEmptyDataObject(elem);
+                },
+                data: function (
+                    elem,
+                    name,
+                    data
+                ) {
+                    return internalData(elem, name, data);
+                },
+                removeData: function (
+                    elem,
+                    name
+                ) {
+                    return internalRemoveData(elem, name);
+                },
+                // For internal use only.
+                _data: function (
+                    elem,
+                    name,
+                    data
+                ) {
+                    return internalData(elem, name, data, true);
+                },
+                _removeData: function (
+                    elem,
+                    name
+                ) {
+                    return internalRemoveData(elem, name, true);
+                }
+            });
+            jQuery.fn.extend({
+                data: function (
+                    key,
+                    value
+                ) {
+                    var i, name, data, elem = this[0], attrs = elem && elem.attributes;
+                    // Special expections of .data basically thwart jQuery.access,
+                    // so implement the relevant behavior ourselves
+                    // Gets all values
+                    if (key === undefined) {
+                        if (this.length) {
+                            data = jQuery.data(elem);
+                            if (elem.nodeType === 1 && !jQuery._data(elem, 'parsedAttrs')) {
+                                i = attrs.length;
+                                while (i--) {
+                                    // Support: IE11+
+                                    // The attrs elements can be null (#14894)
+                                    if (attrs[i]) {
+                                        name = attrs[i].name;
+                                        if (name.indexOf('data-') === 0) {
+                                            name = jQuery.camelCase(name.slice(5));
+                                            dataAttr(elem, name, data[name]);
+                                        }
+                                    }
+                                }
+                                jQuery._data(elem, 'parsedAttrs', true);
+                            }
+                        }
+                        return data;
+                    }
+                    // Sets multiple values
+                    if (typeof key === 'object') {
+                        return this.each(function () {
+                            jQuery.data(this, key);
+                        });
+                    }
+                    return arguments.length > 1 ? // Sets one value
+                        this.each(function () {
+                            jQuery.data(this, key, value);
+                        }) : // Gets one value
+                        // Try to fetch any internally stored data first
+                        elem ? dataAttr(elem, key, jQuery.data(elem, key)) : undefined;
+                },
+                removeData: function (key) {
+                    return this.each(function () {
+                        jQuery.removeData(this, key);
+                    });
+                }
+            });
+            return jQuery;
+        }(jquery_core, jquery_var_deletedIds, jquery_data_support, jquery_data_var_acceptData);
+        jquery_attributes_support = function (
+            document,
+            support
+        ) {
+            (function () {
+                var a, input = document.createElement('input'), div = document.createElement('div'),
+                    select = document.createElement('select'),
+                    opt = select.appendChild(document.createElement('option'));
+                // Setup
+                div = document.createElement('div');
+                div.setAttribute('className', 't');
+                div.innerHTML = '  <link/><table></table><a href=\'/a\'>a</a><input type=\'checkbox\'/>';
+                a = div.getElementsByTagName('a')[0];
+                // Support: Windows Web Apps (WWA)
+                // `type` must use .setAttribute for WWA (#14901)
+                input.setAttribute('type', 'checkbox');
+                div.appendChild(input);
+                a = div.getElementsByTagName('a')[0];
+                // First batch of tests.
+                a.style.cssText = 'top:1px';
+                // Test setAttribute on camelCase class.
+                // If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+                support.getSetAttribute = div.className !== 't';
+                // Get the style information from getAttribute
+                // (IE uses .cssText instead)
+                support.style = /top/.test(a.getAttribute('style'));
+                // Make sure that URLs aren't manipulated
+                // (IE normalizes it by default)
+                support.hrefNormalized = a.getAttribute('href') === '/a';
+                // Check the default checkbox/radio value ("" on WebKit; "on" elsewhere)
+                support.checkOn = !!input.value;
+                // Make sure that a selected-by-default option has a working selected property.
+                // (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
+                support.optSelected = opt.selected;
+                // Tests for enctype support on a form (#6743)
+                support.enctype = !!document.createElement('form').enctype;
+                // Make sure that the options inside disabled selects aren't marked as disabled
+                // (WebKit marks them as disabled)
+                select.disabled = true;
+                support.optDisabled = !opt.disabled;
+                // Support: IE8 only
+                // Check if we can trust getAttribute("value")
+                input = document.createElement('input');
+                input.setAttribute('value', '');
+                support.input = input.getAttribute('value') === '';
+                // Check if an input maintains its value after becoming a radio
+                input.value = 't';
+                input.setAttribute('type', 'radio');
+                support.radioValue = input.value === 't';
+            }());
+            return support;
+        }(jquery_var_document, jquery_var_support);
+        jquery_attributes_val = function (
+            jQuery,
+            support
+        ) {
+            var rreturn = /\r/g, rspaces = /[\x20\t\r\n\f]+/g;
+            jQuery.fn.extend({
+                val: function (value) {
+                    var hooks, ret, isFunction, elem = this[0];
+                    if (!arguments.length) {
+                        if (elem) {
+                            hooks = jQuery.valHooks[elem.type] || jQuery.valHooks[elem.nodeName.toLowerCase()];
+                            if (hooks && 'get' in hooks && (ret = hooks.get(elem, 'value')) !== undefined) {
+                                return ret;
+                            }
+                            ret = elem.value;
+                            return typeof ret === 'string' ? // handle most common string cases
+                                ret.replace(rreturn, '') : // handle cases where value is null/undef or number
+                                ret == null ? '' : ret;
+                        }
+                        return;
+                    }
+                    isFunction = jQuery.isFunction(value);
+                    return this.each(function (i) {
+                        var val;
+                        if (this.nodeType !== 1) {
+                            return;
+                        }
+                        if (isFunction) {
+                            val = value.call(this, i, jQuery(this).val());
+                        } else {
+                            val = value;
+                        }
+                        // Treat null/undefined as ""; convert numbers to string
+                        if (val == null) {
+                            val = '';
+                        } else if (typeof val === 'number') {
+                            val += '';
+                        } else if (jQuery.isArray(val)) {
+                            val = jQuery.map(val, function (value) {
+                                return value == null ? '' : value + '';
+                            });
+                        }
+                        hooks = jQuery.valHooks[this.type] || jQuery.valHooks[this.nodeName.toLowerCase()];
+                        // If set returns undefined, fall back to normal setting
+                        if (!hooks || !('set' in hooks) || hooks.set(this, val, 'value') === undefined) {
+                            this.value = val;
+                        }
+                    });
+                }
+            });
+            jQuery.extend({
+                valHooks: {
+                    option: {
+                        get: function (elem) {
+                            var val = jQuery.find.attr(elem, 'value');
+                            return val != null ? val : // Support: IE10-11+
+                                // option.text throws exceptions (#14686, #14858)
+                                // Strip and collapse whitespace
+                                // https://html.spec.whatwg.org/#strip-and-collapse-whitespace
+                                jQuery.trim(jQuery.text(elem)).replace(rspaces, ' ');
+                        }
+                    },
+                    select: {
+                        get: function (elem) {
+                            var value, option, options = elem.options, index = elem.selectedIndex,
+                                one = elem.type === 'select-one' || index < 0, values = one ? null : [],
+                                max = one ? index + 1 : options.length, i = index < 0 ? max : one ? index : 0;
+                            // Loop through all the selected options
+                            for (; i < max; i++) {
+                                option = options[i];
+                                // oldIE doesn't update selected after form reset (#2551)
+                                if ((option.selected || i === index) && (support.optDisabled ? !option.disabled : option.getAttribute('disabled') === null) && (!option.parentNode.disabled || !jQuery.nodeName(option.parentNode, 'optgroup'))) {
+                                    // Get the specific value for the option
+                                    value = jQuery(option).val();
+                                    // We don't need an array for one selects
+                                    if (one) {
+                                        return value;
+                                    }
+                                    // Multi-Selects return an array
+                                    values.push(value);
+                                }
+                            }
+                            return values;
+                        },
+                        set: function (
+                            elem,
+                            value
+                        ) {
+                            var optionSet, option, options = elem.options, values = jQuery.makeArray(value),
+                                i = options.length;
+                            while (i--) {
+                                option = options[i];
+                                if (jQuery.inArray(jQuery.valHooks.option.get(option), values) > -1) {
+                                    // Support: IE6
+                                    // When new option element is added to select box we need to
+                                    // force reflow of newly added node in order to workaround delay
+                                    // of initialization properties
+                                    try {
+                                        option.selected = optionSet = true;
+                                    } catch (_) {
+                                        option.scrollHeight;
+                                    }
+                                } else {
+                                    option.selected = false;
+                                }
+                            }
+                            // Force browsers to behave consistently when non-matching value is set
+                            if (!optionSet) {
+                                elem.selectedIndex = -1;
+                            }
+                            return options;
+                        }
+                    }
+                }
+            });
+            // Radios and checkboxes getter/setter
+            jQuery.each([
+                'radio',
+                'checkbox'
+            ], function () {
+                jQuery.valHooks[this] = {
+                    set: function (
+                        elem,
+                        value
+                    ) {
+                        if (jQuery.isArray(value)) {
+                            return elem.checked = jQuery.inArray(jQuery(elem).val(), value) > -1;
+                        }
+                    }
+                };
+                if (!support.checkOn) {
+                    jQuery.valHooks[this].get = function (elem) {
+                        return elem.getAttribute('value') === null ? 'on' : elem.value;
+                    };
+                }
+            });
+        }(jquery_core, jquery_attributes_support);
+        jquery_core_access = function (jQuery) {
+            // Multifunctional method to get and set values of a collection
+            // The value/s can optionally be executed if it's a function
+            var access = function (
+                elems,
+                fn,
+                key,
+                value,
+                chainable,
+                emptyGet,
+                raw
+            ) {
+                var i = 0, length = elems.length, bulk = key == null;
+                // Sets many values
+                if (jQuery.type(key) === 'object') {
+                    chainable = true;
+                    for (i in key) {
+                        access(elems, fn, i, key[i], true, emptyGet, raw);
+                    }  // Sets one value
+                } else if (value !== undefined) {
+                    chainable = true;
+                    if (!jQuery.isFunction(value)) {
+                        raw = true;
+                    }
+                    if (bulk) {
+                        // Bulk operations run against the entire set
+                        if (raw) {
+                            fn.call(elems, value);
+                            fn = null;  // ...except when executing function values
+                        } else {
+                            bulk = fn;
+                            fn = function (
+                                elem,
+                                key,
+                                value
+                            ) {
+                                return bulk.call(jQuery(elem), value);
+                            };
+                        }
+                    }
+                    if (fn) {
+                        for (; i < length; i++) {
+                            fn(elems[i], key, raw ? value : value.call(elems[i], i, fn(elems[i], key)));
+                        }
+                    }
+                }
+                return chainable ? elems : // Gets
+                    bulk ? fn.call(elems) : length ? fn(elems[0], key) : emptyGet;
+            };
+            return access;
+        }(jquery_core);
+        jquery_attributes_attr = function (
+            jQuery,
+            access,
+            support,
+            rnotwhite
+        ) {
+            var nodeHook, boolHook, attrHandle = jQuery.expr.attrHandle, ruseDefault = /^(?:checked|selected)$/i,
+                getSetAttribute = support.getSetAttribute, getSetInput = support.input;
+            jQuery.fn.extend({
+                attr: function (
+                    name,
+                    value
+                ) {
+                    return access(this, jQuery.attr, name, value, arguments.length > 1);
+                },
+                removeAttr: function (name) {
+                    return this.each(function () {
+                        jQuery.removeAttr(this, name);
+                    });
+                }
+            });
+            jQuery.extend({
+                attr: function (
+                    elem,
+                    name,
+                    value
+                ) {
+                    var ret, hooks, nType = elem.nodeType;
+                    // Don't get/set attributes on text, comment and attribute nodes
+                    if (nType === 3 || nType === 8 || nType === 2) {
+                        return;
+                    }
+                    // Fallback to prop when attributes are not supported
+                    if (typeof elem.getAttribute === 'undefined') {
+                        return jQuery.prop(elem, name, value);
+                    }
+                    // All attributes are lowercase
+                    // Grab necessary hook if one is defined
+                    if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
+                        name = name.toLowerCase();
+                        hooks = jQuery.attrHooks[name] || (jQuery.expr.match.bool.test(name) ? boolHook : nodeHook);
+                    }
+                    if (value !== undefined) {
+                        if (value === null) {
+                            jQuery.removeAttr(elem, name);
+                            return;
+                        }
+                        if (hooks && 'set' in hooks && (ret = hooks.set(elem, value, name)) !== undefined) {
+                            return ret;
+                        }
+                        elem.setAttribute(name, value + '');
+                        return value;
+                    }
+                    if (hooks && 'get' in hooks && (ret = hooks.get(elem, name)) !== null) {
+                        return ret;
+                    }
+                    ret = jQuery.find.attr(elem, name);
+                    // Non-existent attributes return null, we normalize to undefined
+                    return ret == null ? undefined : ret;
+                },
+                attrHooks: {
+                    type: {
+                        set: function (
+                            elem,
+                            value
+                        ) {
+                            if (!support.radioValue && value === 'radio' && jQuery.nodeName(elem, 'input')) {
+                                // Setting the type on a radio button after the value resets the value in IE8-9
+                                // Reset value to default in case type is set after value during creation
+                                var val = elem.value;
+                                elem.setAttribute('type', value);
+                                if (val) {
+                                    elem.value = val;
+                                }
+                                return value;
+                            }
+                        }
+                    }
+                },
+                removeAttr: function (
+                    elem,
+                    value
+                ) {
+                    var name, propName, i = 0, attrNames = value && value.match(rnotwhite);
+                    if (attrNames && elem.nodeType === 1) {
+                        while (name = attrNames[i++]) {
+                            propName = jQuery.propFix[name] || name;
+                            // Boolean attributes get special treatment (#10870)
+                            if (jQuery.expr.match.bool.test(name)) {
+                                // Set corresponding property to false
+                                if (getSetInput && getSetAttribute || !ruseDefault.test(name)) {
+                                    elem[propName] = false;  // Support: IE<9
+                                                             // Also clear defaultChecked/defaultSelected (if
+                                                             // appropriate)
+                                } else {
+                                    elem[jQuery.camelCase('default-' + name)] = elem[propName] = false;
+                                }  // See #9699 for explanation of this approach (setting first, then removal)
+                            } else {
+                                jQuery.attr(elem, name, '');
+                            }
+                            elem.removeAttribute(getSetAttribute ? name : propName);
+                        }
+                    }
+                }
+            });
+            // Hooks for boolean attributes
+            boolHook = {
+                set: function (
+                    elem,
+                    value,
+                    name
+                ) {
+                    if (value === false) {
+                        // Remove boolean attributes when set to false
+                        jQuery.removeAttr(elem, name);
+                    } else if (getSetInput && getSetAttribute || !ruseDefault.test(name)) {
+                        // IE<8 needs the *property* name
+                        elem.setAttribute(!getSetAttribute && jQuery.propFix[name] || name, name);
+                    } else {
+                        // Support: IE<9
+                        // Use defaultChecked and defaultSelected for oldIE
+                        elem[jQuery.camelCase('default-' + name)] = elem[name] = true;
+                    }
+                    return name;
+                }
+            };
+            jQuery.each(jQuery.expr.match.bool.source.match(/\w+/g), function (
+                i,
+                name
+            ) {
+                var getter = attrHandle[name] || jQuery.find.attr;
+                if (getSetInput && getSetAttribute || !ruseDefault.test(name)) {
+                    attrHandle[name] = function (
+                        elem,
+                        name,
+                        isXML
+                    ) {
+                        var ret, handle;
+                        if (!isXML) {
+                            // Avoid an infinite loop by temporarily removing this function from the getter
+                            handle = attrHandle[name];
+                            attrHandle[name] = ret;
+                            ret = getter(elem, name, isXML) != null ? name.toLowerCase() : null;
+                            attrHandle[name] = handle;
+                        }
+                        return ret;
+                    };
+                } else {
+                    attrHandle[name] = function (
+                        elem,
+                        name,
+                        isXML
+                    ) {
+                        if (!isXML) {
+                            return elem[jQuery.camelCase('default-' + name)] ? name.toLowerCase() : null;
+                        }
+                    };
+                }
+            });
+            // fix oldIE attroperties
+            if (!getSetInput || !getSetAttribute) {
+                jQuery.attrHooks.value = {
+                    set: function (
+                        elem,
+                        value,
+                        name
+                    ) {
+                        if (jQuery.nodeName(elem, 'input')) {
+                            // Does not return so that setAttribute is also used
+                            elem.defaultValue = value;
+                        } else {
+                            // Use nodeHook if defined (#1954); otherwise setAttribute is fine
+                            return nodeHook && nodeHook.set(elem, value, name);
+                        }
+                    }
+                };
+            }
+            // IE6/7 do not support getting/setting some attributes with get/setAttribute
+            if (!getSetAttribute) {
+                // Use this for any attribute in IE6/7
+                // This fixes almost every IE6/7 issue
+                nodeHook = {
+                    set: function (
+                        elem,
+                        value,
+                        name
+                    ) {
+                        // Set the existing or create a new attribute node
+                        var ret = elem.getAttributeNode(name);
+                        if (!ret) {
+                            elem.setAttributeNode(ret = elem.ownerDocument.createAttribute(name));
+                        }
+                        ret.value = value += '';
+                        // Break association with cloned elements by also using setAttribute (#9646)
+                        if (name === 'value' || value === elem.getAttribute(name)) {
+                            return value;
+                        }
+                    }
+                };
+                // Some attributes are constructed with empty-string values when not defined
+                attrHandle.id = attrHandle.name = attrHandle.coords = function (
+                    elem,
+                    name,
+                    isXML
+                ) {
+                    var ret;
+                    if (!isXML) {
+                        return (ret = elem.getAttributeNode(name)) && ret.value !== '' ? ret.value : null;
+                    }
+                };
+                // Fixing value retrieval on a button requires this module
+                jQuery.valHooks.button = {
+                    get: function (
+                        elem,
+                        name
+                    ) {
+                        var ret = elem.getAttributeNode(name);
+                        if (ret && ret.specified) {
+                            return ret.value;
+                        }
+                    },
+                    set: nodeHook.set
+                };
+                // Set contenteditable to false on removals(#10429)
+                // Setting to empty string throws an error as an invalid value
+                jQuery.attrHooks.contenteditable = {
+                    set: function (
+                        elem,
+                        value,
+                        name
+                    ) {
+                        nodeHook.set(elem, value === '' ? false : value, name);
+                    }
+                };
+                // Set width and height to auto instead of 0 on empty string( Bug #8150 )
+                // This is for removals
+                jQuery.each([
+                    'width',
+                    'height'
+                ], function (
+                    i,
+                    name
+                ) {
+                    jQuery.attrHooks[name] = {
+                        set: function (
+                            elem,
+                            value
+                        ) {
+                            if (value === '') {
+                                elem.setAttribute(name, 'auto');
+                                return value;
+                            }
+                        }
+                    };
+                });
+            }
+            if (!support.style) {
+                jQuery.attrHooks.style = {
+                    get: function (elem) {
+                        // Return undefined in the case of empty string
+                        // Note: IE uppercases css property names, but if we were to .toLowerCase()
+                        // .cssText, that would destroy case sensitivity in URL's, like in "background"
+                        return elem.style.cssText || undefined;
+                    },
+                    set: function (
+                        elem,
+                        value
+                    ) {
+                        return elem.style.cssText = value + '';
+                    }
+                };
+            }
+        }(jquery_core, jquery_core_access, jquery_attributes_support, jquery_var_rnotwhite);
+        jquery_attributes_prop = function (
+            jQuery,
+            access,
+            support
+        ) {
+            var rfocusable = /^(?:input|select|textarea|button|object)$/i, rclickable = /^(?:a|area)$/i;
+            jQuery.fn.extend({
+                prop: function (
+                    name,
+                    value
+                ) {
+                    return access(this, jQuery.prop, name, value, arguments.length > 1);
+                },
+                removeProp: function (name) {
+                    name = jQuery.propFix[name] || name;
+                    return this.each(function () {
+                        // try/catch handles cases where IE balks (such as removing a property on window)
+                        try {
+                            this[name] = undefined;
+                            delete this[name];
+                        } catch (e) {
+                        }
+                    });
+                }
+            });
+            jQuery.extend({
+                prop: function (
+                    elem,
+                    name,
+                    value
+                ) {
+                    var ret, hooks, nType = elem.nodeType;
+                    // Don't get/set properties on text, comment and attribute nodes
+                    if (nType === 3 || nType === 8 || nType === 2) {
+                        return;
+                    }
+                    if (nType !== 1 || !jQuery.isXMLDoc(elem)) {
+                        // Fix name and attach hooks
+                        name = jQuery.propFix[name] || name;
+                        hooks = jQuery.propHooks[name];
+                    }
+                    if (value !== undefined) {
+                        if (hooks && 'set' in hooks && (ret = hooks.set(elem, value, name)) !== undefined) {
+                            return ret;
+                        }
+                        return elem[name] = value;
+                    }
+                    if (hooks && 'get' in hooks && (ret = hooks.get(elem, name)) !== null) {
+                        return ret;
+                    }
+                    return elem[name];
+                },
+                propHooks: {
+                    tabIndex: {
+                        get: function (elem) {
+                            // elem.tabIndex doesn't always return the
+                            // correct value when it hasn't been explicitly set
+                            // http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
+                            // Use proper attribute retrieval(#12072)
+                            var tabindex = jQuery.find.attr(elem, 'tabindex');
+                            return tabindex ? parseInt(tabindex, 10) : rfocusable.test(elem.nodeName) || rclickable.test(elem.nodeName) && elem.href ? 0 : -1;
+                        }
+                    }
+                },
+                propFix: {
+                    'for': 'htmlFor',
+                    'class': 'className'
+                }
+            });
+            // Some attributes require a special call on IE
+            // http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
+            if (!support.hrefNormalized) {
+                // href/src property should get the full normalized URL (#10299/#12915)
+                jQuery.each([
+                    'href',
+                    'src'
+                ], function (
+                    i,
+                    name
+                ) {
+                    jQuery.propHooks[name] = {
+                        get: function (elem) {
+                            return elem.getAttribute(name, 4);
+                        }
+                    };
+                });
+            }
+            // Support: Safari, IE9+
+            // Accessing the selectedIndex property
+            // forces the browser to respect setting selected
+            // on the option
+            // The getter ensures a default option is selected
+            // when in an optgroup
+            if (!support.optSelected) {
+                jQuery.propHooks.selected = {
+                    get: function (elem) {
+                        var parent = elem.parentNode;
+                        if (parent) {
+                            parent.selectedIndex;
+                            // Make sure that it also works with optgroups, see #5701
+                            if (parent.parentNode) {
+                                parent.parentNode.selectedIndex;
+                            }
+                        }
+                        return null;
+                    },
+                    set: function (elem) {
+                        var parent = elem.parentNode;
+                        if (parent) {
+                            parent.selectedIndex;
+                            if (parent.parentNode) {
+                                parent.parentNode.selectedIndex;
+                            }
+                        }
+                    }
+                };
+            }
+            jQuery.each([
+                'tabIndex',
+                'readOnly',
+                'maxLength',
+                'cellSpacing',
+                'cellPadding',
+                'rowSpan',
+                'colSpan',
+                'useMap',
+                'frameBorder',
+                'contentEditable'
+            ], function () {
+                jQuery.propFix[this.toLowerCase()] = this;
+            });
+            // IE6/7 call enctype encoding
+            if (!support.enctype) {
+                jQuery.propFix.enctype = 'encoding';
+            }
+        }(jquery_core, jquery_core_access, jquery_attributes_support);
+        jquery_attributes_classes = function (
+            jQuery,
+            rnotwhite
+        ) {
+            var rclass = /[\t\r\n\f]/g;
+
+            function getClass(elem) {
+                return jQuery.attr(elem, 'class') || '';
+            }
+
+            jQuery.fn.extend({
+                addClass: function (value) {
+                    var classes, elem, cur, curValue, clazz, j, finalValue, i = 0;
+                    if (jQuery.isFunction(value)) {
+                        return this.each(function (j) {
+                            jQuery(this).addClass(value.call(this, j, getClass(this)));
+                        });
+                    }
+                    if (typeof value === 'string' && value) {
+                        classes = value.match(rnotwhite) || [];
+                        while (elem = this[i++]) {
+                            curValue = getClass(elem);
+                            cur = elem.nodeType === 1 && (' ' + curValue + ' ').replace(rclass, ' ');
+                            if (cur) {
+                                j = 0;
+                                while (clazz = classes[j++]) {
+                                    if (cur.indexOf(' ' + clazz + ' ') < 0) {
+                                        cur += clazz + ' ';
+                                    }
+                                }
+                                // only assign if different to avoid unneeded rendering.
+                                finalValue = jQuery.trim(cur);
+                                if (curValue !== finalValue) {
+                                    jQuery.attr(elem, 'class', finalValue);
+                                }
+                            }
+                        }
+                    }
+                    return this;
+                },
+                removeClass: function (value) {
+                    var classes, elem, cur, curValue, clazz, j, finalValue, i = 0;
+                    if (jQuery.isFunction(value)) {
+                        return this.each(function (j) {
+                            jQuery(this).removeClass(value.call(this, j, getClass(this)));
+                        });
+                    }
+                    if (!arguments.length) {
+                        return this.attr('class', '');
+                    }
+                    if (typeof value === 'string' && value) {
+                        classes = value.match(rnotwhite) || [];
+                        while (elem = this[i++]) {
+                            curValue = getClass(elem);
+                            // This expression is here for better compressibility (see addClass)
+                            cur = elem.nodeType === 1 && (' ' + curValue + ' ').replace(rclass, ' ');
+                            if (cur) {
+                                j = 0;
+                                while (clazz = classes[j++]) {
+                                    // Remove *all* instances
+                                    while (cur.indexOf(' ' + clazz + ' ') > -1) {
+                                        cur = cur.replace(' ' + clazz + ' ', ' ');
+                                    }
+                                }
+                                // Only assign if different to avoid unneeded rendering.
+                                finalValue = jQuery.trim(cur);
+                                if (curValue !== finalValue) {
+                                    jQuery.attr(elem, 'class', finalValue);
+                                }
+                            }
+                        }
+                    }
+                    return this;
+                },
+                toggleClass: function (
+                    value,
+                    stateVal
+                ) {
+                    var type = typeof value;
+                    if (typeof stateVal === 'boolean' && type === 'string') {
+                        return stateVal ? this.addClass(value) : this.removeClass(value);
+                    }
+                    if (jQuery.isFunction(value)) {
+                        return this.each(function (i) {
+                            jQuery(this).toggleClass(value.call(this, i, getClass(this), stateVal), stateVal);
+                        });
+                    }
+                    return this.each(function () {
+                        var className, i, self, classNames;
+                        if (type === 'string') {
+                            // Toggle individual class names
+                            i = 0;
+                            self = jQuery(this);
+                            classNames = value.match(rnotwhite) || [];
+                            while (className = classNames[i++]) {
+                                // Check each className given, space separated list
+                                if (self.hasClass(className)) {
+                                    self.removeClass(className);
+                                } else {
+                                    self.addClass(className);
+                                }
+                            }  // Toggle whole class name
+                        } else if (value === undefined || type === 'boolean') {
+                            className = getClass(this);
+                            if (className) {
+                                // store className if set
+                                jQuery._data(this, '__className__', className);
+                            }
+                            // If the element has a class name or if we're passed "false",
+                            // then remove the whole classname (if there was one, the above saved it).
+                            // Otherwise bring back whatever was previously saved (if anything),
+                            // falling back to the empty string if nothing was stored.
+                            jQuery.attr(this, 'class', className || value === false ? '' : jQuery._data(this, '__className__') || '');
+                        }
+                    });
+                },
+                hasClass: function (selector) {
+                    var className, elem, i = 0;
+                    className = ' ' + selector + ' ';
+                    while (elem = this[i++]) {
+                        if (elem.nodeType === 1 && (' ' + getClass(elem) + ' ').replace(rclass, ' ').indexOf(className) > -1) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
+        }(jquery_core, jquery_var_rnotwhite);
+        jquery_attributes = function (jQuery) {
+            // Return jQuery for attributes-only inclusion
+            return jQuery;
+        }(jquery_core);
+        jquery_var_pnum = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source;
+        jquery_css_var_rmargin = /^margin/;
+        jquery_var_rcssNum = function (pnum) {
+            return new RegExp('^(?:([+-])=|)(' + pnum + ')([a-z%]*)$', 'i');
+        }(jquery_var_pnum);
+        jquery_css_var_rnumnonpx = function (pnum) {
+            return new RegExp('^(' + pnum + ')(?!px)[a-z%]+$', 'i');
+        }(jquery_var_pnum);
+        jquery_css_var_cssExpand = [
+            'Top',
+            'Right',
+            'Bottom',
+            'Left'
+        ];
+        jquery_css_var_isHidden = function (jQuery) {
+            return function (
+                elem,
+                el
+            ) {
+                // isHidden might be called from jQuery#filter function;
+                // in that case, element will be second argument
+                elem = el || elem;
+                return jQuery.css(elem, 'display') === 'none' || !jQuery.contains(elem.ownerDocument, elem);
+            };
+        }(jquery_core);
+        jquery_css_var_swap = function (
+            elem,
+            options,
+            callback,
+            args
+        ) {
+            var ret, name, old = {};
+            // Remember the old values, and insert the new ones
+            for (name in options) {
+                old[name] = elem.style[name];
+                elem.style[name] = options[name];
+            }
+            ret = callback.apply(elem, args || []);
+            // Revert the old values
+            for (name in options) {
+                elem.style[name] = old[name];
+            }
+            return ret;
+        };
+        jquery_var_documentElement = function (document) {
+            return document.documentElement;
+        }(jquery_var_document);
+        jquery_css_support = function (
+            jQuery,
+            document,
+            documentElement,
+            support
+        ) {
+            (function () {
+                var pixelPositionVal, pixelMarginRightVal, boxSizingReliableVal, reliableHiddenOffsetsVal,
+                    reliableMarginRightVal, reliableMarginLeftVal, container = document.createElement('div'),
+                    div = document.createElement('div');
+                // Finish early in limited (non-browser) environments
+                if (!div.style) {
+                    return;
+                }
+                div.style.cssText = 'float:left;opacity:.5';
+                // Support: IE<9
+                // Make sure that element opacity exists (as opposed to filter)
+                support.opacity = div.style.opacity === '0.5';
+                // Verify style float existence
+                // (IE uses styleFloat instead of cssFloat)
+                support.cssFloat = !!div.style.cssFloat;
+                div.style.backgroundClip = 'content-box';
+                div.cloneNode(true).style.backgroundClip = '';
+                support.clearCloneStyle = div.style.backgroundClip === 'content-box';
+                container = document.createElement('div');
+                container.style.cssText = 'border:0;width:8px;height:0;top:0;left:-9999px;' + 'padding:0;margin-top:1px;position:absolute';
+                div.innerHTML = '';
+                container.appendChild(div);
+                // Support: Firefox<29, Android 2.3
+                // Vendor-prefix box-sizing
+                support.boxSizing = div.style.boxSizing === '' || div.style.MozBoxSizing === '' || div.style.WebkitBoxSizing === '';
+                jQuery.extend(support, {
+                    reliableHiddenOffsets: function () {
+                        if (pixelPositionVal == null) {
+                            computeStyleTests();
+                        }
+                        return reliableHiddenOffsetsVal;
+                    },
+                    boxSizingReliable: function () {
+                        // We're checking for pixelPositionVal here instead of boxSizingReliableVal
+                        // since that compresses better and they're computed together anyway.
+                        if (pixelPositionVal == null) {
+                            computeStyleTests();
+                        }
+                        return boxSizingReliableVal;
+                    },
+                    pixelMarginRight: function () {
+                        // Support: Android 4.0-4.3
+                        if (pixelPositionVal == null) {
+                            computeStyleTests();
+                        }
+                        return pixelMarginRightVal;
+                    },
+                    pixelPosition: function () {
+                        if (pixelPositionVal == null) {
+                            computeStyleTests();
+                        }
+                        return pixelPositionVal;
+                    },
+                    reliableMarginRight: function () {
+                        // Support: Android 2.3
+                        if (pixelPositionVal == null) {
+                            computeStyleTests();
+                        }
+                        return reliableMarginRightVal;
+                    },
+                    reliableMarginLeft: function () {
+                        // Support: IE <=8 only, Android 4.0 - 4.3 only, Firefox <=3 - 37
+                        if (pixelPositionVal == null) {
+                            computeStyleTests();
+                        }
+                        return reliableMarginLeftVal;
+                    }
+                });
+
+                function computeStyleTests() {
+                    var contents, divStyle, documentElement = document.documentElement;
+                    // Setup
+                    documentElement.appendChild(container);
+                    div.style.cssText = // Support: Android 2.3
+                        // Vendor-prefix box-sizing
+                        '-webkit-box-sizing:border-box;box-sizing:border-box;' + 'position:relative;display:block;' + 'margin:auto;border:1px;padding:1px;' + 'top:1%;width:50%';
+                    // Support: IE<9
+                    // Assume reasonable values in the absence of getComputedStyle
+                    pixelPositionVal = boxSizingReliableVal = reliableMarginLeftVal = false;
+                    pixelMarginRightVal = reliableMarginRightVal = true;
+                    // Check for getComputedStyle so that this code is not run in IE<9.
+                    if (window.getComputedStyle) {
+                        divStyle = window.getComputedStyle(div);
+                        pixelPositionVal = (divStyle || {}).top !== '1%';
+                        reliableMarginLeftVal = (divStyle || {}).marginLeft === '2px';
+                        boxSizingReliableVal = (divStyle || {width: '4px'}).width === '4px';
+                        // Support: Android 4.0 - 4.3 only
+                        // Some styles come back with percentage values, even though they shouldn't
+                        div.style.marginRight = '50%';
+                        pixelMarginRightVal = (divStyle || {marginRight: '4px'}).marginRight === '4px';
+                        // Support: Android 2.3 only
+                        // Div with explicit width and no margin-right incorrectly
+                        // gets computed margin-right based on width of container (#3333)
+                        // WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+                        contents = div.appendChild(document.createElement('div'));
+                        // Reset CSS: box-sizing; display; margin; border; padding
+                        contents.style.cssText = div.style.cssText = // Support: Android 2.3
+                            // Vendor-prefix box-sizing
+                            '-webkit-box-sizing:content-box;-moz-box-sizing:content-box;' + 'box-sizing:content-box;display:block;margin:0;border:0;padding:0';
+                        contents.style.marginRight = contents.style.width = '0';
+                        div.style.width = '1px';
+                        reliableMarginRightVal = !parseFloat((window.getComputedStyle(contents) || {}).marginRight);
+                        div.removeChild(contents);
+                    }
+                    // Support: IE6-8
+                    // First check that getClientRects works as expected
+                    // Check if table cells still have offsetWidth/Height when they are set
+                    // to display:none and there are still other visible table cells in a
+                    // table row; if so, offsetWidth/Height are not reliable for use when
+                    // determining if an element has been hidden directly using
+                    // display:none (it is still safe to use offsets if a parent element is
+                    // hidden; don safety goggles and see bug #4512 for more information).
+                    div.style.display = 'none';
+                    reliableHiddenOffsetsVal = div.getClientRects().length === 0;
+                    if (reliableHiddenOffsetsVal) {
+                        div.style.display = '';
+                        div.innerHTML = '<table><tr><td></td><td>t</td></tr></table>';
+                        div.childNodes[0].style.borderCollapse = 'separate';
+                        contents = div.getElementsByTagName('td');
+                        contents[0].style.cssText = 'margin:0;border:0;padding:0;display:none';
+                        reliableHiddenOffsetsVal = contents[0].offsetHeight === 0;
+                        if (reliableHiddenOffsetsVal) {
+                            contents[0].style.display = '';
+                            contents[1].style.display = 'none';
+                            reliableHiddenOffsetsVal = contents[0].offsetHeight === 0;
+                        }
+                    }
+                    // Teardown
+                    documentElement.removeChild(container);
+                }
+            }());
+            return support;
+        }(jquery_core, jquery_var_document, jquery_var_documentElement, jquery_var_support);
+        jquery_css_curCSS = function (
+            exports,
+            jQuery,
+            documentElement,
+            rnumnonpx,
+            rmargin,
+            support
+        ) {
+            var getStyles, curCSS, rposition = /^(top|right|bottom|left)$/;
+            if (window.getComputedStyle) {
+                getStyles = function (elem) {
+                    // Support: IE<=11+, Firefox<=30+ (#15098, #14150)
+                    // IE throws on elements created in popups
+                    // FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
+                    var view = elem.ownerDocument.defaultView;
+                    if (!view || !view.opener) {
+                        view = window;
+                    }
+                    return view.getComputedStyle(elem);
+                };
+                curCSS = function (
+                    elem,
+                    name,
+                    computed
+                ) {
+                    var width, minWidth, maxWidth, ret, style = elem.style;
+                    computed = computed || getStyles(elem);
+                    // getPropertyValue is only needed for .css('filter') in IE9, see #12537
+                    ret = computed ? computed.getPropertyValue(name) || computed[name] : undefined;
+                    // Support: Opera 12.1x only
+                    // Fall back to style even without computed
+                    // computed is undefined for elems on document fragments
+                    if ((ret === '' || ret === undefined) && !jQuery.contains(elem.ownerDocument, elem)) {
+                        ret = jQuery.style(elem, name);
+                    }
+                    if (computed) {
+                        // A tribute to the "awesome hack by Dean Edwards"
+                        // Chrome < 17 and Safari 5.0 uses "computed value"
+                        // instead of "used value" for margin-right
+                        // Safari 5.1.7 (at least) returns percentage for a larger set of values,
+                        // but width seems to be reliably pixels
+                        // this is against the CSSOM draft spec:
+                        // http://dev.w3.org/csswg/cssom/#resolved-values
+                        if (!support.pixelMarginRight() && rnumnonpx.test(ret) && rmargin.test(name)) {
+                            // Remember the original values
+                            width = style.width;
+                            minWidth = style.minWidth;
+                            maxWidth = style.maxWidth;
+                            // Put in the new values to get a computed value out
+                            style.minWidth = style.maxWidth = style.width = ret;
+                            ret = computed.width;
+                            // Revert the changed values
+                            style.width = width;
+                            style.minWidth = minWidth;
+                            style.maxWidth = maxWidth;
+                        }
+                    }
+                    // Support: IE
+                    // IE returns zIndex value as an integer.
+                    return ret === undefined ? ret : ret + '';
+                };
+            } else if (documentElement.currentStyle) {
+                getStyles = function (elem) {
+                    return elem.currentStyle;
+                };
+                curCSS = function (
+                    elem,
+                    name,
+                    computed
+                ) {
+                    var left, rs, rsLeft, ret, style = elem.style;
+                    computed = computed || getStyles(elem);
+                    ret = computed ? computed[name] : undefined;
+                    // Avoid setting ret to empty string here
+                    // so we don't default to auto
+                    if (ret == null && style && style[name]) {
+                        ret = style[name];
+                    }
+                    // From the awesome hack by Dean Edwards
+                    // http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
+                    // If we're not dealing with a regular pixel number
+                    // but a number that has a weird ending, we need to convert it to pixels
+                    // but not position css attributes, as those are
+                    // proportional to the parent element instead
+                    // and we can't measure the parent instead because it
+                    // might trigger a "stacking dolls" problem
+                    if (rnumnonpx.test(ret) && !rposition.test(name)) {
+                        // Remember the original values
+                        left = style.left;
+                        rs = elem.runtimeStyle;
+                        rsLeft = rs && rs.left;
+                        // Put in the new values to get a computed value out
+                        if (rsLeft) {
+                            rs.left = elem.currentStyle.left;
+                        }
+                        style.left = name === 'fontSize' ? '1em' : ret;
+                        ret = style.pixelLeft + 'px';
+                        // Revert the changed values
+                        style.left = left;
+                        if (rsLeft) {
+                            rs.left = rsLeft;
+                        }
+                    }
+                    // Support: IE
+                    // IE returns zIndex value as an integer.
+                    return ret === undefined ? ret : ret + '' || 'auto';
+                };
+            }
+            exports.getStyles = getStyles;
+            exports.curCSS = curCSS;
+            return exports;
+        }(jquery_css_curCSS, jquery_core, jquery_var_documentElement, jquery_css_var_rnumnonpx, jquery_css_var_rmargin, jquery_css_support);
+        jquery_css_adjustCSS = function (
+            jQuery,
+            rcssNum
+        ) {
+            function adjustCSS(
+                elem,
+                prop,
+                valueParts,
+                tween
+            ) {
+                var adjusted, scale = 1, maxIterations = 20, currentValue = tween ? function () {
+                        return tween.cur();
+                    } : function () {
+                        return jQuery.css(elem, prop, '');
+                    }, initial = currentValue(), unit = valueParts && valueParts[3] || (jQuery.cssNumber[prop] ? '' : 'px'),
+                    // Starting value computation is required for potential unit mismatches
+                    initialInUnit = (jQuery.cssNumber[prop] || unit !== 'px' && +initial) && rcssNum.exec(jQuery.css(elem, prop));
+                if (initialInUnit && initialInUnit[3] !== unit) {
+                    // Trust units reported by jQuery.css
+                    unit = unit || initialInUnit[3];
+                    // Make sure we update the tween properties later on
+                    valueParts = valueParts || [];
+                    // Iteratively approximate from a nonzero starting point
+                    initialInUnit = +initial || 1;
+                    do {
+                        // If previous iteration zeroed out, double until we get *something*.
+                        // Use string for doubling so we don't accidentally see scale as unchanged below
+                        scale = scale || '.5';
+                        // Adjust and apply
+                        initialInUnit = initialInUnit / scale;
+                        jQuery.style(elem, prop, initialInUnit + unit);  // Update scale, tolerating zero or NaN from
+                                                                         // tween.cur() Break the loop if scale is
+                                                                         // unchanged or perfect, or if we've just had
+                                                                         // enough.
+                    } while (scale !== (scale = currentValue() / initial) && scale !== 1 && --maxIterations);
+                }
+                if (valueParts) {
+                    initialInUnit = +initialInUnit || +initial || 0;
+                    // Apply relative offset (+=/-=) if specified
+                    adjusted = valueParts[1] ? initialInUnit + (valueParts[1] + 1) * valueParts[2] : +valueParts[2];
+                    if (tween) {
+                        tween.unit = unit;
+                        tween.start = initialInUnit;
+                        tween.end = adjusted;
+                    }
+                }
+                return adjusted;
+            }
+
+            return adjustCSS;
+        }(jquery_core, jquery_var_rcssNum);
+        jquery_manipulation_var_rcheckableType = /^(?:checkbox|radio)$/i;
+        jquery_manipulation_var_rtagName = /<([\w:-]+)/;
+        jquery_manipulation_var_rscriptType = /^$|\/(?:java|ecma)script/i;
+        jquery_manipulation_var_rleadingWhitespace = /^\s+/;
+        jquery_manipulation_var_nodeNames = 'abbr|article|aside|audio|bdi|canvas|data|datalist|' + 'details|dialog|figcaption|figure|footer|header|hgroup|main|' + 'mark|meter|nav|output|picture|progress|section|summary|template|time|video';
+        jquery_manipulation_createSafeFragment = function (nodeNames) {
+            function createSafeFragment(document) {
+                var list = nodeNames.split('|'), safeFrag = document.createDocumentFragment();
+                if (safeFrag.createElement) {
+                    while (list.length) {
+                        safeFrag.createElement(list.pop());
+                    }
+                }
+                return safeFrag;
+            }
+
+            return createSafeFragment;
+        }(jquery_manipulation_var_nodeNames);
+        jquery_manipulation_support = function (
+            jQuery,
+            document,
+            support
+        ) {
+            (function () {
+                var div = document.createElement('div'), fragment = document.createDocumentFragment(),
+                    input = document.createElement('input');
+                // Setup
+                div.innerHTML = '  <link/><table></table><a href=\'/a\'>a</a><input type=\'checkbox\'/>';
+                // IE strips leading whitespace when .innerHTML is used
+                support.leadingWhitespace = div.firstChild.nodeType === 3;
+                // Make sure that tbody elements aren't automatically inserted
+                // IE will insert them into empty tables
+                support.tbody = !div.getElementsByTagName('tbody').length;
+                // Make sure that link elements get serialized correctly by innerHTML
+                // This requires a wrapper element in IE
+                support.htmlSerialize = !!div.getElementsByTagName('link').length;
+                // Makes sure cloning an html5 element does not cause problems
+                // Where outerHTML is undefined, this still works
+                support.html5Clone = document.createElement('nav').cloneNode(true).outerHTML !== '<:nav></:nav>';
+                // Check if a disconnected checkbox will retain its checked
+                // value of true after appended to the DOM (IE6/7)
+                input.type = 'checkbox';
+                input.checked = true;
+                fragment.appendChild(input);
+                support.appendChecked = input.checked;
+                // Make sure textarea (and checkbox) defaultValue is properly cloned
+                // Support: IE6-IE11+
+                div.innerHTML = '<textarea>x</textarea>';
+                support.noCloneChecked = !!div.cloneNode(true).lastChild.defaultValue;
+                // #11217 - WebKit loses check when the name is after the checked attribute
+                fragment.appendChild(div);
+                // Support: Windows Web Apps (WWA)
+                // `name` and `type` must use .setAttribute for WWA (#14901)
+                input = document.createElement('input');
+                input.setAttribute('type', 'radio');
+                input.setAttribute('checked', 'checked');
+                input.setAttribute('name', 't');
+                div.appendChild(input);
+                // Support: Safari 5.1, iOS 5.1, Android 4.x, Android 2.3
+                // old WebKit doesn't clone checked state correctly in fragments
+                support.checkClone = div.cloneNode(true).cloneNode(true).lastChild.checked;
+                // Support: IE<9
+                // Cloned elements keep attachEvent handlers, we use addEventListener on IE9+
+                support.noCloneEvent = !!div.addEventListener;
+                // Support: IE<9
+                // Since attributes and properties are the same in IE,
+                // cleanData must set properties to undefined rather than use removeAttribute
+                div[jQuery.expando] = 1;
+                support.attributes = !div.getAttribute(jQuery.expando);
+            }());
+            return support;
+        }(jquery_core, jquery_var_document, jquery_var_support);
+        jquery_manipulation_wrapMap = function (support) {
+            // We have to close these tags to support XHTML (#13200)
+            var wrapMap = {
+                option: [
+                    1,
+                    '<select multiple=\'multiple\'>',
+                    '</select>'
+                ],
+                legend: [
+                    1,
+                    '<fieldset>',
+                    '</fieldset>'
+                ],
+                area: [
+                    1,
+                    '<map>',
+                    '</map>'
+                ],
+                // Support: IE8
+                param: [
+                    1,
+                    '<object>',
+                    '</object>'
+                ],
+                thead: [
+                    1,
+                    '<table>',
+                    '</table>'
+                ],
+                tr: [
+                    2,
+                    '<table><tbody>',
+                    '</tbody></table>'
+                ],
+                col: [
+                    2,
+                    '<table><tbody></tbody><colgroup>',
+                    '</colgroup></table>'
+                ],
+                td: [
+                    3,
+                    '<table><tbody><tr>',
+                    '</tr></tbody></table>'
+                ],
+                // IE6-8 can't serialize link, script, style, or any html5 (NoScope) tags,
+                // unless wrapped in a div with non-breaking characters in front of it.
+                _default: support.htmlSerialize ? [
+                    0,
+                    '',
+                    ''
+                ] : [
+                    1,
+                    'X<div>',
+                    '</div>'
+                ]
+            };
+            // Support: IE8-IE9
+            wrapMap.optgroup = wrapMap.option;
+            wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
+            wrapMap.th = wrapMap.td;
+            return wrapMap;
+        }(jquery_manipulation_support);
+        jquery_manipulation_getAll = function (jQuery) {
+            function getAll(
+                context,
+                tag
+            ) {
+                var elems, elem, i = 0,
+                    found = typeof context.getElementsByTagName !== 'undefined' ? context.getElementsByTagName(tag || '*') : typeof context.querySelectorAll !== 'undefined' ? context.querySelectorAll(tag || '*') : undefined;
+                if (!found) {
+                    for (found = [], elems = context.childNodes || context; (elem = elems[i]) != null; i++) {
+                        if (!tag || jQuery.nodeName(elem, tag)) {
+                            found.push(elem);
+                        } else {
+                            jQuery.merge(found, getAll(elem, tag));
+                        }
+                    }
+                }
+                return tag === undefined || tag && jQuery.nodeName(context, tag) ? jQuery.merge([context], found) : found;
+            }
+
+            return getAll;
+        }(jquery_core);
+        jquery_manipulation_setGlobalEval = function (jQuery) {
+            // Mark scripts as having already been evaluated
+            function setGlobalEval(
+                elems,
+                refElements
+            ) {
+                var elem, i = 0;
+                for (; (elem = elems[i]) != null; i++) {
+                    jQuery._data(elem, 'globalEval', !refElements || jQuery._data(refElements[i], 'globalEval'));
+                }
+            }
+
+            return setGlobalEval;
+        }(jquery_core);
+        jquery_manipulation_buildFragment = function (
+            jQuery,
+            rcheckableType,
+            rtagName,
+            rscriptType,
+            rleadingWhitespace,
+            createSafeFragment,
+            wrapMap,
+            getAll,
+            setGlobalEval,
+            support
+        ) {
+            var rhtml = /<|&#?\w+;/, rtbody = /<tbody/i;
+
+            function fixDefaultChecked(elem) {
+                if (rcheckableType.test(elem.type)) {
+                    elem.defaultChecked = elem.checked;
+                }
+            }
+
+            function buildFragment(
+                elems,
+                context,
+                scripts,
+                selection,
+                ignored
+            ) {
+                var j, elem, contains, tmp, tag, tbody, wrap, l = elems.length,
+                    // Ensure a safe fragment
+                    safe = createSafeFragment(context), nodes = [], i = 0;
+                for (; i < l; i++) {
+                    elem = elems[i];
+                    if (elem || elem === 0) {
+                        // Add nodes directly
+                        if (jQuery.type(elem) === 'object') {
+                            jQuery.merge(nodes, elem.nodeType ? [elem] : elem);  // Convert non-html into a text node
+                        } else if (!rhtml.test(elem)) {
+                            nodes.push(context.createTextNode(elem));  // Convert html into DOM nodes
+                        } else {
+                            tmp = tmp || safe.appendChild(context.createElement('div'));
+                            // Deserialize a standard representation
+                            tag = (rtagName.exec(elem) || [
+                                '',
+                                ''
+                            ])[1].toLowerCase();
+                            wrap = wrapMap[tag] || wrapMap._default;
+                            tmp.innerHTML = wrap[1] + jQuery.htmlPrefilter(elem) + wrap[2];
+                            // Descend through wrappers to the right content
+                            j = wrap[0];
+                            while (j--) {
+                                tmp = tmp.lastChild;
+                            }
+                            // Manually add leading whitespace removed by IE
+                            if (!support.leadingWhitespace && rleadingWhitespace.test(elem)) {
+                                nodes.push(context.createTextNode(rleadingWhitespace.exec(elem)[0]));
+                            }
+                            // Remove IE's autoinserted <tbody> from table fragments
+                            if (!support.tbody) {
+                                // String was a <table>, *may* have spurious <tbody>
+                                elem = tag === 'table' && !rtbody.test(elem) ? tmp.firstChild : // String was a bare <thead> or <tfoot>
+                                    wrap[1] === '<table>' && !rtbody.test(elem) ? tmp : 0;
+                                j = elem && elem.childNodes.length;
+                                while (j--) {
+                                    if (jQuery.nodeName(tbody = elem.childNodes[j], 'tbody') && !tbody.childNodes.length) {
+                                        elem.removeChild(tbody);
+                                    }
+                                }
+                            }
+                            jQuery.merge(nodes, tmp.childNodes);
+                            // Fix #12392 for WebKit and IE > 9
+                            tmp.textContent = '';
+                            // Fix #12392 for oldIE
+                            while (tmp.firstChild) {
+                                tmp.removeChild(tmp.firstChild);
+                            }
+                            // Remember the top-level container for proper cleanup
+                            tmp = safe.lastChild;
+                        }
+                    }
+                }
+                // Fix #11356: Clear elements from fragment
+                if (tmp) {
+                    safe.removeChild(tmp);
+                }
+                // Reset defaultChecked for any radios and checkboxes
+                // about to be appended to the DOM in IE 6/7 (#8060)
+                if (!support.appendChecked) {
+                    jQuery.grep(getAll(nodes, 'input'), fixDefaultChecked);
+                }
+                i = 0;
+                while (elem = nodes[i++]) {
+                    // Skip elements already in the context collection (trac-4087)
+                    if (selection && jQuery.inArray(elem, selection) > -1) {
+                        if (ignored) {
+                            ignored.push(elem);
+                        }
+                        continue;
+                    }
+                    contains = jQuery.contains(elem.ownerDocument, elem);
+                    // Append to fragment
+                    tmp = getAll(safe.appendChild(elem), 'script');
+                    // Preserve script evaluation history
+                    if (contains) {
+                        setGlobalEval(tmp);
+                    }
+                    // Capture executables
+                    if (scripts) {
+                        j = 0;
+                        while (elem = tmp[j++]) {
+                            if (rscriptType.test(elem.type || '')) {
+                                scripts.push(elem);
+                            }
+                        }
+                    }
+                }
+                tmp = null;
+                return safe;
+            }
+
+            return buildFragment;
+        }(jquery_core, jquery_manipulation_var_rcheckableType, jquery_manipulation_var_rtagName, jquery_manipulation_var_rscriptType, jquery_manipulation_var_rleadingWhitespace, jquery_manipulation_createSafeFragment, jquery_manipulation_wrapMap, jquery_manipulation_getAll, jquery_manipulation_setGlobalEval, jquery_manipulation_support);
+        jquery_traversing_var_dir = function (jQuery) {
+            return function (
+                elem,
+                dir,
+                until
+            ) {
+                var matched = [], truncate = until !== undefined;
+                while ((elem = elem[dir]) && elem.nodeType !== 9) {
+                    if (elem.nodeType === 1) {
+                        if (truncate && jQuery(elem).is(until)) {
+                            break;
+                        }
+                        matched.push(elem);
+                    }
+                }
+                return matched;
+            };
+        }(jquery_core);
+        jquery_traversing_var_siblings = function (
+            n,
+            elem
+        ) {
+            var matched = [];
+            for (; n; n = n.nextSibling) {
+                if (n.nodeType === 1 && n !== elem) {
+                    matched.push(n);
+                }
+            }
+            return matched;
+        };
+        jquery_traversing = function (
+            jQuery,
+            dir,
+            siblings,
+            rneedsContext
+        ) {
+            var rparentsprev = /^(?:parents|prev(?:Until|All))/,
+                // methods guaranteed to produce a unique set when starting from a unique set
+                guaranteedUnique = {
+                    children: true,
+                    contents: true,
+                    next: true,
+                    prev: true
+                };
+            jQuery.fn.extend({
+                has: function (target) {
+                    var i, targets = jQuery(target, this), len = targets.length;
+                    return this.filter(function () {
+                        for (i = 0; i < len; i++) {
+                            if (jQuery.contains(this, targets[i])) {
+                                return true;
+                            }
+                        }
+                    });
+                },
+                closest: function (
+                    selectors,
+                    context
+                ) {
+                    var cur, i = 0, l = this.length, matched = [],
+                        pos = rneedsContext.test(selectors) || typeof selectors !== 'string' ? jQuery(selectors, context || this.context) : 0;
+                    for (; i < l; i++) {
+                        for (cur = this[i]; cur && cur !== context; cur = cur.parentNode) {
+                            // Always skip document fragments
+                            if (cur.nodeType < 11 && (pos ? pos.index(cur) > -1 : // Don't pass non-elements to Sizzle
+                                    cur.nodeType === 1 && jQuery.find.matchesSelector(cur, selectors))) {
+                                matched.push(cur);
+                                break;
+                            }
+                        }
+                    }
+                    return this.pushStack(matched.length > 1 ? jQuery.uniqueSort(matched) : matched);
+                },
+                // Determine the position of an element within
+                // the matched set of elements
+                index: function (elem) {
+                    // No argument, return index in parent
+                    if (!elem) {
+                        return this[0] && this[0].parentNode ? this.first().prevAll().length : -1;
+                    }
+                    // index in selector
+                    if (typeof elem === 'string') {
+                        return jQuery.inArray(this[0], jQuery(elem));
+                    }
+                    // Locate the position of the desired element
+                    return jQuery.inArray(// If it receives a jQuery object, the first element is used
+                        elem.jquery ? elem[0] : elem, this);
+                },
+                add: function (
+                    selector,
+                    context
+                ) {
+                    return this.pushStack(jQuery.uniqueSort(jQuery.merge(this.get(), jQuery(selector, context))));
+                },
+                addBack: function (selector) {
+                    return this.add(selector == null ? this.prevObject : this.prevObject.filter(selector));
+                }
+            });
+
+            function sibling(
+                cur,
+                dir
+            ) {
+                do {
+                    cur = cur[dir];
+                } while (cur && cur.nodeType !== 1);
+                return cur;
+            }
+
+            jQuery.each({
+                parent: function (elem) {
+                    var parent = elem.parentNode;
+                    return parent && parent.nodeType !== 11 ? parent : null;
+                },
+                parents: function (elem) {
+                    return dir(elem, 'parentNode');
+                },
+                parentsUntil: function (
+                    elem,
+                    i,
+                    until
+                ) {
+                    return dir(elem, 'parentNode', until);
+                },
+                next: function (elem) {
+                    return sibling(elem, 'nextSibling');
+                },
+                prev: function (elem) {
+                    return sibling(elem, 'previousSibling');
+                },
+                nextAll: function (elem) {
+                    return dir(elem, 'nextSibling');
+                },
+                prevAll: function (elem) {
+                    return dir(elem, 'previousSibling');
+                },
+                nextUntil: function (
+                    elem,
+                    i,
+                    until
+                ) {
+                    return dir(elem, 'nextSibling', until);
+                },
+                prevUntil: function (
+                    elem,
+                    i,
+                    until
+                ) {
+                    return dir(elem, 'previousSibling', until);
+                },
+                siblings: function (elem) {
+                    return siblings((elem.parentNode || {}).firstChild, elem);
+                },
+                children: function (elem) {
+                    return siblings(elem.firstChild);
+                },
+                contents: function (elem) {
+                    return jQuery.nodeName(elem, 'iframe') ? elem.contentDocument || elem.contentWindow.document : jQuery.merge([], elem.childNodes);
+                }
+            }, function (
+                name,
+                fn
+            ) {
+                jQuery.fn[name] = function (
+                    until,
+                    selector
+                ) {
+                    var ret = jQuery.map(this, fn, until);
+                    if (name.slice(-5) !== 'Until') {
+                        selector = until;
+                    }
+                    if (selector && typeof selector === 'string') {
+                        ret = jQuery.filter(selector, ret);
+                    }
+                    if (this.length > 1) {
+                        // Remove duplicates
+                        if (!guaranteedUnique[name]) {
+                            ret = jQuery.uniqueSort(ret);
+                        }
+                        // Reverse order for parents* and prev-derivatives
+                        if (rparentsprev.test(name)) {
+                            ret = ret.reverse();
+                        }
+                    }
+                    return this.pushStack(ret);
+                };
+            });
+            return jQuery;
+        }(jquery_core, jquery_traversing_var_dir, jquery_traversing_var_siblings, jquery_traversing_var_rneedsContext);
+        jquery_event_support = function (
+            document,
+            support
+        ) {
+            (function () {
+                var i, eventName, div = document.createElement('div');
+                // Support: IE<9 (lack submit/change bubble), Firefox (lack focus(in | out) events)
+                for (i in {
+                    submit: true,
+                    change: true,
+                    focusin: true
+                }) {
+                    eventName = 'on' + i;
+                    if (!(support[i] = eventName in window)) {
+                        // Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP)
+                        div.setAttribute(eventName, 't');
+                        support[i] = div.attributes[eventName].expando === false;
+                    }
+                }
+                // Null elements to avoid leaks in IE.
+                div = null;
+            }());
+            return support;
+        }(jquery_var_document, jquery_var_support);
+        jquery_event = function (
+            jQuery,
+            document,
+            rnotwhite,
+            hasOwn,
+            slice,
+            support,
+            acceptData
+        ) {
+            var rformElems = /^(?:input|select|textarea)$/i, rkeyEvent = /^key/,
+                rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/,
+                rfocusMorph = /^(?:focusinfocus|focusoutblur)$/, rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+
+            function returnTrue() {
+                return true;
+            }
+
+            function returnFalse() {
+                return false;
+            }
+
+            // Support: IE9
+            // See #13393 for more info
+            function safeActiveElement() {
+                try {
+                    return document.activeElement;
+                } catch (err) {
+                }
+            }
+
+            function on(
+                elem,
+                types,
+                selector,
+                data,
+                fn,
+                one
+            ) {
+                var origFn, type;
+                // Types can be a map of types/handlers
+                if (typeof types === 'object') {
+                    // ( types-Object, selector, data )
+                    if (typeof selector !== 'string') {
+                        // ( types-Object, data )
+                        data = data || selector;
+                        selector = undefined;
+                    }
+                    for (type in types) {
+                        on(elem, type, selector, data, types[type], one);
+                    }
+                    return elem;
+                }
+                if (data == null && fn == null) {
+                    // ( types, fn )
+                    fn = selector;
+                    data = selector = undefined;
+                } else if (fn == null) {
+                    if (typeof selector === 'string') {
+                        // ( types, selector, fn )
+                        fn = data;
+                        data = undefined;
+                    } else {
+                        // ( types, data, fn )
+                        fn = data;
+                        data = selector;
+                        selector = undefined;
+                    }
+                }
+                if (fn === false) {
+                    fn = returnFalse;
+                } else if (!fn) {
+                    return elem;
+                }
+                if (one === 1) {
+                    origFn = fn;
+                    fn = function (event) {
+                        // Can use an empty set, since event contains the info
+                        jQuery().off(event);
+                        return origFn.apply(this, arguments);
+                    };
+                    // Use same guid so caller can remove using origFn
+                    fn.guid = origFn.guid || (origFn.guid = jQuery.guid++);
+                }
+                return elem.each(function () {
+                    jQuery.event.add(this, types, fn, data, selector);
+                });
+            }
+
+            /*
+             * Helper functions for managing events -- not part of the public interface.
+             * Props to Dean Edwards' addEvent library for many of the ideas.
+             */
+            jQuery.event = {
+                global: {},
+                add: function (
+                    elem,
+                    types,
+                    handler,
+                    data,
+                    selector
+                ) {
+                    var tmp, events, t, handleObjIn, special, eventHandle, handleObj, handlers, type, namespaces,
+                        origType, elemData = jQuery._data(elem);
+                    // Don't attach events to noData or text/comment nodes (but allow plain objects)
+                    if (!elemData) {
+                        return;
+                    }
+                    // Caller can pass in an object of custom data in lieu of the handler
+                    if (handler.handler) {
+                        handleObjIn = handler;
+                        handler = handleObjIn.handler;
+                        selector = handleObjIn.selector;
+                    }
+                    // Make sure that the handler has a unique ID, used to find/remove it later
+                    if (!handler.guid) {
+                        handler.guid = jQuery.guid++;
+                    }
+                    // Init the element's event structure and main handler, if this is the first
+                    if (!(events = elemData.events)) {
+                        events = elemData.events = {};
+                    }
+                    if (!(eventHandle = elemData.handle)) {
+                        eventHandle = elemData.handle = function (e) {
+                            // Discard the second event of a jQuery.event.trigger() and
+                            // when an event is called after a page has unloaded
+                            return typeof jQuery !== 'undefined' && (!e || jQuery.event.triggered !== e.type) ? jQuery.event.dispatch.apply(eventHandle.elem, arguments) : undefined;
+                        };
+                        // Add elem as a property of the handle fn to prevent a memory leak
+                        // with IE non-native events
+                        eventHandle.elem = elem;
+                    }
+                    // Handle multiple events separated by a space
+                    types = (types || '').match(rnotwhite) || [''];
+                    t = types.length;
+                    while (t--) {
+                        tmp = rtypenamespace.exec(types[t]) || [];
+                        type = origType = tmp[1];
+                        namespaces = (tmp[2] || '').split('.').sort();
+                        // There *must* be a type, no attaching namespace-only handlers
+                        if (!type) {
+                            continue;
+                        }
+                        // If event changes its type, use the special event handlers for the changed type
+                        special = jQuery.event.special[type] || {};
+                        // If selector defined, determine special event api type, otherwise given type
+                        type = (selector ? special.delegateType : special.bindType) || type;
+                        // Update special based on newly reset type
+                        special = jQuery.event.special[type] || {};
+                        // handleObj is passed to all event handlers
+                        handleObj = jQuery.extend({
+                            type: type,
+                            origType: origType,
+                            data: data,
+                            handler: handler,
+                            guid: handler.guid,
+                            selector: selector,
+                            needsContext: selector && jQuery.expr.match.needsContext.test(selector),
+                            namespace: namespaces.join('.')
+                        }, handleObjIn);
+                        // Init the event handler queue if we're the first
+                        if (!(handlers = events[type])) {
+                            handlers = events[type] = [];
+                            handlers.delegateCount = 0;
+                            // Only use addEventListener/attachEvent if the special events handler returns false
+                            if (!special.setup || special.setup.call(elem, data, namespaces, eventHandle) === false) {
+                                // Bind the global event handler to the element
+                                if (elem.addEventListener) {
+                                    elem.addEventListener(type, eventHandle, false);
+                                } else if (elem.attachEvent) {
+                                    elem.attachEvent('on' + type, eventHandle);
+                                }
+                            }
+                        }
+                        if (special.add) {
+                            special.add.call(elem, handleObj);
+                            if (!handleObj.handler.guid) {
+                                handleObj.handler.guid = handler.guid;
+                            }
+                        }
+                        // Add to the element's handler list, delegates in front
+                        if (selector) {
+                            handlers.splice(handlers.delegateCount++, 0, handleObj);
+                        } else {
+                            handlers.push(handleObj);
+                        }
+                        // Keep track of which events have ever been used, for event optimization
+                        jQuery.event.global[type] = true;
+                    }
+                    // Nullify elem to prevent memory leaks in IE
+                    elem = null;
+                },
+                // Detach an event or set of events from an element
+                remove: function (
+                    elem,
+                    types,
+                    handler,
+                    selector,
+                    mappedTypes
+                ) {
+                    var j, handleObj, tmp, origCount, t, events, special, handlers, type, namespaces, origType,
+                        elemData = jQuery.hasData(elem) && jQuery._data(elem);
+                    if (!elemData || !(events = elemData.events)) {
+                        return;
+                    }
+                    // Once for each type.namespace in types; type may be omitted
+                    types = (types || '').match(rnotwhite) || [''];
+                    t = types.length;
+                    while (t--) {
+                        tmp = rtypenamespace.exec(types[t]) || [];
+                        type = origType = tmp[1];
+                        namespaces = (tmp[2] || '').split('.').sort();
+                        // Unbind all events (on this namespace, if provided) for the element
+                        if (!type) {
+                            for (type in events) {
+                                jQuery.event.remove(elem, type + types[t], handler, selector, true);
+                            }
+                            continue;
+                        }
+                        special = jQuery.event.special[type] || {};
+                        type = (selector ? special.delegateType : special.bindType) || type;
+                        handlers = events[type] || [];
+                        tmp = tmp[2] && new RegExp('(^|\\.)' + namespaces.join('\\.(?:.*\\.|)') + '(\\.|$)');
+                        // Remove matching events
+                        origCount = j = handlers.length;
+                        while (j--) {
+                            handleObj = handlers[j];
+                            if ((mappedTypes || origType === handleObj.origType) && (!handler || handler.guid === handleObj.guid) && (!tmp || tmp.test(handleObj.namespace)) && (!selector || selector === handleObj.selector || selector === '**' && handleObj.selector)) {
+                                handlers.splice(j, 1);
+                                if (handleObj.selector) {
+                                    handlers.delegateCount--;
+                                }
+                                if (special.remove) {
+                                    special.remove.call(elem, handleObj);
+                                }
+                            }
+                        }
+                        // Remove generic event handler if we removed something and no more handlers exist
+                        // (avoids potential for endless recursion during removal of special event handlers)
+                        if (origCount && !handlers.length) {
+                            if (!special.teardown || special.teardown.call(elem, namespaces, elemData.handle) === false) {
+                                jQuery.removeEvent(elem, type, elemData.handle);
+                            }
+                            delete events[type];
+                        }
+                    }
+                    // Remove the expando if it's no longer used
+                    if (jQuery.isEmptyObject(events)) {
+                        delete elemData.handle;
+                        // removeData also checks for emptiness and clears the expando if empty
+                        // so use it instead of delete
+                        jQuery._removeData(elem, 'events');
+                    }
+                },
+                trigger: function (
+                    event,
+                    data,
+                    elem,
+                    onlyHandlers
+                ) {
+                    var handle, ontype, cur, bubbleType, special, tmp, i, eventPath = [elem || document],
+                        type = hasOwn.call(event, 'type') ? event.type : event,
+                        namespaces = hasOwn.call(event, 'namespace') ? event.namespace.split('.') : [];
+                    cur = tmp = elem = elem || document;
+                    // Don't do events on text and comment nodes
+                    if (elem.nodeType === 3 || elem.nodeType === 8) {
+                        return;
+                    }
+                    // focus/blur morphs to focusin/out; ensure we're not firing them right now
+                    if (rfocusMorph.test(type + jQuery.event.triggered)) {
+                        return;
+                    }
+                    if (type.indexOf('.') > -1) {
+                        // Namespaced trigger; create a regexp to match event type in handle()
+                        namespaces = type.split('.');
+                        type = namespaces.shift();
+                        namespaces.sort();
+                    }
+                    ontype = type.indexOf(':') < 0 && 'on' + type;
+                    // Caller can pass in a jQuery.Event object, Object, or just an event type string
+                    event = event[jQuery.expando] ? event : new jQuery.Event(type, typeof event === 'object' && event);
+                    // Trigger bitmask: & 1 for native handlers; & 2 for jQuery (always true)
+                    event.isTrigger = onlyHandlers ? 2 : 3;
+                    event.namespace = namespaces.join('.');
+                    event.rnamespace = event.namespace ? new RegExp('(^|\\.)' + namespaces.join('\\.(?:.*\\.|)') + '(\\.|$)') : null;
+                    // Clean up the event in case it is being reused
+                    event.result = undefined;
+                    if (!event.target) {
+                        event.target = elem;
+                    }
+                    // Clone any incoming data and prepend the event, creating the handler arg list
+                    data = data == null ? [event] : jQuery.makeArray(data, [event]);
+                    // Allow special events to draw outside the lines
+                    special = jQuery.event.special[type] || {};
+                    if (!onlyHandlers && special.trigger && special.trigger.apply(elem, data) === false) {
+                        return;
+                    }
+                    // Determine event propagation path in advance, per W3C events spec (#9951)
+                    // Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
+                    if (!onlyHandlers && !special.noBubble && !jQuery.isWindow(elem)) {
+                        bubbleType = special.delegateType || type;
+                        if (!rfocusMorph.test(bubbleType + type)) {
+                            cur = cur.parentNode;
+                        }
+                        for (; cur; cur = cur.parentNode) {
+                            eventPath.push(cur);
+                            tmp = cur;
+                        }
+                        // Only add window if we got to document (e.g., not plain obj or detached DOM)
+                        if (tmp === (elem.ownerDocument || document)) {
+                            eventPath.push(tmp.defaultView || tmp.parentWindow || window);
+                        }
+                    }
+                    // Fire handlers on the event path
+                    i = 0;
+                    while ((cur = eventPath[i++]) && !event.isPropagationStopped()) {
+                        event.type = i > 1 ? bubbleType : special.bindType || type;
+                        // jQuery handler
+                        handle = (jQuery._data(cur, 'events') || {})[event.type] && jQuery._data(cur, 'handle');
+                        if (handle) {
+                            handle.apply(cur, data);
+                        }
+                        // Native handler
+                        handle = ontype && cur[ontype];
+                        if (handle && handle.apply && acceptData(cur)) {
+                            event.result = handle.apply(cur, data);
+                            if (event.result === false) {
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                    event.type = type;
+                    // If nobody prevented the default action, do it now
+                    if (!onlyHandlers && !event.isDefaultPrevented()) {
+                        if ((!special._default || special._default.apply(eventPath.pop(), data) === false) && acceptData(elem)) {
+                            // Call a native DOM method on the target with the same name name as the event.
+                            // Can't use an .isFunction() check here because IE6/7 fails that test.
+                            // Don't do default actions on window, that's where global variables be (#6170)
+                            if (ontype && elem[type] && !jQuery.isWindow(elem)) {
+                                // Don't re-trigger an onFOO event when we call its FOO() method
+                                tmp = elem[ontype];
+                                if (tmp) {
+                                    elem[ontype] = null;
+                                }
+                                // Prevent re-triggering of the same event, since we already bubbled it above
+                                jQuery.event.triggered = type;
+                                try {
+                                    elem[type]();
+                                } catch (e) {
+                                }
+                                jQuery.event.triggered = undefined;
+                                if (tmp) {
+                                    elem[ontype] = tmp;
+                                }
+                            }
+                        }
+                    }
+                    return event.result;
+                },
+                dispatch: function (event) {
+                    // Make a writable jQuery.Event from the native event object
+                    event = jQuery.event.fix(event);
+                    var i, j, ret, matched, handleObj, handlerQueue = [], args = slice.call(arguments),
+                        handlers = (jQuery._data(this, 'events') || {})[event.type] || [],
+                        special = jQuery.event.special[event.type] || {};
+                    // Use the fix-ed jQuery.Event rather than the (read-only) native event
+                    args[0] = event;
+                    event.delegateTarget = this;
+                    // Call the preDispatch hook for the mapped type, and let it bail if desired
+                    if (special.preDispatch && special.preDispatch.call(this, event) === false) {
+                        return;
+                    }
+                    // Determine handlers
+                    handlerQueue = jQuery.event.handlers.call(this, event, handlers);
+                    // Run delegates first; they may want to stop propagation beneath us
+                    i = 0;
+                    while ((matched = handlerQueue[i++]) && !event.isPropagationStopped()) {
+                        event.currentTarget = matched.elem;
+                        j = 0;
+                        while ((handleObj = matched.handlers[j++]) && !event.isImmediatePropagationStopped()) {
+                            // Triggered event must either 1) have no namespace, or 2) have namespace(s)
+                            // a subset or equal to those in the bound event (both can have no namespace).
+                            if (!event.rnamespace || event.rnamespace.test(handleObj.namespace)) {
+                                event.handleObj = handleObj;
+                                event.data = handleObj.data;
+                                ret = ((jQuery.event.special[handleObj.origType] || {}).handle || handleObj.handler).apply(matched.elem, args);
+                                if (ret !== undefined) {
+                                    if ((event.result = ret) === false) {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Call the postDispatch hook for the mapped type
+                    if (special.postDispatch) {
+                        special.postDispatch.call(this, event);
+                    }
+                    return event.result;
+                },
+                handlers: function (
+                    event,
+                    handlers
+                ) {
+                    var i, matches, sel, handleObj, handlerQueue = [], delegateCount = handlers.delegateCount,
+                        cur = event.target;
+                    // Support (at least): Chrome, IE9
+                    // Find delegate handlers
+                    // Black-hole SVG <use> instance trees (#13180)
+                    //
+                    // Support: Firefox<=42+
+                    // Avoid non-left-click in FF but don't block IE radio events (#3861, gh-2343)
+                    if (delegateCount && cur.nodeType && (event.type !== 'click' || isNaN(event.button) || event.button < 1)) {
+                        /* jshint eqeqeq: false */
+                        for (; cur != this; cur = cur.parentNode || this) {
+                            /* jshint eqeqeq: true */
+                            // Don't check non-elements (#13208)
+                            // Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
+                            if (cur.nodeType === 1 && (cur.disabled !== true || event.type !== 'click')) {
+                                matches = [];
+                                for (i = 0; i < delegateCount; i++) {
+                                    handleObj = handlers[i];
+                                    // Don't conflict with Object.prototype properties (#13203)
+                                    sel = handleObj.selector + ' ';
+                                    if (matches[sel] === undefined) {
+                                        matches[sel] = handleObj.needsContext ? jQuery(sel, this).index(cur) > -1 : jQuery.find(sel, this, null, [cur]).length;
+                                    }
+                                    if (matches[sel]) {
+                                        matches.push(handleObj);
+                                    }
+                                }
+                                if (matches.length) {
+                                    handlerQueue.push({
+                                        elem: cur,
+                                        handlers: matches
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    // Add the remaining (directly-bound) handlers
+                    if (delegateCount < handlers.length) {
+                        handlerQueue.push({
+                            elem: this,
+                            handlers: handlers.slice(delegateCount)
+                        });
+                    }
+                    return handlerQueue;
+                },
+                fix: function (event) {
+                    if (event[jQuery.expando]) {
+                        return event;
+                    }
+                    // Create a writable copy of the event object and normalize some properties
+                    var i, prop, copy, type = event.type, originalEvent = event, fixHook = this.fixHooks[type];
+                    if (!fixHook) {
+                        this.fixHooks[type] = fixHook = rmouseEvent.test(type) ? this.mouseHooks : rkeyEvent.test(type) ? this.keyHooks : {};
+                    }
+                    copy = fixHook.props ? this.props.concat(fixHook.props) : this.props;
+                    event = new jQuery.Event(originalEvent);
+                    i = copy.length;
+                    while (i--) {
+                        prop = copy[i];
+                        event[prop] = originalEvent[prop];
+                    }
+                    // Support: IE<9
+                    // Fix target property (#1925)
+                    if (!event.target) {
+                        event.target = originalEvent.srcElement || document;
+                    }
+                    // Support: Safari 6-8+
+                    // Target should not be a text node (#504, #13143)
+                    if (event.target.nodeType === 3) {
+                        event.target = event.target.parentNode;
+                    }
+                    // Support: IE<9
+                    // For mouse/key events, metaKey==false if it's undefined (#3368, #11328)
+                    event.metaKey = !!event.metaKey;
+                    return fixHook.filter ? fixHook.filter(event, originalEvent) : event;
+                },
+                // Includes some event props shared by KeyEvent and MouseEvent
+                props: ('altKey bubbles cancelable ctrlKey currentTarget detail eventPhase ' + 'metaKey relatedTarget shiftKey target timeStamp view which').split(' '),
+                fixHooks: {},
+                keyHooks: {
+                    props: 'char charCode key keyCode'.split(' '),
+                    filter: function (
+                        event,
+                        original
+                    ) {
+                        // Add which for key events
+                        if (event.which == null) {
+                            event.which = original.charCode != null ? original.charCode : original.keyCode;
+                        }
+                        return event;
+                    }
+                },
+                mouseHooks: {
+                    props: ('button buttons clientX clientY fromElement offsetX offsetY ' + 'pageX pageY screenX screenY toElement').split(' '),
+                    filter: function (
+                        event,
+                        original
+                    ) {
+                        var body, eventDoc, doc, button = original.button, fromElement = original.fromElement;
+                        // Calculate pageX/Y if missing and clientX/Y available
+                        if (event.pageX == null && original.clientX != null) {
+                            eventDoc = event.target.ownerDocument || document;
+                            doc = eventDoc.documentElement;
+                            body = eventDoc.body;
+                            event.pageX = original.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || body && body.clientLeft || 0);
+                            event.pageY = original.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc && doc.clientTop || body && body.clientTop || 0);
+                        }
+                        // Add relatedTarget, if necessary
+                        if (!event.relatedTarget && fromElement) {
+                            event.relatedTarget = fromElement === event.target ? original.toElement : fromElement;
+                        }
+                        // Add which for click: 1 === left; 2 === middle; 3 === right
+                        // Note: button is not normalized, so don't use it
+                        if (!event.which && button !== undefined) {
+                            event.which = button & 1 ? 1 : button & 2 ? 3 : button & 4 ? 2 : 0;
+                        }
+                        return event;
+                    }
+                },
+                special: {
+                    load: {
+                        // Prevent triggered image.load events from bubbling to window.load
+                        noBubble: true
+                    },
+                    focus: {
+                        // Fire native event if possible so blur/focus sequence is correct
+                        trigger: function () {
+                            if (this !== safeActiveElement() && this.focus) {
+                                try {
+                                    this.focus();
+                                    return false;
+                                } catch (e) {
+                                }
+                            }
+                        },
+                        delegateType: 'focusin'
+                    },
+                    blur: {
+                        trigger: function () {
+                            if (this === safeActiveElement() && this.blur) {
+                                this.blur();
+                                return false;
+                            }
+                        },
+                        delegateType: 'focusout'
+                    },
+                    click: {
+                        // For checkbox, fire native event so checked state will be right
+                        trigger: function () {
+                            if (jQuery.nodeName(this, 'input') && this.type === 'checkbox' && this.click) {
+                                this.click();
+                                return false;
+                            }
+                        },
+                        // For cross-browser consistency, don't fire native .click() on links
+                        _default: function (event) {
+                            return jQuery.nodeName(event.target, 'a');
+                        }
+                    },
+                    beforeunload: {
+                        postDispatch: function (event) {
+                            // Support: Firefox 20+
+                            // Firefox doesn't alert if the returnValue field is not set.
+                            if (event.result !== undefined && event.originalEvent) {
+                                event.originalEvent.returnValue = event.result;
+                            }
+                        }
+                    }
+                },
+                // Piggyback on a donor event to simulate a different one
+                simulate: function (
+                    type,
+                    elem,
+                    event
+                ) {
+                    var e = jQuery.extend(new jQuery.Event(), event, {
+                        type: type,
+                        isSimulated: true  // Previously, `originalEvent: {}` was set here, so stopPropagation call
+                        // would not be triggered on donor event, since in our own
+                        // jQuery.event.stopPropagation function we had a check for existence of
+                        // originalEvent.stopPropagation method, so, consequently it would be a noop.
+                        //
+                        // Guard for simulated events was moved to jQuery.event.stopPropagation function
+                        // since `originalEvent` should point to the original event for the
+                        // constancy with other events and for more focused logic
+                    });
+                    jQuery.event.trigger(e, null, elem);
+                    if (e.isDefaultPrevented()) {
+                        event.preventDefault();
+                    }
+                }
+            };
+            jQuery.removeEvent = document.removeEventListener ? function (
+                elem,
+                type,
+                handle
+            ) {
+                // This "if" is needed for plain objects
+                if (elem.removeEventListener) {
+                    elem.removeEventListener(type, handle);
+                }
+            } : function (
+                elem,
+                type,
+                handle
+            ) {
+                var name = 'on' + type;
+                if (elem.detachEvent) {
+                    // #8545, #7054, preventing memory leaks for custom events in IE6-8
+                    // detachEvent needed property on element, by name of that event,
+                    // to properly expose it to GC
+                    if (typeof elem[name] === 'undefined') {
+                        elem[name] = null;
+                    }
+                    elem.detachEvent(name, handle);
+                }
+            };
+            jQuery.Event = function (
+                src,
+                props
+            ) {
+                // Allow instantiation without the 'new' keyword
+                if (!(this instanceof jQuery.Event)) {
+                    return new jQuery.Event(src, props);
+                }
+                // Event object
+                if (src && src.type) {
+                    this.originalEvent = src;
+                    this.type = src.type;
+                    // Events bubbling up the document may have been marked as prevented
+                    // by a handler lower down the tree; reflect the correct value.
+                    this.isDefaultPrevented = src.defaultPrevented || src.defaultPrevented === undefined && // Support: IE < 9, Android < 4.0
+                    src.returnValue === false ? returnTrue : returnFalse;  // Event type
+                } else {
+                    this.type = src;
+                }
+                // Put explicitly provided properties onto the event object
+                if (props) {
+                    jQuery.extend(this, props);
+                }
+                // Create a timestamp if incoming event doesn't have one
+                this.timeStamp = src && src.timeStamp || jQuery.now();
+                // Mark it as fixed
+                this[jQuery.expando] = true;
+            };
+            // jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
+            // http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
+            jQuery.Event.prototype = {
+                constructor: jQuery.Event,
+                isDefaultPrevented: returnFalse,
+                isPropagationStopped: returnFalse,
+                isImmediatePropagationStopped: returnFalse,
+                preventDefault: function () {
+                    var e = this.originalEvent;
+                    this.isDefaultPrevented = returnTrue;
+                    if (!e) {
+                        return;
+                    }
+                    // If preventDefault exists, run it on the original event
+                    if (e.preventDefault) {
+                        e.preventDefault();  // Support: IE
+                                             // Otherwise set the returnValue property of the original event to false
+                    } else {
+                        e.returnValue = false;
+                    }
+                },
+                stopPropagation: function () {
+                    var e = this.originalEvent;
+                    this.isPropagationStopped = returnTrue;
+                    if (!e || this.isSimulated) {
+                        return;
+                    }
+                    // If stopPropagation exists, run it on the original event
+                    if (e.stopPropagation) {
+                        e.stopPropagation();
+                    }
+                    // Support: IE
+                    // Set the cancelBubble property of the original event to true
+                    e.cancelBubble = true;
+                },
+                stopImmediatePropagation: function () {
+                    var e = this.originalEvent;
+                    this.isImmediatePropagationStopped = returnTrue;
+                    if (e && e.stopImmediatePropagation) {
+                        e.stopImmediatePropagation();
+                    }
+                    this.stopPropagation();
+                }
+            };
+            // Create mouseenter/leave events using mouseover/out and event-time checks
+            // so that event delegation works in jQuery.
+            // Do the same for pointerenter/pointerleave and pointerover/pointerout
+            //
+            // Support: Safari 7 only
+            // Safari sends mouseenter too often; see:
+            // https://code.google.com/p/chromium/issues/detail?id=470258
+            // for the description of the bug (it existed in older Chrome versions as well).
+            jQuery.each({
+                mouseenter: 'mouseover',
+                mouseleave: 'mouseout',
+                pointerenter: 'pointerover',
+                pointerleave: 'pointerout'
+            }, function (
+                orig,
+                fix
+            ) {
+                jQuery.event.special[orig] = {
+                    delegateType: fix,
+                    bindType: fix,
+                    handle: function (event) {
+                        var ret, target = this, related = event.relatedTarget, handleObj = event.handleObj;
+                        // For mouseenter/leave call the handler if related is outside the target.
+                        // NB: No relatedTarget if the mouse left/entered the browser window
+                        if (!related || related !== target && !jQuery.contains(target, related)) {
+                            event.type = handleObj.origType;
+                            ret = handleObj.handler.apply(this, arguments);
+                            event.type = fix;
+                        }
+                        return ret;
+                    }
+                };
+            });
+            // IE submit delegation
+            if (!support.submit) {
+                jQuery.event.special.submit = {
+                    setup: function () {
+                        // Only need this for delegated form submit events
+                        if (jQuery.nodeName(this, 'form')) {
+                            return false;
+                        }
+                        // Lazy-add a submit handler when a descendant form may potentially be submitted
+                        jQuery.event.add(this, 'click._submit keypress._submit', function (e) {
+                            // Node name check avoids a VML-related crash in IE (#9807)
+                            var elem = e.target,
+                                form = jQuery.nodeName(elem, 'input') || jQuery.nodeName(elem, 'button') ? // Support: IE <=8
+                                    // We use jQuery.prop instead of elem.form
+                                    // to allow fixing the IE8 delegated submit issue (gh-2332)
+                                    // by 3rd party polyfills/workarounds.
+                                    jQuery.prop(elem, 'form') : undefined;
+                            if (form && !jQuery._data(form, 'submit')) {
+                                jQuery.event.add(form, 'submit._submit', function (event) {
+                                    event._submitBubble = true;
+                                });
+                                jQuery._data(form, 'submit', true);
+                            }
+                        });  // return undefined since we don't need an event listener
+                    },
+                    postDispatch: function (event) {
+                        // If form was submitted by the user, bubble the event up the tree
+                        if (event._submitBubble) {
+                            delete event._submitBubble;
+                            if (this.parentNode && !event.isTrigger) {
+                                jQuery.event.simulate('submit', this.parentNode, event);
+                            }
+                        }
+                    },
+                    teardown: function () {
+                        // Only need this for delegated form submit events
+                        if (jQuery.nodeName(this, 'form')) {
+                            return false;
+                        }
+                        // Remove delegated handlers; cleanData eventually reaps submit handlers attached above
+                        jQuery.event.remove(this, '._submit');
+                    }
+                };
+            }
+            // IE change delegation and checkbox/radio fix
+            if (!support.change) {
+                jQuery.event.special.change = {
+                    setup: function () {
+                        if (rformElems.test(this.nodeName)) {
+                            // IE doesn't fire change on a check/radio until blur; trigger it on click
+                            // after a propertychange. Eat the blur-change in special.change.handle.
+                            // This still fires onchange a second time for check/radio after blur.
+                            if (this.type === 'checkbox' || this.type === 'radio') {
+                                jQuery.event.add(this, 'propertychange._change', function (event) {
+                                    if (event.originalEvent.propertyName === 'checked') {
+                                        this._justChanged = true;
+                                    }
+                                });
+                                jQuery.event.add(this, 'click._change', function (event) {
+                                    if (this._justChanged && !event.isTrigger) {
+                                        this._justChanged = false;
+                                    }
+                                    // Allow triggered, simulated change events (#11500)
+                                    jQuery.event.simulate('change', this, event);
+                                });
+                            }
+                            return false;
+                        }
+                        // Delegated event; lazy-add a change handler on descendant inputs
+                        jQuery.event.add(this, 'beforeactivate._change', function (e) {
+                            var elem = e.target;
+                            if (rformElems.test(elem.nodeName) && !jQuery._data(elem, 'change')) {
+                                jQuery.event.add(elem, 'change._change', function (event) {
+                                    if (this.parentNode && !event.isSimulated && !event.isTrigger) {
+                                        jQuery.event.simulate('change', this.parentNode, event);
+                                    }
+                                });
+                                jQuery._data(elem, 'change', true);
+                            }
+                        });
+                    },
+                    handle: function (event) {
+                        var elem = event.target;
+                        // Swallow native change events from checkbox/radio, we already triggered them above
+                        if (this !== elem || event.isSimulated || event.isTrigger || elem.type !== 'radio' && elem.type !== 'checkbox') {
+                            return event.handleObj.handler.apply(this, arguments);
+                        }
+                    },
+                    teardown: function () {
+                        jQuery.event.remove(this, '._change');
+                        return !rformElems.test(this.nodeName);
+                    }
+                };
+            }
+            // Support: Firefox
+            // Firefox doesn't have focus(in | out) events
+            // Related ticket - https://bugzilla.mozilla.org/show_bug.cgi?id=687787
+            //
+            // Support: Chrome, Safari
+            // focus(in | out) events fire after focus & blur events,
+            // which is spec violation - http://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent-event-order
+            // Related ticket - https://code.google.com/p/chromium/issues/detail?id=449857
+            if (!support.focusin) {
+                jQuery.each({
+                    focus: 'focusin',
+                    blur: 'focusout'
+                }, function (
+                    orig,
+                    fix
+                ) {
+                    // Attach a single capturing handler on the document while someone wants focusin/focusout
+                    var handler = function (event) {
+                        jQuery.event.simulate(fix, event.target, jQuery.event.fix(event));
+                    };
+                    jQuery.event.special[fix] = {
+                        setup: function () {
+                            var doc = this.ownerDocument || this, attaches = jQuery._data(doc, fix);
+                            if (!attaches) {
+                                doc.addEventListener(orig, handler, true);
+                            }
+                            jQuery._data(doc, fix, (attaches || 0) + 1);
+                        },
+                        teardown: function () {
+                            var doc = this.ownerDocument || this, attaches = jQuery._data(doc, fix) - 1;
+                            if (!attaches) {
+                                doc.removeEventListener(orig, handler, true);
+                                jQuery._removeData(doc, fix);
+                            } else {
+                                jQuery._data(doc, fix, attaches);
+                            }
+                        }
+                    };
+                });
+            }
+            jQuery.fn.extend({
+                on: function (
+                    types,
+                    selector,
+                    data,
+                    fn
+                ) {
+                    return on(this, types, selector, data, fn);
+                },
+                one: function (
+                    types,
+                    selector,
+                    data,
+                    fn
+                ) {
+                    return on(this, types, selector, data, fn, 1);
+                },
+                off: function (
+                    types,
+                    selector,
+                    fn
+                ) {
+                    var handleObj, type;
+                    if (types && types.preventDefault && types.handleObj) {
+                        // ( event )  dispatched jQuery.Event
+                        handleObj = types.handleObj;
+                        jQuery(types.delegateTarget).off(handleObj.namespace ? handleObj.origType + '.' + handleObj.namespace : handleObj.origType, handleObj.selector, handleObj.handler);
+                        return this;
+                    }
+                    if (typeof types === 'object') {
+                        // ( types-object [, selector] )
+                        for (type in types) {
+                            this.off(type, selector, types[type]);
+                        }
+                        return this;
+                    }
+                    if (selector === false || typeof selector === 'function') {
+                        // ( types [, fn] )
+                        fn = selector;
+                        selector = undefined;
+                    }
+                    if (fn === false) {
+                        fn = returnFalse;
+                    }
+                    return this.each(function () {
+                        jQuery.event.remove(this, types, fn, selector);
+                    });
+                },
+                trigger: function (
+                    type,
+                    data
+                ) {
+                    return this.each(function () {
+                        jQuery.event.trigger(type, data, this);
+                    });
+                },
+                triggerHandler: function (
+                    type,
+                    data
+                ) {
+                    var elem = this[0];
+                    if (elem) {
+                        return jQuery.event.trigger(type, data, elem, true);
+                    }
+                }
+            });
+            return jQuery;
+        }(jquery_core, jquery_var_document, jquery_var_rnotwhite, jquery_var_hasOwn, jquery_var_slice, jquery_event_support, jquery_data_var_acceptData);
+        jquery_manipulation = function (
+            jQuery,
+            document,
+            concat,
+            push,
+            deletedIds,
+            access,
+            rcheckableType,
+            rtagName,
+            rscriptType,
+            rleadingWhitespace,
+            nodeNames,
+            createSafeFragment,
+            wrapMap,
+            getAll,
+            setGlobalEval,
+            buildFragment,
+            support,
+            acceptData
+        ) {
+            var rinlinejQuery = / jQuery\d+="(?:null|\d+)"/g,
+                rnoshimcache = new RegExp('<(?:' + nodeNames + ')[\\s/>]', 'i'),
+                rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:-]+)[^>]*)\/>/gi,
+                // Support: IE 10-11, Edge 10240+
+                // In IE/Edge using regex groups here causes severe slowdowns.
+                // See https://connect.microsoft.com/IE/feedback/details/1736512/
+                rnoInnerhtml = /<script|<style|<link/i,
+                // checked="checked" or checked
+                rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i, rscriptTypeMasked = /^true\/(.*)/,
+                rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, safeFragment = createSafeFragment(document),
+                fragmentDiv = safeFragment.appendChild(document.createElement('div'));
+            // Support: IE<8
+            // Manipulating tables requires a tbody
+            function manipulationTarget(
+                elem,
+                content
+            ) {
+                return jQuery.nodeName(elem, 'table') && jQuery.nodeName(content.nodeType !== 11 ? content : content.firstChild, 'tr') ? elem.getElementsByTagName('tbody')[0] || elem.appendChild(elem.ownerDocument.createElement('tbody')) : elem;
+            }
+
+            // Replace/restore the type attribute of script elements for safe DOM manipulation
+            function disableScript(elem) {
+                elem.type = (jQuery.find.attr(elem, 'type') !== null) + '/' + elem.type;
+                return elem;
+            }
+
+            function restoreScript(elem) {
+                var match = rscriptTypeMasked.exec(elem.type);
+                if (match) {
+                    elem.type = match[1];
+                } else {
+                    elem.removeAttribute('type');
+                }
+                return elem;
+            }
+
+            function cloneCopyEvent(
+                src,
+                dest
+            ) {
+                if (dest.nodeType !== 1 || !jQuery.hasData(src)) {
+                    return;
+                }
+                var type, i, l, oldData = jQuery._data(src), curData = jQuery._data(dest, oldData),
+                    events = oldData.events;
+                if (events) {
+                    delete curData.handle;
+                    curData.events = {};
+                    for (type in events) {
+                        for (i = 0, l = events[type].length; i < l; i++) {
+                            jQuery.event.add(dest, type, events[type][i]);
+                        }
+                    }
+                }
+                // make the cloned public data object a copy from the original
+                if (curData.data) {
+                    curData.data = jQuery.extend({}, curData.data);
+                }
+            }
+
+            function fixCloneNodeIssues(
+                src,
+                dest
+            ) {
+                var nodeName, e, data;
+                // We do not need to do anything for non-Elements
+                if (dest.nodeType !== 1) {
+                    return;
+                }
+                nodeName = dest.nodeName.toLowerCase();
+                // IE6-8 copies events bound via attachEvent when using cloneNode.
+                if (!support.noCloneEvent && dest[jQuery.expando]) {
+                    data = jQuery._data(dest);
+                    for (e in data.events) {
+                        jQuery.removeEvent(dest, e, data.handle);
+                    }
+                    // Event data gets referenced instead of copied if the expando gets copied too
+                    dest.removeAttribute(jQuery.expando);
+                }
+                // IE blanks contents when cloning scripts, and tries to evaluate newly-set text
+                if (nodeName === 'script' && dest.text !== src.text) {
+                    disableScript(dest).text = src.text;
+                    restoreScript(dest);  // IE6-10 improperly clones children of object elements using classid.
+                                          // IE10 throws NoModificationAllowedError if parent is null, #12132.
+                } else if (nodeName === 'object') {
+                    if (dest.parentNode) {
+                        dest.outerHTML = src.outerHTML;
+                    }
+                    // This path appears unavoidable for IE9. When cloning an object
+                    // element in IE9, the outerHTML strategy above is not sufficient.
+                    // If the src has innerHTML and the destination does not,
+                    // copy the src.innerHTML into the dest.innerHTML. #10324
+                    if (support.html5Clone && (src.innerHTML && !jQuery.trim(dest.innerHTML))) {
+                        dest.innerHTML = src.innerHTML;
+                    }
+                } else if (nodeName === 'input' && rcheckableType.test(src.type)) {
+                    // IE6-8 fails to persist the checked state of a cloned checkbox
+                    // or radio button. Worse, IE6-7 fail to give the cloned element
+                    // a checked appearance if the defaultChecked value isn't also set
+                    dest.defaultChecked = dest.checked = src.checked;
+                    // IE6-7 get confused and end up setting the value of a cloned
+                    // checkbox/radio button to an empty string instead of "on"
+                    if (dest.value !== src.value) {
+                        dest.value = src.value;
+                    }  // IE6-8 fails to return the selected option to the default selected
+                       // state when cloning options
+                } else if (nodeName === 'option') {
+                    dest.defaultSelected = dest.selected = src.defaultSelected;  // IE6-8 fails to set the defaultValue
+                                                                                 // to the correct value when cloning
+                                                                                 // other types of input fields
+                } else if (nodeName === 'input' || nodeName === 'textarea') {
+                    dest.defaultValue = src.defaultValue;
+                }
+            }
+
+            function domManip(
+                collection,
+                args,
+                callback,
+                ignored
+            ) {
+                // Flatten any nested arrays
+                args = concat.apply([], args);
+                var first, node, hasScripts, scripts, doc, fragment, i = 0, l = collection.length, iNoClone = l - 1,
+                    value = args[0], isFunction = jQuery.isFunction(value);
+                // We can't cloneNode fragments that contain checked, in WebKit
+                if (isFunction || l > 1 && typeof value === 'string' && !support.checkClone && rchecked.test(value)) {
+                    return collection.each(function (index) {
+                        var self = collection.eq(index);
+                        if (isFunction) {
+                            args[0] = value.call(this, index, self.html());
+                        }
+                        domManip(self, args, callback, ignored);
+                    });
+                }
+                if (l) {
+                    fragment = buildFragment(args, collection[0].ownerDocument, false, collection, ignored);
+                    first = fragment.firstChild;
+                    if (fragment.childNodes.length === 1) {
+                        fragment = first;
+                    }
+                    // Require either new content or an interest in ignored elements to invoke the callback
+                    if (first || ignored) {
+                        scripts = jQuery.map(getAll(fragment, 'script'), disableScript);
+                        hasScripts = scripts.length;
+                        // Use the original fragment for the last item
+                        // instead of the first because it can end up
+                        // being emptied incorrectly in certain situations (#8070).
+                        for (; i < l; i++) {
+                            node = fragment;
+                            if (i !== iNoClone) {
+                                node = jQuery.clone(node, true, true);
+                                // Keep references to cloned scripts for later restoration
+                                if (hasScripts) {
+                                    // Support: Android<4.1, PhantomJS<2
+                                    // push.apply(_, arraylike) throws on ancient WebKit
+                                    jQuery.merge(scripts, getAll(node, 'script'));
+                                }
+                            }
+                            callback.call(collection[i], node, i);
+                        }
+                        if (hasScripts) {
+                            doc = scripts[scripts.length - 1].ownerDocument;
+                            // Reenable scripts
+                            jQuery.map(scripts, restoreScript);
+                            // Evaluate executable scripts on first document insertion
+                            for (i = 0; i < hasScripts; i++) {
+                                node = scripts[i];
+                                if (rscriptType.test(node.type || '') && !jQuery._data(node, 'globalEval') && jQuery.contains(doc, node)) {
+                                    if (node.src) {
+                                        // Optional AJAX dependency, but won't run scripts if not present
+                                        if (jQuery._evalUrl) {
+                                            jQuery._evalUrl(node.src);
+                                        }
+                                    } else {
+                                        jQuery.globalEval((node.text || node.textContent || node.innerHTML || '').replace(rcleanScript, ''));
+                                    }
+                                }
+                            }
+                        }
+                        // Fix #11809: Avoid leaking memory
+                        fragment = first = null;
+                    }
+                }
+                return collection;
+            }
+
+            function remove(
+                elem,
+                selector,
+                keepData
+            ) {
+                var node, elems = selector ? jQuery.filter(selector, elem) : elem, i = 0;
+                for (; (node = elems[i]) != null; i++) {
+                    if (!keepData && node.nodeType === 1) {
+                        jQuery.cleanData(getAll(node));
+                    }
+                    if (node.parentNode) {
+                        if (keepData && jQuery.contains(node.ownerDocument, node)) {
+                            setGlobalEval(getAll(node, 'script'));
+                        }
+                        node.parentNode.removeChild(node);
+                    }
+                }
+                return elem;
+            }
+
+            jQuery.extend({
+                htmlPrefilter: function (html) {
+                    return html.replace(rxhtmlTag, '<$1></$2>');
+                },
+                clone: function (
+                    elem,
+                    dataAndEvents,
+                    deepDataAndEvents
+                ) {
+                    var destElements, node, clone, i, srcElements, inPage = jQuery.contains(elem.ownerDocument, elem);
+                    if (support.html5Clone || jQuery.isXMLDoc(elem) || !rnoshimcache.test('<' + elem.nodeName + '>')) {
+                        clone = elem.cloneNode(true);  // IE<=8 does not properly clone detached, unknown element nodes
+                    } else {
+                        fragmentDiv.innerHTML = elem.outerHTML;
+                        fragmentDiv.removeChild(clone = fragmentDiv.firstChild);
+                    }
+                    if ((!support.noCloneEvent || !support.noCloneChecked) && (elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem)) {
+                        // We eschew Sizzle here for performance reasons: http://jsperf.com/getall-vs-sizzle/2
+                        destElements = getAll(clone);
+                        srcElements = getAll(elem);
+                        // Fix all IE cloning issues
+                        for (i = 0; (node = srcElements[i]) != null; ++i) {
+                            // Ensure that the destination node is not null; Fixes #9587
+                            if (destElements[i]) {
+                                fixCloneNodeIssues(node, destElements[i]);
+                            }
+                        }
+                    }
+                    // Copy the events from the original to the clone
+                    if (dataAndEvents) {
+                        if (deepDataAndEvents) {
+                            srcElements = srcElements || getAll(elem);
+                            destElements = destElements || getAll(clone);
+                            for (i = 0; (node = srcElements[i]) != null; i++) {
+                                cloneCopyEvent(node, destElements[i]);
+                            }
+                        } else {
+                            cloneCopyEvent(elem, clone);
+                        }
+                    }
+                    // Preserve script evaluation history
+                    destElements = getAll(clone, 'script');
+                    if (destElements.length > 0) {
+                        setGlobalEval(destElements, !inPage && getAll(elem, 'script'));
+                    }
+                    destElements = srcElements = node = null;
+                    // Return the cloned set
+                    return clone;
+                },
+                cleanData: function (
+                    elems,
+                    forceAcceptData
+                ) {
+                    var elem, type, id, data, i = 0, internalKey = jQuery.expando, cache = jQuery.cache,
+                        attributes = support.attributes, special = jQuery.event.special;
+                    for (; (elem = elems[i]) != null; i++) {
+                        if (forceAcceptData || acceptData(elem)) {
+                            id = elem[internalKey];
+                            data = id && cache[id];
+                            if (data) {
+                                if (data.events) {
+                                    for (type in data.events) {
+                                        if (special[type]) {
+                                            jQuery.event.remove(elem, type);  // This is a shortcut to avoid
+                                                                              // jQuery.event.remove's overhead
+                                        } else {
+                                            jQuery.removeEvent(elem, type, data.handle);
+                                        }
+                                    }
+                                }
+                                // Remove cache only if it was not already removed by jQuery.event.remove
+                                if (cache[id]) {
+                                    delete cache[id];
+                                    // Support: IE<9
+                                    // IE does not allow us to delete expando properties from nodes
+                                    // IE creates expando attributes along with the property
+                                    // IE does not have a removeAttribute function on Document nodes
+                                    if (!attributes && typeof elem.removeAttribute !== 'undefined') {
+                                        elem.removeAttribute(internalKey);  // Webkit & Blink performance suffers when
+                                                                            // deleting properties from DOM nodes, so
+                                                                            // set to undefined instead
+                                                                            // https://code.google.com/p/chromium/issues/detail?id=378607
+                                    } else {
+                                        elem[internalKey] = undefined;
+                                    }
+                                    deletedIds.push(id);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            jQuery.fn.extend({
+                // Keep domManip exposed until 3.0 (gh-2225)
+                domManip: domManip,
+                detach: function (selector) {
+                    return remove(this, selector, true);
+                },
+                remove: function (selector) {
+                    return remove(this, selector);
+                },
+                text: function (value) {
+                    return access(this, function (value) {
+                        return value === undefined ? jQuery.text(this) : this.empty().append((this[0] && this[0].ownerDocument || document).createTextNode(value));
+                    }, null, value, arguments.length);
+                },
+                append: function () {
+                    return domManip(this, arguments, function (elem) {
+                        if (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) {
+                            var target = manipulationTarget(this, elem);
+                            target.appendChild(elem);
+                        }
+                    });
+                },
+                prepend: function () {
+                    return domManip(this, arguments, function (elem) {
+                        if (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) {
+                            var target = manipulationTarget(this, elem);
+                            target.insertBefore(elem, target.firstChild);
+                        }
+                    });
+                },
+                before: function () {
+                    return domManip(this, arguments, function (elem) {
+                        if (this.parentNode) {
+                            this.parentNode.insertBefore(elem, this);
+                        }
+                    });
+                },
+                after: function () {
+                    return domManip(this, arguments, function (elem) {
+                        if (this.parentNode) {
+                            this.parentNode.insertBefore(elem, this.nextSibling);
+                        }
+                    });
+                },
+                empty: function () {
+                    var elem, i = 0;
+                    for (; (elem = this[i]) != null; i++) {
+                        // Remove element nodes and prevent memory leaks
+                        if (elem.nodeType === 1) {
+                            jQuery.cleanData(getAll(elem, false));
+                        }
+                        // Remove any remaining nodes
+                        while (elem.firstChild) {
+                            elem.removeChild(elem.firstChild);
+                        }
+                        // If this is a select, ensure that it displays empty (#12336)
+                        // Support: IE<9
+                        if (elem.options && jQuery.nodeName(elem, 'select')) {
+                            elem.options.length = 0;
+                        }
+                    }
+                    return this;
+                },
+                clone: function (
+                    dataAndEvents,
+                    deepDataAndEvents
+                ) {
+                    dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
+                    deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
+                    return this.map(function () {
+                        return jQuery.clone(this, dataAndEvents, deepDataAndEvents);
+                    });
+                },
+                html: function (value) {
+                    return access(this, function (value) {
+                        var elem = this[0] || {}, i = 0, l = this.length;
+                        if (value === undefined) {
+                            return elem.nodeType === 1 ? elem.innerHTML.replace(rinlinejQuery, '') : undefined;
+                        }
+                        // See if we can take a shortcut and just use innerHTML
+                        if (typeof value === 'string' && !rnoInnerhtml.test(value) && (support.htmlSerialize || !rnoshimcache.test(value)) && (support.leadingWhitespace || !rleadingWhitespace.test(value)) && !wrapMap[(rtagName.exec(value) || [
+                                '',
+                                ''
+                            ])[1].toLowerCase()]) {
+                            value = jQuery.htmlPrefilter(value);
+                            try {
+                                for (; i < l; i++) {
+                                    // Remove element nodes and prevent memory leaks
+                                    elem = this[i] || {};
+                                    if (elem.nodeType === 1) {
+                                        jQuery.cleanData(getAll(elem, false));
+                                        elem.innerHTML = value;
+                                    }
+                                }
+                                elem = 0;  // If using innerHTML throws an exception, use the fallback method
+                            } catch (e) {
+                            }
+                        }
+                        if (elem) {
+                            this.empty().append(value);
+                        }
+                    }, null, value, arguments.length);
+                },
+                replaceWith: function () {
+                    var ignored = [];
+                    // Make the changes, replacing each non-ignored context element with the new content
+                    return domManip(this, arguments, function (elem) {
+                        var parent = this.parentNode;
+                        if (jQuery.inArray(this, ignored) < 0) {
+                            jQuery.cleanData(getAll(this));
+                            if (parent) {
+                                parent.replaceChild(elem, this);
+                            }
+                        }  // Force callback invocation
+                    }, ignored);
+                }
+            });
+            jQuery.each({
+                appendTo: 'append',
+                prependTo: 'prepend',
+                insertBefore: 'before',
+                insertAfter: 'after',
+                replaceAll: 'replaceWith'
+            }, function (
+                name,
+                original
+            ) {
+                jQuery.fn[name] = function (selector) {
+                    var elems, i = 0, ret = [], insert = jQuery(selector), last = insert.length - 1;
+                    for (; i <= last; i++) {
+                        elems = i === last ? this : this.clone(true);
+                        jQuery(insert[i])[original](elems);
+                        // Modern browsers can apply jQuery collections as arrays, but oldIE needs a .get()
+                        push.apply(ret, elems.get());
+                    }
+                    return this.pushStack(ret);
+                };
+            });
+            return jQuery;
+        }(jquery_core, jquery_var_document, jquery_var_concat, jquery_var_push, jquery_var_deletedIds, jquery_core_access, jquery_manipulation_var_rcheckableType, jquery_manipulation_var_rtagName, jquery_manipulation_var_rscriptType, jquery_manipulation_var_rleadingWhitespace, jquery_manipulation_var_nodeNames, jquery_manipulation_createSafeFragment, jquery_manipulation_wrapMap, jquery_manipulation_getAll, jquery_manipulation_setGlobalEval, jquery_manipulation_buildFragment, jquery_manipulation_support, jquery_data_var_acceptData);
+        jquery_css_defaultDisplay = function (
+            jQuery,
+            document
+        ) {
+            var iframe, elemdisplay = {
+                // Support: Firefox
+                // We have to pre-define these values for FF (#10227)
+                HTML: 'block',
+                BODY: 'block'
+            };
+
+            /**
+             * Retrieve the actual display of a element
+             * @param {String} name nodeName of the element
+             * @param {Object} doc Document object
+             */
+            // Called only from within defaultDisplay
+            function actualDisplay(
+                name,
+                doc
+            ) {
+                var elem = jQuery(doc.createElement(name)).appendTo(doc.body), display = jQuery.css(elem[0], 'display');
+                // We don't have any data stored on the element,
+                // so use "detach" method as fast way to get rid of the element
+                elem.detach();
+                return display;
+            }
+
+            /**
+             * Try to determine the default display value of an element
+             * @param {String} nodeName
+             */
+            function defaultDisplay(nodeName) {
+                var doc = document, display = elemdisplay[nodeName];
+                if (!display) {
+                    display = actualDisplay(nodeName, doc);
+                    // If the simple way fails, read from inside an iframe
+                    if (display === 'none' || !display) {
+                        // Use the already-created iframe if possible
+                        iframe = (iframe || jQuery('<iframe frameborder=\'0\' width=\'0\' height=\'0\'/>')).appendTo(doc.documentElement);
+                        // Always write a new HTML skeleton so Webkit and Firefox don't choke on reuse
+                        doc = (iframe[0].contentWindow || iframe[0].contentDocument).document;
+                        // Support: IE
+                        doc.write();
+                        doc.close();
+                        display = actualDisplay(nodeName, doc);
+                        iframe.detach();
+                    }
+                    // Store the correct default display
+                    elemdisplay[nodeName] = display;
+                }
+                return display;
+            }
+
+            return defaultDisplay;
+        }(jquery_core, jquery_var_document);
+        jquery_css_addGetHookIf = function () {
+            function addGetHookIf(
+                conditionFn,
+                hookFn
+            ) {
+                // Define the hook, we'll check on the first run if it's really needed.
+                return {
+                    get: function () {
+                        if (conditionFn()) {
+                            // Hook not needed (or it's not possible to use it due
+                            // to missing dependency), remove it.
+                            delete this.get;
+                            return;
+                        }
+                        // Hook needed; redefine it so that the support test is not executed again.
+                        return (this.get = hookFn).apply(this, arguments);
+                    }
+                };
+            }
+
+            return addGetHookIf;
+        }();
+        jquery_css = function (
+            jQuery,
+            pnum,
+            access,
+            rmargin,
+            document,
+            rcssNum,
+            rnumnonpx,
+            cssExpand,
+            isHidden,
+            swap,
+            curCSS,
+            adjustCSS,
+            defaultDisplay,
+            addGetHookIf,
+            support
+        ) {
+            var
+                // BuildExclude
+                getStyles = curCSS.getStyles, ralpha = /alpha\([^)]*\)/i, ropacity = /opacity\s*=\s*([^)]*)/i,
+                // swappable if display is none or starts with table except
+                // "table", "table-cell", or "table-caption"
+                // see here for display values:
+                // https://developer.mozilla.org/en-US/docs/CSS/display
+                rdisplayswap = /^(none|table(?!-c[ea]).+)/, rnumsplit = new RegExp('^(' + pnum + ')(.*)$', 'i'),
+                cssShow = {
+                    position: 'absolute',
+                    visibility: 'hidden',
+                    display: 'block'
+                }, cssNormalTransform = {
+                    letterSpacing: '0',
+                    fontWeight: '400'
+                }, cssPrefixes = [
+                    'Webkit',
+                    'O',
+                    'Moz',
+                    'ms'
+                ], emptyStyle = document.createElement('div').style;
+            // BuildExclude
+            curCSS = curCSS.curCSS;
+
+            // return a css property mapped to a potentially vendor prefixed property
+            function vendorPropName(name) {
+                // shortcut for names that are not vendor prefixed
+                if (name in emptyStyle) {
+                    return name;
+                }
+                // check for vendor prefixed names
+                var capName = name.charAt(0).toUpperCase() + name.slice(1), i = cssPrefixes.length;
+                while (i--) {
+                    name = cssPrefixes[i] + capName;
+                    if (name in emptyStyle) {
+                        return name;
+                    }
+                }
+            }
+
+            function showHide(
+                elements,
+                show
+            ) {
+                var display, elem, hidden, values = [], index = 0, length = elements.length;
+                for (; index < length; index++) {
+                    elem = elements[index];
+                    if (!elem.style) {
+                        continue;
+                    }
+                    values[index] = jQuery._data(elem, 'olddisplay');
+                    display = elem.style.display;
+                    if (show) {
+                        // Reset the inline display of this element to learn if it is
+                        // being hidden by cascaded rules or not
+                        if (!values[index] && display === 'none') {
+                            elem.style.display = '';
+                        }
+                        // Set elements which have been overridden with display: none
+                        // in a stylesheet to whatever the default browser style is
+                        // for such an element
+                        if (elem.style.display === '' && isHidden(elem)) {
+                            values[index] = jQuery._data(elem, 'olddisplay', defaultDisplay(elem.nodeName));
+                        }
+                    } else {
+                        hidden = isHidden(elem);
+                        if (display && display !== 'none' || !hidden) {
+                            jQuery._data(elem, 'olddisplay', hidden ? display : jQuery.css(elem, 'display'));
+                        }
+                    }
+                }
+                // Set the display of most of the elements in a second loop
+                // to avoid the constant reflow
+                for (index = 0; index < length; index++) {
+                    elem = elements[index];
+                    if (!elem.style) {
+                        continue;
+                    }
+                    if (!show || elem.style.display === 'none' || elem.style.display === '') {
+                        elem.style.display = show ? values[index] || '' : 'none';
+                    }
+                }
+                return elements;
+            }
+
+            function setPositiveNumber(
+                elem,
+                value,
+                subtract
+            ) {
+                var matches = rnumsplit.exec(value);
+                return matches ? // Guard against undefined "subtract", e.g., when used as in cssHooks
+                    Math.max(0, matches[1] - (subtract || 0)) + (matches[2] || 'px') : value;
+            }
+
+            function augmentWidthOrHeight(
+                elem,
+                name,
+                extra,
+                isBorderBox,
+                styles
+            ) {
+                var i = extra === (isBorderBox ? 'border' : 'content') ? // If we already have the right measurement, avoid augmentation
+                    4 : // Otherwise initialize for horizontal or vertical properties
+                    name === 'width' ? 1 : 0, val = 0;
+                for (; i < 4; i += 2) {
+                    // both box models exclude margin, so add it if we want it
+                    if (extra === 'margin') {
+                        val += jQuery.css(elem, extra + cssExpand[i], true, styles);
+                    }
+                    if (isBorderBox) {
+                        // border-box includes padding, so remove it if we want content
+                        if (extra === 'content') {
+                            val -= jQuery.css(elem, 'padding' + cssExpand[i], true, styles);
+                        }
+                        // at this point, extra isn't border nor margin, so remove border
+                        if (extra !== 'margin') {
+                            val -= jQuery.css(elem, 'border' + cssExpand[i] + 'Width', true, styles);
+                        }
+                    } else {
+                        // at this point, extra isn't content, so add padding
+                        val += jQuery.css(elem, 'padding' + cssExpand[i], true, styles);
+                        // at this point, extra isn't content nor padding, so add border
+                        if (extra !== 'padding') {
+                            val += jQuery.css(elem, 'border' + cssExpand[i] + 'Width', true, styles);
+                        }
+                    }
+                }
+                return val;
+            }
+
+            function getWidthOrHeight(
+                elem,
+                name,
+                extra
+            ) {
+                // Start with offset property, which is equivalent to the border-box value
+                var valueIsBorderBox = true, val = name === 'width' ? elem.offsetWidth : elem.offsetHeight,
+                    styles = getStyles(elem),
+                    isBorderBox = support.boxSizing && jQuery.css(elem, 'boxSizing', false, styles) === 'border-box';
+                // some non-html elements return undefined for offsetWidth, so check for null/undefined
+                // svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
+                // MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
+                if (val <= 0 || val == null) {
+                    // Fall back to computed then uncomputed css if necessary
+                    val = curCSS(elem, name, styles);
+                    if (val < 0 || val == null) {
+                        val = elem.style[name];
+                    }
+                    // Computed unit is not pixels. Stop here and return.
+                    if (rnumnonpx.test(val)) {
+                        return val;
+                    }
+                    // we need the check for style in case a browser which returns unreliable values
+                    // for getComputedStyle silently falls back to the reliable elem.style
+                    valueIsBorderBox = isBorderBox && (support.boxSizingReliable() || val === elem.style[name]);
+                    // Normalize "", auto, and prepare for extra
+                    val = parseFloat(val) || 0;
+                }
+                // use the active box-sizing model to add/subtract irrelevant styles
+                return val + augmentWidthOrHeight(elem, name, extra || (isBorderBox ? 'border' : 'content'), valueIsBorderBox, styles) + 'px';
+            }
+
+            jQuery.extend({
+                // Add in style property hooks for overriding the default
+                // behavior of getting and setting a style property
+                cssHooks: {
+                    opacity: {
+                        get: function (
+                            elem,
+                            computed
+                        ) {
+                            if (computed) {
+                                // We should always get a number back from opacity
+                                var ret = curCSS(elem, 'opacity');
+                                return ret === '' ? '1' : ret;
+                            }
+                        }
+                    }
+                },
+                // Don't automatically add "px" to these possibly-unitless properties
+                cssNumber: {
+                    'animationIterationCount': true,
+                    'columnCount': true,
+                    'fillOpacity': true,
+                    'flexGrow': true,
+                    'flexShrink': true,
+                    'fontWeight': true,
+                    'lineHeight': true,
+                    'opacity': true,
+                    'order': true,
+                    'orphans': true,
+                    'widows': true,
+                    'zIndex': true,
+                    'zoom': true
+                },
+                // Add in properties whose names you wish to fix before
+                // setting or getting the value
+                cssProps: {
+                    // normalize float css property
+                    'float': support.cssFloat ? 'cssFloat' : 'styleFloat'
+                },
+                // Get and set the style property on a DOM Node
+                style: function (
+                    elem,
+                    name,
+                    value,
+                    extra
+                ) {
+                    // Don't set styles on text and comment nodes
+                    if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style) {
+                        return;
+                    }
+                    // Make sure that we're working with the right name
+                    var ret, type, hooks, origName = jQuery.camelCase(name), style = elem.style;
+                    name = jQuery.cssProps[origName] || (jQuery.cssProps[origName] = vendorPropName(origName) || origName);
+                    // gets hook for the prefixed version
+                    // followed by the unprefixed version
+                    hooks = jQuery.cssHooks[name] || jQuery.cssHooks[origName];
+                    // Check if we're setting a value
+                    if (value !== undefined) {
+                        type = typeof value;
+                        // Convert "+=" or "-=" to relative numbers (#7345)
+                        if (type === 'string' && (ret = rcssNum.exec(value)) && ret[1]) {
+                            value = adjustCSS(elem, name, ret);
+                            // Fixes bug #9237
+                            type = 'number';
+                        }
+                        // Make sure that null and NaN values aren't set. See: #7116
+                        if (value == null || value !== value) {
+                            return;
+                        }
+                        // If a number was passed in, add the unit (except for certain CSS properties)
+                        if (type === 'number') {
+                            value += ret && ret[3] || (jQuery.cssNumber[origName] ? '' : 'px');
+                        }
+                        // Fixes #8908, it can be done more correctly by specifing setters in cssHooks,
+                        // but it would mean to define eight
+                        // (for every problematic property) identical functions
+                        if (!support.clearCloneStyle && value === '' && name.indexOf('background') === 0) {
+                            style[name] = 'inherit';
+                        }
+                        // If a hook was provided, use that value, otherwise just set the specified value
+                        if (!hooks || !('set' in hooks) || (value = hooks.set(elem, value, extra)) !== undefined) {
+                            // Support: IE
+                            // Swallow errors from 'invalid' CSS values (#5509)
+                            try {
+                                style[name] = value;
+                            } catch (e) {
+                            }
+                        }
+                    } else {
+                        // If a hook was provided get the non-computed value from there
+                        if (hooks && 'get' in hooks && (ret = hooks.get(elem, false, extra)) !== undefined) {
+                            return ret;
+                        }
+                        // Otherwise just get the value from the style object
+                        return style[name];
+                    }
+                },
+                css: function (
+                    elem,
+                    name,
+                    extra,
+                    styles
+                ) {
+                    var num, val, hooks, origName = jQuery.camelCase(name);
+                    // Make sure that we're working with the right name
+                    name = jQuery.cssProps[origName] || (jQuery.cssProps[origName] = vendorPropName(origName) || origName);
+                    // gets hook for the prefixed version
+                    // followed by the unprefixed version
+                    hooks = jQuery.cssHooks[name] || jQuery.cssHooks[origName];
+                    // If a hook was provided get the computed value from there
+                    if (hooks && 'get' in hooks) {
+                        val = hooks.get(elem, true, extra);
+                    }
+                    // Otherwise, if a way to get the computed value exists, use that
+                    if (val === undefined) {
+                        val = curCSS(elem, name, styles);
+                    }
+                    //convert "normal" to computed value
+                    if (val === 'normal' && name in cssNormalTransform) {
+                        val = cssNormalTransform[name];
+                    }
+                    // Return, converting to number if forced or a qualifier was provided and val looks numeric
+                    if (extra === '' || extra) {
+                        num = parseFloat(val);
+                        return extra === true || isFinite(num) ? num || 0 : val;
+                    }
+                    return val;
+                }
+            });
+            jQuery.each([
+                'height',
+                'width'
+            ], function (
+                i,
+                name
+            ) {
+                jQuery.cssHooks[name] = {
+                    get: function (
+                        elem,
+                        computed,
+                        extra
+                    ) {
+                        if (computed) {
+                            // certain elements can have dimension info if we invisibly show them
+                            // however, it must have a current display style that would benefit from this
+                            return rdisplayswap.test(jQuery.css(elem, 'display')) && elem.offsetWidth === 0 ? swap(elem, cssShow, function () {
+                                return getWidthOrHeight(elem, name, extra);
+                            }) : getWidthOrHeight(elem, name, extra);
+                        }
+                    },
+                    set: function (
+                        elem,
+                        value,
+                        extra
+                    ) {
+                        var styles = extra && getStyles(elem);
+                        return setPositiveNumber(elem, value, extra ? augmentWidthOrHeight(elem, name, extra, support.boxSizing && jQuery.css(elem, 'boxSizing', false, styles) === 'border-box', styles) : 0);
+                    }
+                };
+            });
+            if (!support.opacity) {
+                jQuery.cssHooks.opacity = {
+                    get: function (
+                        elem,
+                        computed
+                    ) {
+                        // IE uses filters for opacity
+                        return ropacity.test((computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || '') ? 0.01 * parseFloat(RegExp.$1) + '' : computed ? '1' : '';
+                    },
+                    set: function (
+                        elem,
+                        value
+                    ) {
+                        var style = elem.style, currentStyle = elem.currentStyle,
+                            opacity = jQuery.isNumeric(value) ? 'alpha(opacity=' + value * 100 + ')' : '',
+                            filter = currentStyle && currentStyle.filter || style.filter || '';
+                        // IE has trouble with opacity if it does not have layout
+                        // Force it by setting the zoom level
+                        style.zoom = 1;
+                        // if setting opacity to 1, and no other filters exist -
+                        // attempt to remove filter attribute #6652
+                        // if value === "", then remove inline opacity #12685
+                        if ((value >= 1 || value === '') && jQuery.trim(filter.replace(ralpha, '')) === '' && style.removeAttribute) {
+                            // Setting style.filter to null, "" & " " still leave "filter:" in the cssText
+                            // if "filter:" is present at all, clearType is disabled, we want to avoid this
+                            // style.removeAttribute is IE Only, but so apparently is this code path...
+                            style.removeAttribute('filter');
+                            // if there is no filter style applied in a css rule
+                            // or unset inline opacity, we are done
+                            if (value === '' || currentStyle && !currentStyle.filter) {
+                                return;
+                            }
+                        }
+                        // otherwise, set new filter values
+                        style.filter = ralpha.test(filter) ? filter.replace(ralpha, opacity) : filter + ' ' + opacity;
+                    }
+                };
+            }
+            jQuery.cssHooks.marginRight = addGetHookIf(support.reliableMarginRight, function (
+                elem,
+                computed
+            ) {
+                if (computed) {
+                    return swap(elem, {'display': 'inline-block'}, curCSS, [
+                        elem,
+                        'marginRight'
+                    ]);
+                }
+            });
+            jQuery.cssHooks.marginLeft = addGetHookIf(support.reliableMarginLeft, function (
+                elem,
+                computed
+            ) {
+                if (computed) {
+                    return (parseFloat(curCSS(elem, 'marginLeft')) || (jQuery.contains(elem.ownerDocument, elem) ? elem.getBoundingClientRect().left - swap(elem, {marginLeft: 0}, function () {
+                        return elem.getBoundingClientRect().left;
+                    }) : 0)) + 'px';
+                }
+            });
+            // These hooks are used by animate to expand properties
+            jQuery.each({
+                margin: '',
+                padding: '',
+                border: 'Width'
+            }, function (
+                prefix,
+                suffix
+            ) {
+                jQuery.cssHooks[prefix + suffix] = {
+                    expand: function (value) {
+                        var i = 0, expanded = {},
+                            // assumes a single number if not a string
+                            parts = typeof value === 'string' ? value.split(' ') : [value];
+                        for (; i < 4; i++) {
+                            expanded[prefix + cssExpand[i] + suffix] = parts[i] || parts[i - 2] || parts[0];
+                        }
+                        return expanded;
+                    }
+                };
+                if (!rmargin.test(prefix)) {
+                    jQuery.cssHooks[prefix + suffix].set = setPositiveNumber;
+                }
+            });
+            jQuery.fn.extend({
+                css: function (
+                    name,
+                    value
+                ) {
+                    return access(this, function (
+                        elem,
+                        name,
+                        value
+                    ) {
+                        var styles, len, map = {}, i = 0;
+                        if (jQuery.isArray(name)) {
+                            styles = getStyles(elem);
+                            len = name.length;
+                            for (; i < len; i++) {
+                                map[name[i]] = jQuery.css(elem, name[i], false, styles);
+                            }
+                            return map;
+                        }
+                        return value !== undefined ? jQuery.style(elem, name, value) : jQuery.css(elem, name);
+                    }, name, value, arguments.length > 1);
+                },
+                show: function () {
+                    return showHide(this, true);
+                },
+                hide: function () {
+                    return showHide(this);
+                },
+                toggle: function (state) {
+                    if (typeof state === 'boolean') {
+                        return state ? this.show() : this.hide();
+                    }
+                    return this.each(function () {
+                        if (isHidden(this)) {
+                            jQuery(this).show();
+                        } else {
+                            jQuery(this).hide();
+                        }
+                    });
+                }
+            });
+            return jQuery;
+        }(jquery_core, jquery_var_pnum, jquery_core_access, jquery_css_var_rmargin, jquery_var_document, jquery_var_rcssNum, jquery_css_var_rnumnonpx, jquery_css_var_cssExpand, jquery_css_var_isHidden, jquery_css_var_swap, jquery_css_curCSS, jquery_css_adjustCSS, jquery_css_defaultDisplay, jquery_css_addGetHookIf, jquery_css_support);
+        jquery_css_hiddenVisibleSelectors = function (
+            jQuery,
+            document,
+            support
+        ) {
+            function getDisplay(elem) {
+                return elem.style && elem.style.display || jQuery.css(elem, 'display');
+            }
+
+            function filterHidden(elem) {
+                // Disconnected elements are considered hidden
+                if (!jQuery.contains(elem.ownerDocument || document, elem)) {
+                    return true;
+                }
+                while (elem && elem.nodeType === 1) {
+                    if (getDisplay(elem) === 'none' || elem.type === 'hidden') {
+                        return true;
+                    }
+                    elem = elem.parentNode;
+                }
+                return false;
+            }
+
+            jQuery.expr.filters.hidden = function (elem) {
+                // Support: Opera <= 12.12
+                // Opera reports offsetWidths and offsetHeights less than zero on some elements
+                return support.reliableHiddenOffsets() ? elem.offsetWidth <= 0 && elem.offsetHeight <= 0 && !elem.getClientRects().length : filterHidden(elem);
+            };
+            jQuery.expr.filters.visible = function (elem) {
+                return !jQuery.expr.filters.hidden(elem);
+            };
+        }(jquery_core, jquery_var_document, jquery_css_support);
+        jquery_ajax_var_location = window.location;
+        jquery_ajax_var_nonce = function (jQuery) {
+            return jQuery.now();
+        }(jquery_core);
+        jquery_ajax_var_rquery = /\?/;
+        jquery_ajax_parseJSON = function (jQuery) {
+            var rvalidtokens = /(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g;
+            jQuery.parseJSON = function (data) {
+                // Attempt to parse using the native JSON parser first
+                if (window.JSON && window.JSON.parse) {
+                    // Support: Android 2.3
+                    // Workaround failure to string-cast null input
+                    return window.JSON.parse(data + '');
+                }
+                var requireNonComma, depth = null, str = jQuery.trim(data + '');
+                // Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
+                // after removing valid tokens
+                return str && !jQuery.trim(str.replace(rvalidtokens, function (
+                    token,
+                    comma,
+                    open,
+                    close
+                ) {
+                    // Force termination if we see a misplaced comma
+                    if (requireNonComma && comma) {
+                        depth = 0;
+                    }
+                    // Perform no more replacements after returning to outermost depth
+                    if (depth === 0) {
+                        return token;
+                    }
+                    // Commas must not follow "[", "{", or ","
+                    requireNonComma = open || comma;
+                    // Determine new depth
+                    // array/object open ("[" or "{"): depth += true - false (increment)
+                    // array/object close ("]" or "}"): depth += false - true (decrement)
+                    // other cases ("," or primitive): depth += true - true (numeric cast)
+                    depth += !close - !open;
+                    // Remove this token
+                    return '';
+                })) ? Function('return ' + str)() : jQuery.error('Invalid JSON: ' + data);
+            };
+            return jQuery.parseJSON;
+        }(jquery_core);
+        jquery_ajax = function (
+            jQuery,
+            document,
+            rnotwhite,
+            location,
+            nonce,
+            rquery
+        ) {
+            var rhash = /#.*$/, rts = /([?&])_=[^&]*/,
+                // IE leaves an \r character at EOL
+                rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm,
+                // #7653, #8125, #8152: local protocol detection
+                rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
+                rnoContent = /^(?:GET|HEAD)$/, rprotocol = /^\/\//,
+                rurl = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,
+                /* Prefilters
+                 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
+                 * 2) These are called:
+                 *    - BEFORE asking for a transport
+                 *    - AFTER param serialization (s.data is a string if s.processData is true)
+                 * 3) key is the dataType
+                 * 4) the catchall symbol "*" can be used
+                 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
+                 */
+                prefilters = {},
+                /* Transports bindings
+                 * 1) key is the dataType
+                 * 2) the catchall symbol "*" can be used
+                 * 3) selection will start with transport dataType and THEN go to "*" if needed
+                 */
+                transports = {},
+                // Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
+                allTypes = '*/'.concat('*'),
+                // Document location
+                ajaxLocation = location.href,
+                // Segment location into parts
+                ajaxLocParts = rurl.exec(ajaxLocation.toLowerCase()) || [];
+
+            // Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
+            function addToPrefiltersOrTransports(structure) {
+                // dataTypeExpression is optional and defaults to "*"
+                return function (
+                    dataTypeExpression,
+                    func
+                ) {
+                    if (typeof dataTypeExpression !== 'string') {
+                        func = dataTypeExpression;
+                        dataTypeExpression = '*';
+                    }
+                    var dataType, i = 0, dataTypes = dataTypeExpression.toLowerCase().match(rnotwhite) || [];
+                    if (jQuery.isFunction(func)) {
+                        // For each dataType in the dataTypeExpression
+                        while (dataType = dataTypes[i++]) {
+                            // Prepend if requested
+                            if (dataType.charAt(0) === '+') {
+                                dataType = dataType.slice(1) || '*';
+                                (structure[dataType] = structure[dataType] || []).unshift(func);  // Otherwise append
+                            } else {
+                                (structure[dataType] = structure[dataType] || []).push(func);
+                            }
+                        }
+                    }
+                };
+            }
+
+            // Base inspection function for prefilters and transports
+            function inspectPrefiltersOrTransports(
+                structure,
+                options,
+                originalOptions,
+                jqXHR
+            ) {
+                var inspected = {}, seekingTransport = structure === transports;
+
+                function inspect(dataType) {
+                    var selected;
+                    inspected[dataType] = true;
+                    jQuery.each(structure[dataType] || [], function (
+                        _,
+                        prefilterOrFactory
+                    ) {
+                        var dataTypeOrTransport = prefilterOrFactory(options, originalOptions, jqXHR);
+                        if (typeof dataTypeOrTransport === 'string' && !seekingTransport && !inspected[dataTypeOrTransport]) {
+                            options.dataTypes.unshift(dataTypeOrTransport);
+                            inspect(dataTypeOrTransport);
+                            return false;
+                        } else if (seekingTransport) {
+                            return !(selected = dataTypeOrTransport);
+                        }
+                    });
+                    return selected;
+                }
+
+                return inspect(options.dataTypes[0]) || !inspected['*'] && inspect('*');
+            }
+
+            // A special extend for ajax options
+            // that takes "flat" options (not to be deep extended)
+            // Fixes #9887
+            function ajaxExtend(
+                target,
+                src
+            ) {
+                var deep, key, flatOptions = jQuery.ajaxSettings.flatOptions || {};
+                for (key in src) {
+                    if (src[key] !== undefined) {
+                        (flatOptions[key] ? target : deep || (deep = {}))[key] = src[key];
+                    }
+                }
+                if (deep) {
+                    jQuery.extend(true, target, deep);
+                }
+                return target;
+            }
+
+            /* Handles responses to an ajax request:
+             * - finds the right dataType (mediates between content-type and expected dataType)
+             * - returns the corresponding response
+             */
+            function ajaxHandleResponses(
+                s,
+                jqXHR,
+                responses
+            ) {
+                var firstDataType, ct, finalDataType, type, contents = s.contents, dataTypes = s.dataTypes;
+                // Remove auto dataType and get content-type in the process
+                while (dataTypes[0] === '*') {
+                    dataTypes.shift();
+                    if (ct === undefined) {
+                        ct = s.mimeType || jqXHR.getResponseHeader('Content-Type');
+                    }
+                }
+                // Check if we're dealing with a known content-type
+                if (ct) {
+                    for (type in contents) {
+                        if (contents[type] && contents[type].test(ct)) {
+                            dataTypes.unshift(type);
+                            break;
+                        }
+                    }
+                }
+                // Check to see if we have a response for the expected dataType
+                if (dataTypes[0] in responses) {
+                    finalDataType = dataTypes[0];
+                } else {
+                    // Try convertible dataTypes
+                    for (type in responses) {
+                        if (!dataTypes[0] || s.converters[type + ' ' + dataTypes[0]]) {
+                            finalDataType = type;
+                            break;
+                        }
+                        if (!firstDataType) {
+                            firstDataType = type;
+                        }
+                    }
+                    // Or just use first one
+                    finalDataType = finalDataType || firstDataType;
+                }
+                // If we found a dataType
+                // We add the dataType to the list if needed
+                // and return the corresponding response
+                if (finalDataType) {
+                    if (finalDataType !== dataTypes[0]) {
+                        dataTypes.unshift(finalDataType);
+                    }
+                    return responses[finalDataType];
+                }
+            }
+
+            /* Chain conversions given the request and the original response
+             * Also sets the responseXXX fields on the jqXHR instance
+             */
+            function ajaxConvert(
+                s,
+                response,
+                jqXHR,
+                isSuccess
+            ) {
+                var conv2, current, conv, tmp, prev, converters = {},
+                    // Work with a copy of dataTypes in case we need to modify it for conversion
+                    dataTypes = s.dataTypes.slice();
+                // Create converters map with lowercased keys
+                if (dataTypes[1]) {
+                    for (conv in s.converters) {
+                        converters[conv.toLowerCase()] = s.converters[conv];
+                    }
+                }
+                current = dataTypes.shift();
+                // Convert to each sequential dataType
+                while (current) {
+                    if (s.responseFields[current]) {
+                        jqXHR[s.responseFields[current]] = response;
+                    }
+                    // Apply the dataFilter if provided
+                    if (!prev && isSuccess && s.dataFilter) {
+                        response = s.dataFilter(response, s.dataType);
+                    }
+                    prev = current;
+                    current = dataTypes.shift();
+                    if (current) {
+                        // There's only work to do if current dataType is non-auto
+                        if (current === '*') {
+                            current = prev;  // Convert response if prev dataType is non-auto and differs from current
+                        } else if (prev !== '*' && prev !== current) {
+                            // Seek a direct converter
+                            conv = converters[prev + ' ' + current] || converters['* ' + current];
+                            // If none found, seek a pair
+                            if (!conv) {
+                                for (conv2 in converters) {
+                                    // If conv2 outputs current
+                                    tmp = conv2.split(' ');
+                                    if (tmp[1] === current) {
+                                        // If prev can be converted to accepted input
+                                        conv = converters[prev + ' ' + tmp[0]] || converters['* ' + tmp[0]];
+                                        if (conv) {
+                                            // Condense equivalence converters
+                                            if (conv === true) {
+                                                conv = converters[conv2];  // Otherwise, insert the intermediate
+                                                                           // dataType
+                                            } else if (converters[conv2] !== true) {
+                                                current = tmp[0];
+                                                dataTypes.unshift(tmp[1]);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            // Apply converter (if not an equivalence)
+                            if (conv !== true) {
+                                // Unless errors are allowed to bubble, catch and return them
+                                if (conv && s['throws']) {
+                                    // jscs:ignore requireDotNotation
+                                    response = conv(response);
+                                } else {
+                                    try {
+                                        response = conv(response);
+                                    } catch (e) {
+                                        return {
+                                            state: 'parsererror',
+                                            error: conv ? e : 'No conversion from ' + prev + ' to ' + current
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return {
+                    state: 'success',
+                    data: response
+                };
+            }
+
+            jQuery.extend({
+                // Counter for holding the number of active queries
+                active: 0,
+                // Last-Modified header cache for next request
+                lastModified: {},
+                etag: {},
+                ajaxSettings: {
+                    url: ajaxLocation,
+                    type: 'GET',
+                    isLocal: rlocalProtocol.test(ajaxLocParts[1]),
+                    global: true,
+                    processData: true,
+                    async: true,
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    /*
+                     timeout: 0,
+                     data: null,
+                     dataType: null,
+                     username: null,
+                     password: null,
+                     cache: null,
+                     throws: false,
+                     traditional: false,
+                     headers: {},
+                     */
+                    accepts: {
+                        '*': allTypes,
+                        text: 'text/plain',
+                        html: 'text/html',
+                        xml: 'application/xml, text/xml',
+                        json: 'application/json, text/javascript'
+                    },
+                    contents: {
+                        xml: /\bxml\b/,
+                        html: /\bhtml/,
+                        json: /\bjson\b/
+                    },
+                    responseFields: {
+                        xml: 'responseXML',
+                        text: 'responseText',
+                        json: 'responseJSON'
+                    },
+                    // Data converters
+                    // Keys separate source (or catchall "*") and destination types with a single space
+                    converters: {
+                        // Convert anything to text
+                        '* text': String,
+                        // Text to html (true = no transformation)
+                        'text html': true,
+                        // Evaluate text as a json expression
+                        'text json': jQuery.parseJSON,
+                        // Parse text as xml
+                        'text xml': jQuery.parseXML
+                    },
+                    // For options that shouldn't be deep extended:
+                    // you can add your own custom options here if
+                    // and when you create one that shouldn't be
+                    // deep extended (see ajaxExtend)
+                    flatOptions: {
+                        url: true,
+                        context: true
+                    }
+                },
+                // Creates a full fledged settings object into target
+                // with both ajaxSettings and settings fields.
+                // If target is omitted, writes into ajaxSettings.
+                ajaxSetup: function (
+                    target,
+                    settings
+                ) {
+                    return settings ? // Building a settings object
+                        ajaxExtend(ajaxExtend(target, jQuery.ajaxSettings), settings) : // Extending ajaxSettings
+                        ajaxExtend(jQuery.ajaxSettings, target);
+                },
+                ajaxPrefilter: addToPrefiltersOrTransports(prefilters),
+                ajaxTransport: addToPrefiltersOrTransports(transports),
+                // Main method
+                ajax: function (
+                    url,
+                    options
+                ) {
+                    // If url is an object, simulate pre-1.5 signature
+                    if (typeof url === 'object') {
+                        options = url;
+                        url = undefined;
+                    }
+                    // Force options to be an object
+                    options = options || {};
+                    var
+                        // Cross-domain detection vars
+                        parts,
+                        // Loop variable
+                        i,
+                        // URL without anti-cache param
+                        cacheURL,
+                        // Response headers as string
+                        responseHeadersString,
+                        // timeout handle
+                        timeoutTimer,
+                        // To know if global events are to be dispatched
+                        fireGlobals, transport,
+                        // Response headers
+                        responseHeaders,
+                        // Create the final options object
+                        s = jQuery.ajaxSetup({}, options),
+                        // Callbacks context
+                        callbackContext = s.context || s,
+                        // Context for global events is callbackContext if it is a DOM node or jQuery collection
+                        globalEventContext = s.context && (callbackContext.nodeType || callbackContext.jquery) ? jQuery(callbackContext) : jQuery.event,
+                        // Deferreds
+                        deferred = jQuery.Deferred(), completeDeferred = jQuery.Callbacks('once memory'),
+                        // Status-dependent callbacks
+                        statusCode = s.statusCode || {},
+                        // Headers (they are sent all at once)
+                        requestHeaders = {}, requestHeadersNames = {},
+                        // The jqXHR state
+                        state = 0,
+                        // Default abort message
+                        strAbort = 'canceled',
+                        // Fake xhr
+                        jqXHR = {
+                            readyState: 0,
+                            // Builds headers hashtable if needed
+                            getResponseHeader: function (key) {
+                                var match;
+                                if (state === 2) {
+                                    if (!responseHeaders) {
+                                        responseHeaders = {};
+                                        while (match = rheaders.exec(responseHeadersString)) {
+                                            responseHeaders[match[1].toLowerCase()] = match[2];
+                                        }
+                                    }
+                                    match = responseHeaders[key.toLowerCase()];
+                                }
+                                return match == null ? null : match;
+                            },
+                            // Raw string
+                            getAllResponseHeaders: function () {
+                                return state === 2 ? responseHeadersString : null;
+                            },
+                            // Caches the header
+                            setRequestHeader: function (
+                                name,
+                                value
+                            ) {
+                                var lname = name.toLowerCase();
+                                if (!state) {
+                                    name = requestHeadersNames[lname] = requestHeadersNames[lname] || name;
+                                    requestHeaders[name] = value;
+                                }
+                                return this;
+                            },
+                            // Overrides response content-type header
+                            overrideMimeType: function (type) {
+                                if (!state) {
+                                    s.mimeType = type;
+                                }
+                                return this;
+                            },
+                            // Status-dependent callbacks
+                            statusCode: function (map) {
+                                var code;
+                                if (map) {
+                                    if (state < 2) {
+                                        for (code in map) {
+                                            // Lazy-add the new callback in a way that preserves old ones
+                                            statusCode[code] = [
+                                                statusCode[code],
+                                                map[code]
+                                            ];
+                                        }
+                                    } else {
+                                        // Execute the appropriate callbacks
+                                        jqXHR.always(map[jqXHR.status]);
+                                    }
+                                }
+                                return this;
+                            },
+                            // Cancel the request
+                            abort: function (statusText) {
+                                var finalText = statusText || strAbort;
+                                if (transport) {
+                                    transport.abort(finalText);
+                                }
+                                done(0, finalText);
+                                return this;
+                            }
+                        };
+                    // Attach deferreds
+                    deferred.promise(jqXHR).complete = completeDeferred.add;
+                    jqXHR.success = jqXHR.done;
+                    jqXHR.error = jqXHR.fail;
+                    // Remove hash character (#7531: and string promotion)
+                    // Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
+                    // Handle falsy url in the settings object (#10093: consistency with old signature)
+                    // We also use the url parameter if available
+                    s.url = ((url || s.url || ajaxLocation) + '').replace(rhash, '').replace(rprotocol, ajaxLocParts[1] + '//');
+                    // Alias method option to type as per ticket #12004
+                    s.type = options.method || options.type || s.method || s.type;
+                    // Extract dataTypes list
+                    s.dataTypes = jQuery.trim(s.dataType || '*').toLowerCase().match(rnotwhite) || [''];
+                    // A cross-domain request is in order when we have a protocol:host:port mismatch
+                    if (s.crossDomain == null) {
+                        parts = rurl.exec(s.url.toLowerCase());
+                        s.crossDomain = !!(parts && (parts[1] !== ajaxLocParts[1] || parts[2] !== ajaxLocParts[2] || (parts[3] || (parts[1] === 'http:' ? '80' : '443')) !== (ajaxLocParts[3] || (ajaxLocParts[1] === 'http:' ? '80' : '443'))));
+                    }
+                    // Convert data if not already a string
+                    if (s.data && s.processData && typeof s.data !== 'string') {
+                        s.data = jQuery.param(s.data, s.traditional);
+                    }
+                    // Apply prefilters
+                    inspectPrefiltersOrTransports(prefilters, s, options, jqXHR);
+                    // If request was aborted inside a prefilter, stop there
+                    if (state === 2) {
+                        return jqXHR;
+                    }
+                    // We can fire global events as of now if asked to
+                    // Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
+                    fireGlobals = jQuery.event && s.global;
+                    // Watch for a new set of requests
+                    if (fireGlobals && jQuery.active++ === 0) {
+                        jQuery.event.trigger('ajaxStart');
+                    }
+                    // Uppercase the type
+                    s.type = s.type.toUpperCase();
+                    // Determine if request has content
+                    s.hasContent = !rnoContent.test(s.type);
+                    // Save the URL in case we're toying with the If-Modified-Since
+                    // and/or If-None-Match header later on
+                    cacheURL = s.url;
+                    // More options handling for requests with no content
+                    if (!s.hasContent) {
+                        // If data is available, append data to url
+                        if (s.data) {
+                            cacheURL = s.url += (rquery.test(cacheURL) ? '&' : '?') + s.data;
+                            // #9682: remove data so that it's not used in an eventual retry
+                            delete s.data;
+                        }
+                        // Add anti-cache in url if needed
+                        if (s.cache === false) {
+                            s.url = rts.test(cacheURL) ? // If there is already a '_' parameter, set its value
+                                cacheURL.replace(rts, '$1_=' + nonce++) : // Otherwise add one to the end
+                                cacheURL + (rquery.test(cacheURL) ? '&' : '?') + '_=' + nonce++;
+                        }
+                    }
+                    // Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+                    if (s.ifModified) {
+                        if (jQuery.lastModified[cacheURL]) {
+                            jqXHR.setRequestHeader('If-Modified-Since', jQuery.lastModified[cacheURL]);
+                        }
+                        if (jQuery.etag[cacheURL]) {
+                            jqXHR.setRequestHeader('If-None-Match', jQuery.etag[cacheURL]);
+                        }
+                    }
+                    // Set the correct header, if data is being sent
+                    if (s.data && s.hasContent && s.contentType !== false || options.contentType) {
+                        jqXHR.setRequestHeader('Content-Type', s.contentType);
+                    }
+                    // Set the Accepts header for the server, depending on the dataType
+                    jqXHR.setRequestHeader('Accept', s.dataTypes[0] && s.accepts[s.dataTypes[0]] ? s.accepts[s.dataTypes[0]] + (s.dataTypes[0] !== '*' ? ', ' + allTypes + '; q=0.01' : '') : s.accepts['*']);
+                    // Check for headers option
+                    for (i in s.headers) {
+                        jqXHR.setRequestHeader(i, s.headers[i]);
+                    }
+                    // Allow custom headers/mimetypes and early abort
+                    if (s.beforeSend && (s.beforeSend.call(callbackContext, jqXHR, s) === false || state === 2)) {
+                        // Abort if not done already and return
+                        return jqXHR.abort();
+                    }
+                    // aborting is no longer a cancellation
+                    strAbort = 'abort';
+                    // Install callbacks on deferreds
+                    for (i in {
+                        success: 1,
+                        error: 1,
+                        complete: 1
+                    }) {
+                        jqXHR[i](s[i]);
+                    }
+                    // Get transport
+                    transport = inspectPrefiltersOrTransports(transports, s, options, jqXHR);
+                    // If no transport, we auto-abort
+                    if (!transport) {
+                        done(-1, 'No Transport');
+                    } else {
+                        jqXHR.readyState = 1;
+                        // Send global event
+                        if (fireGlobals) {
+                            globalEventContext.trigger('ajaxSend', [
+                                jqXHR,
+                                s
+                            ]);
+                        }
+                        // If request was aborted inside ajaxSend, stop there
+                        if (state === 2) {
+                            return jqXHR;
+                        }
+                        // Timeout
+                        if (s.async && s.timeout > 0) {
+                            timeoutTimer = window.setTimeout(function () {
+                                jqXHR.abort('timeout');
+                            }, s.timeout);
+                        }
+                        try {
+                            state = 1;
+                            transport.send(requestHeaders, done);
+                        } catch (e) {
+                            if (state < 2) {
+                                done(-1, e);
+                            } else {
+                                throw e;
+                            }
+                        }
+                    }
+
+                    // Callback for when everything is done
+                    function done(
+                        status,
+                        nativeStatusText,
+                        responses,
+                        headers
+                    ) {
+                        var isSuccess, success, error, response, modified, statusText = nativeStatusText;
+                        // Called once
+                        if (state === 2) {
+                            return;
+                        }
+                        // State is "done" now
+                        state = 2;
+                        // Clear timeout if it exists
+                        if (timeoutTimer) {
+                            window.clearTimeout(timeoutTimer);
+                        }
+                        // Dereference transport for early garbage collection
+                        // (no matter how long the jqXHR object will be used)
+                        transport = undefined;
+                        // Cache response headers
+                        responseHeadersString = headers || '';
+                        // Set readyState
+                        jqXHR.readyState = status > 0 ? 4 : 0;
+                        // Determine if successful
+                        isSuccess = status >= 200 && status < 300 || status === 304;
+                        // Get response data
+                        if (responses) {
+                            response = ajaxHandleResponses(s, jqXHR, responses);
+                        }
+                        // Convert no matter what (that way responseXXX fields are always set)
+                        response = ajaxConvert(s, response, jqXHR, isSuccess);
+                        // If successful, handle type chaining
+                        if (isSuccess) {
+                            // Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+                            if (s.ifModified) {
+                                modified = jqXHR.getResponseHeader('Last-Modified');
+                                if (modified) {
+                                    jQuery.lastModified[cacheURL] = modified;
+                                }
+                                modified = jqXHR.getResponseHeader('etag');
+                                if (modified) {
+                                    jQuery.etag[cacheURL] = modified;
+                                }
+                            }
+                            // if no content
+                            if (status === 204 || s.type === 'HEAD') {
+                                statusText = 'nocontent';  // if not modified
+                            } else if (status === 304) {
+                                statusText = 'notmodified';  // If we have data, let's convert it
+                            } else {
+                                statusText = response.state;
+                                success = response.data;
+                                error = response.error;
+                                isSuccess = !error;
+                            }
+                        } else {
+                            // We extract error from statusText
+                            // then normalize statusText and status for non-aborts
+                            error = statusText;
+                            if (status || !statusText) {
+                                statusText = 'error';
+                                if (status < 0) {
+                                    status = 0;
+                                }
+                            }
+                        }
+                        // Set data for the fake xhr object
+                        jqXHR.status = status;
+                        jqXHR.statusText = (nativeStatusText || statusText) + '';
+                        // Success/Error
+                        if (isSuccess) {
+                            deferred.resolveWith(callbackContext, [
+                                success,
+                                statusText,
+                                jqXHR
+                            ]);
+                        } else {
+                            deferred.rejectWith(callbackContext, [
+                                jqXHR,
+                                statusText,
+                                error
+                            ]);
+                        }
+                        // Status-dependent callbacks
+                        jqXHR.statusCode(statusCode);
+                        statusCode = undefined;
+                        if (fireGlobals) {
+                            globalEventContext.trigger(isSuccess ? 'ajaxSuccess' : 'ajaxError', [
+                                jqXHR,
+                                s,
+                                isSuccess ? success : error
+                            ]);
+                        }
+                        // Complete
+                        completeDeferred.fireWith(callbackContext, [
+                            jqXHR,
+                            statusText
+                        ]);
+                        if (fireGlobals) {
+                            globalEventContext.trigger('ajaxComplete', [
+                                jqXHR,
+                                s
+                            ]);
+                            // Handle the global AJAX counter
+                            if (!--jQuery.active) {
+                                jQuery.event.trigger('ajaxStop');
+                            }
+                        }
+                    }
+
+                    return jqXHR;
+                },
+                getJSON: function (
+                    url,
+                    data,
+                    callback
+                ) {
+                    return jQuery.get(url, data, callback, 'json');
+                },
+                getScript: function (
+                    url,
+                    callback
+                ) {
+                    return jQuery.get(url, undefined, callback, 'script');
+                }
+            });
+            jQuery.each([
+                'get',
+                'post'
+            ], function (
+                i,
+                method
+            ) {
+                jQuery[method] = function (
+                    url,
+                    data,
+                    callback,
+                    type
+                ) {
+                    // shift arguments if data argument was omitted
+                    if (jQuery.isFunction(data)) {
+                        type = type || callback;
+                        callback = data;
+                        data = undefined;
+                    }
+                    // The url can be an options object (which then must have .url)
+                    return jQuery.ajax(jQuery.extend({
+                        url: url,
+                        type: method,
+                        dataType: type,
+                        data: data,
+                        success: callback
+                    }, jQuery.isPlainObject(url) && url));
+                };
+            });
+            return jQuery;
+        }(jquery_core, jquery_var_document, jquery_var_rnotwhite, jquery_ajax_var_location, jquery_ajax_var_nonce, jquery_ajax_var_rquery);
+        jquery_ajax_xhr = function (
+            jQuery,
+            document,
+            support
+        ) {
+            // Create the request object
+            // (This is still attached to ajaxSettings for backward compatibility)
+            jQuery.ajaxSettings.xhr = window.ActiveXObject !== undefined ? // Support: IE6-IE8
+                function () {
+                    // XHR cannot access local files, always use ActiveX for that case
+                    if (this.isLocal) {
+                        return createActiveXHR();
+                    }
+                    // Support: IE 9-11
+                    // IE seems to error on cross-domain PATCH requests when ActiveX XHR
+                    // is used. In IE 9+ always use the native XHR.
+                    // Note: this condition won't catch Edge as it doesn't define
+                    // document.documentMode but it also doesn't support ActiveX so it won't
+                    // reach this code.
+                    if (document.documentMode > 8) {
+                        return createStandardXHR();
+                    }
+                    // Support: IE<9
+                    // oldIE XHR does not support non-RFC2616 methods (#13240)
+                    // See http://msdn.microsoft.com/en-us/library/ie/ms536648(v=vs.85).aspx
+                    // and http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9
+                    // Although this check for six methods instead of eight
+                    // since IE also does not support "trace" and "connect"
+                    return /^(get|post|head|put|delete|options)$/i.test(this.type) && createStandardXHR() || createActiveXHR();
+                } : // For all other browsers, use the standard XMLHttpRequest object
+                createStandardXHR;
+            var xhrId = 0, xhrCallbacks = {}, xhrSupported = jQuery.ajaxSettings.xhr();
+            // Support: IE<10
+            // Open requests must be manually aborted on unload (#5280)
+            // See https://support.microsoft.com/kb/2856746 for more info
+            if (window.attachEvent) {
+                window.attachEvent('onunload', function () {
+                    for (var key in xhrCallbacks) {
+                        xhrCallbacks[key](undefined, true);
+                    }
+                });
+            }
+            // Determine support properties
+            support.cors = !!xhrSupported && 'withCredentials' in xhrSupported;
+            xhrSupported = support.ajax = !!xhrSupported;
+            // Create transport if the browser can provide an xhr
+            if (xhrSupported) {
+                jQuery.ajaxTransport(function (options) {
+                    // Cross domain only allowed if supported through XMLHttpRequest
+                    if (!options.crossDomain || support.cors) {
+                        var callback;
+                        return {
+                            send: function (
+                                headers,
+                                complete
+                            ) {
+                                var i, xhr = options.xhr(), id = ++xhrId;
+                                // Open the socket
+                                xhr.open(options.type, options.url, options.async, options.username, options.password);
+                                // Apply custom fields if provided
+                                if (options.xhrFields) {
+                                    for (i in options.xhrFields) {
+                                        xhr[i] = options.xhrFields[i];
+                                    }
+                                }
+                                // Override mime type if needed
+                                if (options.mimeType && xhr.overrideMimeType) {
+                                    xhr.overrideMimeType(options.mimeType);
+                                }
+                                // X-Requested-With header
+                                // For cross-domain requests, seeing as conditions for a preflight are
+                                // akin to a jigsaw puzzle, we simply never set it to be sure.
+                                // (it can always be set on a per-request basis or even using ajaxSetup)
+                                // For same-domain requests, won't change header if already provided.
+                                if (!options.crossDomain && !headers['X-Requested-With']) {
+                                    headers['X-Requested-With'] = 'XMLHttpRequest';
+                                }
+                                // Set headers
+                                for (i in headers) {
+                                    // Support: IE<9
+                                    // IE's ActiveXObject throws a 'Type Mismatch' exception when setting
+                                    // request header to a null-value.
+                                    //
+                                    // To keep consistent with other XHR implementations, cast the value
+                                    // to string and ignore `undefined`.
+                                    if (headers[i] !== undefined) {
+                                        xhr.setRequestHeader(i, headers[i] + '');
+                                    }
+                                }
+                                // Do send the request
+                                // This may raise an exception which is actually
+                                // handled in jQuery.ajax (so no try/catch here)
+                                xhr.send(options.hasContent && options.data || null);
+                                // Listener
+                                callback = function (
+                                    _,
+                                    isAbort
+                                ) {
+                                    var status, statusText, responses;
+                                    // Was never called and is aborted or complete
+                                    if (callback && (isAbort || xhr.readyState === 4)) {
+                                        // Clean up
+                                        delete xhrCallbacks[id];
+                                        callback = undefined;
+                                        xhr.onreadystatechange = jQuery.noop;
+                                        // Abort manually if needed
+                                        if (isAbort) {
+                                            if (xhr.readyState !== 4) {
+                                                xhr.abort();
+                                            }
+                                        } else {
+                                            responses = {};
+                                            status = xhr.status;
+                                            // Support: IE<10
+                                            // Accessing binary-data responseText throws an exception
+                                            // (#11426)
+                                            if (typeof xhr.responseText === 'string') {
+                                                responses.text = xhr.responseText;
+                                            }
+                                            // Firefox throws an exception when accessing
+                                            // statusText for faulty cross-domain requests
+                                            try {
+                                                statusText = xhr.statusText;
+                                            } catch (e) {
+                                                statusText = '';
+                                            }
+                                            // Filter status for non standard behaviors
+                                            // If the request is local and we have data: assume a success
+                                            // (success with no data won't get notified, that's the best we
+                                            // can do given current implementations)
+                                            if (!status && options.isLocal && !options.crossDomain) {
+                                                status = responses.text ? 200 : 404;  // IE - #1450: sometimes returns
+                                                                                      // 1223 when it should be 204
+                                            } else if (status === 1223) {
+                                                status = 204;
+                                            }
+                                        }
+                                    }
+                                    // Call complete if needed
+                                    if (responses) {
+                                        complete(status, statusText, responses, xhr.getAllResponseHeaders());
+                                    }
+                                };
+                                // Do send the request
+                                // `xhr.send` may raise an exception, but it will be
+                                // handled in jQuery.ajax (so no try/catch here)
+                                if (!options.async) {
+                                    // If we're in sync mode we fire the callback
+                                    callback();
+                                } else if (xhr.readyState === 4) {
+                                    // (IE6 & IE7) if it's in cache and has been
+                                    // retrieved directly we need to fire the callback
+                                    window.setTimeout(callback);
+                                } else {
+                                    // Register the callback, but delay it in case `xhr.send` throws
+                                    // Add to the list of active xhr callbacks
+                                    xhr.onreadystatechange = xhrCallbacks[id] = callback;
+                                }
+                            },
+                            abort: function () {
+                                if (callback) {
+                                    callback(undefined, true);
+                                }
+                            }
+                        };
+                    }
+                });
+            }
+
+            // Functions to create xhrs
+            function createStandardXHR() {
+                try {
+                    return new window.XMLHttpRequest();
+                } catch (e) {
+                }
+            }
+
+            function createActiveXHR() {
+                try {
+                    return new window.ActiveXObject('Microsoft.XMLHTTP');
+                } catch (e) {
+                }
+            }
+        }(jquery_core, jquery_var_document, jquery_var_support);
+        jquery_core_parseHTML = function (
+            jQuery,
+            document,
+            rsingleTag,
+            buildFragment
+        ) {
+            // data: string of html
+            // context (optional): If specified, the fragment will be created in this context,
+            // defaults to document
+            // keepScripts (optional): If true, will include scripts passed in the html string
+            jQuery.parseHTML = function (
+                data,
+                context,
+                keepScripts
+            ) {
+                if (!data || typeof data !== 'string') {
+                    return null;
+                }
+                if (typeof context === 'boolean') {
+                    keepScripts = context;
+                    context = false;
+                }
+                context = context || document;
+                var parsed = rsingleTag.exec(data), scripts = !keepScripts && [];
+                // Single tag
+                if (parsed) {
+                    return [context.createElement(parsed[1])];
+                }
+                parsed = buildFragment([data], context, scripts);
+                if (scripts && scripts.length) {
+                    jQuery(scripts).remove();
+                }
+                return jQuery.merge([], parsed.childNodes);
+            };
+            return jQuery.parseHTML;
+        }(jquery_core, jquery_var_document, jquery_core_var_rsingleTag, jquery_manipulation_buildFragment);
+        jquery_event_alias = function (jQuery) {
+            jQuery.each(('blur focus focusin focusout load resize scroll unload click dblclick ' + 'mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave ' + 'change select submit keydown keypress keyup error contextmenu').split(' '), function (
+                i,
+                name
+            ) {
+                // Handle event binding
+                jQuery.fn[name] = function (
+                    data,
+                    fn
+                ) {
+                    return arguments.length > 0 ? this.on(name, null, data, fn) : this.trigger(name);
+                };
+            });
+            jQuery.fn.extend({
+                hover: function (
+                    fnOver,
+                    fnOut
+                ) {
+                    return this.mouseenter(fnOver).mouseleave(fnOut || fnOver);
+                }
+            });
+        }(jquery_core);
+        jquery_ajax_load = function (jQuery) {
+            // Keep a copy of the old load method
+            var _load = jQuery.fn.load;
+            /**
+             * Load a url into a page
+             */
+            jQuery.fn.load = function (
+                url,
+                params,
+                callback
+            ) {
+                if (typeof url !== 'string' && _load) {
+                    return _load.apply(this, arguments);
+                }
+                var selector, type, response, self = this, off = url.indexOf(' ');
+                if (off > -1) {
+                    selector = jQuery.trim(url.slice(off, url.length));
+                    url = url.slice(0, off);
+                }
+                // If it's a function
+                if (jQuery.isFunction(params)) {
+                    // We assume that it's the callback
+                    callback = params;
+                    params = undefined;  // Otherwise, build a param string
+                } else if (params && typeof params === 'object') {
+                    type = 'POST';
+                }
+                // If we have elements to modify, make the request
+                if (self.length > 0) {
+                    jQuery.ajax({
+                        url: url,
+                        // If "type" variable is undefined, then "GET" method will be used.
+                        // Make value of this field explicit since
+                        // user can override it through ajaxSetup method
+                        type: type || 'GET',
+                        dataType: 'html',
+                        data: params
+                    }).done(function (responseText) {
+                        // Save response for use in complete callback
+                        response = arguments;
+                        self.html(selector ? // If a selector was specified, locate the right elements in a dummy div
+                            // Exclude scripts to avoid IE 'Permission Denied' errors
+                            jQuery('<div>').append(jQuery.parseHTML(responseText)).find(selector) : // Otherwise use
+                                                                                                    // the full result
+                            responseText);  // If the request succeeds, this function gets "data", "status", "jqXHR"
+                                            // but they are ignored because response was set above.
+                                            // If it fails, this function gets "jqXHR", "status", "error"
+                    }).always(callback && function (
+                        jqXHR,
+                        status
+                    ) {
+                        self.each(function () {
+                            callback.apply(this, response || [
+                                jqXHR.responseText,
+                                status,
+                                jqXHR
+                            ]);
+                        });
+                    });
+                }
+                return this;
+            };
+        }(jquery_core);
+        jquery_dimensions = function (
+            jQuery,
+            access
+        ) {
+            // Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
+            jQuery.each({
+                Height: 'height',
+                Width: 'width'
+            }, function (
+                name,
+                type
+            ) {
+                jQuery.each({
+                    padding: 'inner' + name,
+                    content: type,
+                    '': 'outer' + name
+                }, function (
+                    defaultExtra,
+                    funcName
+                ) {
+                    // margin is only for outerHeight, outerWidth
+                    jQuery.fn[funcName] = function (
+                        margin,
+                        value
+                    ) {
+                        var chainable = arguments.length && (defaultExtra || typeof margin !== 'boolean'),
+                            extra = defaultExtra || (margin === true || value === true ? 'margin' : 'border');
+                        return access(this, function (
+                            elem,
+                            type,
+                            value
+                        ) {
+                            var doc;
+                            if (jQuery.isWindow(elem)) {
+                                // As of 5/8/2012 this will yield incorrect results for Mobile Safari, but there
+                                // isn't a whole lot we can do. See pull request at this URL for discussion:
+                                // https://github.com/jquery/jquery/pull/764
+                                return elem.document.documentElement['client' + name];
+                            }
+                            // Get document width or height
+                            if (elem.nodeType === 9) {
+                                doc = elem.documentElement;
+                                // Either scroll[Width/Height] or offset[Width/Height] or client[Width/Height],
+                                // whichever is greatest
+                                // unfortunately, this causes bug #3838 in IE6/8 only,
+                                // but there is currently no good, small way to fix it.
+                                return Math.max(elem.body['scroll' + name], doc['scroll' + name], elem.body['offset' + name], doc['offset' + name], doc['client' + name]);
+                            }
+                            return value === undefined ? // Get width or height on the element, requesting but not forcing parseFloat
+                                jQuery.css(elem, type, extra) : // Set width or height on the element
+                                jQuery.style(elem, type, value, extra);
+                        }, type, chainable ? margin : undefined, chainable, null);
+                    };
+                });
+            });
+            return jQuery;
+        }(jquery_core, jquery_core_access);
+        jquery_deprecated = function (jQuery) {
+            jQuery.fn.extend({
+                bind: function (
+                    types,
+                    data,
+                    fn
+                ) {
+                    return this.on(types, null, data, fn);
+                },
+                unbind: function (
+                    types,
+                    fn
+                ) {
+                    return this.off(types, null, fn);
+                },
+                delegate: function (
+                    selector,
+                    types,
+                    data,
+                    fn
+                ) {
+                    return this.on(types, selector, data, fn);
+                },
+                undelegate: function (
+                    selector,
+                    types,
+                    fn
+                ) {
+                    // ( namespace ) or ( selector, types [, fn] )
+                    return arguments.length === 1 ? this.off(selector, '**') : this.off(types, selector || '**', fn);
+                }
+            });
+            // The number of elements contained in the matched element set
+            jQuery.fn.size = function () {
+                return this.length;
+            };
+            jQuery.fn.andSelf = jQuery.fn.addBack;
+        }(jquery_core);
+        jquery = function (jQuery) {
+            if (!Date.now) {
+                Date.now = function now() {
+                    return new Date().getTime();
+                };
+            }
+            jQuery.ajaxSetup({
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                beforeSend: function (
+                    xhr,
+                    settings
+                ) {
+                    if (settings.params && settings.param) {
+                        settings.data = settings.params.generateRequestData(settings.param);
+                    }
+                }
+            });
+            jQuery.fn.ellipsis = function () {
+                var height = function (
+                    t,
+                    el
+                ) {
+                    return t.height() > el.height();
+                };
+                var width = function (
+                    t,
+                    el
+                ) {
+                    return t.width() > el.width();
+                };
+                var wordwrap = function (
+                    str,
+                    width
+                ) {
+                    return str;  // width = (width ? width : 75);
+                                 // if (!str) { return str; }
+                                 // var regex = '.{1,' +width+ '}(\s|$)|.{' +width+ '}|.+$';
+                                 //
+                                 // return str.match(RegExp(regex, 'g')).join(' ');
+                };
+                return this.each(function () {
+                    var el = jQuery(this);
+                    if (el.css('overflow') === 'hidden') {
+                        var text = wordwrap(el.html(), Math.floor(el.width() / (parseInt(el.css('font-size')) / 1.91)));
+                        var multiline = el.hasClass('multiline');
+                        var t = jQuery(this.cloneNode(true)).hide().css('position', 'absolute').css('overflow', 'visible').width(multiline ? el.width() : 'auto').height(multiline ? 'auto' : el.height());
+                        var func = multiline ? height : width;
+                        t.html(text);
+                        while (text.length > 0 && func(t, el)) {
+                            text = text.substr(0, text.length - 1);
+                            t.html(text + '...');
+                        }
+                        el.html(t.html());
+                        t.remove();
+                    }
+                });
+            };
+            return jQuery;
+        }(jquery_core);
+        loader_advertise = function (
+            jQuery,
+            settings
+        ) {
+            return function (obj) {
+                return jQuery.ajax(settings.requiredData.advertises.url, {
+                    params: obj.params,
+                    param: settings.requiredData.advertises.param
+                });
+            };
+        }(jquery, settings);
+        loader_main = function (
+            jQuery,
+            _,
+            advertise
+        ) {
+            return function () {
+                var advertise_defferr = jQuery.when(advertise(this));
+                advertise_defferr.then(_.bind(function (data) {
+                    this.advertise.parse(data);
+                }, this));
+                return true;
+            };
+        }(jquery, underscore, loader_advertise);
+        models_advertise = function (
+            jQuery,
+            _
+        ) {
+            var Advertise = function (app) {
+                this.app = app;
+                this.informer_id = '';
+                this.informer_id_int = 0;
+                this.footer_html = '';
+                this.header_html = '';
+                this.offers = [];
+                this.css = '';
+            };
+            Advertise.prototype.parse = function (server_obj) {
+                if (server_obj.block.id === undefined) {
+                    this.app.render.not_found();
+                } else {
+                    this.informer_id = server_obj.block.guid;
+                    this.informer_id_int = server_obj.block.id;
+                    this.footer_html = server_obj.block.footer_html;
+                    this.header_html = server_obj.block.header_html;
+                    this.css = server_obj.css;
+                    this.offers = server_obj.offers;
+                    this.app.render.render();
+                    this.app.uh.exclude_clean(server_obj.clean.place);
+                    if (server_obj.clean.place) {
+                        this.app.uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
+                        this.app.uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+                    }
+                    if (this.offers.length === 0) {
+                        this.app.uh.exclude_clean(true);
+                        this.app.uh.retargeting_clean(true);
+                        this.app.uh.retargeting_account_clean(true);
+                        this.app.uh.exclude_click_clean(true);
+                        this.app.uh.retargeting_click_clean(true);
+                    }
+                }
+            };
+            Advertise.prototype.get = function (id) {
+                var offer = _.find(this.offers, function (element) {
+                    return element.id === id;
+                });
+                if (offer === undefined) {
+                    offer = this.offers[0];
+                }
+                return offer;
+            };
+            Advertise.prototype.click = function (id) {
+                var offer = this.get(id);
+                var popup = window.open(offer.url, '_blank');
+                if (popup) {
+                    popup.moveTo(0, 0);
+                }
+                this.app.uh.load();
+                if (offer.camp.retargeting) {
+                    this.app.uh.retargeting_exclude_click.add(offer.id, 1);
+                } else {
+                    this.app.uh.exclude_click.add(offer.id, 1);
+                }
+                this.app.uh.save();
+                this.app.loader();
+            };
+            return Advertise;
+        }(jquery, underscore);
+        models_params = function (
+            jQuery,
+            JSON,
+            _
+        ) {
+            var Params = function (app) {
+                this.app = app;
+                this.w_h = jQuery(window).height();
+                this.w_w = jQuery(window).width();  //this.app.adsparams.post
+            };
+            Params.prototype.generateRequestData = function (req_type) {
+                this.app.uh.load();
+                var data = {};
+                var params = 'params';
+                var adsparams = 'adsparams';
+                if (req_type === 'advertises') {
+                    data['w'] = this.w_w;
+                    data['h'] = this.w_h;
+                    data['block_id'] = this.app[adsparams].block_id;
+                    data['auto'] = this.app[adsparams].auto;
+                    data['country'] = this.app[adsparams].country;
+                    data['region'] = this.app[adsparams].region;
+                    data['ip'] = this.app[adsparams].ip;
+                    data['is_webp'] = this.app[adsparams].is_webp;
+                    data['time_start'] = this.app.time_start;
+                    data['cost'] = this.app.uh.cost_user.get();
+                    data['gender'] = this.app.uh.gender_user.get();
+                    data['retargeting'] = this.app.uh.retargeting.get();
+                    data['index'] = parseInt(this.app[adsparams].index);
+                    if (!_.isNumber(data['index'])) {
+                        data['index'] = 0;
+                    }
+                    data['exclude'] = this.app.uh.exclude_get();
+                    data['retargeting_account_exclude'] = this.app.uh.retargeting_account_exclude_get();
+                    data['retargeting_dynamic_exclude'] = this.app.uh.retargeting_exclude_get();
+                    data['retargeting'] = this.app.uh.retargeting.get();
+                } else if (req_type === 'log') {
+                    var block_impression = 1;
+                    data[params] = {};
+                    data[params]['informer_id'] = this.app.advertise.informer_id;
+                    data[params]['informer_id_int'] = this.app.advertise.informer_id_int;
+                    data[params]['ip'] = this.app[adsparams].ip;
+                    data[params]['cookie'] = this.app[adsparams].cookie;
+                    data[params]['request'] = this.app[adsparams].request;
+                    data[params]['active'] = this.app.logger.logging;
+                    data[params]['test'] = this.app[adsparams].test;
+                    // data['items'] = jQuery.map(this.app.advertise.offers, function(dataItem) {
+                    //     var item = {};
+                    //     item.guid = dataItem.guid;
+                    //     item.id = dataItem.id;
+                    //     item.campaign_social = dataItem.campaign_social;
+                    //     item.token = dataItem.token;
+                    //     item.campaign_guid = dataItem.guid_cam;
+                    //     item.campaign_id = dataItem.id_cam;
+                    //     item.retargeting = dataItem.retargeting;
+                    //     item.branch = dataItem.branch;
+                    //     return item;
+                    // });
+                    data['items'] = [];
+                    this.app.uh.load();
+                    _.each(this.app.advertise.offers, function (offer) {
+                        var item = {};
+                        item.guid = offer.guid;
+                        item.id = offer.id;
+                        item.campaign_social = offer.campaign_social;
+                        item.token = offer.token;
+                        item.campaign_guid = offer.guid_cam;
+                        item.campaign_id = offer.id_cam;
+                        item.retargeting = offer.retargeting;
+                        item.branch = offer.branch;
+                        this.data['items'].push(item);
+                        if (this.app.logger.logging === 'complite') {
+                            if (offer.retargeting) {
+                                this.app.uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
+                                this.app.uh.retargeting_view.add(offer.id);
+                            } else {
+                                this.app.uh.exclude.add(offer.id, offer.unique_impression_lot);
+                            }
+                        }
+                    }, {
+                        app: this.app,
+                        data: data
+                    });
+                    this.app.uh.save();
+                }
+                return JSON.stringify(data);
+            };
+            return Params;
+        }(jquery, json3, underscore);
+        render_bind_redirect = function (
+            jQuery,
+            _
+        ) {
+            return function (el) {
+                var items = el.find('div[data-id]');
+                var app = this.app;
+                _.each(items, function (
+                    element,
+                    index,
+                    list
+                ) {
+                    jQuery(element).on('mousedown', function (event) {
+                        if (event.which === 1 || event.which === 2) {
+                            var item = jQuery(event.currentTarget);
+                            var id = item.data('id');
+                            app.advertise.click(id);
+                        }
+                    });
+                }, this);
+            };
+        }(jquery, underscore);
+        render_bind_slider = function (
+            jQuery,
+            _
+        ) {
+            return function (el) {
+                var items = el.find('.imageCon');
+                _.each(items, function (
+                    element,
+                    index,
+                    list
+                ) {
+                    var el = jQuery(element);
+                    var slideCount = el.find('img').length;
+                    var slideWidth = el.find('img').width();
+                    var slideHeight = el.find('img').height();
+                    var sliderUlWidth = slideCount * slideWidth;
+                    if (slideHeight <= 0) {
+                        slideHeight = 'auto';
+                    }
+                    el.css({
+                        width: slideWidth,
+                        height: slideHeight
+                    });
+                    if (slideCount > 1) {
+                        el.find('ul').css({
+                            width: sliderUlWidth,
+                            marginLeft: -slideWidth,
+                            zoom: 1
+                        });
+                        el.find('li').css({zoom: 1});
+                        el.find('img').css({zoom: 1});
+                        el.find('li:last-child').prependTo(el.find('ul'));
+                        el.find('div.control_prev').unbind();
+                        el.find('div.control_next').unbind();
+                        el.find('div.control_prev').click(function (event) {
+                            event.stopPropagation();
+                            var el = jQuery(event.target).parent();
+                            var slideWidth = el.find('img').width();
+                            el.find('ul').animate({left: +slideWidth}, 900, 'easeOutCirc', function () {
+                                el.find('li:last-child').prependTo(el.find('ul'));
+                                el.find('ul').css({
+                                    'left': '',
+                                    zoom: 1
+                                });
+                            });
+                        });
+                        el.find('div.control_next').click(function (event) {
+                            event.stopPropagation();
+                            var el = jQuery(event.target).parent();
+                            var slideWidth = el.find('img').width();
+                            el.find('ul').animate({left: -slideWidth}, 900, 'easeOutCirc', function () {
+                                el.find('li:first-child').appendTo(el.find('ul'));
+                                el.find('ul').css({
+                                    'left': '',
+                                    zoom: 1
+                                });
+                            });
+                        });
+                    } else {
+                        el.find('ul').css({width: sliderUlWidth});
+                        el.find('div.control_prev').hide();
+                        el.find('div.control_next').hide();
+                    }
+                }, this);
+            };
+        }(jquery, underscore);
+        render_apply_css = function (
+            jQuery,
+            _
+        ) {
+            return function () {
+                if (document.createStyleSheet) {
+                    var styleSheet = document.createStyleSheet('');
+                    styleSheet.cssText = this.app.advertise.css;
+                } else {
+                    jQuery('<style type="text/css">' + this.app.advertise.css + '</style>').appendTo('head');
+                }
+            };
+        }(jquery, underscore);
+        text = function (module) {
+            var text, fs, Cc, Ci, xpcIsWindows, progIds = [
+                    'Msxml2.XMLHTTP',
+                    'Microsoft.XMLHTTP',
+                    'Msxml2.XMLHTTP.4.0'
+                ], xmlRegExp = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,
+                bodyRegExp = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,
+                hasLocation = typeof location !== 'undefined' && location.href,
+                defaultProtocol = hasLocation && location.protocol && location.protocol.replace(/\:/, ''),
+                defaultHostName = hasLocation && location.hostname,
+                defaultPort = hasLocation && (location.port || undefined), buildMap = {},
+                masterConfig = module.config && module.config() || {};
+
+            function useDefault(
+                value,
+                defaultValue
+            ) {
+                return value === undefined || value === '' ? defaultValue : value;
+            }
+
+            //Allow for default ports for http and https.
+            function isSamePort(
+                protocol1,
+                port1,
+                protocol2,
+                port2
+            ) {
+                if (port1 === port2) {
+                    return true;
+                } else if (protocol1 === protocol2) {
+                    if (protocol1 === 'http') {
+                        return useDefault(port1, '80') === useDefault(port2, '80');
+                    } else if (protocol1 === 'https') {
+                        return useDefault(port1, '443') === useDefault(port2, '443');
+                    }
+                }
+                return false;
+            }
+
+            text = {
+                version: '2.0.15',
+                strip: function (content) {
+                    //Strips <?xml ...?> declarations so that external SVG and XML
+                    //documents can be added to a document without worry. Also, if the string
+                    //is an HTML document, only the part inside the body tag is returned.
+                    if (content) {
+                        content = content.replace(xmlRegExp, '');
+                        var matches = content.match(bodyRegExp);
+                        if (matches) {
+                            content = matches[1];
+                        }
+                    } else {
+                        content = '';
+                    }
+                    return content;
+                },
+                jsEscape: function (content) {
+                    return content.replace(/(['\\])/g, '\\$1').replace(/[\f]/g, '\\f').replace(/[\b]/g, '\\b').replace(/[\n]/g, '\\n').replace(/[\t]/g, '\\t').replace(/[\r]/g, '\\r').replace(/[\u2028]/g, '\\u2028').replace(/[\u2029]/g, '\\u2029');
+                },
+                createXhr: masterConfig.createXhr || function () {
+                    //Would love to dump the ActiveX crap in here. Need IE 6 to die first.
+                    var xhr, i, progId;
+                    if (typeof XMLHttpRequest !== 'undefined') {
+                        return new XMLHttpRequest();
+                    } else if (typeof ActiveXObject !== 'undefined') {
+                        for (i = 0; i < 3; i += 1) {
+                            progId = progIds[i];
+                            try {
+                                xhr = new ActiveXObject(progId);
+                            } catch (e) {
+                            }
+                            if (xhr) {
+                                progIds = [progId];
+                                // so faster next time
+                                break;
+                            }
+                        }
+                    }
+                    return xhr;
+                },
+                /**
+                 * Parses a resource name into its component parts. Resource names
+                 * look like: module/name.ext!strip, where the !strip part is
+                 * optional.
+                 * @param {String} name the resource name
+                 * @returns {Object} with properties "moduleName", "ext" and "strip"
+                 * where strip is a boolean.
+                 */
+                parseName: function (name) {
+                    var modName, ext, temp, strip = false, index = name.lastIndexOf('.'),
+                        isRelative = name.indexOf('./') === 0 || name.indexOf('../') === 0;
+                    if (index !== -1 && (!isRelative || index > 1)) {
+                        modName = name.substring(0, index);
+                        ext = name.substring(index + 1);
+                    } else {
+                        modName = name;
+                    }
+                    temp = ext || modName;
+                    index = temp.indexOf('!');
+                    if (index !== -1) {
+                        //Pull off the strip arg.
+                        strip = temp.substring(index + 1) === 'strip';
+                        temp = temp.substring(0, index);
+                        if (ext) {
+                            ext = temp;
+                        } else {
+                            modName = temp;
+                        }
+                    }
+                    return {
+                        moduleName: modName,
+                        ext: ext,
+                        strip: strip
+                    };
+                },
+                xdRegExp: /^((\w+)\:)?\/\/([^\/\\]+)/,
+                /**
+                 * Is an URL on another domain. Only works for browser use, returns
+                 * false in non-browser environments. Only used to know if an
+                 * optimized .js version of a text resource should be loaded
+                 * instead.
+                 * @param {String} url
+                 * @returns Boolean
+                 */
+                useXhr: function (
+                    url,
+                    protocol,
+                    hostname,
+                    port
+                ) {
+                    var uProtocol, uHostName, uPort, match = text.xdRegExp.exec(url);
+                    if (!match) {
+                        return true;
+                    }
+                    uProtocol = match[2];
+                    uHostName = match[3];
+                    uHostName = uHostName.split(':');
+                    uPort = uHostName[1];
+                    uHostName = uHostName[0];
+                    return (!uProtocol || uProtocol === protocol) && (!uHostName || uHostName.toLowerCase() === hostname.toLowerCase()) && (!uPort && !uHostName || isSamePort(uProtocol, uPort, protocol, port));
+                },
+                finishLoad: function (
+                    name,
+                    strip,
+                    content,
+                    onLoad
+                ) {
+                    content = strip ? text.strip(content) : content;
+                    if (masterConfig.isBuild) {
+                        buildMap[name] = content;
+                    }
+                    onLoad(content);
+                },
+                load: function (
+                    name,
+                    req,
+                    onLoad,
+                    config
+                ) {
+                    //Name has format: some.module.filext!strip
+                    //The strip part is optional.
+                    //if strip is present, then that means only get the string contents
+                    //inside a body tag in an HTML string. For XML/SVG content it means
+                    //removing the <?xml ...?> declarations so the content can be inserted
+                    //into the current doc without problems.
+                    // Do not bother with the work if a build and text will
+                    // not be inlined.
+                    if (config && config.isBuild && !config.inlineText) {
+                        onLoad();
+                        return;
+                    }
+                    masterConfig.isBuild = config && config.isBuild;
+                    var parsed = text.parseName(name),
+                        nonStripName = parsed.moduleName + (parsed.ext ? '.' + parsed.ext : ''),
+                        url = req.toUrl(nonStripName), useXhr = masterConfig.useXhr || text.useXhr;
+                    // Do not load if it is an empty: url
+                    if (url.indexOf('empty:') === 0) {
+                        onLoad();
+                        return;
+                    }
+                    //Load the text. Use XHR if possible and in a browser.
+                    if (!hasLocation || useXhr(url, defaultProtocol, defaultHostName, defaultPort)) {
+                        text.get(url, function (content) {
+                            text.finishLoad(name, parsed.strip, content, onLoad);
+                        }, function (err) {
+                            if (onLoad.error) {
+                                onLoad.error(err);
+                            }
+                        });
+                    } else {
+                        //Need to fetch the resource across domains. Assume
+                        //the resource has been optimized into a JS module. Fetch
+                        //by the module name + extension, but do not include the
+                        //!strip part to avoid file system issues.
+                        req([nonStripName], function (content) {
+                            text.finishLoad(parsed.moduleName + '.' + parsed.ext, parsed.strip, content, onLoad);
+                        });
+                    }
+                },
+                write: function (
+                    pluginName,
+                    moduleName,
+                    write,
+                    config
+                ) {
+                    if (buildMap.hasOwnProperty(moduleName)) {
+                        var content = text.jsEscape(buildMap[moduleName]);
+                        write.asModule(pluginName + '!' + moduleName, 'define(function () { return \'' + content + '\';});\n');
+                    }
+                },
+                writeFile: function (
+                    pluginName,
+                    moduleName,
+                    req,
+                    write,
+                    config
+                ) {
+                    var parsed = text.parseName(moduleName), extPart = parsed.ext ? '.' + parsed.ext : '',
+                        nonStripName = parsed.moduleName + extPart,
+                        //Use a '.js' file name so that it indicates it is a
+                        //script that can be loaded across domains.
+                        fileName = req.toUrl(parsed.moduleName + extPart) + '.js';
+                    //Leverage own load() method to load plugin value, but only
+                    //write out values that do not have the strip argument,
+                    //to avoid any potential issues with ! in file names.
+                    text.load(nonStripName, req, function (value) {
+                        //Use own write() method to construct full module value.
+                        //But need to create shell that translates writeFile's
+                        //write() to the right interface.
+                        var textWrite = function (contents) {
+                            return write(fileName, contents);
+                        };
+                        textWrite.asModule = function (
+                            moduleName,
+                            contents
+                        ) {
+                            return write.asModule(moduleName, fileName, contents);
+                        };
+                        text.write(pluginName, nonStripName, textWrite, config);
+                    }, config);
+                }
+            };
+            if (masterConfig.env === 'node' || !masterConfig.env && typeof process !== 'undefined' && process.versions && !!process.versions.node && !process.versions['node-webkit'] && !process.versions['atom-shell']) {
+                //Using special require.nodeRequire, something added by r.js.
+                fs = require.nodeRequire('fs');
+                text.get = function (
+                    url,
+                    callback,
+                    errback
+                ) {
+                    try {
+                        var file = fs.readFileSync(url, 'utf8');
+                        //Remove BOM (Byte Mark Order) from utf8 files if it is there.
+                        if (file[0] === '\uFEFF') {
+                            file = file.substring(1);
+                        }
+                        callback(file);
+                    } catch (e) {
+                        if (errback) {
+                            errback(e);
+                        }
+                    }
+                };
+            } else if (masterConfig.env === 'xhr' || !masterConfig.env && text.createXhr()) {
+                text.get = function (
+                    url,
+                    callback,
+                    errback,
+                    headers
+                ) {
+                    var xhr = text.createXhr(), header;
+                    xhr.open('GET', url, true);
+                    //Allow plugins direct access to xhr headers
+                    if (headers) {
+                        for (header in headers) {
+                            if (headers.hasOwnProperty(header)) {
+                                xhr.setRequestHeader(header.toLowerCase(), headers[header]);
+                            }
+                        }
+                    }
+                    //Allow overrides specified in config
+                    if (masterConfig.onXhr) {
+                        masterConfig.onXhr(xhr, url);
+                    }
+                    xhr.onreadystatechange = function (evt) {
+                        var status, err;
+                        //Do not explicitly handle errors, those should be
+                        //visible via console output in the browser.
+                        if (xhr.readyState === 4) {
+                            status = xhr.status || 0;
+                            if (status > 399 && status < 600) {
+                                //An http 4xx or 5xx error. Signal an error.
+                                err = new Error(url + ' HTTP status: ' + status);
+                                err.xhr = xhr;
+                                if (errback) {
+                                    errback(err);
+                                }
+                            } else {
+                                callback(xhr.responseText);
+                            }
+                            if (masterConfig.onXhrComplete) {
+                                masterConfig.onXhrComplete(xhr, url);
+                            }
+                        }
+                    };
+                    xhr.send(null);
+                };
+            } else if (masterConfig.env === 'rhino' || !masterConfig.env && typeof Packages !== 'undefined' && typeof java !== 'undefined') {
+                //Why Java, why is this so awkward?
+                text.get = function (
+                    url,
+                    callback
+                ) {
+                    var stringBuffer, line, encoding = 'utf-8', file = new java.io.File(url),
+                        lineSeparator = java.lang.System.getProperty('line.separator'),
+                        input = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), encoding)),
+                        content = '';
+                    try {
+                        stringBuffer = new java.lang.StringBuffer();
+                        line = input.readLine();
+                        // Byte Order Mark (BOM) - The Unicode Standard, version 3.0, page 324
+                        // http://www.unicode.org/faq/utf_bom.html
+                        // Note that when we use utf-8, the BOM should appear as "EF BB BF", but it doesn't due to this
+                        // bug in the JDK: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4508058
+                        if (line && line.length() && line.charAt(0) === 65279) {
+                            // Eat the BOM, since we've already found the encoding on this file,
+                            // and we plan to concatenating this buffer with others; the BOM should
+                            // only appear at the top of a file.
+                            line = line.substring(1);
+                        }
+                        if (line !== null) {
+                            stringBuffer.append(line);
+                        }
+                        while ((line = input.readLine()) !== null) {
+                            stringBuffer.append(lineSeparator);
+                            stringBuffer.append(line);
+                        }
+                        //Make sure we return a JavaScript string and not a Java string.
+                        content = String(stringBuffer.toString());  //String
+                    } finally {
+                        input.close();
+                    }
+                    callback(content);
+                };
+            } else if (masterConfig.env === 'xpconnect' || !masterConfig.env && typeof Components !== 'undefined' && Components.classes && Components.interfaces) {
+                //Avert your gaze!
+                Cc = Components.classes;
+                Ci = Components.interfaces;
+                Components.utils['import']('resource://gre/modules/FileUtils.jsm');
+                xpcIsWindows = '@mozilla.org/windows-registry-key;1' in Cc;
+                text.get = function (
+                    url,
+                    callback
+                ) {
+                    var inStream, convertStream, fileObj, readData = {};
+                    if (xpcIsWindows) {
+                        url = url.replace(/\//g, '\\');
+                    }
+                    fileObj = new FileUtils.File(url);
+                    //XPCOM, you so crazy
+                    try {
+                        inStream = Cc['@mozilla.org/network/file-input-stream;1'].createInstance(Ci.nsIFileInputStream);
+                        inStream.init(fileObj, 1, 0, false);
+                        convertStream = Cc['@mozilla.org/intl/converter-input-stream;1'].createInstance(Ci.nsIConverterInputStream);
+                        convertStream.init(inStream, 'utf-8', inStream.available(), Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+                        convertStream.readString(inStream.available(), readData);
+                        convertStream.close();
+                        inStream.close();
+                        callback(readData.value);
+                    } catch (e) {
+                        throw new Error((fileObj && fileObj.path || '') + ': ' + e);
+                    }
+                };
+            }
+            return text;
+        }({});
+        tpl = function (
+            _,
+            text
+        ) {
+            var buildMap = {};
+            var tpl = {
+                version: '0.1.0',
+                load: function (
+                    name,
+                    req,
+                    onLoadNative,
+                    config
+                ) {
+                    var onLoad = function (content) {
+                        // Merge settings
+                        _.extend(_.templateSettings, config.underscoreTemplateSettings || {});
+                        // compile the template
+                        content = _.template(content);
+                        /* jshint ignore:start */
+                        if (config.isBuild) {
+                            content = buildMap[name] = content.source;
+                        } else {
+                            content = new Function('obj', 'return ' + content.source)();
+                        }
+                        /* jshint ignore:end */
+                        onLoadNative(content);
+                    };
+                    // load template using the text plugin
+                    text.load(name, req, onLoad, config);
+                },
+                write: function (
+                    pluginName,
+                    moduleName,
+                    write
+                ) {
+                    if (buildMap.hasOwnProperty(moduleName)) {
+                        write('define("' + pluginName + '!' + moduleName + '", ["underscore"], function(_) { ' + 'return ' + buildMap[moduleName] + ';' + '});\n');
+                    }
+                }
+            };
+            return tpl;
+        }(underscore, text);
+        tpl_templates_advBlockTemplatehtml = function (_) {
+            return function (obj) {
+                var __t, __p = '', __j = Array.prototype.join, print = function () {
+                    __p += __j.call(arguments, '');
+                };
+                with (obj || {}) {
+                    __p += '<div id="mainContainer">\n<div id=\'mainHeader\'>' + ((__t = mainHeader) == null ? '' : __t) + '</div>\n<div id=\'adsContainer\'>' + ((__t = ads) == null ? '' : __t) + '</div>\n<div id=\'mainFooter\'>' + ((__t = mainFooter) == null ? '' : __t) + '</div>\n</div>';
+                }
+                return __p;
+            };
+        }(underscore);
+        tpl_templates_advTemplatehtml = function (_) {
+            return function (obj) {
+                var __t, __p = '', __j = Array.prototype.join, print = function () {
+                    __p += __j.call(arguments, '');
+                };
+                with (obj || {}) {
+                    __p += '';
+                    for (var offer in offers) {
+                        __p += '\n<div data-id=\'' + ((__t = offers[offer].id) == null ? '' : __t) + '\' class=\'' + ((__t = offers[offer].style_class) == null ? '' : __t) + '\'>\n<div class=\'ellipsis multiline header\'>' + ((__t = offers[offer].title) == null ? '' : __t) + '</div>\n<div class=\'ellipsis multiline description\'>' + ((__t = offers[offer].description) == null ? '' : __t) + '</div>\n<div class=\'ellipsis cost\'>' + ((__t = offers[offer].price) == null ? '' : __t) + '</div>\n<div class=\'imageCon\' data-image-id=\'' + ((__t = offers[offer].id) == null ? '' : __t) + '\' data-image-index=\'' + ((__t = offer) == null ? '' : __t) + '\'>\n<div class=\'control_next\'>>></div>\n<div class=\'control_prev\'><<</div>\n<ul>\n';
+                        for (var image in offers[offer].images) {
+                            __p += '\n<li><img src="' + ((__t = offers[offer].images[image]) == null ? '' : __t) + '" alt=""/></li>\n';
+                        }
+                        __p += '\n</ul>\n</div>\n<div class="ellipsis button">' + ((__t = offers[offer].button) == null ? '' : __t) + '</div>\n</div>\n';
+                    }
+                    __p += '';
+                }
+                return __p;
+            };
+        }(underscore);
+        tpl_templates_advBlockNotFoundTemplatehtml = function (_) {
+            return function (obj) {
+                var __t, __p = '', __j = Array.prototype.join, print = function () {
+                    __p += __j.call(arguments, '');
+                };
+                with (obj || {}) {
+                    __p += '<style type="text/css">\nhtml, body {\npadding: 0; margin: 0; border: 0;\n}\n#info {\nmargin: auto;\nbackground-repeat: no-repeat;\noverflow: hidden;\nbackground-image: url(\'https://cdn.yottos.com/logos/colorLogo.gif\');\nheight: 10px;\nwidth: 100px;\n}\n#text{\npadding: 15px;\nmargin: auto;\nwidth: 80%;\ntext-align:center;\nfont-size:1.5em;\ncolor:#F1991B;\nletter-spacing: -1px;\nfont-weight:700;\ntext-transform:uppercase;\nanimation:blur .75s ease-out infinite;\ntext-shadow:0px 0px 5px #fff,\n0px 0px 7px #fff;\n}\n@keyframes blur{\nfrom{\ntext-shadow:0px 0px 10px #fff,\n0px 0px 10px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 25px #fff,\n0px 0px 50px #fff,\n0px 0px 50px #fff,\n0px 0px 50px #7B96B8,\n0px 0px 150px #7B96B8,\n0px 10px 100px #7B96B8,\n0px 10px 100px #7B96B8,\n0px 10px 100px #7B96B8,\n0px 10px 100px #7B96B8,\n0px -10px 100px #7B96B8,\n0px -10px 100px #7B96B8;}\n}\n</style>\n<div id="text"><a href="https://yottos.com/webmasters" target="_blank" style="\n    color: #F1991B;\n        text-decoration: blink;">Как разместить рекламу на своем сайте?</a></div>\n<div id="info"><a href="https://yottos.com/webmasters" target="_blank" title="Реклама от Yottos"></a></div>';
+                }
+                return __p;
+            };
+        }(underscore);
+        templates_main = function (
+            advBlockTemplate,
+            advTemplate,
+            advBlockNotFoundTemplate
+        ) {
+            return {
+                advBlockTemplate: advBlockTemplate,
+                advTemplate: advTemplate,
+                advBlockNotFoundTemplate: advBlockNotFoundTemplate
+            };
+        }(tpl_templates_advBlockTemplatehtml, tpl_templates_advTemplatehtml, tpl_templates_advBlockNotFoundTemplatehtml);
+        render_main = function (
+            jQuery,
+            redirect,
+            slider,
+            apply_css,
+            templates
+        ) {
+            return function (app) {
+                var render_obj = new Object({app: app});
+                render_obj.redirect = redirect;
+                render_obj.slider = slider;
+                render_obj.apply_css = apply_css;
+                render_obj.render = function () {
+                    jQuery('body').html(templates.advBlockTemplate({
+                        mainHeader: this.app.advertise.header_html,
+                        ads: templates.advTemplate({offers: this.app.advertise.offers}),
+                        mainFooter: this.app.advertise.footer_html
+                    }));
+                    this.apply_css();
+                    var $adsContainer = jQuery('#adsContainer');
+                    this.redirect($adsContainer);
+                    this.slider($adsContainer);
+                    jQuery('.ellipsis').ellipsis();
+                    this.app.logger.log();
+                };
+                render_obj.not_found = function () {
+                    (function (
+                        i,
+                        s,
+                        o,
+                        g,
+                        r,
+                        a,
+                        m
+                    ) {
+                        i['GoogleAnalyticsObject'] = r;
+                        i[r] = i[r] || function () {
+                            (i[r].q = i[r].q || []).push(arguments);
+                        }, i[r].l = 1 * new Date();
+                        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+                        a.async = 1;
+                        a.src = g;
+                        m.parentNode.insertBefore(a, m);
+                    }(window, document, 'script', 'https://cdn.yottos.com/ua_5703702_12.js', 'ga'));
+                    jQuery('body').html(templates.advBlockNotFoundTemplate());
+                };
+                return render_obj;
+            };
+        }(jquery, render_bind_redirect, render_bind_slider, render_apply_css, templates_main);
+        loader_offers_log = function (
+            jQuery,
+            settings
+        ) {
+            var Logger = function (app) {
+                this.app = app;
+                this.logging = false;
+                if (!this.app.adsparams.post) {
+                    this.logging = null;
+                }
+            };
+            Logger.prototype.log = function () {
+                if (this.logging === false) {
+                    this.logging = 'initial';
+                    this.send();
+                    this.log();
+                } else if (this.logging === null) {
+                    this.logging = 'initial';
+                    this.send();
+                    this.logging = 'complite';
+                    this.send();
+                } else if (this.logging === 'initial') {
+                    this.logging = 'complite';
+                    this.send();
+                }
+            };
+            Logger.prototype.send = function () {
+                jQuery.ajax(settings.requiredData.offer_log.url, {
+                    params: this.app.params,
+                    param: settings.requiredData.offer_log.param
+                });
+            };
+            return Logger;
+        }(jquery, settings);
+        loader = function (
+            YottosLib,
+            user_history,
+            settings,
+            loader,
+            Advertise,
+            Params,
+            Render,
+            Logger
+        ) {
+            var Loader = function () {
+                this.uh = user_history;
+                this.adsparams = window.adsparams;
+                this.name = 'y_iframe_' + this.adsparams.rand + '_' + this.adsparams.index;
+                this.params = new Params(this);
+                this.settings = settings;
+                this.time_start = new Date().getTime();
+                this.uh.load();
+                this.loader = loader;
+                this.advertise = new Advertise(this);
+                this.render = new Render(this);
+                this.logger = new Logger(this);
+                this.post_listener = function (e) {
+                    if (e && e.data) {
+                        if (typeof e.data === 'string') {
+                            var name = e.data.split(':')[0];
+                            var action = e.data.split(':')[1];
+                            if (this.name === name) {
+                                if (this[action]) {
+                                    this[action](e.origin);
+                                }
+                            }
+                        }
+                    }
+                };
+                this.block_initial = function () {
+                    console.log('block_initial');
+                };
+                this.block_complite = function () {
+                    this.logger.log();
+                    console.log('block_complite');
+                };
+                this.mouse_move = function () {
+                    console.log('mouse_move');
+                };
+                this.ping = function (targetOrigin) {
+                    targetOrigin = targetOrigin || this.adsparams.origin;
+                    if (parent && parent.postMessage) {
+                        parent.postMessage(this.name + ':ping', targetOrigin);
+                    }
+                };
+                YottosLib._.on_event('message', window, this.post_listener, this);
+                this.ping();
+            };
+            return new Loader();
+        }(ytl, user_history_main, settings, loader_main, models_advertise, models_params, render_main, loader_offers_log);
+        (function (Loader) {
+            (window.adsbyyottos = window.adsbyyottos || Loader).loader();
+        }(loader));
+        main = undefined;
+    }());
+}());

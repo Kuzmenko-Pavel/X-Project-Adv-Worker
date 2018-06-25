@@ -25,6 +25,7 @@ class IframesView(web.View):
         rand = post.get('rand', query.get('rand', 0))
         origin = post.get('origin', query.get('origin', '*'))
         ip = post.get('ip', query.get('ip', ''))
+        post_message = True if post.get('post', 'false') == 'true' else False
 
         data = {
             'js': ujson.dumps({
@@ -39,6 +40,7 @@ class IframesView(web.View):
                 'cookie': cookie,
                 'is_webp': is_webp,
                 'origin': origin,
+                'post': post_message,
                 'request': 'initial'
             }),
             'style': reset_css,

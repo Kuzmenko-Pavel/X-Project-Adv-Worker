@@ -1,7 +1,13 @@
 /**
  * Created by kuzmenko-pavel on 20.04.17.
  */
-define(['./../jquery','./../underscore', './../loader/offers_log'], function (jQuery, _, offers_log) {
+define([
+    './../jquery',
+    './../underscore'
+], function (
+    jQuery,
+    _
+) {
     var Advertise = function (app) {
         this.app = app;
         this.informer_id = '';
@@ -61,20 +67,6 @@ define(['./../jquery','./../underscore', './../loader/offers_log'], function (jQ
         }
         this.app.uh.save();
         this.app.loader();
-    };
-    Advertise.prototype.view = function () {
-        this.app.uh.load();
-        _.each(this.offers, function (offer) {
-            if (offer.retargeting) {
-                this.app.uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
-                this.app.uh.retargeting_view.add(offer.id);
-            }
-            else {
-                this.app.uh.exclude.add(offer.id, offer.unique_impression_lot);
-            }
-        }, this);
-        this.app.uh.save();
-        offers_log(this.app);
     };
     return Advertise;
 });
