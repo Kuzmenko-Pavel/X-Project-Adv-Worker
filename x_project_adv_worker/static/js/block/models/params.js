@@ -41,10 +41,6 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             data[retargeting] = this[app].uh.retargeting.get();
         }
         else if (req_type === 'log'){
-            var block_impression = 0;
-            if (this.app.advertise.offers.length > 0) {
-                block_impression = 1 / this[app].advertise.offers.length;
-            }
             data[params] = {};
             data[params][informer + '_id'] = this[app].advertise[informer + '_id'];
             data[params][informer + '_id_int'] = this[app].advertise[informer + '_id_int'];
@@ -55,24 +51,25 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             data.items = [];
             this[app].uh.load();
             _.each(this.app.advertise.offers, function (offer) {
-                var item = {};
-                item.block_impression = block_impression;
-                item.guid = offer.guid;
-                item.id = offer.id;
-                item.campaign_social = offer.campaign_social;
-                item.token = offer.token;
-                item.campaign_guid = offer.guid_cam;
-                item.campaign_id = offer.id_cam;
-                item.retargeting = offer.retargeting;
-                item.branch = offer.branch;
-                this.data.items.push(item);
-                if (this[app].logger.logging === 'complite') {
-                    if (offer.retargeting) {
-                        this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
-                        this[app].uh.retargeting_view.add(offer.id);
-                    }
-                    else {
-                        this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);
+                if (offer.id !== null) {
+                    var item = {};
+                    item.guid = offer.guid;
+                    item.id = offer.id;
+                    item.campaign_social = offer.campaign_social;
+                    item.token = offer.token;
+                    item.campaign_guid = offer.guid_cam;
+                    item.campaign_id = offer.id_cam;
+                    item.retargeting = offer.retargeting;
+                    item.branch = offer.branch;
+                    this.data.items.push(item);
+                    if (this[app].logger.logging === 'complite') {
+                        if (offer.retargeting) {
+                            this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
+                            this[app].uh.retargeting_view.add(offer.id);
+                        }
+                        else {
+                            this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);
+                        }
                     }
                 }
             }, {

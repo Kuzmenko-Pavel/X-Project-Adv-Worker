@@ -24,29 +24,38 @@ define(['./../jquery', './../settings'], function (jQuery, settings) {
         }
     };
     Logger.prototype.log = function () {
+        var request = this.app.adsparams.request;
+        var block_status = this.block_status;
+        var logging = this.logging;
         if (this.offer_status === complite) {
-            if (this.app.adsparams.request === 'initial') {
-                if (this.block_status === null && this.logging === false) {
+            if (request === 'initial') {
+                if (block_status === null && logging === false) {
                     this.logging = initial;
                     this.send();
                     this.logging = complite;
                     this.send();
                 }
-                else if (this.block_status === initial && this.logging === false) {
+                else if (block_status === initial && logging === false) {
                     this.logging = initial;
                     this.send();
                 }
-                else if (this.block_status === complite && this.logging === initial) {
+                else if (block_status === complite && logging === false) {
+                    this.logging = initial;
+                    this.send();
+                    this.logging = complite;
+                    this.send();
+                }
+                else if (block_status === complite && logging === initial) {
                     this.logging = complite;
                     this.send();
                 }
             }
 
-            if (this.app.adsparams.request === 'rotate') {
-                if (this.block_status === null && this.logging === complite) {
+            if (request === 'rotate') {
+                if (block_status === null && logging === complite) {
                     this.send();
                 }
-                else if (this.block_status === complite && this.logging === complite) {
+                else if (block_status === complite && logging === complite) {
                     this.send();
                 }
                 this.app.adsparams.request = 'rotate_complite';
