@@ -60,7 +60,7 @@ define([
                 parent.postMessage(this.name+':ping', targetOrigin);
             }
         };
-        YottosLib._.on_event('message', window, this.post_listener, this);
+        YottosLib.on_event('message', window, this.post_listener, this);
         this.ping();
 
     };

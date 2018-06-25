@@ -1,12 +1,38 @@
 /**
  * Created by kuzmenko-pavel on 13.04.17.
  */
-define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_offers', './retargeting_offers', './gender_account', './gender_user', './cost_account', './cost_user', './activity_account', './activity_user'],
-    function (_, JSON, test, FixedQueue, ExcludeOffers, RetargetingOffers, GenderAccount, GenderUser, CostAccount, CostUser, ActivityAccount, ActivityUser) {
+define([
+        './../underscore',
+        './../json3',
+        './test',
+        './fixed_queue',
+        './exclude_offers',
+        './retargeting_offers',
+        './gender_account',
+        './gender_user',
+        './cost_account',
+        './cost_user'
+        // './activity_account',
+        // './activity_user'
+    ],
+    function (
+        _,
+        JSON,
+        test,
+        FixedQueue,
+        ExcludeOffers,
+        RetargetingOffers,
+        GenderAccount,
+        GenderUser,
+        CostAccount,
+        CostUser
+        // ActivityAccount,
+        // ActivityUser
+    ) {
         var prototype = 'prototype';
         var UserHistory = function () {
-            this.searchengines = new FixedQueue(3);
-            this.context = new FixedQueue(3);
+            // this.searchengines = new FixedQueue(3);
+            // this.context = new FixedQueue(3);
             this.retargeting = new RetargetingOffers();
             this.exclude = new ExcludeOffers();
             this.exclude_click = new ExcludeOffers();
@@ -15,13 +41,13 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             this.retargeting_exclude_click = new ExcludeOffers();
             this.retargeting_account_exclude_click = new ExcludeOffers();
             this.retargeting_view = new ExcludeOffers(true, true);
-            this.history = new FixedQueue(3);
-            this.gender_accounts = new GenderAccount();
+            // this.history = new FixedQueue(3);
+            // this.gender_accounts = new GenderAccount();
             this.gender_user = new GenderUser();
-            this.cost_accounts = new CostAccount();
+            // this.cost_accounts = new CostAccount();
             this.cost_user = new CostUser();
-            this.activity_accounts = new ActivityAccount();
-            this.activity_user = new ActivityUser();
+            // this.activity_accounts = new ActivityAccount();
+            // this.activity_user = new ActivityUser();
         };
         UserHistory[prototype].clear = function () {
             if (test()) {
