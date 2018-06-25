@@ -3,7 +3,6 @@
  */
 define(['./../jquery', './../settings'], function (jQuery, settings) {
     return function (obj) {
-        obj.logger.offer_status = 'initial';
         return jQuery.ajax(
             settings.requiredData.advertises.url,
             {params:obj.params, param:settings.requiredData.advertises.param}

@@ -24,6 +24,7 @@ define([
             this.app.render.not_found();
         }
         else{
+            app.logger.offer_status = 'initial';
             this.informer_id = server_obj.block.guid;
             this.informer_id_int = server_obj.block.id;
             this.footer_html = server_obj.block.footer_html;
@@ -43,6 +44,8 @@ define([
                 uh.exclude_click_clean(true);
                 uh.retargeting_click_clean(true);
             }
+            app.logger.offer_status = 'complite';
+            app.logger.log();
         }
     };
     Advertise.prototype.get = function (id) {
@@ -70,6 +73,7 @@ define([
             uh.exclude_click.add(offer.id, 1);
         }
         uh.save();
+        app.adsparams.request = 'rotate';
         app.loader();
     };
     return Advertise;

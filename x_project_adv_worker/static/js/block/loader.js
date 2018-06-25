@@ -53,7 +53,6 @@ define([
             this.logger.log();
         };
         this.mouse_move = function () {
-            this.logger.log();
         };
         this.ping = function (targetOrigin) {
             targetOrigin = targetOrigin || this.adsparams.origin;

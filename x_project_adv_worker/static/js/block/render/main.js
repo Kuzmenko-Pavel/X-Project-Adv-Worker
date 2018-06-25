@@ -19,8 +19,6 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                 this.redirect($adsContainer);
                 this.slider($adsContainer);
                 jQuery('.ellipsis').ellipsis();
-                this.app.logger.offer_status = 'complite';
-                this.app.logger.log();
             };
             render_obj.not_found = function () {
                 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

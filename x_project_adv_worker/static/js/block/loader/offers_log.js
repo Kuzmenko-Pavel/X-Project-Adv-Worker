@@ -25,19 +25,31 @@ define(['./../jquery', './../settings'], function (jQuery, settings) {
     };
     Logger.prototype.log = function () {
         if (this.offer_status === complite) {
-            if (this.block_status === null) {
-                this.logging = initial;
-                this.send();
-                this.logging = complite;
-                this.send();
+            if (this.app.adsparams.request === 'initial') {
+                if (this.block_status === null && this.logging === false) {
+                    this.logging = initial;
+                    this.send();
+                    this.logging = complite;
+                    this.send();
+                }
+                else if (this.block_status === initial && this.logging === false) {
+                    this.logging = initial;
+                    this.send();
+                }
+                else if (this.block_status === complite && this.logging === initial) {
+                    this.logging = complite;
+                    this.send();
+                }
             }
-            else if (this.block_status === initial && this.logging === false) {
-                this.logging = initial;
-                this.send();
-            }
-            else if (this.block_status === complite && this.logging === initial) {
-                this.logging = complite;
-                this.send();
+
+            if (this.app.adsparams.request === 'rotate') {
+                if (this.block_status === null && this.logging === complite) {
+                    this.send();
+                }
+                else if (this.block_status === complite && this.logging === complite) {
+                    this.send();
+                }
+                this.app.adsparams.request = 'rotate_complite';
             }
         }
     };

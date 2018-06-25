@@ -11182,7 +11182,6 @@
             settings
         ) {
             return function (obj) {
-                obj.logger.offer_status = 'initial';
                 return jQuery.ajax(settings.requiredData.advertises.url, {
                     params: obj.params,
                     param: settings.requiredData.advertises.param
@@ -11221,6 +11220,7 @@
                 if (server_obj.block.id === undefined) {
                     this.app.render.not_found();
                 } else {
+                    app.logger.offer_status = 'initial';
                     this.informer_id = server_obj.block.guid;
                     this.informer_id_int = server_obj.block.id;
                     this.footer_html = server_obj.block.footer_html;
@@ -11240,6 +11240,8 @@
                         uh.exclude_click_clean(true);
                         uh.retargeting_click_clean(true);
                     }
+                    app.logger.offer_status = 'complite';
+                    app.logger.log();
                 }
             };
             Advertise.prototype.get = function (id) {
@@ -11266,6 +11268,7 @@
                     uh.exclude_click.add(offer.id, 1);
                 }
                 uh.save();
+                app.adsparams.request = 'rotate';
                 app.loader();
             };
             return Advertise;
@@ -11949,8 +11952,6 @@
                     this.redirect($adsContainer);
                     this.slider($adsContainer);
                     jQuery('.ellipsis').ellipsis();
-                    this.app.logger.offer_status = 'complite';
-                    this.app.logger.log();
                 };
                 render_obj.not_found = function () {
                     (function (
@@ -12003,17 +12004,27 @@
             };
             Logger.prototype.log = function () {
                 if (this.offer_status === complite) {
-                    if (this.block_status === null) {
-                        this.logging = initial;
-                        this.send();
-                        this.logging = complite;
-                        this.send();
-                    } else if (this.block_status === initial && this.logging === false) {
-                        this.logging = initial;
-                        this.send();
-                    } else if (this.block_status === complite && this.logging === initial) {
-                        this.logging = complite;
-                        this.send();
+                    if (this.app.adsparams.request === 'initial') {
+                        if (this.block_status === null && this.logging === false) {
+                            this.logging = initial;
+                            this.send();
+                            this.logging = complite;
+                            this.send();
+                        } else if (this.block_status === initial && this.logging === false) {
+                            this.logging = initial;
+                            this.send();
+                        } else if (this.block_status === complite && this.logging === initial) {
+                            this.logging = complite;
+                            this.send();
+                        }
+                    }
+                    if (this.app.adsparams.request === 'rotate') {
+                        if (this.block_status === null && this.logging === complite) {
+                            this.send();
+                        } else if (this.block_status === complite && this.logging === complite) {
+                            this.send();
+                        }
+                        this.app.adsparams.request = 'rotate_complite';
                     }
                 }
             };
@@ -12069,7 +12080,6 @@
                     this.logger.log();
                 };
                 this.mouse_move = function () {
-                    this.logger.log();
                 };
                 this.ping = function (targetOrigin) {
                     targetOrigin = targetOrigin || this.adsparams.origin;
