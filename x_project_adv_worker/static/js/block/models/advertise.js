@@ -18,6 +18,8 @@ define([
         this.css = "";
     };
     Advertise.prototype.parse = function (server_obj) {
+        var app = this.app;
+        var uh = app.uh;
         if (server_obj.block.id === undefined){
             this.app.render.not_found();
         }
@@ -28,18 +30,18 @@ define([
             this.header_html = server_obj.block.header_html;
             this.css = server_obj.css;
             this.offers = server_obj.offers;
-            this.app.render.render();
-            this.app.uh.exclude_clean(server_obj.clean.place);
+            app.render.render();
+            uh.exclude_clean(server_obj.clean.place);
             if (server_obj.clean.place){
-                this.app.uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
-                this.app.uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+                uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
+                uh.retargeting_account_clean(server_obj.clean.account_retargeting);
             }
             if (this.offers.length === 0){
-                this.app.uh.exclude_clean(true);
-                this.app.uh.retargeting_clean(true);
-                this.app.uh.retargeting_account_clean(true);
-                this.app.uh.exclude_click_clean(true);
-                this.app.uh.retargeting_click_clean(true);
+                uh.exclude_clean(true);
+                uh.retargeting_clean(true);
+                uh.retargeting_account_clean(true);
+                uh.exclude_click_clean(true);
+                uh.retargeting_click_clean(true);
             }
         }
     };
@@ -53,20 +55,22 @@ define([
         return offer;
     };
     Advertise.prototype.click = function (id) {
+        var app = this.app;
+        var uh = app.uh;
         var offer = this.get(id);
         var popup = window.open(offer.url, '_blank');
         if (popup) {
             popup.moveTo(0, 0);
         }
-        this.app.uh.load();
-        if (offer.camp.retargeting) {
-            this.app.uh.retargeting_exclude_click.add(offer.id, 1);
+        uh.load();
+        if (offer.retargeting) {
+            uh.retargeting_exclude_click.add(offer.id, 1);
         }
         else {
-            this.app.uh.exclude_click.add(offer.id, 1);
+            uh.exclude_click.add(offer.id, 1);
         }
-        this.app.uh.save();
-        this.app.loader();
+        uh.save();
+        app.loader();
     };
     return Advertise;
 });

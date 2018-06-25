@@ -45,14 +45,15 @@ define([
             }
         };
         this.block_initial = function () {
-            console.log('block_initial');
+            this.logger.block_initial();
+            this.logger.log();
         };
         this.block_complite = function () {
+            this.logger.block_complite();
             this.logger.log();
-            console.log('block_complite');
         };
         this.mouse_move = function () {
-            console.log('mouse_move');
+            this.logger.log();
         };
         this.ping = function (targetOrigin) {
             targetOrigin = targetOrigin || this.adsparams.origin;

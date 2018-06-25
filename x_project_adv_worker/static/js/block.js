@@ -11182,6 +11182,7 @@
             settings
         ) {
             return function (obj) {
+                obj.logger.offer_status = 'initial';
                 return jQuery.ajax(settings.requiredData.advertises.url, {
                     params: obj.params,
                     param: settings.requiredData.advertises.param
@@ -11215,6 +11216,8 @@
                 this.css = '';
             };
             Advertise.prototype.parse = function (server_obj) {
+                var app = this.app;
+                var uh = app.uh;
                 if (server_obj.block.id === undefined) {
                     this.app.render.not_found();
                 } else {
@@ -11224,18 +11227,18 @@
                     this.header_html = server_obj.block.header_html;
                     this.css = server_obj.css;
                     this.offers = server_obj.offers;
-                    this.app.render.render();
-                    this.app.uh.exclude_clean(server_obj.clean.place);
+                    app.render.render();
+                    uh.exclude_clean(server_obj.clean.place);
                     if (server_obj.clean.place) {
-                        this.app.uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
-                        this.app.uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+                        uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
+                        uh.retargeting_account_clean(server_obj.clean.account_retargeting);
                     }
                     if (this.offers.length === 0) {
-                        this.app.uh.exclude_clean(true);
-                        this.app.uh.retargeting_clean(true);
-                        this.app.uh.retargeting_account_clean(true);
-                        this.app.uh.exclude_click_clean(true);
-                        this.app.uh.retargeting_click_clean(true);
+                        uh.exclude_clean(true);
+                        uh.retargeting_clean(true);
+                        uh.retargeting_account_clean(true);
+                        uh.exclude_click_clean(true);
+                        uh.retargeting_click_clean(true);
                     }
                 }
             };
@@ -11249,19 +11252,21 @@
                 return offer;
             };
             Advertise.prototype.click = function (id) {
+                var app = this.app;
+                var uh = app.uh;
                 var offer = this.get(id);
                 var popup = window.open(offer.url, '_blank');
                 if (popup) {
                     popup.moveTo(0, 0);
                 }
-                this.app.uh.load();
-                if (offer.camp.retargeting) {
-                    this.app.uh.retargeting_exclude_click.add(offer.id, 1);
+                uh.load();
+                if (offer.retargeting) {
+                    uh.retargeting_exclude_click.add(offer.id, 1);
                 } else {
-                    this.app.uh.exclude_click.add(offer.id, 1);
+                    uh.exclude_click.add(offer.id, 1);
                 }
-                this.app.uh.save();
-                this.app.loader();
+                uh.save();
+                app.loader();
             };
             return Advertise;
         }(jquery, underscore);
@@ -11276,57 +11281,53 @@
                 this.w_w = jQuery(window).width();  //this.app.adsparams.post
             };
             Params.prototype.generateRequestData = function (req_type) {
-                this.app.uh.load();
                 var data = {};
                 var params = 'params';
                 var adsparams = 'adsparams';
+                var retargeting = 'retargeting';
+                var exclude = 'exclude';
+                var index = 'index';
+                var informer = 'informer';
+                var app = 'app';
+                this[app].uh.load();
                 if (req_type === 'advertises') {
-                    data['w'] = this.w_w;
-                    data['h'] = this.w_h;
-                    data['block_id'] = this.app[adsparams].block_id;
-                    data['auto'] = this.app[adsparams].auto;
-                    data['country'] = this.app[adsparams].country;
-                    data['region'] = this.app[adsparams].region;
-                    data['ip'] = this.app[adsparams].ip;
-                    data['is_webp'] = this.app[adsparams].is_webp;
-                    data['time_start'] = this.app.time_start;
-                    data['cost'] = this.app.uh.cost_user.get();
-                    data['gender'] = this.app.uh.gender_user.get();
-                    data['retargeting'] = this.app.uh.retargeting.get();
-                    data['index'] = parseInt(this.app[adsparams].index);
-                    if (!_.isNumber(data['index'])) {
-                        data['index'] = 0;
+                    data.w = this.w_w;
+                    data.h = this.w_h;
+                    data.block_id = this[app][adsparams].block_id;
+                    data.auto = this[app][adsparams].auto;
+                    data.country = this[app][adsparams].country;
+                    data.region = this[app][adsparams].region;
+                    data.ip = this[app][adsparams].ip;
+                    data.is_webp = this[app][adsparams].is_webp;
+                    data.time_start = this[app].time_start;
+                    data.cost = this[app].uh.cost_user.get();
+                    data.gender = this[app].uh.gender_user.get();
+                    data[retargeting] = this[app].uh.retargeting.get();
+                    data[index] = parseInt(this[app][adsparams].index);
+                    if (!_.isNumber(data[index])) {
+                        data[index] = 0;
                     }
-                    data['exclude'] = this.app.uh.exclude_get();
-                    data['retargeting_account_exclude'] = this.app.uh.retargeting_account_exclude_get();
-                    data['retargeting_dynamic_exclude'] = this.app.uh.retargeting_exclude_get();
-                    data['retargeting'] = this.app.uh.retargeting.get();
+                    data[exclude] = this[app].uh.exclude_get();
+                    data[retargeting + '_account_' + exclude] = this[app].uh.retargeting_account_exclude_get();
+                    data[retargeting + 'dynamic_' + exclude] = this[app].uh.retargeting_exclude_get();
+                    data[retargeting] = this[app].uh.retargeting.get();
                 } else if (req_type === 'log') {
-                    var block_impression = 1;
+                    var block_impression = 0;
+                    if (this.app.advertise.offers.length > 0) {
+                        block_impression = 1 / this[app].advertise.offers.length;
+                    }
                     data[params] = {};
-                    data[params]['informer_id'] = this.app.advertise.informer_id;
-                    data[params]['informer_id_int'] = this.app.advertise.informer_id_int;
-                    data[params]['ip'] = this.app[adsparams].ip;
-                    data[params]['cookie'] = this.app[adsparams].cookie;
-                    data[params]['request'] = this.app[adsparams].request;
-                    data[params]['active'] = this.app.logger.logging;
-                    data[params]['test'] = this.app[adsparams].test;
-                    // data['items'] = jQuery.map(this.app.advertise.offers, function(dataItem) {
-                    //     var item = {};
-                    //     item.guid = dataItem.guid;
-                    //     item.id = dataItem.id;
-                    //     item.campaign_social = dataItem.campaign_social;
-                    //     item.token = dataItem.token;
-                    //     item.campaign_guid = dataItem.guid_cam;
-                    //     item.campaign_id = dataItem.id_cam;
-                    //     item.retargeting = dataItem.retargeting;
-                    //     item.branch = dataItem.branch;
-                    //     return item;
-                    // });
-                    data['items'] = [];
-                    this.app.uh.load();
+                    data[params][informer + '_id'] = this[app].advertise[informer + '_id'];
+                    data[params][informer + '_id_int'] = this[app].advertise[informer + '_id_int'];
+                    data[params]['cookie'] = this[app][adsparams].cookie;
+                    data[params]['request'] = this[app][adsparams].request;
+                    data[params]['active'] = this[app].logger.logging;
+                    data[params]['test'] = this[app][adsparams].test;
+                    data.items = [];
+                    this[app].uh.load();
                     _.each(this.app.advertise.offers, function (offer) {
                         var item = {};
+                        item.block_impression = block_impression;
                         item.guid = offer.guid;
                         item.id = offer.id;
                         item.campaign_social = offer.campaign_social;
@@ -11335,20 +11336,20 @@
                         item.campaign_id = offer.id_cam;
                         item.retargeting = offer.retargeting;
                         item.branch = offer.branch;
-                        this.data['items'].push(item);
-                        if (this.app.logger.logging === 'complite') {
+                        this.data.items.push(item);
+                        if (this[app].logger.logging === 'complite') {
                             if (offer.retargeting) {
-                                this.app.uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
-                                this.app.uh.retargeting_view.add(offer.id);
+                                this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
+                                this[app].uh.retargeting_view.add(offer.id);
                             } else {
-                                this.app.uh.exclude.add(offer.id, offer.unique_impression_lot);
+                                this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);
                             }
                         }
                     }, {
-                        app: this.app,
+                        app: this[app],
                         data: data
                     });
-                    this.app.uh.save();
+                    this[app].uh.save();
                 }
                 return JSON.stringify(data);
             };
@@ -11948,6 +11949,7 @@
                     this.redirect($adsContainer);
                     this.slider($adsContainer);
                     jQuery('.ellipsis').ellipsis();
+                    this.app.logger.offer_status = 'complite';
                     this.app.logger.log();
                 };
                 render_obj.not_found = function () {
@@ -11978,26 +11980,41 @@
             jQuery,
             settings
         ) {
+            var initial = 'initial';
+            var complite = 'complite';
             var Logger = function (app) {
                 this.app = app;
                 this.logging = false;
+                this.block_status = false;
+                this.offer_status = false;
                 if (!this.app.adsparams.post) {
-                    this.logging = null;
+                    this.block_status = null;
+                }
+            };
+            Logger.prototype.block_initial = function () {
+                if (this.block_status === false) {
+                    this.block_status = initial;
+                }
+            };
+            Logger.prototype.block_complite = function () {
+                if (this.block_status === initial) {
+                    this.block_status = complite;
                 }
             };
             Logger.prototype.log = function () {
-                if (this.logging === false) {
-                    this.logging = 'initial';
-                    this.send();
-                    this.log();
-                } else if (this.logging === null) {
-                    this.logging = 'initial';
-                    this.send();
-                    this.logging = 'complite';
-                    this.send();
-                } else if (this.logging === 'initial') {
-                    this.logging = 'complite';
-                    this.send();
+                if (this.offer_status === complite) {
+                    if (this.block_status === null) {
+                        this.logging = initial;
+                        this.send();
+                        this.logging = complite;
+                        this.send();
+                    } else if (this.block_status === initial && this.logging === false) {
+                        this.logging = initial;
+                        this.send();
+                    } else if (this.block_status === complite && this.logging === initial) {
+                        this.logging = complite;
+                        this.send();
+                    }
                 }
             };
             Logger.prototype.send = function () {
@@ -12044,14 +12061,15 @@
                     }
                 };
                 this.block_initial = function () {
-                    console.log('block_initial');
+                    this.logger.block_initial();
+                    this.logger.log();
                 };
                 this.block_complite = function () {
+                    this.logger.block_complite();
                     this.logger.log();
-                    console.log('block_complite');
                 };
                 this.mouse_move = function () {
-                    console.log('mouse_move');
+                    this.logger.log();
                 };
                 this.ping = function (targetOrigin) {
                     targetOrigin = targetOrigin || this.adsparams.origin;
