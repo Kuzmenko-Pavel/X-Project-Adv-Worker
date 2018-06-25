@@ -1,15 +1,15 @@
 define( [
-	"./core",
-	"./var/document",
-	"./var/rnotwhite",
-	"./ajax/var/location",
-	"./ajax/var/nonce",
-	"./ajax/var/rquery",
+    "./core",
+    "./var/document",
+    "./var/rnotwhite",
+    "./ajax/var/location",
+    "./ajax/var/nonce",
+    "./ajax/var/rquery",
 
-	"./core/init",
-	"./ajax/parseJSON",
-	// "./ajax/parseXML",
-	"./deferred"
+    "./core/init",
+    "./ajax/parseJSON",
+    "./ajax/parseXML",
+    "./deferred"
 ], function( jQuery, document, rnotwhite, location, nonce, rquery ) {
 
 var

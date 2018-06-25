@@ -258,7 +258,9 @@ class DataProcessor(object):
 
     def change_image(self, images):
         if self.params.is_webp:
-            return map(lambda x: x.replace('.png', '.webp'), images)
+            images = list(map(lambda x: x.replace('.png', '.webp'), images))
+        if len(images) == 2:
+            images = images + images
         return images
 
     def change_link(self, offer):

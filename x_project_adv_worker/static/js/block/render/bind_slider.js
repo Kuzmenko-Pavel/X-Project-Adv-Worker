@@ -1,7 +1,15 @@
 /**
  * Created by kuzmenko-pavel on 04.07.17.
  */
-define(['./../jquery', './../underscore'], function (jQuery, _) {
+define([
+    './../jquery',
+    './../underscore',
+    './../animated/jquery.easing'
+], function (
+    jQuery,
+    _,
+    easing
+) {
     return function(el){
         var items = el.find('.imageCon');
         _.each(items, function(element, index, list) {

@@ -7,7 +7,7 @@ define(['./../jquery', './../underscore'], function (jQuery, _) {
         var items = el.find('div[data-id]');
         var app = this.app;
         _.each(items, function(element, index, list) {
-            jQuery(element).on('mousedown', function(event){
+            jQuery(element).click(function (event) {
                 if(event.which===1||event.which===2) {
                     var item = jQuery(event.currentTarget);
                     var id = item.data('id');
