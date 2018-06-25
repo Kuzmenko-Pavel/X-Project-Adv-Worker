@@ -2,10 +2,14 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../underscore'], function (_) {
+    var prototype = 'prototype';
     var CostAccount = function () {
     };
 
-    CostAccount.prototype.add = function (guid, val) {
+    CostAccount[prototype].add = function (
+        guid,
+        val
+    ) {
         var hit_log = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
         if (_.isUndefined(this[guid])) {
             hit_log[val] += 1;
@@ -22,7 +26,7 @@ define(['./../underscore'], function (_) {
         }
     };
 
-    CostAccount.prototype.get = function () {
+    CostAccount[prototype].get = function () {
         var res = [];
         _.each(this, function (element, name, uh) {
                   if (!_.isEmpty(element)){
@@ -32,7 +36,10 @@ define(['./../underscore'], function (_) {
         return res.join(";");
     };
 
-    CostAccount.prototype.load = function (guid, arg1) {
+    CostAccount[prototype].load = function (
+        guid,
+        arg1
+    ) {
         if (_.isArray(arg1)) {
             this[guid] = [arg1[0], arg1[1]];
         }

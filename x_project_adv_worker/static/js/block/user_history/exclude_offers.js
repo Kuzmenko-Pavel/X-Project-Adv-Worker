@@ -2,6 +2,7 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../underscore'], function (_) {
+    var prototype = 'prototype';
     var ExcludeOffers = function (invert, counter) {
         var invert_ = Boolean(invert || false);
         var counter_ = Boolean(counter || false);
@@ -13,7 +14,10 @@ define(['./../underscore'], function (_) {
         };
 
     };
-    ExcludeOffers.prototype.add = function (guid, countViews) {
+    ExcludeOffers[prototype].add = function (
+        guid,
+        countViews
+    ) {
         countViews = (countViews || 1);
         if (_.isNumber(this[guid])) {
             if (this.invert()) {
@@ -38,12 +42,15 @@ define(['./../underscore'], function (_) {
         }
     };
 
-    ExcludeOffers.prototype.load = function (guid, countViews) {
+    ExcludeOffers[prototype].load = function (
+        guid,
+        countViews
+    ) {
         this[guid] = countViews;
     };
 
 
-    ExcludeOffers.prototype.get = function () {
+    ExcludeOffers[prototype].get = function () {
         var keys = [];
         var obj = this || {};
         _.each(obj, function (value, key, uh) {

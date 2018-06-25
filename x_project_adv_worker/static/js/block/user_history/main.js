@@ -3,6 +3,7 @@
  */
 define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_offers', './retargeting_offers', './gender_account', './gender_user', './cost_account', './cost_user', './activity_account', './activity_user'],
     function (_, JSON, test, FixedQueue, ExcludeOffers, RetargetingOffers, GenderAccount, GenderUser, CostAccount, CostUser, ActivityAccount, ActivityUser) {
+        var prototype = 'prototype';
         var UserHistory = function () {
             this.searchengines = new FixedQueue(3);
             this.context = new FixedQueue(3);
@@ -22,7 +23,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             this.activity_accounts = new ActivityAccount();
             this.activity_user = new ActivityUser();
         };
-        UserHistory.prototype.clear = function () {
+        UserHistory[prototype].clear = function () {
             if (test()) {
                 localStorage.clear();
                 this.exclude_clean(true);
@@ -36,7 +37,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             }
             return false;
         };
-        UserHistory.prototype.load = function () {
+        UserHistory[prototype].load = function () {
             var retrievedObject;
             if (test()) {
                 _.each(this, function (uh_element, uh_name, uh) {
@@ -53,7 +54,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             }
             return false;
         };
-        UserHistory.prototype.save = function () {
+        UserHistory[prototype].save = function () {
             if (test()) {
                 _.each(this, function (uh_element, uh_name, uh) {
                     localStorage.setItem(uh_name, JSON.stringify(uh[uh_name]));
@@ -63,7 +64,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             return false;
         };
 
-        UserHistory.prototype.exclude_clean = function (cl) {
+        UserHistory[prototype].exclude_clean = function (cl) {
             if (cl) {
                 this.load();
                 this.exclude = new ExcludeOffers();
@@ -71,7 +72,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             }
             return cl;
         };
-        UserHistory.prototype.exclude_click_clean = function (cl) {
+        UserHistory[prototype].exclude_click_clean = function (cl) {
             if (cl) {
                 this.load();
                 this.exclude_click = new ExcludeOffers();
@@ -79,12 +80,12 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             }
             return cl;
         };
-        UserHistory.prototype.exclude_get = function () {
+        UserHistory[prototype].exclude_get = function () {
             var keys = this.exclude.get().concat(this.exclude_click.get());
             keys = _.uniq(keys);
             return keys;
         };
-        UserHistory.prototype.retargeting_clean = function (cl) {
+        UserHistory[prototype].retargeting_clean = function (cl) {
             if (cl) {
                 this.load();
                 this.retargeting_exclude = new ExcludeOffers();
@@ -93,7 +94,7 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             }
             return cl;
         };
-        UserHistory.prototype.retargeting_account_clean = function (cl) {
+        UserHistory[prototype].retargeting_account_clean = function (cl) {
             if (cl) {
                 this.load();
                 this.retargeting_account_exclude = new ExcludeOffers();
@@ -101,20 +102,20 @@ define(['./../underscore', './../json3', './test', './fixed_queue', './exclude_o
             }
             return cl;
         };
-        UserHistory.prototype.retargeting_click_clean = function (cl) {
+        UserHistory[prototype].retargeting_click_clean = function (cl) {
             if (cl) {
                 this.load();
-                this.retargeting_click_exclude = new ExcludeOffers();
+                this.retargeting_exclude_click = new ExcludeOffers();
                 this.save();
             }
             return cl;
         };
-        UserHistory.prototype.retargeting_exclude_get = function () {
+        UserHistory[prototype].retargeting_exclude_get = function () {
             var keys = this.retargeting_exclude.get().concat(this.retargeting_exclude_click.get());
             keys = _.uniq(keys);
             return keys;
         };
-        UserHistory.prototype.retargeting_account_exclude_get = function () {
+        UserHistory[prototype].retargeting_account_exclude_get = function () {
             var keys = this.retargeting_account_exclude.get().concat(this.retargeting_account_exclude_click.get());
             keys = _.uniq(keys);
             return keys;

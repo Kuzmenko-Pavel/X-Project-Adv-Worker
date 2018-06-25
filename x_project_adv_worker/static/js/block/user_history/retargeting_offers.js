@@ -2,14 +2,24 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../underscore'], function (_) {
+    var prototype = 'prototype';
     var RetargetingOffers = function() {
     };
 
-    RetargetingOffers.prototype.add = function (guid, arg1, arg2, arg3, arg4) {
+    RetargetingOffers[prototype].add = function (
+        guid,
+        arg1,
+        arg2,
+        arg3,
+        arg4
+    ) {
         this[guid] = [arg1, arg2, arg3, arg4];
     };
 
-    RetargetingOffers.prototype.load = function (guid, arg1) {
+    RetargetingOffers[prototype].load = function (
+        guid,
+        arg1
+    ) {
         if (_.isArray(arg1)) {
             if (_.isUndefined(arg1[3])) {
                 arg1[3] = arg1[0];
@@ -19,11 +29,11 @@ define(['./../underscore'], function (_) {
     };
 
 
-    RetargetingOffers.prototype.remove = function (key) {
+    RetargetingOffers[prototype].remove = function (key) {
         delete this[key];
     };
 
-    RetargetingOffers.prototype.get = function () {
+    RetargetingOffers[prototype].get = function () {
         var x;
         var keys = [];
         var res = [];
