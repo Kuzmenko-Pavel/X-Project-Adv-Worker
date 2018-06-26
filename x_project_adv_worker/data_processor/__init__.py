@@ -188,8 +188,7 @@ class DataProcessor(object):
                 loop_counter=loop_counter,
                 offer_ids=offer_ids,
                 block_id=self.block_id,
-                capacity=capacity,
-                exclude=self.params.exclude)
+                capacity=capacity)
             while len(self.data['offers']) <= capacity and recomendet:
                 for recomendet_offer in recomendet:
                     recomendet_offer['campaign'] = offer['campaign']

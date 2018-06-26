@@ -206,7 +206,8 @@ FROM mv_campaign AS ca
                         FROM mv_offer_place AS ofrs
                         left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)s
                         WHERE
-                        ofrs.id_cam IN (%(campaigns)s)
+                        campaign_range_number < 30
+                        AND ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
                         where %(campaign_unique)s
@@ -253,13 +254,9 @@ FROM mv_campaign AS ca
         try:
             campaigns_ids = ','.join([str(x[0]) for x in campaigns])
             counter_prediction = offer_count - len(exclude)
-            range_number = 1
-            if counter_prediction < capacity * 2:
-                range_number = capacity
             if counter_prediction < capacity:
-                index = 0
-            campaign_unique = ' or '.join(
-                ['(sub.id_cam = %s and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
+                exclude = list([0])
+
             async with self.pool.acquire() as connection:
                 async with connection.transaction():
                     q = '''
@@ -273,19 +270,17 @@ FROM mv_campaign AS ca
                         FROM mv_offer_social AS ofrs
                         left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
                         WHERE
-                        ofrs.id_cam IN (%(campaigns)s)
+                        campaign_range_number < 30
+                        AND ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
-                        where %(campaign_unique)s
                         order by sub.range_number, sub.rating desc
-                        LIMIT %(capacity)d OFFSET %(offset)d;
+                        LIMIT %(capacity)d;
                     ''' % {
                         'inf': block_id,
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
-                        'campaign_unique': campaign_unique,
-                        'capacity': capacity,
-                        'offset': index * capacity
+                        'capacity': capacity
                     }
                     stmt = await connection.prepare(q)
                     offers = await stmt.fetch(timeout=10)
@@ -332,7 +327,8 @@ FROM mv_campaign AS ca
                         ofrs.*
                         FROM mv_offer_dynamic_retargeting AS ofrs
                         WHERE
-                        ofrs.id_cam IN (%(campaigns)s)
+                        campaign_range_number < 30
+                        AND ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         AND (%(retargeting)s)
                         ) sub
@@ -426,7 +422,7 @@ FROM mv_campaign AS ca
             logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_recomendet_offer(self, loop_counter, offer_ids,  block_id, capacity, exclude):
+    async def get_recomendet_offer(self, loop_counter, offer_ids, block_id, capacity):
         views = ['mv_offer_dynamic_retargeting', 'mv_offer_account_retargeting', 'mv_offer_place', 'mv_offer_social']
         if len(views) < loop_counter:
             return []

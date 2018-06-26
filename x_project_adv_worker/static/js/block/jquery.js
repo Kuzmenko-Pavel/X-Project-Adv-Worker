@@ -18,7 +18,7 @@ define([
         "./jquery/css",
     // "./jquery/css/hiddenVisibleSelectors",
         // "./jquery/serialize",
-        "./jquery/ajax",
+    // "./jquery/ajax",
         "./jquery/ajax/xhr",
         // "./jquery/ajax/script",
         // "./jquery/ajax/jsonp",
