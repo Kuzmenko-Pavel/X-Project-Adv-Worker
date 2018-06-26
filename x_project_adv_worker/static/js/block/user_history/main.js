@@ -48,6 +48,7 @@ define([
             this.cost_user = new CostUser();
             // this.activity_accounts = new ActivityAccount();
             // this.activity_user = new ActivityUser();
+            this.time = Math.floor(Date.now());
         };
         UserHistory[prototype].clear = function () {
             if (test()) {
@@ -65,16 +66,42 @@ define([
         };
         UserHistory[prototype].load = function () {
             var retrievedObject;
+            var time_clear = false;
             if (test()) {
-                _.each(this, function (uh_element, uh_name, uh) {
-                    try {
-                       retrievedObject = JSON.parse(localStorage.getItem(uh_name));
-                    } catch (e) {
-                        retrievedObject = {};
+                try {
+                    retrievedObject = JSON.parse(localStorage.getItem('time'));
+                    if (retrievedObject + 86400000 > Math.floor(Date.now())) {
+                        this.time = retrievedObject;
                     }
-                    _.each(retrievedObject, function (element, index, list) {
-                        uh[uh_name].load(index, list[index]);
-                    });
+                    else {
+                        this.time = Math.floor(Date.now());
+                        time_clear = true;
+                    }
+                } catch (e) {
+                    this.time = Math.floor(Date.now());
+                }
+                _.each(this, function (
+                    uh_element,
+                    uh_name,
+                    uh
+                ) {
+                    if (uh_name !== 'time') {
+                        retrievedObject = {};
+                        try {
+                            retrievedObject = JSON.parse(localStorage.getItem(uh_name));
+                        } catch (e) {
+                        }
+                        if (uh_name === 'exclude' && time_clear) {
+                            retrievedObject = {};
+                        }
+                        _.each(retrievedObject, function (
+                            element,
+                            index,
+                            list
+                        ) {
+                            uh[uh_name].load(index, list[index]);
+                        });
+                    }
                 });
                 return true;
             }
@@ -82,7 +109,11 @@ define([
         };
         UserHistory[prototype].save = function () {
             if (test()) {
-                _.each(this, function (uh_element, uh_name, uh) {
+                _.each(this, function (
+                    uh_element,
+                    uh_name,
+                    uh
+                ) {
                     localStorage.setItem(uh_name, JSON.stringify(uh[uh_name]));
                 });
                 return true;

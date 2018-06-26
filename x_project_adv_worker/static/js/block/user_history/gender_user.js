@@ -9,7 +9,7 @@ define(['./../underscore'], function (_) {
     };
 
     GenderUser[prototype].add = function (val) {
-        if (this.gender  === void 0) {
+        if (this.gender === void 0) {
             this.hit_log[val] += 1;
         }
         else {
@@ -25,7 +25,7 @@ define(['./../underscore'], function (_) {
     };
 
     GenderUser[prototype].get = function () {
-        if (this.gender  === void 0) {
+        if (this.gender === void 0) {
             return 0;
         }
         return this.gender;

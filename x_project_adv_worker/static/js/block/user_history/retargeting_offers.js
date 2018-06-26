@@ -3,7 +3,7 @@
  */
 define(['./../underscore'], function (_) {
     var prototype = 'prototype';
-    var RetargetingOffers = function() {
+    var RetargetingOffers = function () {
     };
 
     RetargetingOffers[prototype].add = function (
@@ -13,7 +13,12 @@ define(['./../underscore'], function (_) {
         arg3,
         arg4
     ) {
-        this[guid] = [arg1, arg2, arg3, arg4];
+        this[guid] = [
+            arg1,
+            arg2,
+            arg3,
+            arg4
+        ];
     };
 
     RetargetingOffers[prototype].load = function (
@@ -24,7 +29,12 @@ define(['./../underscore'], function (_) {
             if (_.isUndefined(arg1[3])) {
                 arg1[3] = arg1[0];
             }
-            this[guid] = [arg1[0], arg1[1], arg1[2], arg1[3]];
+            this[guid] = [
+                arg1[0],
+                arg1[1],
+                arg1[2],
+                arg1[3]
+            ];
         }
     };
 
@@ -50,7 +60,10 @@ define(['./../underscore'], function (_) {
                 ]);
             }
         }
-        keys.sort(function (a, b) {
+        keys.sort(function (
+            a,
+            b
+            ) {
                 if (a[3] < b[3]) {
                     return -1;
                 }
@@ -62,7 +75,11 @@ define(['./../underscore'], function (_) {
         );
         for (x in keys) {
             if (typeof(keys[x]) !== 'function') {
-                res.push([keys[x][0], keys[x][2], keys[x][4]]);
+                res.push([
+                    keys[x][0],
+                    keys[x][2],
+                    keys[x][4]
+                ]);
             }
         }
         return res;

@@ -3,7 +3,10 @@
  */
 define(['./../underscore'], function (_) {
     var prototype = 'prototype';
-    var ExcludeOffers = function (invert, counter) {
+    var ExcludeOffers = function (
+        invert,
+        counter
+    ) {
         // var invert_ = Boolean(invert || false);
         // var counter_ = Boolean(counter || false);
         this.invert = function () {
@@ -55,13 +58,20 @@ define(['./../underscore'], function (_) {
     ExcludeOffers[prototype].get = function () {
         var keys = [];
         var obj = this || {};
-        _.each(obj, function (value, key, uh) {
-             if (uh.invert()) {
+        _.each(obj, function (
+            value,
+            key,
+            uh
+        ) {
+            if (uh.invert()) {
                 if (value > 0) {
                     if (uh.counter()) {
-                        keys.push([key.replace(/\D/g, ''), value]);
+                        keys.push([
+                            key.replace(/\D/g, ''),
+                            value
+                        ]);
                     }
-                    else{
+                    else {
                         keys.push(key.replace(/\D/g, ''));
                     }
                 }
@@ -69,9 +79,12 @@ define(['./../underscore'], function (_) {
             else {
                 if (value <= 0) {
                     if (uh.counter()) {
-                        keys.push([key.replace(/\D/g, ''), value]);
+                        keys.push([
+                            key.replace(/\D/g, ''),
+                            value
+                        ]);
                     }
-                    else{
+                    else {
                         keys.push(key.replace(/\D/g, ''));
                     }
                 }

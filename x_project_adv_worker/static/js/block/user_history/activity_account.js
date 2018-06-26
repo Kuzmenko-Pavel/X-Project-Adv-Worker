@@ -11,7 +11,10 @@ define(['./../underscore'], function (_) {
         timeLast
     ) {
         if (_.isUndefined(this[guid])) {
-            this[guid] = [timeFirst, timeLast];
+            this[guid] = [
+                timeFirst,
+                timeLast
+            ];
         }
         else {
             this[guid][1] = timeLast;
@@ -22,7 +25,10 @@ define(['./../underscore'], function (_) {
         arg1
     ) {
         if (_.isArray(arg1)) {
-            this[guid] = [arg1[0], arg1[1]];
+            this[guid] = [
+                arg1[0],
+                arg1[1]
+            ];
         }
     };
     return ActivityAccount;

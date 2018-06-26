@@ -37,7 +37,7 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             }
             data[exclude] = this[app].uh.exclude_get();
             data[retargeting + '_account_' + exclude] = this[app].uh.retargeting_account_exclude_get();
-            data[retargeting + 'dynamic_' + exclude] = this[app].uh.retargeting_exclude_get();
+            data[retargeting + '_dynamic_' + exclude] = this[app].uh.retargeting_exclude_get();
             data[retargeting] = this[app].uh.retargeting.get();
         }
         else if (req_type === 'log'){
