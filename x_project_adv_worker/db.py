@@ -327,8 +327,7 @@ FROM mv_campaign AS ca
                         ofrs.*
                         FROM mv_offer_dynamic_retargeting AS ofrs
                         WHERE
-                        campaign_range_number < 30
-                        AND ofrs.id_cam IN (%(campaigns)s)
+                        ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         AND (%(retargeting)s)
                         ) sub
@@ -386,7 +385,8 @@ FROM mv_campaign AS ca
                         ofrs.*
                         FROM mv_offer_account_retargeting AS ofrs
                         WHERE
-                        ofrs.id_cam IN (%(campaigns)s)
+                        campaign_range_number < 30
+                        AND ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
                         where %(campaign_unique)s

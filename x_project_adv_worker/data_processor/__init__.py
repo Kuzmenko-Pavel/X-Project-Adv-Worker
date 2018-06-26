@@ -102,8 +102,8 @@ class DataProcessor(object):
     async def block_processing(self, block):
         self.data['block']['id'] = block.get('id', 0)
         self.data['block']['guid'] = self.params.block_id
-        self.data['block']['headerHtml'] = block.get('headerHtml', '')
-        self.data['block']['footerHtml'] = block.get('footerHtml', '')
+        self.data['block']['header_html'] = block.get('headerHtml', '')
+        self.data['block']['footer_html'] = block.get('footerHtml', '')
         self.block_id = block.get('id', 0)
         self.place_branch = block.get('place_branch', True)
         self.retargeting_branch = block.get('retargeting_branch', True)
