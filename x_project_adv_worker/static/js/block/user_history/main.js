@@ -40,7 +40,7 @@ define([
             this.retargeting_account_exclude = new ExcludeOffers();
             this.retargeting_exclude_click = new ExcludeOffers();
             this.retargeting_account_exclude_click = new ExcludeOffers();
-            this.retargeting_view = new ExcludeOffers(true, true);
+            //this.retargeting_view = new ExcludeOffers(true, true);
             // this.history = new FixedQueue(3);
             // this.gender_accounts = new GenderAccount();
             this.gender_user = new GenderUser();
@@ -115,7 +115,7 @@ define([
             if (cl) {
                 this.load();
                 this.retargeting_exclude = new ExcludeOffers();
-                this.retargeting_view = new ExcludeOffers(true, true);
+                //this.retargeting_view = new ExcludeOffers(true, true);
                 this.save();
             }
             return cl;

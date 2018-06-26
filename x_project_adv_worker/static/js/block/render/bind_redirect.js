@@ -8,11 +8,8 @@ define(['./../jquery', './../underscore'], function (jQuery, _) {
         var app = this.app;
         _.each(items, function(element, index, list) {
             jQuery(element).click(function (event) {
-                if(event.which===1||event.which===2) {
-                    var item = jQuery(event.currentTarget);
-                    var id = item.data('id');
-                    app.advertise.click(id);
-                }
+                var item = jQuery(event.currentTarget);
+                app.advertise.click(item.data('id'));
             });
         }, this);
     };

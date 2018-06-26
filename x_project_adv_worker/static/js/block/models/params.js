@@ -65,7 +65,7 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
                     if (this[app].logger.logging === 'complite') {
                         if (offer.retargeting) {
                             this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
-                            this[app].uh.retargeting_view.add(offer.id);
+                            //this[app].uh.retargeting_view.add(offer.id);
                         }
                         else {
                             this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);

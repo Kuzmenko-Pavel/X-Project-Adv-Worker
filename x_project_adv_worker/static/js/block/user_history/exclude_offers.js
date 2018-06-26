@@ -4,13 +4,15 @@
 define(['./../underscore'], function (_) {
     var prototype = 'prototype';
     var ExcludeOffers = function (invert, counter) {
-        var invert_ = Boolean(invert || false);
-        var counter_ = Boolean(counter || false);
+        // var invert_ = Boolean(invert || false);
+        // var counter_ = Boolean(counter || false);
         this.invert = function () {
-            return invert_ || false;
+            return false;
+            // return invert_ || false;
         };
         this.counter = function () {
-            return counter_ || false;
+            return false;
+            // return counter_ || false;
         };
 
     };
