@@ -277,6 +277,8 @@ class DataProcessor(object):
                     self.styler.add(str(camp['id']), camp['style_type'])
                 else:
                     self.styler.add(camp['style_class'], camp['style_class'])
+                    if offer_brending_block:
+                        self.styler.add(camp['style_class_recommendet'], camp['style_class_recommendet'])
 
                 offer['campaign'] = camp
 

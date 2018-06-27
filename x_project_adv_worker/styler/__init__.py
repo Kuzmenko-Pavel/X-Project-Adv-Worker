@@ -241,6 +241,7 @@ class Styler(object):
     def add(self, name, style):
         if style not in self.style_type:
             style = 'Block'
+        print(name, style)
         self.adv_style[name] = style
 
     @property
