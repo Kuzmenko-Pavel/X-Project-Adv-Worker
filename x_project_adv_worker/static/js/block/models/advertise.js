@@ -33,9 +33,16 @@ define([
             this.offers = server_obj.offers;
             app.render.render();
             uh.exclude_clean(server_obj.clean.place);
-            if (server_obj.clean.place){
+            if (server_obj.clean.place || server_obj.clean.place === null) {
                 uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
                 uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+            }
+            if (server_obj.clean.social) {
+                uh.exclude_clean(true);
+                uh.retargeting_clean(true);
+                uh.retargeting_account_clean(true);
+                uh.exclude_click_clean(true);
+                uh.retargeting_click_clean(true);
             }
             if (this.offers.length === 0){
                 uh.exclude_clean(true);

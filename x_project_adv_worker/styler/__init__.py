@@ -248,6 +248,10 @@ class Styler(object):
         return self.block.styling_adv.count_adv
 
     @property
+    def default_capacity(self):
+        return self.block.default_adv.count_adv
+
+    @property
     def min_capacity(self):
         return min([self.block.styling_adv.count_adv, self.block.default_adv.count_adv])
 

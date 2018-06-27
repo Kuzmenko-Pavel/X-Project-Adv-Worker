@@ -179,7 +179,7 @@ FROM mv_campaign AS ca
 
     async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         if not campaigns:
-            return [], False
+            return [], None
         result = []
         clean = True
         try:
@@ -248,7 +248,7 @@ FROM mv_campaign AS ca
 
     async def get_social_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         if not campaigns:
-            return [], False
+            return [], None
         result = []
         clean = True
         try:
@@ -307,7 +307,7 @@ FROM mv_campaign AS ca
 
     async def get_dynamic_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
         if not campaigns:
-            return [], False
+            return [], None
         result = []
         clean = True
         try:
@@ -366,7 +366,7 @@ FROM mv_campaign AS ca
 
     async def get_account_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
         if not campaigns:
-            return [], False
+            return [], None
         result = []
         clean = True
         try:
@@ -422,14 +422,10 @@ FROM mv_campaign AS ca
             logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_recomendet_offer(self, loop_counter, offer_ids, block_id, capacity):
-        views = ['mv_offer_dynamic_retargeting', 'mv_offer_account_retargeting', 'mv_offer_place', 'mv_offer_social']
-        if len(views) < loop_counter:
-            return []
+    async def get_recomendet_offer(self, view, offer_ids, block_id, capacity):
         if not offer_ids:
             return []
         result = []
-        view = views[loop_counter-1]
         try:
             async with self.pool.acquire() as connection:
                 async with connection.transaction():
@@ -441,7 +437,7 @@ FROM mv_campaign AS ca
                     ''' % {
                         'view': view,
                         'offer_ids': ','.join([str(x) for x in offer_ids]),
-                        'capacity': capacity
+                        'capacity': capacity * 2
                     }
                     stmt = await connection.prepare(q)
                     offers = await stmt.fetch(timeout=10)

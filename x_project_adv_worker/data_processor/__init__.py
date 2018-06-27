@@ -177,18 +177,35 @@ class DataProcessor(object):
         await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
 
     async def find_recomendet(self, offer, loop_counter):
+        views = [('mv_offer_dynamic_retargeting', self.params.retargeting_dynamic_exclude),
+                 ('mv_offer_account_retargeting', self.params.retargeting_account_exclude),
+                 ('mv_offer_place', self.params.exclude),
+                 ('mv_offer_social', self.params.exclude)
+                 ]
+        if len(views) < loop_counter:
+            return
+        view = views[loop_counter - 1][0]
         offer_ids = offer['recommended']
         offer_styling_block = offer['campaign']['styling']
         capacity = self.styler.max_capacity - len(self.data['offers'])
+        exclude = views[loop_counter - 1][1]
         if offer_styling_block:
             capacity = self.styler.styling_capacity - len(self.data['offers'])
             capacity = capacity - 1
         if capacity > 0:
             recomendet = await self.app.query.get_recomendet_offer(
-                loop_counter=loop_counter,
+                view=view,
                 offer_ids=offer_ids,
                 block_id=self.block_id,
                 capacity=capacity)
+
+            for recomendet_offer in recomendet:
+                if str(recomendet_offer['id']) in exclude:
+                    continue
+                recomendet_offer['campaign'] = offer['campaign']
+                if len(self.data['offers']) <= capacity:
+                    await self.create_offer(recomendet_offer, True)
+
             while len(self.data['offers']) <= capacity and recomendet:
                 for recomendet_offer in recomendet:
                     recomendet_offer['campaign'] = offer['campaign']
@@ -200,10 +217,27 @@ class DataProcessor(object):
 
     async def union_offers(self, place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer):
         styling_block = None
+        styling_predictive = False
         brending_block = None
+        brending_predictive = False
         loop_break = False
         loop_counter = 0
-        self.data['clean']['place'] = place_offer[1] or social_offer[1]
+
+        summary_offer = dynamic_retargeting_offer[0] + account_retargeting_offer[0] + place_offer[0]
+        len_summary_offer = len(summary_offer)
+
+        count_not_styling = sum(map(lambda x: 0 if self.campaigns.get(x['id_cam'], {}).get('styling', False) else 1,
+                                    summary_offer))
+        if count_not_styling < self.styler.default_capacity and count_not_styling < len_summary_offer:
+            styling_predictive = True
+
+        count_not_brending = sum(map(lambda x: 0 if self.campaigns.get(x['id_cam'], {}).get('brending', False) else 1,
+                                     summary_offer))
+        if count_not_brending < self.styler.default_capacity and count_not_brending < len_summary_offer:
+            brending_predictive = True
+
+        self.data['clean']['place'] = place_offer[1]
+        self.data['clean']['social'] = social_offer[1]
         self.data['clean']['account_retargeting'] = account_retargeting_offer[1]
         self.data['clean']['dynamic_retargeting'] = dynamic_retargeting_offer[1]
         for result in [dynamic_retargeting_offer, account_retargeting_offer, place_offer, social_offer]:
@@ -223,7 +257,7 @@ class DataProcessor(object):
                     else:
                         continue
                 else:
-                    if styling_block:
+                    if styling_block or styling_predictive:
                         continue
                     elif styling_block is None:
                         styling_block = False
@@ -234,7 +268,7 @@ class DataProcessor(object):
                     else:
                         continue
                 else:
-                    if brending_block:
+                    if brending_block or brending_predictive:
                         continue
                     elif brending_block is None:
                         brending_block = False
@@ -303,6 +337,7 @@ class DataProcessor(object):
         style_class = offer['campaign']['style_class']
         button = self.block_button
         branch = 'NL30'
+        unique_impression_lot = offer['campaign']['unique_impression_lot']
         if offer['campaign']['retargeting']:
             button = self.block_ret_button
             branch = 'NL31'
@@ -310,6 +345,7 @@ class DataProcessor(object):
             style_class = offer['campaign']['style_class_recommendet']
             button = self.block_rec_button
             branch = 'NL32'
+            unique_impression_lot = 1
 
         self.data['offers'].append({
             'title': offer['title'],
@@ -324,7 +360,7 @@ class DataProcessor(object):
             'guid_cam': offer['campaign']['guid'],
             'campaign_social': offer['campaign']['social'],
             'retargeting': offer['campaign']['retargeting'],
-            'unique_impression_lot': offer['campaign']['unique_impression_lot'],
+            'unique_impression_lot': unique_impression_lot,
             'token': offer['token'],
             'branch': branch,
             'button': button
