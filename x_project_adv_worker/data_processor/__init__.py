@@ -185,7 +185,7 @@ class DataProcessor(object):
         if len(views) < loop_counter:
             return
         view = views[loop_counter - 1][0]
-        offer_ids = offer['recommended']
+        offer_ids = offer.get('recommended', [])
         offer_styling_block = offer['campaign']['styling']
         capacity = self.styler.max_capacity - len(self.data['offers'])
         exclude = views[loop_counter - 1][1]
@@ -211,6 +211,8 @@ class DataProcessor(object):
                     recomendet_offer['campaign'] = offer['campaign']
                     if len(self.data['offers']) <= capacity:
                         await self.create_offer(recomendet_offer, True)
+            while len(self.data['offers']) <= capacity:
+                await self.create_offer(offer, True)
 
         if offer_styling_block:
             await self.create_logo(offer)
@@ -312,7 +314,7 @@ class DataProcessor(object):
         return b'/click?' + base64_url
 
     async def create_logo(self, offer):
-        if len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+        if len(self.data['offers']) >= self.styler.styling_capacity:
             return
         self.data['offers'].append({
             'title': offer['campaign']['style_data']['head_title'],
