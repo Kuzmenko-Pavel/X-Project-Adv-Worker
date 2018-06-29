@@ -17,8 +17,8 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
         var index = 'index';
         var informer = 'informer';
         var app = 'app';
-        this[app].uh.load();
         if (req_type === 'advertises'){
+            this[app].uh.load();
             data.w = this.w_w;
             data.h = this.w_h;
             data.block_id = this[app][adsparams].block_id;
@@ -49,7 +49,6 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
             data[params]['active'] = this[app].logger.logging;
             data[params]['test'] = this[app][adsparams].test;
             data.items = [];
-            this[app].uh.load();
             _.each(this.app.advertise.offers, function (offer) {
                 if (offer.id !== null) {
                     var item = {};
@@ -63,6 +62,7 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
                     item.branch = offer.branch;
                     this.data.items.push(item);
                     if (this[app].logger.logging === 'complite') {
+                        this[app].uh.load();
                         if (offer.retargeting) {
                             this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
                             //this[app].uh.retargeting_view.add(offer.id);
@@ -70,13 +70,13 @@ define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON,
                         else {
                             this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);
                         }
+                        this[app].uh.save();
                     }
                 }
             }, {
                 app: this[app],
                 data: data
             });
-            this[app].uh.save();
         }
         return JSON.stringify(data);
     };
