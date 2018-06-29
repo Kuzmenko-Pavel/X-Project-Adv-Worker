@@ -187,11 +187,10 @@ class DataProcessor(object):
         view = views[loop_counter - 1][0]
         offer_ids = offer.get('recommended', [])
         offer_styling_block = offer['campaign']['styling']
-        capacity = self.styler.max_capacity - len(self.data['offers'])
+        capacity = int(self.styler.max_capacity - len(self.data['offers']))
         exclude = views[loop_counter - 1][1]
         if offer_styling_block:
-            capacity = self.styler.styling_capacity - len(self.data['offers'])
-            capacity = capacity - 1
+            capacity = int(self.styler.styling_capacity - len(self.data['offers']))
         if capacity > 0:
             recomendet = await self.app.query.get_recomendet_offer(
                 view=view,
@@ -199,20 +198,25 @@ class DataProcessor(object):
                 block_id=self.block_id,
                 capacity=capacity)
 
-            for recomendet_offer in recomendet:
-                if str(recomendet_offer['id']) in exclude:
-                    continue
-                recomendet_offer['campaign'] = offer['campaign']
-                if len(self.data['offers']) <= capacity:
-                    await self.create_offer(recomendet_offer, True)
-
-            while len(self.data['offers']) <= capacity and recomendet:
+            for x in range(capacity + 1):
+                if len(self.data['offers']) >= capacity - 1:
+                    break
                 for recomendet_offer in recomendet:
+                    if x == 0 and str(recomendet_offer['id']) in exclude:
+                        continue
                     recomendet_offer['campaign'] = offer['campaign']
-                    if len(self.data['offers']) <= capacity:
+                    if len(self.data['offers']) < capacity:
                         await self.create_offer(recomendet_offer, True)
-            while len(self.data['offers']) <= capacity:
-                await self.create_offer(offer, True)
+                    else:
+                        break
+                if not recomendet:
+                    break
+
+            for x in range(capacity - len(self.data['offers'])):
+                if len(self.data['offers']) < capacity:
+                    await self.create_offer(offer, True)
+                else:
+                    break
 
         if offer_styling_block:
             await self.create_logo(offer)
