@@ -98,10 +98,11 @@ class Params(object):
 
         if not self.country:
             try:
-                self.country = not_found
                 country_by_ip = request.app.GeoIPCountry.country_code_by_addr(self.host)
                 if country_by_ip:
                     self.country = country_by_ip
+                if not self.country:
+                    self.country = not_found
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 
@@ -111,5 +112,7 @@ class Params(object):
                 region_by_ip = request.app.GeoIPCity.record_by_addr(self.host)
                 if region_by_ip:
                     self.region = region_by_ip.get('region_name', not_found)
+                if not self.region:
+                    self.region = not_found
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
