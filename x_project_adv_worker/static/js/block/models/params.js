@@ -1,11 +1,18 @@
 /**
  * Created by kuzmenko-pavel on 20.04.17.
  */
-define(['./../jquery', './../json3', './../underscore'], function (jQuery, JSON, _) {
+define([
+    './../json3',
+    './../underscore'
+], function (
+    JSON,
+    _
+) {
     var Params = function (app) {
+        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0];
         this.app = app;
-        this.w_h = jQuery(window).height();
-        this.w_w = jQuery(window).width();
+        this.w_h = w.innerHeight || e.clientHeight || g.clientHeight;
+        this.w_w = w.innerWidth || e.clientWidth || g.clientWidth;
         //this.app.adsparams.post
     };
     Params.prototype.generateRequestData = function (req_type) {

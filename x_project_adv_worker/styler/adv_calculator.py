@@ -6,6 +6,10 @@ from scipy.spatial import cKDTree
 from .adv_settings import AdvSetting, LogoSetting
 
 _h_template = np.array([
+    (60, 60, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (70, 70, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (80, 80, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (90, 90, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
     (240, 200, {'count_column': 1, 'count_row': 2, 'type': 'G'}),
     (295, 145, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
     (320, 125, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
@@ -16,6 +20,10 @@ _h_template = np.array([
     (800, 700, {'count_column': 5, 'count_row': 3, 'type': 'G'})
 ])
 _v_template = np.array([
+    (60, 60, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (70, 70, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (80, 80, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
+    (90, 90, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
     (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
     (320, 600, {'count_column': 1, 'count_row': 6, 'type': 'G'}),
     (325, 350, {'count_column': 1, 'count_row': 4, 'type': 'G'}),
@@ -70,6 +78,10 @@ async def calculate_default(width, height, adv):
     adv_setting = AdvSetting()
     adv_setting.width = adv.width - (2 * adv_setting.border) - adv_setting.margin[1] - adv_setting.margin[3]
     adv_setting.height = adv.height - (2 * adv_setting.border) - adv_setting.margin[0] - adv_setting.margin[2]
+    if adv_setting.width <= 0:
+        adv_setting.width = 1
+    if adv_setting.height <= 0:
+        adv_setting.height = 1
     if adv_setting.width > adv_setting.height:
         ratio = adv_setting.width / adv_setting.height
         if ratio >= 2:

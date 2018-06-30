@@ -9,6 +9,7 @@ define([
     _
 ) {
     var Advertise = function (app) {
+        this.recall = 0;
         this.app = app;
         this.informer_id = '';
         this.informer_id_int = 0;
@@ -31,7 +32,6 @@ define([
             this.header_html = server_obj.block.header_html;
             this.css = server_obj.css;
             this.offers = server_obj.offers;
-            app.render.render();
             uh.exclude_clean(server_obj.clean.place);
             if (server_obj.clean.place || server_obj.clean.place === null) {
                 uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
@@ -50,7 +50,11 @@ define([
                 uh.retargeting_account_clean(true);
                 uh.exclude_click_clean(true);
                 uh.retargeting_click_clean(true);
+                if (this.recall++ < 3) {
+                    return app.loader();
+                }
             }
+            app.render.render();
             app.logger.offer_status = 'complite';
             app.logger.log();
         }
