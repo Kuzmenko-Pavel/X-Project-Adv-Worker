@@ -160,6 +160,8 @@ class Styler(object):
         block_width = self.block.get_width()
         block_height = self.block.get_height()
         count_column = ceil(block_width / 300.0)
+        if count_column < 1:
+            count_column = 1
         adv_width = block_width / count_column
         adv_count_by_width = round(block_height / (adv_width + ((round(320 / adv_width) * 14) * 2)))
         if adv_width > 200 and adv_count_by_width < 4:
@@ -180,7 +182,7 @@ class Styler(object):
         count_row = round(block_height / adv_height)
 
         while True:
-            if count_row <= 0:
+            if count_row < 1:
                 count_row = 1
             new_height = count_row * adv_height
             if new_height > block_height:
@@ -193,12 +195,12 @@ class Styler(object):
                         adv_height = adv_height - difference
                         break
                     else:
-                        count_row -= 1
-                        if count_row > 0:
+                        if count_row > 1:
                             adv_height = block_height / count_row
                         else:
                             adv_height = block_height
                             break
+                        count_row -= 1
             else:
                 difference = (block_height - new_height) / count_row
                 if round(difference):

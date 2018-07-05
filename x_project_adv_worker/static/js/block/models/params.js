@@ -9,11 +9,15 @@ define([
     _
 ) {
     var Params = function (app) {
-        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0];
         this.app = app;
+        this.w_h = 0;
+        this.w_w = 0;
+        this.size();
+    };
+    Params.prototype.size = function () {
+        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0];
         this.w_h = w.innerHeight || e.clientHeight || g.clientHeight;
         this.w_w = w.innerWidth || e.clientWidth || g.clientWidth;
-        //this.app.adsparams.post
     };
     Params.prototype.generateRequestData = function (req_type) {
         var data = {};
