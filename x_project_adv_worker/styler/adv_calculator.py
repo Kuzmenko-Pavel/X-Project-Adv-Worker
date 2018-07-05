@@ -19,6 +19,7 @@ _v_template = np.array([
     (300, 150, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
     (320, 600, {'count_column': 1, 'count_row': 6, 'type': 'G'}),
     (325, 350, {'count_column': 1, 'count_row': 4, 'type': 'G'}),
+    (320, 530, {'count_column': 1, 'count_row': 4, 'type': 'G'}),
     (370, 500, {'count_column': 1, 'count_row': 4, 'type': 'G'}),
     (160, 600, {'count_column': 1, 'count_row': 3, 'type': 'G'}),
     (335, 600, {'count_column': 1, 'count_row': 6, 'type': 'G'}),

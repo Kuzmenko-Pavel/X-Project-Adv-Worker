@@ -206,7 +206,7 @@ class DataProcessor(object):
                         continue
                     recomendet_offer['campaign'] = offer['campaign']
                     if len(self.data['offers']) < capacity:
-                        await self.create_offer(recomendet_offer, True)
+                        await self.create_offer(recomendet_offer, True, capacity)
                     else:
                         break
                 if not recomendet:
@@ -214,10 +214,9 @@ class DataProcessor(object):
 
             for x in range(capacity - len(self.data['offers'])):
                 if len(self.data['offers']) < capacity:
-                    await self.create_offer(offer, True)
+                    await self.create_offer(offer, True, capacity)
                 else:
                     break
-
         if offer_styling_block:
             await self.create_logo(offer)
 
@@ -288,10 +287,16 @@ class DataProcessor(object):
 
                 offer['campaign'] = camp
 
-                await self.create_offer(offer)
+                if offer_styling_block:
+                    capacity = self.styler.block.styling_adv.count_adv
+                else:
+                    capacity = self.styler.block.default_adv.count_adv
+
+                await self.create_offer(offer, False, capacity)
 
                 if offer_styling_block or offer_brending_block:
                     await self.find_recomendet(offer, loop_counter)
+
                 if offer_styling_block and len(self.data['offers']) >= self.styler.block.styling_adv.count_adv:
                     loop_break = True
                 elif not offer_styling_block and len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
@@ -339,8 +344,8 @@ class DataProcessor(object):
             'button':  offer['campaign']['style_data']['button_title']
         })
 
-    async def create_offer(self, offer, recomendet=False):
-        if len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+    async def create_offer(self, offer, recomendet=False, capacity=0):
+        if len(self.data['offers']) >= capacity:
             return
         style_class = offer['campaign']['style_class']
         button = self.block_button
