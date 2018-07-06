@@ -176,7 +176,7 @@ class DataProcessor(object):
         place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(*tasks)
         await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
 
-    async def find_recomendet(self, offer, loop_counter):
+    async def find_recomendet(self, offer, loop_counter, capacity):
         views = [('mv_offer_dynamic_retargeting', self.params.retargeting_dynamic_exclude),
                  ('mv_offer_account_retargeting', self.params.retargeting_account_exclude),
                  ('mv_offer_place', self.params.exclude),
@@ -187,19 +187,19 @@ class DataProcessor(object):
         view = views[loop_counter - 1][0]
         offer_ids = offer.get('recommended', [])
         offer_styling_block = offer['campaign']['styling']
-        capacity = int(self.styler.max_capacity - len(self.data['offers']))
+        select_capacity = int(capacity - len(self.data['offers']))
         exclude = views[loop_counter - 1][1]
         if offer_styling_block:
-            capacity = int(self.styler.styling_capacity - len(self.data['offers']))
-        if capacity > 0:
+            capacity = capacity - 1
+        if select_capacity > 0:
             recomendet = await self.app.query.get_recomendet_offer(
                 view=view,
                 offer_ids=offer_ids,
                 block_id=self.block_id,
-                capacity=capacity)
+                capacity=select_capacity)
 
-            for x in range(capacity + 1):
-                if len(self.data['offers']) >= capacity - 1:
+            for x in range(int(capacity) + 1):
+                if len(self.data['offers']) >= capacity:
                     break
                 for recomendet_offer in recomendet:
                     if x == 0 and str(recomendet_offer['id']) in exclude:
@@ -212,7 +212,7 @@ class DataProcessor(object):
                 if not recomendet:
                     break
 
-            for x in range(capacity - len(self.data['offers'])):
+            for x in range(int(capacity) - len(self.data['offers'])):
                 if len(self.data['offers']) < capacity:
                     await self.create_offer(offer, True, capacity)
                 else:
@@ -295,7 +295,7 @@ class DataProcessor(object):
                 await self.create_offer(offer, False, capacity)
 
                 if offer_styling_block or offer_brending_block:
-                    await self.find_recomendet(offer, loop_counter)
+                    await self.find_recomendet(offer, loop_counter, capacity)
 
                 if offer_styling_block and len(self.data['offers']) >= self.styler.block.styling_adv.count_adv:
                     loop_break = True
