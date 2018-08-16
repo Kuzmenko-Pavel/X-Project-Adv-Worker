@@ -70,6 +70,10 @@ define([
     };
     Advertise.prototype.click = function (id) {
         var app = this.app;
+        app.logger.block_initial();
+        app.logger.log();
+        app.logger.block_complite();
+        app.logger.log();
         var uh = app.uh;
         var offer = this.get(id);
         var popup = window.open(offer.url, '_blank');

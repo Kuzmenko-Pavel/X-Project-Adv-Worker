@@ -70,7 +70,7 @@ define([
             if (test()) {
                 try {
                     retrievedObject = JSON.parse(localStorage.getItem('time'));
-                    if (retrievedObject + 86400000 > Math.floor(Date.now())) {
+                    if (retrievedObject + 604800000 > Math.floor(Date.now())) {
                         this.time = retrievedObject;
                     }
                     else {

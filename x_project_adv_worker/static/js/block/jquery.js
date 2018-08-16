@@ -1,4 +1,5 @@
 define([
+        './json3',
         "./jquery/core",
         "./jquery/selector",
         // "./jquery/traversing",
@@ -29,7 +30,10 @@ define([
         "./jquery/deprecated"
     // "./jquery/exports/amd"
 
-    ], function (jQuery) {
+    ], function (
+    JSON,
+    jQuery
+    ) {
 
         if (!Date.now) {
             Date.now = function now() {
@@ -42,9 +46,31 @@ define([
             type: "POST",
             contentType: 'application/json; charset=utf-8',
             cache: false,
+            timeout: 0,
             beforeSend: function (xhr, settings) {
                 if (settings.params && settings.param) {
                     settings.data = settings.params.generateRequestData(settings.param);
+                }
+            },
+            error: function (
+                jqXHR,
+                status,
+                error
+            ) {
+                var url = '/v1/error.json';
+                if (this.url !== url) {
+                    jQuery.ajax({
+                        url: url,
+                        data: JSON.stringify({
+                            url: this.url,
+                            type: this.type,
+                            data: this.data,
+                            status: jqXHR.status,
+                            statusText: jqXHR.statusText,
+                            responseText: jqXHR.responseText,
+                            responseHeaders: jqXHR.getAllResponseHeaders()
+                        })
+                    });
                 }
             }
         });
