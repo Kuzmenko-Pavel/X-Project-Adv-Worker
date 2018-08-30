@@ -85,14 +85,14 @@ def csp():
             else:
                 coro = asyncio.coroutine(func)
             context = yield from coro(*args)
-            if isinstance(context, web.StreamResponse):
-                for key, value in csp_data.items():
-                    if len(value) == 0:
-                        value.append("'none'")
-                    csp.append('%s %s' % (key, ' '.join(value)))
-                csp.append('block-all-mixed-content')
-                context.headers['content-security-policy'] = '; '.join(csp)
-                return context
+            # if isinstance(context, web.StreamResponse):
+            #     for key, value in csp_data.items():
+            #         if len(value) == 0:
+            #             value.append("'none'")
+            #         csp.append('%s %s' % (key, ' '.join(value)))
+            #     csp.append('block-all-mixed-content')
+            #     context.headers['content-security-policy'] = '; '.join(csp)
+            #     return context
             return context
         return wrapped
     return wrapper
