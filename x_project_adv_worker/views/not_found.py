@@ -9,8 +9,7 @@ class NotFoundView(web.View):
     @cache(expire=3600)
     async def get_data(self):
         data = {
-            'style': reset_css,
-            'nonce': self.request.nonce
+            'style': reset_css
         }
         response = aiohttp_jinja2.render_template('not_found_block.html', self.request, data)
         return response

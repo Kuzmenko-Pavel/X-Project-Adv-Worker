@@ -44,6 +44,28 @@ class DataProcessor(object):
         self.block_ret_button = ''
         self.block_rec_button = ''
 
+    async def get_userCode(self):
+        block = await self.app.query.get_block(block_src=self.params.block_id)
+        print(block)
+        userCode = ''
+        if block:
+            userCode = block.get('userCode', '')
+        if not userCode:
+            userCode = '''
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- инвистигейшин -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-7005100774217586"
+                 data-ad-slot="3052658814"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            '''
+        return userCode
+
     async def find_block(self):
         tasks = []
         block_cache = self.app.block_cache.get(self.params.block_id)
