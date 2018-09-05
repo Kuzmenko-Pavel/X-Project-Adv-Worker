@@ -32,12 +32,17 @@ define([
             this.header_html = server_obj.block.header_html;
             this.css = server_obj.css;
             this.offers = server_obj.offers;
-            uh.exclude_clean(server_obj.clean.place);
-            if (server_obj.clean.place || server_obj.clean.place === null) {
-                uh.retargeting_clean(server_obj.clean.dynamic_retargeting);
-                uh.retargeting_account_clean(server_obj.clean.account_retargeting);
+            if (server_obj.clean.place) {
+                console.log('server_obj.clean.place');
+                alert('server_obj.clean.place');
+                uh.exclude_clean(true);
+                uh.retargeting_clean(true);
+                uh.retargeting_account_clean(true);
+
             }
             if (server_obj.clean.social) {
+                console.log('server_obj.clean.social');
+                alert('server_obj.clean.social');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
@@ -45,12 +50,17 @@ define([
                 uh.retargeting_click_clean(true);
             }
             if (this.offers.length === 0){
+                console.log('this.offers.length');
+                alert('this.offers.length');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
                 uh.exclude_click_clean(true);
                 uh.retargeting_click_clean(true);
-                if (this.recall++ < 3) {
+                if (server_obj.parther) {
+                    app.render.parther();
+                }
+                else if (this.recall++ < 3) {
                     return app.loader();
                 }
             }

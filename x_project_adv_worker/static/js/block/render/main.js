@@ -27,6 +27,13 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                   })(window,document,'script','https://cdn.yottos.com/ua_5703702_12.js','ga');
                 jQuery('body').html(templates.advBlockNotFoundTemplate());
             };
+            render_obj.parther = function () {
+                jQuery('body').html(templates.advBlockPartnerTemplate({
+                    src: this.app.settings.partners + '?scr=' + this.app.adsparams.block_id,
+                    h: this.app.params.w_h,
+                    w: this.app.params.w_w
+                }));
+            };
             return render_obj;
         };
     });

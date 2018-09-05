@@ -12,6 +12,8 @@ define(function () {
                 param: 'log',
                 url: '/logger.json'
             }
-        }
+        },
+        partners: '/v1/partners',
+        not_found: '/v1/not_found'
     };
 });

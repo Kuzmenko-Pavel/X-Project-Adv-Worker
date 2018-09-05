@@ -20,7 +20,8 @@ class DataProcessor(object):
             'css': '',
             'block': dict(),
             'offers': list(),
-            'clean': {'place': False, 'account_retargeting': False, 'dynamic_retargeting': False}
+            'clean': {'place': None, 'social': None, 'account_retargeting': None, 'dynamic_retargeting': None},
+            'parther': False
         })
         self.app = request.app
         self.params = Params(request, data)
@@ -46,7 +47,6 @@ class DataProcessor(object):
 
     async def get_userCode(self):
         block = await self.app.query.get_block(block_src=self.params.block_id)
-        print(block)
         userCode = ''
         if block:
             userCode = block.get('userCode', '')
@@ -132,6 +132,7 @@ class DataProcessor(object):
         self.retargeting_account_branch = block.get('retargeting_branch', True)
         # TODO check in db retargeting_account_branch = retargeting_branch
         self.social_branch = block.get('social_branch', True)
+        self.data['parther'] = not self.social_branch
         if not self.params.auto and not block.get('dynamic', False):
             self.styler.merge(ujson.loads(block.get('ad_style')))
         self.block_button = self.styler.block.default_button.block
@@ -263,14 +264,27 @@ class DataProcessor(object):
         if count_not_brending < self.styler.default_capacity and count_not_brending < len_summary_offer:
             brending_predictive = True
 
-        self.data['clean']['place'] = place_offer[1]
-        self.data['clean']['social'] = social_offer[1]
-        self.data['clean']['account_retargeting'] = account_retargeting_offer[1]
-        self.data['clean']['dynamic_retargeting'] = dynamic_retargeting_offer[1]
-        for result in [dynamic_retargeting_offer, account_retargeting_offer, place_offer, social_offer]:
+        if not place_offer[1]:
+            self.data['clean']['place'] = place_offer[1]
+        if not social_offer[1]:
+            self.data['clean']['social'] = social_offer[1]
+        if not account_retargeting_offer[1]:
+            self.data['clean']['account_retargeting'] = account_retargeting_offer[1]
+        if not dynamic_retargeting_offer[1]:
+            self.data['clean']['dynamic_retargeting'] = dynamic_retargeting_offer[1]
+
+        views = [
+            ('dynamic_retargeting', dynamic_retargeting_offer),
+            ('account_retargeting', account_retargeting_offer),
+            ('place', place_offer),
+            ('social', social_offer)
+        ]
+
+        for name, result in views:
             loop_counter += 1
             if loop_break:
                 break
+            self.data['clean'][name] = result[1]
             for offer in result[0]:
                 if loop_break:
                     break

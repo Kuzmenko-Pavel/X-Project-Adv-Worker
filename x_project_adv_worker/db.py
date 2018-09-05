@@ -42,10 +42,10 @@ class Query(object):
         async with self.pool.acquire() as connection:
             async with connection.transaction():
                 q = '''
-    SELECT
-ca.*
-FROM mv_campaign AS ca
-  INNER JOIN (
+                SELECT
+            ca.*
+            FROM mv_campaign AS ca
+              INNER JOIN (
                SELECT gt.id_cam AS id
                FROM mv_geo AS gt
                  INNER JOIN mv_geo_lite_city AS gtl ON gt.id_geo = gtl.id
@@ -299,6 +299,8 @@ FROM mv_campaign AS ca
                 item['recommended'] = offer['recommended']
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
+            if counter_prediction < capacity:
+                clean = True
         except asyncio.CancelledError as ex:
             logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
