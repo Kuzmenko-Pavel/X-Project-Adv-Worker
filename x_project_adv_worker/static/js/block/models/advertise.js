@@ -34,7 +34,6 @@ define([
             this.offers = server_obj.offers;
             if (server_obj.clean.place) {
                 console.log('server_obj.clean.place');
-                alert('server_obj.clean.place');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
@@ -42,7 +41,6 @@ define([
             }
             if (server_obj.clean.social) {
                 console.log('server_obj.clean.social');
-                alert('server_obj.clean.social');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
@@ -51,14 +49,13 @@ define([
             }
             if (this.offers.length === 0){
                 console.log('this.offers.length');
-                alert('this.offers.length');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
                 uh.exclude_click_clean(true);
                 uh.retargeting_click_clean(true);
                 if (server_obj.parther) {
-                    app.render.parther();
+                    return app.render.parther();
                 }
                 else if (this.recall++ < 3) {
                     return app.loader();

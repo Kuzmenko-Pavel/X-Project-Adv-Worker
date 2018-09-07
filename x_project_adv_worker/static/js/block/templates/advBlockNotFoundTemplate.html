@@ -1,52 +1,8 @@
-<style type="text/css">
-html, body {
-padding: 0; margin: 0; border: 0;
-}
-#info {
-margin: auto;
-background-repeat: no-repeat;
-overflow: hidden;
-background-image: url('https://cdn.yottos.com/logos/colorLogo.gif');
-height: 10px;
-width: 100px;
-}
-#text{
-padding: 15px;
-margin: auto;
-width: 80%;
-text-align:center;
-font-size:1.5em;
-color:#F1991B;
-letter-spacing: -1px;
-font-weight:700;
-text-transform:uppercase;
-animation:blur .75s ease-out infinite;
-text-shadow:0px 0px 5px #fff,
-0px 0px 7px #fff;
-}
-@keyframes blur{
-from{
-text-shadow:0px 0px 10px #fff,
-0px 0px 10px #fff,
-0px 0px 25px #fff,
-0px 0px 25px #fff,
-0px 0px 25px #fff,
-0px 0px 25px #fff,
-0px 0px 25px #fff,
-0px 0px 25px #fff,
-0px 0px 50px #fff,
-0px 0px 50px #fff,
-0px 0px 50px #7B96B8,
-0px 0px 150px #7B96B8,
-0px 10px 100px #7B96B8,
-0px 10px 100px #7B96B8,
-0px 10px 100px #7B96B8,
-0px 10px 100px #7B96B8,
-0px -10px 100px #7B96B8,
-0px -10px 100px #7B96B8;}
-}
-</style>
-<div id="text"><a href="https://yottos.com/webmasters" target="_blank" style="
-    color: #F1991B;
-        text-decoration: blink;">Как разместить рекламу на своем сайте?</a></div>
-<div id="info"><a href="https://yottos.com/webmasters" target="_blank" title="Реклама от Yottos"></a></div>
+<iframe width="<%= w %>" height="<%= h %>" frameborder="0"
+        marginwidth="0" marginheight="0" vspace="0"
+        hspace="0" allowtransparency="true"
+        scrolling="no" allowfullscreen="true"
+        style="left:0;position:absolute;
+        top:0;width:<%= w %>px;height:<%= h %>px;"
+        src="<%= src %>"
+></iframe>

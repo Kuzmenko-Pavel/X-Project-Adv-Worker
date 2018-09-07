@@ -8,7 +8,11 @@ from x_project_adv_worker.headers import *
 class NotFoundView(web.View):
     @cache(expire=3600)
     async def get_data(self):
+        post = await self.request.post()
+        query = self.request.query
+        block_id = post.get('scr', query.get('scr', ''))
         data = {
+            'block_id': block_id,
             'style': reset_css
         }
         response = aiohttp_jinja2.render_template('not_found_block.html', self.request, data)

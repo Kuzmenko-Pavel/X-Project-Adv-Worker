@@ -65,7 +65,7 @@ def csp():
                 'connect-src': [host],
                 'style-src': ["'unsafe-inline'"],
                 'worker-src': [],
-                'frame-src': [],
+                'frame-src': [host],
                 'manifest-src': [],
                 'media-src': [],
                 'font-src': [],
