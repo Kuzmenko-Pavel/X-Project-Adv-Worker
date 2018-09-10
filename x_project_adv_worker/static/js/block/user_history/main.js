@@ -53,21 +53,17 @@ define([
         UserHistory[prototype].clear = function () {
             if (test()) {
                 localStorage.clear();
-                this.exclude_clean(true);
-                this.exclude_click_clean(true);
-                this.retargeting_clean(true);
-                this.retargeting_account_clean(true);
-                this.retargeting_click_clean(true);
                 this.load();
                 this.save();
                 return true;
             }
             return false;
         };
-        UserHistory[prototype].load = function () {
+        UserHistory[prototype].load = function (keys) {
             var retrievedObject;
             var time_clear = false;
             if (test()) {
+                keys = keys || _.keys(this);
                 try {
                     retrievedObject = JSON.parse(localStorage.getItem('time'));
                     if (retrievedObject + 604800000 > Math.floor(Date.now())) {
@@ -80,10 +76,8 @@ define([
                 } catch (e) {
                     this.time = Math.floor(Date.now());
                 }
-                _.each(this, function (
-                    uh_element,
-                    uh_name,
-                    uh
+                _.each(keys, function (
+                    uh_name
                 ) {
                     if (uh_name !== 'time') {
                         retrievedObject = {};
@@ -94,46 +88,48 @@ define([
                         if (uh_name === 'exclude' && time_clear) {
                             retrievedObject = {};
                         }
+                        this[uh_name].clear();
                         _.each(retrievedObject, function (
                             element,
                             index,
                             list
                         ) {
-                            uh[uh_name].load(index, list[index]);
-                        });
+                            this[uh_name].load(index, list[index]);
+                        }, this);
                     }
-                });
+                }, this);
                 return true;
             }
             return false;
         };
-        UserHistory[prototype].save = function () {
+        UserHistory[prototype].save = function (keys) {
             if (test()) {
-                _.each(this, function (
-                    uh_element,
-                    uh_name,
-                    uh
+                keys = keys || _.keys(this);
+                _.each(keys, function (
+                    uh_name
                 ) {
-                    localStorage.setItem(uh_name, JSON.stringify(uh[uh_name]));
-                });
+                    localStorage.setItem(uh_name, JSON.stringify(this[uh_name]));
+                }, this);
                 return true;
             }
             return false;
         };
 
         UserHistory[prototype].exclude_clean = function (cl) {
+            var k = ['exclude'];
             if (cl) {
-                this.load();
-                this.exclude = new ExcludeOffers();
-                this.save();
+                this.load(k);
+                this[k[0]].clear();
+                this.save(k);
             }
             return cl;
         };
         UserHistory[prototype].exclude_click_clean = function (cl) {
+            var k = ['exclude_click'];
             if (cl) {
-                this.load();
-                this.exclude_click = new ExcludeOffers();
-                this.save();
+                this.load(k);
+                this[k[0]].clear();
+                this.save(k);
             }
             return cl;
         };
@@ -143,27 +139,30 @@ define([
             return keys;
         };
         UserHistory[prototype].retargeting_clean = function (cl) {
+            var k = ['retargeting_exclude'];
             if (cl) {
-                this.load();
-                this.retargeting_exclude = new ExcludeOffers();
-                //this.retargeting_view = new ExcludeOffers(true, true);
-                this.save();
+                this.load(k);
+                this[k[0]].clear();
+                //this.retargeting_view.clear();
+                this.save(k);
             }
             return cl;
         };
         UserHistory[prototype].retargeting_account_clean = function (cl) {
+            var k = ['retargeting_account_exclude'];
             if (cl) {
-                this.load();
-                this.retargeting_account_exclude = new ExcludeOffers();
-                this.save();
+                this.load(k);
+                this[k[0]].clear();
+                this.save(k);
             }
             return cl;
         };
         UserHistory[prototype].retargeting_click_clean = function (cl) {
+            var k = ['retargeting_account_exclude'];
             if (cl) {
-                this.load();
-                this.retargeting_exclude_click = new ExcludeOffers();
-                this.save();
+                this.load(k);
+                this[k[0]].clear();
+                this.save(k);
             }
             return cl;
         };

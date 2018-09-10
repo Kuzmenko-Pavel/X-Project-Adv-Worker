@@ -57,5 +57,16 @@ define(['./../underscore'], function (_) {
             ];
         }
     };
+    GenderAccount[prototype].clear = function () {
+        _.each(this || {}, function (
+            value,
+            key,
+            uh
+        ) {
+            if (!_.isUndefined(value) && !_.isFunction(value)) {
+                delete uh[key];
+            }
+        });
+    };
     return GenderAccount;
 });

@@ -62,6 +62,17 @@ define(['./../underscore'], function (_) {
         Array[prototype].splice.call(this, 0, (this.length - this.fixedSize));
         return this.join(";");
     };
+    FixedArray[prototype].clear = function () {
+        _.each(this || {}, function (
+            value,
+            key,
+            uh
+        ) {
+            if (!_.isUndefined(value) && !_.isFunction(value)) {
+                delete uh[key];
+            }
+        });
+    };
     var FixedQueue = function (size) {
         FixedArray[prototype].fixedSize = size;
         var queue = new FixedArray();

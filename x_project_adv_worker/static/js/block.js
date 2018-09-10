@@ -1837,6 +1837,17 @@
                 Array[prototype].splice.call(this, 0, this.length - this.fixedSize);
                 return this.join(';');
             };
+            FixedArray[prototype].clear = function () {
+                _.each(this || {}, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (!_.isUndefined(value) && !_.isFunction(value)) {
+                        delete uh[key];
+                    }
+                });
+            };
             var FixedQueue = function (size) {
                 FixedArray[prototype].fixedSize = size;
                 var queue = new FixedArray();
@@ -1887,6 +1898,17 @@
                 countViews
             ) {
                 this[guid] = countViews;
+            };
+            ExcludeOffers[prototype].clear = function () {
+                _.each(this || {}, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (!_.isUndefined(value) && !_.isFunction(value)) {
+                        delete uh[key];
+                    }
+                });
             };
             ExcludeOffers[prototype].get = function () {
                 var keys = [];
@@ -1961,6 +1983,17 @@
             RetargetingOffers[prototype].remove = function (key) {
                 delete this[key];
             };
+            RetargetingOffers[prototype].clear = function () {
+                _.each(this || {}, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (!_.isUndefined(value) && !_.isFunction(value)) {
+                        delete uh[key];
+                    }
+                });
+            };
             RetargetingOffers[prototype].get = function () {
                 var x;
                 var keys = [];
@@ -1991,7 +2024,7 @@
                     return 0;
                 });
                 for (x in keys) {
-                    if (typeof keys[x] !== 'function') {
+                    if (!_.isFunction(keys[x])) {
                         res.push([
                             keys[x][0],
                             keys[x][2],
@@ -2055,6 +2088,17 @@
                     ];
                 }
             };
+            GenderAccount[prototype].clear = function () {
+                _.each(this || {}, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (!_.isUndefined(value) && !_.isFunction(value)) {
+                        delete uh[key];
+                    }
+                });
+            };
             return GenderAccount;
         }(underscore);
         user_history_gender_user = function (_) {
@@ -2088,6 +2132,10 @@
                 arg1
             ) {
                 this[guid] = arg1;
+            };
+            GenderUser[prototype].clear = function () {
+                this.gender = void 0;
+                this.hit_log = new Array(0, 0, 0);
             };
             return GenderUser;
         }(underscore);
@@ -2143,6 +2191,17 @@
                     ];
                 }
             };
+            CostAccount[prototype].clear = function () {
+                _.each(this || {}, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (!_.isUndefined(value) && !_.isFunction(value)) {
+                        delete uh[key];
+                    }
+                });
+            };
             return CostAccount;
         }(underscore);
         user_history_cost_user = function (_) {
@@ -2175,6 +2234,17 @@
                 arg1
             ) {
                 this[guid] = arg1;
+            };
+            CostUser[prototype].clear = function () {
+                _.each(this || {}, function (
+                    value,
+                    key,
+                    uh
+                ) {
+                    if (!_.isUndefined(value) && !_.isFunction(value)) {
+                        delete uh[key];
+                    }
+                });
             };
             return CostUser;
         }(underscore);
@@ -2214,21 +2284,17 @@
             UserHistory[prototype].clear = function () {
                 if (test()) {
                     localStorage.clear();
-                    this.exclude_clean(true);
-                    this.exclude_click_clean(true);
-                    this.retargeting_clean(true);
-                    this.retargeting_account_clean(true);
-                    this.retargeting_click_clean(true);
                     this.load();
                     this.save();
                     return true;
                 }
                 return false;
             };
-            UserHistory[prototype].load = function () {
+            UserHistory[prototype].load = function (keys) {
                 var retrievedObject;
                 var time_clear = false;
                 if (test()) {
+                    keys = keys || _.keys(this);
                     try {
                         retrievedObject = JSON.parse(localStorage.getItem('time'));
                         if (retrievedObject + 604800000 > Math.floor(Date.now())) {
@@ -2240,11 +2306,7 @@
                     } catch (e) {
                         this.time = Math.floor(Date.now());
                     }
-                    _.each(this, function (
-                        uh_element,
-                        uh_name,
-                        uh
-                    ) {
+                    _.each(keys, function (uh_name) {
                         if (uh_name !== 'time') {
                             retrievedObject = {};
                             try {
@@ -2254,45 +2316,45 @@
                             if (uh_name === 'exclude' && time_clear) {
                                 retrievedObject = {};
                             }
+                            this[uh_name].clear();
                             _.each(retrievedObject, function (
                                 element,
                                 index,
                                 list
                             ) {
-                                uh[uh_name].load(index, list[index]);
-                            });
+                                this[uh_name].load(index, list[index]);
+                            }, this);
                         }
-                    });
+                    }, this);
                     return true;
                 }
                 return false;
             };
-            UserHistory[prototype].save = function () {
+            UserHistory[prototype].save = function (keys) {
                 if (test()) {
-                    _.each(this, function (
-                        uh_element,
-                        uh_name,
-                        uh
-                    ) {
-                        localStorage.setItem(uh_name, JSON.stringify(uh[uh_name]));
-                    });
+                    keys = keys || _.keys(this);
+                    _.each(keys, function (uh_name) {
+                        localStorage.setItem(uh_name, JSON.stringify(this[uh_name]));
+                    }, this);
                     return true;
                 }
                 return false;
             };
             UserHistory[prototype].exclude_clean = function (cl) {
+                var k = ['exclude'];
                 if (cl) {
-                    this.load();
-                    this.exclude = new ExcludeOffers();
-                    this.save();
+                    this.load(k);
+                    this[k[0]].clear();
+                    this.save(k);
                 }
                 return cl;
             };
             UserHistory[prototype].exclude_click_clean = function (cl) {
+                var k = ['exclude_click'];
                 if (cl) {
-                    this.load();
-                    this.exclude_click = new ExcludeOffers();
-                    this.save();
+                    this.load(k);
+                    this[k[0]].clear();
+                    this.save(k);
                 }
                 return cl;
             };
@@ -2302,27 +2364,30 @@
                 return keys;
             };
             UserHistory[prototype].retargeting_clean = function (cl) {
+                var k = ['retargeting_exclude'];
                 if (cl) {
-                    this.load();
-                    this.retargeting_exclude = new ExcludeOffers();
-                    //this.retargeting_view = new ExcludeOffers(true, true);
-                    this.save();
+                    this.load(k);
+                    this[k[0]].clear();
+                    //this.retargeting_view.clear();
+                    this.save(k);
                 }
                 return cl;
             };
             UserHistory[prototype].retargeting_account_clean = function (cl) {
+                var k = ['retargeting_account_exclude'];
                 if (cl) {
-                    this.load();
-                    this.retargeting_account_exclude = new ExcludeOffers();
-                    this.save();
+                    this.load(k);
+                    this[k[0]].clear();
+                    this.save(k);
                 }
                 return cl;
             };
             UserHistory[prototype].retargeting_click_clean = function (cl) {
+                var k = ['retargeting_account_exclude'];
                 if (cl) {
-                    this.load();
-                    this.retargeting_exclude_click = new ExcludeOffers();
-                    this.save();
+                    this.load(k);
+                    this[k[0]].clear();
+                    this.save(k);
                 }
                 return cl;
             };
@@ -11432,6 +11497,10 @@
                 return offer;
             };
             Advertise.prototype.click = function (id) {
+                var key = [
+                    'exclude_click',
+                    'retargeting_exclude_click'
+                ];
                 var app = this.app;
                 app.logger.block_initial();
                 app.logger.log();
@@ -11443,13 +11512,13 @@
                 if (popup) {
                     popup.moveTo(0, 0);
                 }
-                uh.load();
+                uh.load(key);
                 if (offer.retargeting) {
-                    uh.retargeting_exclude_click.add(offer.id, 1);
+                    uh[key[1]].add(offer.id, 1);
                 } else {
-                    uh.exclude_click.add(offer.id, 1);
+                    uh[key[0]].add(offer.id, 1);
                 }
-                uh.save();
+                uh.save(key);
                 app.adsparams.request = 'rotate';
                 app.loader();
             };
@@ -11502,6 +11571,12 @@
                     data[retargeting + '_dynamic_' + exclude] = this[app].uh.retargeting_exclude_get();
                     data[retargeting] = this[app].uh.retargeting.get();
                 } else if (req_type === 'log') {
+                    var complite = this[app].logger.logging === 'complite';
+                    var key = [
+                        'exclude',
+                        'retargeting_exclude',
+                        'time'
+                    ];
                     data[params] = {};
                     data[params][informer + '_id'] = this[app].advertise[informer + '_id'];
                     data[params][informer + '_id_int'] = this[app].advertise[informer + '_id_int'];
@@ -11510,6 +11585,9 @@
                     data[params]['active'] = this[app].logger.logging;
                     data[params]['test'] = this[app][adsparams].test;
                     data.items = [];
+                    if (complite) {
+                        this[app].uh.load(key);
+                    }
                     _.each(this.app.advertise.offers, function (offer) {
                         if (offer.id !== null) {
                             var item = {};
@@ -11522,20 +11600,21 @@
                             item.retargeting = offer.retargeting;
                             item.branch = offer.branch;
                             this.data.items.push(item);
-                            if (this[app].logger.logging === 'complite') {
-                                this[app].uh.load();
+                            if (complite) {
                                 if (offer.retargeting) {
-                                    this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);  //this[app].uh.retargeting_view.add(offer.id);
+                                    this[app].uh[key[1]].add(offer.id, offer.unique_impression_lot);  //this[app].uh.retargeting_view.add(offer.id);
                                 } else {
-                                    this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);
+                                    this[app].uh[key[0]].add(offer.id, offer.unique_impression_lot);
                                 }
-                                this[app].uh.save();
                             }
                         }
                     }, {
                         app: this[app],
                         data: data
                     });
+                    if (complite) {
+                        this[app].uh.save(key);
+                    }
                 }
                 return JSON.stringify(data);
             };
@@ -12385,7 +12464,6 @@
                 this.params = new Params(this);
                 this.settings = settings;
                 this.time_start = new Date().getTime();
-                this.uh.load();
                 this.loader = loader;
                 this.advertise = new Advertise(this);
                 this.render = new Render(this);

@@ -37,6 +37,9 @@ define(['./../underscore'], function (_) {
     ) {
         this[guid] = arg1;
     };
-
+    GenderUser[prototype].clear = function () {
+        this.gender = void 0;
+        this.hit_log = new Array(0, 0, 0);
+    };
     return GenderUser;
 });

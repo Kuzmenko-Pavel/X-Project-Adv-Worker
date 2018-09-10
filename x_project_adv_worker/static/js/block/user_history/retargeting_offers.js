@@ -42,6 +42,17 @@ define(['./../underscore'], function (_) {
     RetargetingOffers[prototype].remove = function (key) {
         delete this[key];
     };
+    RetargetingOffers[prototype].clear = function () {
+        _.each(this || {}, function (
+            value,
+            key,
+            uh
+        ) {
+            if (!_.isUndefined(value) && !_.isFunction(value)) {
+                delete uh[key];
+            }
+        });
+    };
 
     RetargetingOffers[prototype].get = function () {
         var x;
@@ -74,7 +85,7 @@ define(['./../underscore'], function (_) {
             }
         );
         for (x in keys) {
-            if (typeof(keys[x]) !== 'function') {
+            if (!_.isFunction(keys[x])) {
                 res.push([
                     keys[x][0],
                     keys[x][2],

@@ -76,6 +76,10 @@ define([
         return offer;
     };
     Advertise.prototype.click = function (id) {
+        var key = [
+            'exclude_click',
+            'retargeting_exclude_click'
+        ];
         var app = this.app;
         app.logger.block_initial();
         app.logger.log();
@@ -87,14 +91,14 @@ define([
         if (popup) {
             popup.moveTo(0, 0);
         }
-        uh.load();
+        uh.load(key);
         if (offer.retargeting) {
-            uh.retargeting_exclude_click.add(offer.id, 1);
+            uh[key[1]].add(offer.id, 1);
         }
         else {
-            uh.exclude_click.add(offer.id, 1);
+            uh[key[0]].add(offer.id, 1);
         }
-        uh.save();
+        uh.save(key);
         app.adsparams.request = 'rotate';
         app.loader();
     };

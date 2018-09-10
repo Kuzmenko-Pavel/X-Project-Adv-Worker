@@ -52,6 +52,12 @@ define([
             data[retargeting] = this[app].uh.retargeting.get();
         }
         else if (req_type === 'log'){
+            var complite = this[app].logger.logging === 'complite';
+            var key = [
+                'exclude',
+                'retargeting_exclude',
+                'time'
+            ];
             data[params] = {};
             data[params][informer + '_id'] = this[app].advertise[informer + '_id'];
             data[params][informer + '_id_int'] = this[app].advertise[informer + '_id_int'];
@@ -60,6 +66,9 @@ define([
             data[params]['active'] = this[app].logger.logging;
             data[params]['test'] = this[app][adsparams].test;
             data.items = [];
+            if (complite) {
+                this[app].uh.load(key);
+            }
             _.each(this.app.advertise.offers, function (offer) {
                 if (offer.id !== null) {
                     var item = {};
@@ -72,22 +81,24 @@ define([
                     item.retargeting = offer.retargeting;
                     item.branch = offer.branch;
                     this.data.items.push(item);
-                    if (this[app].logger.logging === 'complite') {
-                        this[app].uh.load();
+                    if (complite) {
                         if (offer.retargeting) {
-                            this[app].uh.retargeting_exclude.add(offer.id, offer.unique_impression_lot);
+                            this[app].uh[key[1]].add(offer.id, offer.unique_impression_lot);
                             //this[app].uh.retargeting_view.add(offer.id);
                         }
                         else {
-                            this[app].uh.exclude.add(offer.id, offer.unique_impression_lot);
+                            this[app].uh[key[0]].add(offer.id, offer.unique_impression_lot);
                         }
-                        this[app].uh.save();
                     }
                 }
             }, {
                 app: this[app],
                 data: data
             });
+            if (complite) {
+                this[app].uh.save(key);
+            }
+
         }
         return JSON.stringify(data);
     };

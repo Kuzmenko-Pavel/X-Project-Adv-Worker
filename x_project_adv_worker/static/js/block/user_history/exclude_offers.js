@@ -54,6 +54,18 @@ define(['./../underscore'], function (_) {
         this[guid] = countViews;
     };
 
+    ExcludeOffers[prototype].clear = function () {
+        _.each(this || {}, function (
+            value,
+            key,
+            uh
+        ) {
+            if (!_.isUndefined(value) && !_.isFunction(value)) {
+                delete uh[key];
+            }
+        });
+    };
+
 
     ExcludeOffers[prototype].get = function () {
         var keys = [];

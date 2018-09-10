@@ -15,7 +15,17 @@ define(['./../underscore'], function (_) {
         }
         this.timeLast = timeLast;
     };
-
+    ActivityUser[prototype].clear = function () {
+        _.each(this || {}, function (
+            value,
+            key,
+            uh
+        ) {
+            if (!_.isUndefined(value) && !_.isFunction(value)) {
+                delete uh[key];
+            }
+        });
+    };
     ActivityUser[prototype].load = function (
         guid,
         arg1
