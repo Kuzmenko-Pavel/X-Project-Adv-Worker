@@ -177,7 +177,7 @@ class Query(object):
             result.append(campaign)
         return [dict(x) for x in result]
 
-    async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, recursion=False):
         if not campaigns:
             return [], None
         result = []
@@ -240,6 +240,13 @@ class Query(object):
                 item['recommended'] = offer['recommended']
                 item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                 result.append(item)
+            if len(result) < capacity and not recursion:
+                rec_exclude = [0]
+                rec_exclude.extend([x['id'] for x in result])
+                rec_res, rec_clean = await self.get_place_offer(block_id, campaigns, capacity, 0, offer_count,
+                                                                rec_exclude, True)
+                for item in rec_res:
+                    result.append(item)
         except asyncio.CancelledError as ex:
             logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
