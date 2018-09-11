@@ -189,7 +189,7 @@ class Query(object):
             range_number = 1
             if counter_prediction < capacity * 2:
                 range_number = capacity
-            if counter_prediction < capacity:
+            if -10 < counter_prediction < capacity:
                 index = 0
             campaign_unique = ' or '.join(
                 ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
