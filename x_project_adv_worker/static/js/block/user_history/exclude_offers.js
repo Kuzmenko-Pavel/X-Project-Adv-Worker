@@ -69,15 +69,13 @@ define(['./../underscore'], function (_) {
 
     ExcludeOffers[prototype].get = function () {
         var keys = [];
-        var obj = this || {};
-        _.each(obj, function (
+        _.each(this || {}, function (
             value,
-            key,
-            uh
+            key
         ) {
-            if (uh.invert()) {
+            if (this.invert()) {
                 if (value > 0) {
-                    if (uh.counter()) {
+                    if (this.counter()) {
                         keys.push([
                             key.replace(/\D/g, ''),
                             value
@@ -90,7 +88,7 @@ define(['./../underscore'], function (_) {
             }
             else {
                 if (value <= 0) {
-                    if (uh.counter()) {
+                    if (this.counter()) {
                         keys.push([
                             key.replace(/\D/g, ''),
                             value
@@ -101,7 +99,7 @@ define(['./../underscore'], function (_) {
                     }
                 }
             }
-        });
+        }, this);
         return keys;
     };
 

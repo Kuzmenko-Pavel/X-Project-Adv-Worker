@@ -33,14 +33,12 @@ define([
             this.css = server_obj.css;
             this.offers = server_obj.offers;
             if (server_obj.clean.place) {
-                console.log('server_obj.clean.place');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
 
             }
             if (server_obj.clean.social) {
-                console.log('server_obj.clean.social');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
@@ -48,7 +46,6 @@ define([
                 uh.retargeting_click_clean(true);
             }
             if (this.offers.length === 0){
-                console.log('this.offers.length');
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
@@ -88,9 +85,9 @@ define([
         var uh = app.uh;
         var offer = this.get(id);
         var popup = window.open(offer.url, '_blank');
-        if (popup) {
-            popup.moveTo(0, 0);
-        }
+        // if (popup) {
+        //     popup.moveTo(0, 0);
+        // }
         uh.load(key);
         if (offer.retargeting) {
             uh[key[1]].add(offer.id, 1);
