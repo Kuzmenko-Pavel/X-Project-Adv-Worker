@@ -35,15 +35,8 @@ define(['./../underscore'], function (_) {
         this[guid] = arg1;
     };
     CostUser[prototype].clear = function () {
-        _.each(this || {}, function (
-            value,
-            key,
-            uh
-        ) {
-            if (!_.isUndefined(value) && !_.isFunction(value)) {
-                delete uh[key];
-            }
-        });
+        this.hit_log = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        this.cost = void 0;
     };
     return CostUser;
 });

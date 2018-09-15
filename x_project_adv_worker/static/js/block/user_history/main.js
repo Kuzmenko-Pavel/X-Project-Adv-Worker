@@ -8,9 +8,9 @@ define([
         './fixed_queue',
         './exclude_offers',
         './retargeting_offers',
-        './gender_account',
+        // './gender_account',
         './gender_user',
-        './cost_account',
+        // './cost_account',
         './cost_user'
         // './activity_account',
         // './activity_user'
@@ -22,9 +22,9 @@ define([
         FixedQueue,
         ExcludeOffers,
         RetargetingOffers,
-        GenderAccount,
+        // GenderAccount,
         GenderUser,
-        CostAccount,
+        // CostAccount,
         CostUser
         // ActivityAccount,
         // ActivityUser
