@@ -16,8 +16,9 @@ class ErrorView(web.View):
         data = {}
         try:
             data = await self.request.json(loads=ujson.loads)
-            logger.warning(exception_message('ERROR AJAX REQUEST', time=time.time() - self.request.start_time,
-                                             request=str(self.request.message), data=data))
+            logger.warning(
+                'ERROR AJAX REQUEST %s %s %s ' % (data.get('url', ''), data.get('data', {}).get('block_id', ''),
+                                                  data.get('statusText', '')))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), request=str(self.request.message), data=data))
         return web.json_response(result, dumps=ujson.dumps)
