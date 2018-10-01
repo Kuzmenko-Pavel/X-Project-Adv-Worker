@@ -85,7 +85,7 @@ class DataProcessor(object):
                                                                     capacity=self.styler.min_capacity
                                                                     )))
             block, campaigns = await gather(*tasks)
-            if not block:
+            if not block or block.get('blocked', False):
                 del self.app.block_cache[self.params.block_id]
                 return False
             block_id = block.get('id', 0)
@@ -96,7 +96,7 @@ class DataProcessor(object):
             block_height = block.get('height')
         else:
             block = await self.app.query.get_block(block_src=self.params.block_id)
-            if not block:
+            if not block or block.get('blocked', False):
                 return False
 
             block_id = block.get('id', 0)

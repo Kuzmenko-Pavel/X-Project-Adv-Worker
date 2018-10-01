@@ -21,7 +21,11 @@ class Query(object):
     async def get_block(self, block_src):
         async with self.pool.acquire() as connection:
             async with connection.transaction():
-                q = '''SELECT * FROM public.mv_informer where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
+                q = '''SELECT mv_informer.*,
+                              mv_accounts.blocked 
+                      FROM public.mv_informer 
+                      LEFT JOIN public.mv_accounts ON public.mv_informer.account = public.mv_accounts.id 
+                      where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                 stmt = await connection.prepare(q)
                 block = await stmt.fetchrow(timeout=60)
                 if block:
