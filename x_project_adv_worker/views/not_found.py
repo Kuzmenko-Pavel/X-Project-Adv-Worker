@@ -11,9 +11,13 @@ class NotFoundView(web.View):
         post = await self.request.post()
         query = self.request.query
         block_id = post.get('scr', query.get('scr', ''))
+        w = post.get('w', query.get('w', 'auto'))
+        h = post.get('h', query.get('h', 'auto'))
         data = {
             'block_id': block_id,
-            'style': reset_css
+            'style': reset_css,
+            'w': w,
+            'h': h
         }
         response = aiohttp_jinja2.render_template('not_found_block.html', self.request, data)
         return response

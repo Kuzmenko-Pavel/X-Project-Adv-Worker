@@ -7,9 +7,11 @@
     <meta name="googlebot" content="noindex, nofollow">
 </head>
 <body>
-<script>
-    var my_google_ad_channel = "{{ block_id }}";
-</script>
-{{ userCode|safe }}
+<div>
+    <script>
+        var my_google_ad_channel = "{{ block_id }}";
+    </script>
+    {{ userCode|safe }}
+</div>
 </body>
 </html>
