@@ -347,6 +347,10 @@ class DataProcessor(object):
         if len(self.data['offers']) < capacity:
             if self.data['parther']:
                 self.data['offers'].clear()
+                self.data['clean']['place'] = True
+                self.data['clean']['social'] = True
+                self.data['clean']['account_retargeting'] = True
+                self.data['clean']['dynamic_retargeting'] = True
             else:
                 for x in range(int(capacity) - len(self.data['offers'])):
                     if 0 < len(self.data['offers']) < capacity:
