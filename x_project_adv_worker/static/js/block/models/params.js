@@ -15,6 +15,13 @@ define([
         this.size();
     };
     Params.prototype.size = function () {
+        if (this.app.adsparams.h && this.app.adsparams.w) {
+            if (this.app.adsparams.w + this.app.adsparams.h > 120 && this.app.adsparams.w > 30 && this.app.adsparams.h > 30) {
+                this.w_h = this.app.adsparams.h;
+                this.w_w = this.app.adsparams.w;
+                return;
+            }
+        }
         var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0];
         this.w_h = w.innerHeight || e.clientHeight || g.clientHeight;
         this.w_w = w.innerWidth || e.clientWidth || g.clientWidth;
