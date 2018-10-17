@@ -3,6 +3,8 @@ import ujson
 import aiohttp_jinja2
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.headers import *
+import random
+import string
 
 
 class IframesView(web.View):
@@ -25,10 +27,18 @@ class IframesView(web.View):
         rand = post.get('rand', query.get('rand', 0))
         origin = post.get('origin', query.get('origin', '*'))
         ip = post.get('ip', query.get('ip', ''))
+        h = post.get('h', query.get('h', ''))
+        w = post.get('w', query.get('w', ''))
         post_message = True if post.get('post', 'false') == 'true' else False
+        rend_id = ''.join(
+            random.SystemRandom().choice(string.ascii_lowercase) for _ in range(1)
+        ) + ''.join(
+            random.SystemRandom().choice(string.hexdigits) for _ in range(10)
+        )
 
         data = {
             'js': ujson.dumps({
+                'rend_id': rend_id,
                 'block_id': block_id,
                 'index': index,
                 'rand': rand,
@@ -41,8 +51,11 @@ class IframesView(web.View):
                 'is_webp': is_webp,
                 'origin': origin,
                 'post': post_message,
+                'w': w,
+                'h': h,
                 'request': 'initial'
             }),
+            'rend_id': rend_id,
             'style': reset_css,
             'nonce': self.request.nonce
         }
