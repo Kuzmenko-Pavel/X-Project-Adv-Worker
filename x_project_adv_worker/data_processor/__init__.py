@@ -2,6 +2,7 @@ __all__ = ['DataProcessor']
 import ujson
 import base64
 import time
+import random
 from asyncio import ensure_future, gather
 
 from x_project_adv_worker.data_processor.params import Params
@@ -337,6 +338,21 @@ class DataProcessor(object):
                     loop_break = True
                 elif not offer_styling_block and len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
                     loop_break = True
+
+        if styling_block:
+            capacity = self.styler.block.styling_adv.count_adv
+        else:
+            capacity = self.styler.block.default_adv.count_adv
+
+        if len(self.data['offers']) < capacity:
+            if self.data['parther']:
+                self.data['offers'].clear()
+            else:
+                for x in range(int(capacity) - len(self.data['offers'])):
+                    if 0 < len(self.data['offers']) < capacity:
+                        self.data['offers'].append(random.choice(self.data['offers']))
+                    else:
+                        break
 
     def change_image(self, images):
         if self.params.is_webp:
