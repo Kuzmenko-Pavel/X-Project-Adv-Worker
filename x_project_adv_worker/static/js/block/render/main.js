@@ -8,30 +8,34 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
             render_obj.redirect = redirect;
             render_obj.slider = slider;
             render_obj.apply_css = apply_css;
-            render_obj.parent_el = jQuery('#' + app.adsparams.rend_id);
-            render_obj.root = jQuery("<div/>");
-            if (render_obj.root[0].attachShadow) {
-                try {
-                    render_obj.parent_el.append(render_obj.root);
-                    render_obj.root = jQuery(render_obj.root[0].attachShadow({mode: "closed"}));
+            render_obj.create_root = function () {
+                this.parent_el = jQuery('#' + this.app.adsparams.rend_id);
+                this.parent_el.empty();
+                this.root = jQuery("<div/>");
+                if (this.root[0].attachShadow) {
+                    try {
+                        this.parent_el.append(this.root);
+                        this.root = jQuery(this.root[0].attachShadow({mode: "closed"}));
+                    }
+                    catch (err) {
+                        this.root = this.parent_el;
+                    }
                 }
-                catch (err) {
-                    render_obj.root = render_obj.parent_el;
+                else if (this.root[0].createShadowRoot) {
+                    this.parent_el.append(this.root);
+                    try {
+                        this.root = jQuery(this.root[0].createShadowRoot());
+                    }
+                    catch (err) {
+                        this.root = this.parent_el;
+                    }
                 }
-            }
-            else if (render_obj.root[0].createShadowRoot) {
-                render_obj.parent_el.append(render_obj.root);
-                try {
-                    render_obj.root = jQuery(render_obj.root[0].createShadowRoot());
+                else {
+                    this.root = this.parent_el;
                 }
-                catch (err) {
-                    render_obj.root = render_obj.parent_el;
-                }
-            }
-            else {
-                render_obj.root = render_obj.parent_el;
-            }
+            };
             render_obj.render = function () {
+                this.create_root();
                 this.root.append(templates.advBlockTemplate({
                     mainHeader: this.app.advertise.header_html,
                     ads: templates.advTemplate({offers: this.app.advertise.offers}),
