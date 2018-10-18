@@ -20,7 +20,7 @@ class Query(object):
 
     async def get_block(self, block_src):
         try:
-            async with self.pool.acquire() as connection:
+            async with self.pool.acquire(timeout=60) as connection:
                 async with connection.transaction():
                     q = '''SELECT mv_informer.*,
                                   mv_accounts.blocked 
@@ -50,7 +50,7 @@ class Query(object):
         h = date.hour
         m = date.minute
         try:
-            async with self.pool.acquire() as connection:
+            async with self.pool.acquire(timeout=60) as connection:
                 async with connection.transaction():
                     q = '''
                     SELECT
@@ -164,28 +164,28 @@ class Query(object):
                     }
                     stmt = await connection.prepare(q)
                     campaigns = await stmt.fetch(timeout=60)
-            for item in campaigns:
-                campaign = {}
-                campaign['account'] = item['account']
-                campaign['brending'] = item['brending']
-                campaign['guid'] = item['guid']
-                campaign['html_notification'] = item['html_notification']
-                campaign['id'] = item['id']
-                campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
-                campaign['recomendet_count'] = item['recomendet_count']
-                campaign['recomendet_type'] = item['recomendet_type']
-                campaign['retargeting'] = item['retargeting']
-                campaign['retargeting_type'] = item['retargeting_type']
-                campaign['social'] = item['social']
-                campaign['style_type'] = item['style_type']
-                campaign['style_class'] = item['style_class']
-                campaign['style_class_recommendet'] = item['style_class_recommendet']
-                campaign['style_data'] = ujson.loads(item['style_data'])
-                campaign['styling'] = item['styling']
-                campaign['unique_impression_lot'] = item['unique_impression_lot']
-                offer_count = item['offer_count']
-                campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
-                result.append(campaign)
+                    for item in campaigns:
+                        campaign = {}
+                        campaign['account'] = item['account']
+                        campaign['brending'] = item['brending']
+                        campaign['guid'] = item['guid']
+                        campaign['html_notification'] = item['html_notification']
+                        campaign['id'] = item['id']
+                        campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
+                        campaign['recomendet_count'] = item['recomendet_count']
+                        campaign['recomendet_type'] = item['recomendet_type']
+                        campaign['retargeting'] = item['retargeting']
+                        campaign['retargeting_type'] = item['retargeting_type']
+                        campaign['social'] = item['social']
+                        campaign['style_type'] = item['style_type']
+                        campaign['style_class'] = item['style_class']
+                        campaign['style_class_recommendet'] = item['style_class_recommendet']
+                        campaign['style_data'] = ujson.loads(item['style_data'])
+                        campaign['styling'] = item['styling']
+                        campaign['unique_impression_lot'] = item['unique_impression_lot']
+                        offer_count = item['offer_count']
+                        campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
+                        result.append(campaign)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_campaigns')
             # logger.error(exception_message(exc=str(ex)))
@@ -209,7 +209,7 @@ class Query(object):
                 index = 0
             campaign_unique = ' or '.join(
                 ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
-            async with self.pool.acquire() as connection:
+            async with self.pool.acquire(timeout=60) as connection:
                 async with connection.transaction():
                     q = '''
                         select * from
@@ -239,30 +239,30 @@ class Query(object):
                     }
                     stmt = await connection.prepare(q)
                     offers = await stmt.fetch(timeout=60)
-            for offer in offers:
-                if offer['all_count'] > capacity and offer['rating']:
-                    clean = False
-                else:
-                    clean = True
-                item = {}
-                item['id'] = offer['id']
-                item['guid'] = offer['guid']
-                item['id_cam'] = offer['id_cam']
-                item['images'] = offer['images']
-                item['description'] = offer['description']
-                item['url'] = offer['url']
-                item['title'] = offer['title']
-                item['price'] = offer['price']
-                item['recommended'] = offer['recommended']
-                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                result.append(item)
-            if len(result) < capacity and not recursion:
-                rec_exclude = [0]
-                rec_exclude.extend([x['id'] for x in result])
-                rec_res, rec_clean = await self.get_place_offer(block_id, campaigns, capacity, 0, offer_count,
-                                                                rec_exclude, True)
-                for item in rec_res:
-                    result.append(item)
+                    for offer in offers:
+                        if offer['all_count'] > capacity and offer['rating']:
+                            clean = False
+                        else:
+                            clean = True
+                        item = {}
+                        item['id'] = offer['id']
+                        item['guid'] = offer['guid']
+                        item['id_cam'] = offer['id_cam']
+                        item['images'] = offer['images']
+                        item['description'] = offer['description']
+                        item['url'] = offer['url']
+                        item['title'] = offer['title']
+                        item['price'] = offer['price']
+                        item['recommended'] = offer['recommended']
+                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        result.append(item)
+                    if len(result) < capacity and not recursion:
+                        rec_exclude = [0]
+                        rec_exclude.extend([x['id'] for x in result])
+                        rec_res, rec_clean = await self.get_place_offer(block_id, campaigns, capacity, 0, offer_count,
+                                                                        rec_exclude, True)
+                        for item in rec_res:
+                            result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_place_offer')
             # logger.error(exception_message(exc=str(ex)))
@@ -281,7 +281,7 @@ class Query(object):
             if counter_prediction < capacity:
                 exclude = list([0])
 
-            async with self.pool.acquire() as connection:
+            async with self.pool.acquire(timeout=60) as connection:
                 async with connection.transaction():
                     q = '''
                         select * from
@@ -308,21 +308,21 @@ class Query(object):
                     }
                     stmt = await connection.prepare(q)
                     offers = await stmt.fetch(timeout=60)
-            for offer in offers:
-                if clean and offer['all_count'] > capacity:
-                    clean = False
-                item = {}
-                item['id'] = offer['id']
-                item['guid'] = offer['guid']
-                item['id_cam'] = offer['id_cam']
-                item['images'] = offer['images']
-                item['description'] = offer['description']
-                item['url'] = offer['url']
-                item['title'] = offer['title']
-                item['price'] = offer['price']
-                item['recommended'] = offer['recommended']
-                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                result.append(item)
+                    for offer in offers:
+                        if clean and offer['all_count'] > capacity:
+                            clean = False
+                        item = {}
+                        item['id'] = offer['id']
+                        item['guid'] = offer['guid']
+                        item['id_cam'] = offer['id_cam']
+                        item['images'] = offer['images']
+                        item['description'] = offer['description']
+                        item['url'] = offer['url']
+                        item['title'] = offer['title']
+                        item['price'] = offer['price']
+                        item['recommended'] = offer['recommended']
+                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        result.append(item)
             if counter_prediction < capacity:
                 clean = True
         except asyncio.CancelledError as ex:
@@ -343,7 +343,7 @@ class Query(object):
             retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
             if counter_prediction < capacity:
                 index = 0
-            async with self.pool.acquire() as connection:
+            async with self.pool.acquire(timeout=60) as connection:
                 async with connection.transaction():
                     q = '''
                         select * from
@@ -371,20 +371,20 @@ class Query(object):
                     }
                     stmt = await connection.prepare(q)
                     offers = await stmt.fetch(timeout=60)
-            for offer in offers:
-                clean = False
-                item = {}
-                item['id'] = offer['id']
-                item['guid'] = offer['guid']
-                item['id_cam'] = offer['id_cam']
-                item['images'] = offer['images']
-                item['description'] = offer['description']
-                item['url'] = offer['url']
-                item['title'] = offer['title']
-                item['price'] = offer['price']
-                item['recommended'] = offer['recommended']
-                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                result.append(item)
+                    for offer in offers:
+                        clean = False
+                        item = {}
+                        item['id'] = offer['id']
+                        item['guid'] = offer['guid']
+                        item['id_cam'] = offer['id_cam']
+                        item['images'] = offer['images']
+                        item['description'] = offer['description']
+                        item['url'] = offer['url']
+                        item['title'] = offer['title']
+                        item['price'] = offer['price']
+                        item['recommended'] = offer['recommended']
+                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_dynamic_retargeting_offer')
             #logger.error(exception_message(exc=str(ex)))
@@ -402,7 +402,7 @@ class Query(object):
             counter_prediction = offer_count - len(exclude)
             if counter_prediction < capacity:
                 index = 0
-            async with self.pool.acquire() as connection:
+            async with self.pool.acquire(timeout=60) as connection:
                 async with connection.transaction():
                     q = '''
                         select * from
@@ -429,21 +429,21 @@ class Query(object):
                     }
                     stmt = await connection.prepare(q)
                     offers = await stmt.fetch(timeout=60)
-            for offer in offers:
-                if clean and offer['all_count'] > capacity:
-                    clean = False
-                item = {}
-                item['id'] = offer['id']
-                item['guid'] = offer['guid']
-                item['id_cam'] = offer['id_cam']
-                item['images'] = offer['images']
-                item['description'] = offer['description']
-                item['url'] = offer['url']
-                item['title'] = offer['title']
-                item['price'] = offer['price']
-                item['recommended'] = offer['recommended']
-                item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
-                result.append(item)
+                    for offer in offers:
+                        if clean and offer['all_count'] > capacity:
+                            clean = False
+                        item = {}
+                        item['id'] = offer['id']
+                        item['guid'] = offer['guid']
+                        item['id_cam'] = offer['id_cam']
+                        item['images'] = offer['images']
+                        item['description'] = offer['description']
+                        item['url'] = offer['url']
+                        item['title'] = offer['title']
+                        item['price'] = offer['price']
+                        item['recommended'] = offer['recommended']
+                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_account_retargeting_offer')
             #logger.error(exception_message(exc=str(ex)))
