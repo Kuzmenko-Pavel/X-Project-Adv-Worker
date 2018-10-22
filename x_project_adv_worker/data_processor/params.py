@@ -90,7 +90,7 @@ class Params(object):
             try:
                 peername = request.transport.get_extra_info('peername')
                 if peername and isinstance(peername, tuple):
-                    host, _ = peername
+                    self.host, _ = peername
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 

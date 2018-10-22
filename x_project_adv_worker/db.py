@@ -8,7 +8,7 @@ from x_project_adv_worker.logger import logger, exception_message
 
 
 async def init_db(app):
-    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=1, max_size=50,
+    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=1, max_size=25,
                                          max_queries=1000, command_timeout=60, timeout=60)
     app.query = Query(app.pool)
     app.block_cache = {}
@@ -27,8 +27,9 @@ class Query(object):
                           FROM public.mv_informer 
                           LEFT JOIN public.mv_accounts ON public.mv_informer.account = public.mv_accounts.id 
                           where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
-                    stmt = await connection.prepare(q)
-                    block = await stmt.fetchrow()
+                    # stmt = await connection.prepare(q)
+                    # block = await stmt.fetchrow()
+                    block = await connection.fetchrow(q)
                     if block:
                         return dict(block)
         except asyncio.CancelledError as ex:
@@ -162,8 +163,9 @@ class Query(object):
                         'min': m,
                         'capacity': capacity
                     }
-                    stmt = await connection.prepare(q)
-                    campaigns = await stmt.fetch()
+                    # stmt = await connection.prepare(q)
+                    # campaigns = await stmt.fetch()
+                    campaigns = await connection.fetch(q)
                     for item in campaigns:
                         campaign = {}
                         campaign['account'] = item['account']
@@ -188,7 +190,6 @@ class Query(object):
                         result.append(campaign)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_campaigns')
-            # logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
         return [dict(x) for x in result]
@@ -237,8 +238,9 @@ class Query(object):
                         'capacity': capacity * 2,
                         'offset': index * capacity
                     }
-                    stmt = await connection.prepare(q)
-                    offers = await stmt.fetch()
+                    # stmt = await connection.prepare(q)
+                    # offers = await stmt.fetch()
+                    offers = await connection.fetch(q)
                     for offer in offers:
                         if offer['all_count'] > capacity and offer['rating']:
                             clean = False
@@ -265,7 +267,6 @@ class Query(object):
                             result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_place_offer')
-            # logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
         return result, clean
@@ -306,8 +307,9 @@ class Query(object):
                         'exclude': ','.join([str(x) for x in exclude]),
                         'capacity': capacity
                     }
-                    stmt = await connection.prepare(q)
-                    offers = await stmt.fetch()
+                    # stmt = await connection.prepare(q)
+                    # offers = await stmt.fetch()
+                    offers = await connection.fetch(q)
                     for offer in offers:
                         if clean and offer['all_count'] > capacity:
                             clean = False
@@ -327,7 +329,6 @@ class Query(object):
                 clean = True
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_social_offer')
-            # logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
         return result, clean
@@ -369,8 +370,9 @@ class Query(object):
                         'capacity': capacity,
                         'offset': index * capacity
                     }
-                    stmt = await connection.prepare(q)
-                    offers = await stmt.fetch()
+                    # stmt = await connection.prepare(q)
+                    # offers = await stmt.fetch()
+                    offers = await connection.fetch(q)
                     for offer in offers:
                         clean = False
                         item = {}
@@ -387,7 +389,6 @@ class Query(object):
                         result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_dynamic_retargeting_offer')
-            #logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
         return result, clean
@@ -427,8 +428,9 @@ class Query(object):
                         'capacity': capacity,
                         'offset': index * capacity
                     }
-                    stmt = await connection.prepare(q)
-                    offers = await stmt.fetch()
+                    # stmt = await connection.prepare(q)
+                    # offers = await stmt.fetch()
+                    offers = await connection.fetch(q)
                     for offer in offers:
                         if clean and offer['all_count'] > capacity:
                             clean = False
@@ -446,7 +448,6 @@ class Query(object):
                         result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_account_retargeting_offer')
-            #logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
         return result, clean
@@ -468,8 +469,9 @@ class Query(object):
                         'offer_ids': ','.join([str(x) for x in offer_ids]),
                         'capacity': capacity * 2
                     }
-                    stmt = await connection.prepare(q)
-                    offers = await stmt.fetch()
+                    # stmt = await connection.prepare(q)
+                    # offers = await stmt.fetch()
+                    offers = await connection.fetch(q)
                     for offer in offers:
                         item = {}
                         item['id'] = offer['id']
@@ -485,7 +487,6 @@ class Query(object):
                         result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_recomendet_offer')
-            #logger.error(exception_message(exc=str(ex)))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
         return result

@@ -26,10 +26,10 @@ class AdvertisesView(web.View):
                 data['device'] = self.request.device
                 data_processor = DataProcessor(self.request, data)
                 result = await data_processor()
-        except asyncio.CancelledError as ex:
-            logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
-                                           request=str(self.request.message), data=data))
+        except asyncio.CancelledError:
+            logger.error('CancelledError DataProcessor %s' % str(time.time() - self.request.start_time))
         except Exception as ex:
-            logger.error(exception_message(exc=str(ex), request=str(self.request.message), data=data))
+            logger.error(exception_message(time=str(time.time() - self.request.start_time),
+                                           exc=str(ex), request=str(self.request.message), data=data))
 
         return web.json_response(result, dumps=ujson.dumps)

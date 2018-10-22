@@ -87,7 +87,10 @@ class DataProcessor(object):
                                                                     )))
             block, campaigns = await gather(*tasks)
             if not block or block.get('blocked', False):
-                del self.app.block_cache[self.params.block_id]
+                try:
+                    del self.app.block_cache[self.params.block_id]
+                except Exception:
+                    pass
                 return False
             block_id = block.get('id', 0)
             block_domain = block.get('domain', 0)
