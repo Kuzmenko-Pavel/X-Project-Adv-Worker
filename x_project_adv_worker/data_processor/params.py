@@ -42,8 +42,8 @@ class Params(object):
             logger.error(exception_message(exc=str(ex), data=data))
 
     def __loads__(self, request, data):
-        self.width = int(data.get('w', self.width))
-        self.height = int(data.get('h', self.height))
+        self.width = int(float(data.get('w', self.width)))
+        self.height = int(float(data.get('h', self.height)))
         self.block_id = str(data.get('block_id', self.block_id))
         self.auto = bool(data.get('auto', self.auto))
         self.country = str(data.get('country', self.country)).strip()
