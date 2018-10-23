@@ -57,7 +57,7 @@ define([
                 status,
                 error
             ) {
-                var url = '/v1/error.json';
+                var url = '/v1/error';
                 if (this.url !== url) {
                     jQuery.ajax({
                         url: url,

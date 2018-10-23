@@ -6,7 +6,7 @@ define(function () {
         requiredData: {
             advertises: {
                 param: 'advertises',
-                url: '/v1/advertises.json'
+                url: '/v1/items'
             },
             offer_log: {
                 param: 'log',
