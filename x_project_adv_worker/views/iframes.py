@@ -27,16 +27,14 @@ class IframesView(web.View):
         rand = post.get('rand', query.get('rand', 0))
         origin = post.get('origin', query.get('origin', '*'))
         ip = post.get('ip', query.get('ip', ''))
-        h = ''
-        w = ''
         try:
             h = int(float(post.get('h', query.get('h'))))
         except Exception:
-            pass
+            h = ''
         try:
             w = int(float(post.get('w', query.get('w'))))
         except Exception:
-            pass
+            w = ''
         post_message = True if post.get('post', 'false') == 'true' else False
         rend_id = ''.join(
             random.SystemRandom().choice(string.ascii_lowercase) for _ in range(1)

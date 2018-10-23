@@ -11,8 +11,14 @@ class NotFoundView(web.View):
         post = await self.request.post()
         query = self.request.query
         block_id = post.get('scr', query.get('scr', ''))
-        w = post.get('w', query.get('w', 'auto'))
-        h = post.get('h', query.get('h', 'auto'))
+        try:
+            h = int(float(post.get('h', query.get('h'))))
+        except Exception:
+            h = ''
+        try:
+            w = int(float(post.get('w', query.get('w'))))
+        except Exception:
+            w = ''
         data = {
             'block_id': block_id,
             'style': reset_css,
