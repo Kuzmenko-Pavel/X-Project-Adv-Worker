@@ -1,3 +1,4 @@
+import os
 import asyncpg
 import asyncio
 import ujson
@@ -8,9 +9,11 @@ from x_project_adv_worker.logger import logger, exception_message
 
 
 async def init_db(app):
+    application_name = 'AdvWorker pid=%s' % os.getpid()
     app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=1, max_size=15,
                                          max_inactive_connection_lifetime=300,
-                                         max_queries=1000, command_timeout=60, timeout=60)
+                                         max_queries=1000, command_timeout=60, timeout=60,
+                                         server_settings={'application_name': application_name})
     app.query = Query(app.pool)
     app.block_cache = {}
 
