@@ -43,7 +43,8 @@ class Query(object):
             logger.error(exception_message(exc=str(ex)))
         return None
 
-    async def get_campaigns(self, block_id, block_domain, block_account, country, region, device, gender, cost, capacity):
+    async def get_campaigns(self, block_id, block_domain, block_account, country, region, device,
+                            gender, cost, capacity):
         result = []
         campaigns = []
         gender_list = set('0')
@@ -198,7 +199,8 @@ class Query(object):
             logger.error(exception_message(exc=str(ex)))
         return [dict(x) for x in result]
 
-    async def get_place_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, recursion=False):
+    async def get_place_offer(self, processor,
+                              block_id, campaigns, capacity, index, offer_count, exclude, recursion=False):
         if not campaigns:
             return [], None
         result = []
@@ -246,7 +248,13 @@ class Query(object):
                     # offers = await stmt.fetch()
                     offers = await connection.fetch(q)
                     for offer in offers:
-                        if offer['all_count'] > capacity and offer['rating']:
+                        rating = offer['rating']
+                        if rating is None:
+                            rating = 12500.0
+                        if processor.rating_hard_limit and rating < processor.block_rating_division:
+                            continue
+
+                        if offer['all_count'] > capacity and rating > 0:
                             clean = False
                         else:
                             clean = True
@@ -260,22 +268,26 @@ class Query(object):
                         item['title'] = offer['title']
                         item['price'] = offer['price']
                         item['recommended'] = offer['recommended']
+                        item['rating'] = rating
                         item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                         result.append(item)
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
                         rec_exclude.extend([x['id'] for x in result])
-                        rec_res, rec_clean = await self.get_place_offer(block_id, campaigns, capacity, 0, offer_count,
-                                                                        rec_exclude, True)
+                        rec_res, rec_clean = await self.get_place_offer(processor, block_id, campaigns, capacity, 0,
+                                                                        offer_count, rec_exclude, True)
                         for item in rec_res:
                             result.append(item)
         except asyncio.CancelledError as ex:
             logger.error('CancelledError get_place_offer')
         except Exception as ex:
             logger.error(exception_message(exc=str(ex)))
+        if not clean:
+            if all([item['rating'] < processor.block_rating_division for item in result]):
+                clean = True
         return result, clean
 
-    async def get_social_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_social_offer(self, processor, block_id, campaigns, capacity, index, offer_count, exclude):
         if not campaigns:
             return [], None
         result = []
@@ -337,7 +349,8 @@ class Query(object):
             logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_dynamic_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude, raw_retargeting):
+    async def get_dynamic_retargeting_offer(self, processor, block_id, campaigns, capacity, index, offer_count,
+                                            exclude, raw_retargeting):
         if not campaigns:
             return [], None
         result = []
@@ -397,7 +410,8 @@ class Query(object):
             logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_account_retargeting_offer(self, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_account_retargeting_offer(self, processor, block_id, campaigns, capacity, index,
+                                            offer_count, exclude):
         if not campaigns:
             return [], None
         result = []

@@ -14,7 +14,8 @@ class DataProcessor(object):
                  'retargeting_branch', 'retargeting_account_branch', 'social_branch', 'campaigns_place',
                  'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
-                 'block_button', 'block_ret_button', 'block_rec_button']
+                 'block_button', 'block_ret_button', 'block_rec_button', 'block_rating_division',
+                 'rating_hard_limit']
 
     def __init__(self, request, data):
         self.data = dict({
@@ -30,6 +31,8 @@ class DataProcessor(object):
         self.block = dict()
         self.campaigns = dict()
         self.block_id = 0
+        self.block_rating_division = 1000
+        self.rating_hard_limit = False
         self.place_branch = True
         self.retargeting_branch = True
         self.retargeting_account_branch = True
@@ -131,6 +134,8 @@ class DataProcessor(object):
         self.data['block']['header_html'] = block.get('headerHtml', '')
         self.data['block']['footer_html'] = block.get('footerHtml', '')
         self.block_id = block.get('id', 0)
+        self.block_rating_division = block.get('rating_division', 1000)
+        self.rating_hard_limit = block.get('rating_hard_limit', False)
         self.place_branch = block.get('place_branch', True)
         self.retargeting_branch = block.get('retargeting_branch', True)
         self.retargeting_account_branch = block.get('retargeting_branch', True)
@@ -168,6 +173,7 @@ class DataProcessor(object):
     async def find_offers(self):
         tasks = list()
         tasks.append(ensure_future(self.app.query.get_place_offer(
+            processor=self,
             block_id=self.block_id,
             campaigns=self.campaigns_place,
             capacity=self.styler.max_capacity,
@@ -176,6 +182,7 @@ class DataProcessor(object):
             exclude=self.params.exclude)))
 
         tasks.append(ensure_future(self.app.query.get_social_offer(
+            processor=self,
             block_id=self.block_id,
             campaigns=self.campaigns_socia,
             capacity=self.styler.max_capacity,
@@ -184,6 +191,7 @@ class DataProcessor(object):
             exclude=self.params.exclude)))
 
         tasks.append(ensure_future(self.app.query.get_account_retargeting_offer(
+            processor=self,
             block_id=self.block_id,
             campaigns=self.campaigns_retargeting_account,
             capacity=self.styler.max_capacity,
@@ -192,6 +200,7 @@ class DataProcessor(object):
             exclude=self.params.retargeting_account_exclude)))
 
         tasks.append(ensure_future(self.app.query.get_dynamic_retargeting_offer(
+            processor=self,
             block_id=self.block_id,
             campaigns=self.campaigns_retargeting_dynamic,
             capacity=self.styler.max_capacity,
@@ -289,6 +298,8 @@ class DataProcessor(object):
             if loop_break:
                 break
             self.data['clean'][name] = result[1]
+            if name == 'social' and len(self.data['offers']) > 0:
+                break
             for offer in result[0]:
                 if loop_break:
                     break
