@@ -12,7 +12,7 @@ define([
         this.recall = 0;
         this.app = app;
         this.informer_id = '';
-        this.informer_id_int = 0;
+        this.informer_id_int = '0';
         this.footer_html = "";
         this.header_html = "";
         this.offers = [];

@@ -129,7 +129,7 @@ class DataProcessor(object):
         return True
 
     async def block_processing(self, block):
-        self.data['block']['id'] = block.get('id', 0)
+        self.data['block']['id'] = str(block.get('id', 0))
         self.data['block']['guid'] = self.params.block_id
         self.data['block']['header_html'] = block.get('headerHtml', '')
         self.data['block']['footer_html'] = block.get('footerHtml', '')
