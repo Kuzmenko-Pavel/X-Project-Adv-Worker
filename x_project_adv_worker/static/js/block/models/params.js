@@ -48,6 +48,7 @@ define([
             data.time_start = this[app].time_start;
             data.cost = this[app].uh.cost_user.get();
             data.gender = this[app].uh.gender_user.get();
+            data.thematics = this[app].uh.thematics.get();
             data[retargeting] = this[app].uh.retargeting.get();
             data[index] = parseInt(this[app][adsparams].index);
             if (!_.isNumber(data[index])) {

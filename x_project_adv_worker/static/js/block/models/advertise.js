@@ -61,9 +61,6 @@ define([
             app.render.render();
             app.logger.offer_status = 'complite';
             app.logger.log();
-            _.each(this.offers, function (offer) {
-                console.log(offer.thematics);
-            });
         }
     };
     Advertise.prototype.get = function (id) {
@@ -78,7 +75,8 @@ define([
     Advertise.prototype.click = function (id) {
         var key = [
             'exclude_click',
-            'retargeting_exclude_click'
+            'retargeting_exclude_click',
+            'thematics'
         ];
         var app = this.app;
         app.logger.block_initial();
@@ -98,6 +96,9 @@ define([
         else {
             uh[key[0]].add(offer.id, 1);
         }
+        _.each(offer.thematics, function (thematic) {
+            uh[key[2]].add(thematic);
+        });
         uh.save(key);
         app.adsparams.request = 'rotate';
         app.loader();

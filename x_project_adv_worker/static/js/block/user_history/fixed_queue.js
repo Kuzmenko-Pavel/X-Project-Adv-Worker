@@ -2,11 +2,16 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../underscore'], function (_) {
-    var prototype = 'prototype';
-    var FixedArray = function () {
+    var FixedQueue = function (size) {
+        var queue = [];
+        queue.fixedSize = size;
+        queue.add = FixedQueue.add;
+        queue.load = FixedQueue.load;
+        queue.get = FixedQueue.get;
+        queue.clear = FixedQueue.clear;
+        return queue;
     };
-    FixedArray[prototype] = Function[prototype];
-    FixedArray[prototype].add = function (
+    FixedQueue.add = function (
         arg1,
         arg2
     ) {
@@ -25,14 +30,14 @@ define(['./../underscore'], function (_) {
         if (this.length <= this.fixedSize) {
             return;
         }
-        Array[prototype].splice.call(
+        Array.prototype.splice.call(
             this,
             0,
             (this.length - this.fixedSize)
         );
 
     };
-    FixedArray[prototype].load = function (
+    FixedQueue.load = function (
         arg1,
         arg2
     ) {
@@ -51,18 +56,14 @@ define(['./../underscore'], function (_) {
         if (this.length <= this.fixedSize) {
             return;
         }
-        Array[prototype].splice.call(
+        Array.prototype.splice.call(
             this,
             0,
             (this.length - this.fixedSize)
         );
 
     };
-    FixedArray[prototype].get = function () {
-        Array[prototype].splice.call(this, 0, (this.length - this.fixedSize));
-        return this.join(";");
-    };
-    FixedArray[prototype].clear = function () {
+    FixedQueue.clear = function () {
         _.each(this || {}, function (
             value,
             key,
@@ -73,10 +74,13 @@ define(['./../underscore'], function (_) {
             }
         });
     };
-    var FixedQueue = function (size) {
-        FixedArray[prototype].fixedSize = size;
-        var queue = new FixedArray();
-        return ( queue );
+    FixedQueue.get = function () {
+        Array.prototype.splice.call(
+            this,
+            0,
+            (this.length - this.fixedSize)
+        );
+        return this.join(";");
     };
     return FixedQueue;
 });

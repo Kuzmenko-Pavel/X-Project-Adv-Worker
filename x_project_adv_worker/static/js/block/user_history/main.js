@@ -33,6 +33,7 @@ define([
         var UserHistory = function () {
             // this.searchengines = new FixedQueue(3);
             // this.context = new FixedQueue(3);
+            this.thematics = new FixedQueue(10);
             this.retargeting = new RetargetingOffers();
             this.exclude = new ExcludeOffers();
             this.exclude_click = new ExcludeOffers();
