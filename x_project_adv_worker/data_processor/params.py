@@ -12,7 +12,7 @@ not_found = 'NOT FOUND'
 
 class Params(object):
     __slots__ = ['width', 'height', 'block_id', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
-                 'exclude', 'is_webp', 'host', 'token',
+                 'exclude', 'is_webp', 'host', 'token', 'thematics',
                  'retargeting_account_exclude', 'retargeting_dynamic_exclude',
                  'raw_retargeting', 'retargeting', 'time_start']
 
@@ -35,6 +35,7 @@ class Params(object):
         self.retargeting_account_exclude = list([0])
         self.retargeting_dynamic_exclude = list([0])
         self.raw_retargeting = list()
+        self.thematics = list()
         self.retargeting = dict()
         try:
             self.__loads__(request, data)
@@ -65,6 +66,7 @@ class Params(object):
         if not self.retargeting_dynamic_exclude:
             self.retargeting_dynamic_exclude = list([0])
 
+        self.thematics = data.get('thematics', [])
         self.raw_retargeting = data.get('retargeting', [])
         self.retargeting = dict((str(ids[1]).lower(), ids[0]) for ids in data.get('retargeting', []))
 

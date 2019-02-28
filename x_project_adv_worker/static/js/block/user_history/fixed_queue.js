@@ -80,7 +80,7 @@ define(['./../underscore'], function (_) {
             0,
             (this.length - this.fixedSize)
         );
-        return this.join(";");
+        return this;
     };
     return FixedQueue;
 });

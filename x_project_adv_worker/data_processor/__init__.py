@@ -50,6 +50,7 @@ class DataProcessor(object):
         self.block_button = ''
         self.block_ret_button = ''
         self.block_rec_button = ''
+        print(self.params.thematics)
 
     async def get_userCode(self):
         block = await self.app.query.get_block(block_src=self.params.block_id)
