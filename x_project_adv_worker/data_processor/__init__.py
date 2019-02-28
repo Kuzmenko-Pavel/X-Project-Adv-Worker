@@ -15,7 +15,7 @@ class DataProcessor(object):
                  'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
                  'block_button', 'block_ret_button', 'block_rec_button', 'block_rating_division',
-                 'rating_hard_limit']
+                 'rating_hard_limit', 'campaigns_thematic', 'offer_count_thematic']
 
     def __init__(self, request, data):
         self.data = dict({
@@ -39,6 +39,8 @@ class DataProcessor(object):
         self.social_branch = True
         self.campaigns_place = list()
         self.offer_count_place = 0
+        self.campaigns_thematic = list()
+        self.offer_count_thematic = 0
         self.campaigns_socia = list()
         self.offer_count_socia = 0
         self.campaigns_retargeting_account = list()
@@ -446,6 +448,7 @@ class DataProcessor(object):
             'unique_impression_lot': unique_impression_lot,
             'token': offer['token'],
             'branch': branch,
+            'thematics': offer['campaign']['thematics'],
             'button': button
         })
 

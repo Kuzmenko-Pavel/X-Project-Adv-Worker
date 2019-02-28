@@ -61,6 +61,9 @@ define([
             app.render.render();
             app.logger.offer_status = 'complite';
             app.logger.log();
+            _.each(this.offers, function (offer) {
+                console.log(offer.thematics);
+            });
         }
     };
     Advertise.prototype.get = function (id) {

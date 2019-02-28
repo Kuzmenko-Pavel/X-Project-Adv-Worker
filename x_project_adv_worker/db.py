@@ -190,6 +190,9 @@ class Query(object):
                         campaign['style_data'] = ujson.loads(item['style_data'])
                         campaign['styling'] = item['styling']
                         campaign['unique_impression_lot'] = item['unique_impression_lot']
+                        campaign['thematic'] = item['thematic']
+                        campaign['thematics'] = item['thematics']
+                        campaign['thematic_range'] = item['thematic_range']
                         offer_count = item['offer_count']
                         campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
                         result.append(campaign)
