@@ -20,6 +20,7 @@ async def init_db(app):
     app.block_cache = {}
     app.cat_to_int_cache = {}
     app.campaign_view_count = {
+        'all': 0,
         'place': defaultdict(int),
         'thematic': defaultdict(int),
     }

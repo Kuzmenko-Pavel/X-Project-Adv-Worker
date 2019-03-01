@@ -5,6 +5,7 @@ import time
 import random
 from asyncio import ensure_future, gather
 from itertools import zip_longest
+from collections import defaultdict
 
 from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.data_processor.params import Params
@@ -210,6 +211,7 @@ class DataProcessor(object):
                 count_thematic = self.app.campaign_view_count['thematic'][campaign['id']]
                 thematic_range = campaign['thematic_range']
                 if thematic_range > 0:
+                    print(count_place, count_thematic, thematic_range)
                     if count_thematic > ((count_place + count_thematic) / 100) * thematic_range:
                         self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
                         self.offer_count_place += campaign['offer_count']
@@ -291,9 +293,16 @@ class DataProcessor(object):
         await self.union_offers(place_offer, thematic_offer, social_offer, account_retargeting_offer,
                                 dynamic_retargeting_offer)
         for cam_id in self.campaigns_count['thematic']:
+            self.app.campaign_view_count['all'] += 1
             self.app.campaign_view_count['thematic'][cam_id] += 1
+
         for cam_id in self.campaigns_count['place']:
+            self.app.campaign_view_count['all'] += 1
             self.app.campaign_view_count['place'][cam_id] += 1
+
+        if not bool(self.app.campaign_view_count['all'] % 10000):
+            self.app.campaign_view_count['thematic'] = defaultdict(int)
+            self.app.campaign_view_count['place'] = defaultdict(int)
 
     async def find_recomendet(self, offer, loop_counter, capacity):
         views = [('mv_offer_dynamic_retargeting', self.params.retargeting_dynamic_exclude),
