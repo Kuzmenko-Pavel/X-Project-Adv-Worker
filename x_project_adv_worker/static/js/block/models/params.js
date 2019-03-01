@@ -55,6 +55,7 @@ define([
                 data[index] = 0;
             }
             data[exclude] = this[app].uh.exclude_get();
+            data['thematics_' + exclude] = this[app].uh.thematics_exclude_get();
             data[retargeting + '_account_' + exclude] = this[app].uh.retargeting_account_exclude_get();
             data[retargeting + '_dynamic_' + exclude] = this[app].uh.retargeting_exclude_get();
             data[retargeting] = this[app].uh.retargeting.get();
@@ -64,7 +65,8 @@ define([
             var key = [
                 'exclude',
                 'retargeting_exclude',
-                'time'
+                'time',
+                'thematic_exclude'
             ];
             data[params] = {};
             data[params][informer + '_id'] = this[app].advertise[informer + '_id'];
@@ -93,6 +95,9 @@ define([
                         if (offer.retargeting) {
                             this[app].uh[key[1]].add(offer.id, offer.unique_impression_lot);
                             //this[app].uh.retargeting_view.add(offer.id);
+                        }
+                        else if (offer.thematic) {
+                            this[app].uh[key[3]].add(offer.id, offer.unique_impression_lot);
                         }
                         else {
                             this[app].uh[key[0]].add(offer.id, offer.unique_impression_lot);

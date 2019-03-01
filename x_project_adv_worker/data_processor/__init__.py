@@ -4,7 +4,9 @@ import base64
 import time
 import random
 from asyncio import ensure_future, gather
+from itertools import zip_longest
 
+from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.data_processor.params import Params
 from x_project_adv_worker.styler import Styler
 
@@ -15,7 +17,7 @@ class DataProcessor(object):
                  'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
                  'block_button', 'block_ret_button', 'block_rec_button', 'block_rating_division',
-                 'rating_hard_limit', 'campaigns_thematic', 'offer_count_thematic']
+                 'rating_hard_limit', 'campaigns_thematic', 'offer_count_thematic', 'campaigns_count']
 
     def __init__(self, request, data):
         self.data = dict({
@@ -50,7 +52,51 @@ class DataProcessor(object):
         self.block_button = ''
         self.block_ret_button = ''
         self.block_rec_button = ''
-        print(self.params.thematics)
+        self.campaigns_count = {
+            'place': set(),
+            'thematic': set()
+        }
+
+    def cat_to_int_range(self, cat):
+        start = 0
+        end = 0
+        try:
+            if len(cat) > 0:
+                if cat in self.app.cat_to_int_cache:
+                    return self.app.cat_to_int_cache[cat]
+                max_size = 1024
+                cats = [int(x) for x in cat.split('.')][:6]
+                cats = [i if i else j for i, j in zip_longest(cats, [None, None, None, None, None, None], fillvalue=0)]
+                start_cats = cats[::]
+                end_cats = cats[::]
+                if cats[-1] is None:
+                    l = len(cats)
+                    for x, y in enumerate(reversed(cats)):
+                        if y is None:
+                            start_cats[l - (x + 1)] = 1
+                            end_cats[l - (x + 1)] = max_size
+                        else:
+                            break
+                start = sum([y * (max_size ** x) for x, y in enumerate(reversed(start_cats))])
+                end = sum([y * (max_size ** x) for x, y in enumerate(reversed(end_cats))])
+                self.app.cat_to_int_cache[cat] = (start, end)
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex), cat=str(cat)))
+        return start, end
+
+    def range_overlap(self, r1, r2):
+        start1, end1 = r1
+        start2, end2 = r2
+        """Does the range (start1, end1) overlap with (start2, end2)?"""
+        return end1 >= start2 and end2 >= start1
+
+    def thematics_intersection(self, thematics):
+        u_thematics_range = [self.cat_to_int_range(x) for x in self.params.thematics]
+        if u_thematics_range:
+            c_thematics_range = [self.cat_to_int_range(x) for x in thematics]
+            if c_thematics_range:
+                return any([self.range_overlap(r1, r2) for r1 in u_thematics_range for r2 in c_thematics_range])
+        return False
 
     async def get_userCode(self):
         block = await self.app.query.get_block(block_src=self.params.block_id)
@@ -159,7 +205,26 @@ class DataProcessor(object):
                 self.campaigns_socia.append((campaign['id'], campaign['offer_by_campaign_unique']))
                 self.offer_count_socia += campaign['offer_count']
 
-            elif not campaign['social'] and not campaign['retargeting'] and self.place_branch:
+            elif not campaign['social'] and not campaign['retargeting'] and campaign['thematic'] and self.place_branch:
+                count_place = self.app.campaign_view_count['place'][campaign['id']]
+                count_thematic = self.app.campaign_view_count['thematic'][campaign['id']]
+                thematic_range = campaign['thematic_range']
+                if thematic_range > 0:
+                    if count_thematic > ((count_place + count_thematic) / 100) * thematic_range:
+                        self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                        self.offer_count_place += campaign['offer_count']
+                    else:
+                        if self.thematics_intersection(campaign['thematics']):
+                            self.campaigns_thematic.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                            self.offer_count_thematic += campaign['offer_count']
+
+
+                else:
+                    self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                    self.offer_count_place += campaign['offer_count']
+
+            elif not campaign['social'] and not campaign['retargeting'] and not campaign[
+                'thematic_range'] and self.place_branch:
                 self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
                 self.offer_count_place += campaign['offer_count']
 
@@ -183,6 +248,15 @@ class DataProcessor(object):
             index=self.params.index,
             offer_count=self.offer_count_place,
             exclude=self.params.exclude)))
+
+        tasks.append(ensure_future(self.app.query.get_place_offer(
+            processor=self,
+            block_id=self.block_id,
+            campaigns=self.campaigns_thematic,
+            capacity=self.styler.max_capacity,
+            index=self.params.index,
+            offer_count=self.offer_count_thematic,
+            exclude=self.params.thematics_exclude)))
 
         tasks.append(ensure_future(self.app.query.get_social_offer(
             processor=self,
@@ -212,12 +286,19 @@ class DataProcessor(object):
             exclude=self.params.retargeting_dynamic_exclude,
             raw_retargeting=self.params.raw_retargeting)))
 
-        place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(*tasks)
-        await self.union_offers(place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer)
+        place_offer, thematic_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(
+            *tasks)
+        await self.union_offers(place_offer, thematic_offer, social_offer, account_retargeting_offer,
+                                dynamic_retargeting_offer)
+        for cam_id in self.campaigns_count['thematic']:
+            self.app.campaign_view_count['thematic'][cam_id] += 1
+        for cam_id in self.campaigns_count['place']:
+            self.app.campaign_view_count['place'][cam_id] += 1
 
     async def find_recomendet(self, offer, loop_counter, capacity):
         views = [('mv_offer_dynamic_retargeting', self.params.retargeting_dynamic_exclude),
                  ('mv_offer_account_retargeting', self.params.retargeting_account_exclude),
+                 ('mv_offer_place', self.params.exclude),
                  ('mv_offer_place', self.params.exclude),
                  ('mv_offer_social', self.params.exclude)
                  ]
@@ -259,7 +340,8 @@ class DataProcessor(object):
         if offer_styling_block:
             await self.create_logo(offer)
 
-    async def union_offers(self, place_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer):
+    async def union_offers(self, place_offer, thematic_offer, social_offer, account_retargeting_offer,
+                           dynamic_retargeting_offer):
         styling_block = None
         styling_predictive = False
         brending_block = None
@@ -292,6 +374,7 @@ class DataProcessor(object):
         views = [
             ('dynamic_retargeting', dynamic_retargeting_offer),
             ('account_retargeting', account_retargeting_offer),
+            ('thematic', thematic_offer),
             ('place', place_offer),
             ('social', social_offer)
         ]
@@ -340,6 +423,7 @@ class DataProcessor(object):
                         self.styler.add(camp['style_class_recommendet'], camp['style_class_recommendet'])
 
                 offer['campaign'] = camp
+                offer['logic_name'] = name
 
                 if offer_styling_block:
                     capacity = self.styler.block.styling_adv.count_adv
@@ -433,6 +517,11 @@ class DataProcessor(object):
             branch = 'NL32'
             unique_impression_lot = 1
 
+        if offer['logic_name'] == 'thematic':
+            self.campaigns_count['thematic'].add(offer['campaign']['id'])
+        elif offer['logic_name'] == 'place':
+            self.campaigns_count['place'].add(offer['campaign']['id'])
+
         self.data['offers'].append({
             'title': offer['title'],
             'description': offer['description'],
@@ -445,6 +534,7 @@ class DataProcessor(object):
             'id_cam': str(offer['id_cam']),
             'guid_cam': offer['campaign']['guid'],
             'campaign_social': offer['campaign']['social'],
+            'thematic': offer['campaign']['thematic'],
             'retargeting': offer['campaign']['retargeting'],
             'unique_impression_lot': unique_impression_lot,
             'token': offer['token'],

@@ -12,7 +12,7 @@ not_found = 'NOT FOUND'
 
 class Params(object):
     __slots__ = ['width', 'height', 'block_id', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
-                 'exclude', 'is_webp', 'host', 'token', 'thematics',
+                 'exclude', 'is_webp', 'host', 'token', 'thematics', 'thematics_exclude',
                  'retargeting_account_exclude', 'retargeting_dynamic_exclude',
                  'raw_retargeting', 'retargeting', 'time_start']
 
@@ -32,6 +32,7 @@ class Params(object):
         self.token = ''
         self.time_start = int(time.time() * 1000)
         self.exclude = list([0])
+        self.thematics_exclude = list([0])
         self.retargeting_account_exclude = list([0])
         self.retargeting_dynamic_exclude = list([0])
         self.raw_retargeting = list()
@@ -59,6 +60,9 @@ class Params(object):
         self.exclude = [str(x) for x in data.get('exclude', []) if str(x).strip()]
         if not self.exclude:
             self.exclude = list([0])
+        self.thematics_exclude = [str(x) for x in data.get('thematics_exclude', []) if str(x).strip()]
+        if not self.thematics_exclude:
+            self.thematics_exclude = list([0])
         self.retargeting_account_exclude = data.get('retargeting_account_exclude', [])
         if not self.retargeting_account_exclude:
             self.retargeting_account_exclude = list([0])

@@ -37,6 +37,7 @@ define([
             this.retargeting = new RetargetingOffers();
             this.exclude = new ExcludeOffers();
             this.exclude_click = new ExcludeOffers();
+            this.thematic_exclude = new ExcludeOffers();
             this.retargeting_exclude = new ExcludeOffers();
             this.retargeting_account_exclude = new ExcludeOffers();
             this.retargeting_exclude_click = new ExcludeOffers();
@@ -138,6 +139,21 @@ define([
             var keys = this.exclude.get().concat(this.exclude_click.get());
             keys = _.uniq(keys);
             return keys;
+        };
+        UserHistory[prototype].thematics_exclude_get = function () {
+            var keys = this.thematic_exclude.get().concat(this.exclude_click.get());
+            keys = _.uniq(keys);
+            return keys;
+        };
+        UserHistory[prototype].thematic_clean = function (cl) {
+            var k = ['thematic_exclude'];
+            if (cl) {
+                this.load(k);
+                this[k[0]].clear();
+                //this.retargeting_view.clear();
+                this.save(k);
+            }
+            return cl;
         };
         UserHistory[prototype].retargeting_clean = function (cl) {
             var k = ['retargeting_exclude'];

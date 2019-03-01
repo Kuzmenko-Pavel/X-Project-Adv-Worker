@@ -32,8 +32,12 @@ define([
             this.header_html = server_obj.block.header_html;
             this.css = server_obj.css;
             this.offers = server_obj.offers;
+            if (server_obj.clean.thematic) {
+                uh.thematic_clean(true);
+            }
             if (server_obj.clean.place) {
                 uh.exclude_clean(true);
+                uh.thematic_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
 
