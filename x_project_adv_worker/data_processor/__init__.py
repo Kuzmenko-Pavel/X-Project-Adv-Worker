@@ -526,9 +526,9 @@ class DataProcessor(object):
             branch = 'NL32'
             unique_impression_lot = 1
 
-        if offer['logic_name'] == 'thematic':
+        if offer.get('logic_name') == 'thematic':
             self.campaigns_count['thematic'].add(offer['campaign']['id'])
-        elif offer['logic_name'] == 'place':
+        elif offer.get('logic_name') == 'place':
             self.campaigns_count['place'].add(offer['campaign']['id'])
 
         self.data['offers'].append({
