@@ -574,12 +574,44 @@ async def calculate_style_2(width, height, adv):
     return adv_setting
 
 
+async def calculate_style_3(width, height, adv):
+    adv_setting = await calculate_style_1(width, height, adv)
+    adv_setting.cost.border_radius = [0, 0, 10, 0]
+    adv_setting.button.border_color = '#0076f4'
+    adv_setting.button.font.color = '#0076f4'
+    adv_setting.logo.button.border_color = '#0076f4'
+    adv_setting.logo.button.font.color = '#0076f4'
+    adv_setting.cost.background_color = '#0076f4'
+    adv_setting.header.width = adv_setting.cost.width
+    adv_setting.header.height = adv_setting.cost.height
+    adv_setting.header.top = adv_setting.image.top + 1
+    adv_setting.header.left = adv_setting.image.left
+    adv_setting.header.border_radius = adv_setting.cost.border_radius
+    adv_setting.header.border = adv_setting.cost.border
+    adv_setting.header.background_color = adv_setting.cost.background_color
+    adv_setting.header.opacity = adv_setting.cost.opacity
+    adv_setting.header.z = adv_setting.cost.z
+    adv_setting.header.font.size = adv_setting.cost.font.size
+    adv_setting.header.font.weight = adv_setting.cost.font.weight
+    adv_setting.header.font.color = adv_setting.cost.font.color
+    adv_setting.header.padding = adv_setting.cost.padding
+    adv_setting.image.width = adv_setting.image.width - 2
+    adv_setting.image.height = adv_setting.image.height - 2
+    adv_setting.image.border = 1
+    adv_setting.image.border_color = '#eff2f3'
+    adv_setting.cost.z = 0
+    adv_setting.cost.width = 0
+    adv_setting.cost.height = 0
+    return adv_setting
+
+
 adv_calculator = defaultdict(lambda: calculate_default)
 adv_calculator['Block'] = calculate_default
 adv_calculator['RetBlock'] = calculate_retargeting
 adv_calculator['RecBlock'] = calculate_recomendet
 adv_calculator['Style_1'] = calculate_style_1
 adv_calculator['Style_2'] = calculate_style_2
+adv_calculator['Style_3'] = calculate_style_3
 
 adv_size_calculator = defaultdict(lambda: adv_size_gv)
 adv_size_calculator['G'] = adv_size_g
@@ -587,4 +619,4 @@ adv_size_calculator['GV'] = adv_size_gv
 adv_size_calculator['V'] = adv_size_v
 adv_size_calculator['BV'] = adv_size_bv
 
-style_type = ['Block', 'RetBlock', 'RecBlock', 'Style_1', 'Style_2']
+style_type = ['Block', 'RetBlock', 'RecBlock', 'Style_1', 'Style_2', 'Style_3']
