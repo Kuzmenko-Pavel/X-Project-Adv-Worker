@@ -201,17 +201,19 @@ class DataProcessor(object):
     async def campaigns_processing(self, campaigns):
         for campaign in campaigns:
             self.campaigns[campaign['id']] = campaign
+            social = campaign['social']
+            retargeting = campaign['retargeting']
+            thematic = campaign['thematic']
 
-            if campaign['social'] and self.social_branch:
+            if social and self.social_branch:
                 self.campaigns_socia.append((campaign['id'], campaign['offer_by_campaign_unique']))
                 self.offer_count_socia += campaign['offer_count']
 
-            elif not campaign['social'] and not campaign['retargeting'] and campaign['thematic'] and self.place_branch:
+            elif not social and not retargeting and thematic and self.place_branch:
                 count_place = self.app.campaign_view_count['place'][campaign['id']]
                 count_thematic = self.app.campaign_view_count['thematic'][campaign['id']]
                 thematic_range = campaign['thematic_range']
                 if thematic_range > 0:
-                    print(count_place, count_thematic, thematic_range)
                     if count_thematic > ((count_place + count_thematic) / 100) * thematic_range:
                         self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
                         self.offer_count_place += campaign['offer_count']
@@ -219,23 +221,21 @@ class DataProcessor(object):
                         if self.thematics_intersection(campaign['thematics']):
                             self.campaigns_thematic.append((campaign['id'], campaign['offer_by_campaign_unique']))
                             self.offer_count_thematic += campaign['offer_count']
-
-
                 else:
                     self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
                     self.offer_count_place += campaign['offer_count']
 
-            elif not campaign['social'] and not campaign['retargeting'] and not campaign[
-                'thematic_range'] and self.place_branch:
+            elif not social and not retargeting and not thematic and self.place_branch:
                 self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
                 self.offer_count_place += campaign['offer_count']
 
-            elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'offer' and self.retargeting_branch:
+            elif not social and retargeting and campaign['retargeting_type'] == 'offer' and self.retargeting_branch:
                 if campaign['account'] in self.params.retargeting:
                     self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['offer_by_campaign_unique']))
                     self.offer_count_retargeting_dynamic += campaign['offer_count']
 
-            elif not campaign['social'] and campaign['retargeting'] and campaign['retargeting_type'] == 'account' and self.retargeting_account_branch:
+            elif not social and retargeting and campaign[
+                'retargeting_type'] == 'account' and self.retargeting_account_branch:
                 if campaign['account'] in self.params.retargeting:
                     self.campaigns_retargeting_account.append((campaign['id'], campaign['offer_by_campaign_unique']))
                     self.offer_count_retargeting_account += campaign['offer_count']
