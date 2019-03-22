@@ -11,7 +11,7 @@ from x_project_adv_worker.logger import logger, exception_message
 
 async def init_db(app):
     application_name = 'AdvWorker pid=%s' % os.getpid()
-    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=1, max_size=15,
+    app.pool = await asyncpg.create_pool(dsn=app['config']['postgres']['uri'], min_size=1, max_size=10,
                                          max_inactive_connection_lifetime=300,
                                          max_queries=1000, command_timeout=60, timeout=60,
                                          server_settings={'application_name': application_name})
@@ -31,8 +31,8 @@ class Query(object):
         self.pool = pool
 
     async def get_block(self, block_src):
-        try:
-            async with self.pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
+            try:
                 async with connection.transaction():
                     q = '''SELECT mv_informer.*,
                                   mv_accounts.blocked 
@@ -44,17 +44,16 @@ class Query(object):
                     block = await connection.fetchrow(q)
                     if block:
                         return dict(block)
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_block')
-            # logger.error(exception_message(exc=str(ex)))
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_block')
+                # logger.error(exception_message(exc=str(ex)))
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
         return None
 
     async def get_campaigns(self, block_id, block_domain, block_account, country, region, device,
                             gender, cost, capacity):
         result = []
-        campaigns = []
         gender_list = set('0')
         cost_list = set('0')
         gender_list.add(str(gender))
@@ -63,8 +62,8 @@ class Query(object):
         d = date.weekday() + 1
         h = date.hour
         m = date.minute
-        try:
-            async with self.pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
+            try:
                 async with connection.transaction():
                     q = '''
                     SELECT
@@ -204,10 +203,10 @@ class Query(object):
                         offer_count = item['offer_count']
                         campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
                         result.append(campaign)
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_campaigns')
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_campaigns')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
         return [dict(x) for x in result]
 
     async def get_place_offer(self, processor,
@@ -216,18 +215,18 @@ class Query(object):
             return [], None
         result = []
         clean = True
-        try:
-            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-            counter_prediction = offer_count-len(exclude)
-            exclude_ids = ','.join([str(x) for x in exclude])
-            range_number = 1
-            if counter_prediction < capacity * 2:
-                range_number = capacity
-            if -10 < counter_prediction < capacity:
-                index = 0
-            campaign_unique = ' or '.join(
-                ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
-            async with self.pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
+            try:
+                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+                counter_prediction = offer_count - len(exclude)
+                exclude_ids = ','.join([str(x) for x in exclude])
+                range_number = 1
+                if counter_prediction < capacity * 2:
+                    range_number = capacity
+                if -10 < counter_prediction < capacity:
+                    index = 0
+                campaign_unique = ' or '.join(
+                    ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
                 async with connection.transaction():
                     q = '''
                         select * from
@@ -289,13 +288,13 @@ class Query(object):
                                                                         offer_count, rec_exclude, True)
                         for item in rec_res:
                             result.append(item)
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_place_offer')
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
-        if not clean:
-            if all([item['rating'] < processor.block_rating_division for item in result]):
-                clean = True
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_place_offer')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
+            if not clean:
+                if all([item['rating'] < processor.block_rating_division for item in result]):
+                    clean = True
         return result, clean
 
     async def get_social_offer(self, processor, block_id, campaigns, capacity, index, offer_count, exclude):
@@ -303,32 +302,32 @@ class Query(object):
             return [], None
         result = []
         clean = True
-        try:
-            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-            counter_prediction = offer_count - len(exclude)
-            if counter_prediction < capacity:
-                exclude = list([0])
+        async with self.pool.acquire() as connection:
+            try:
+                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+                counter_prediction = offer_count - len(exclude)
+                if counter_prediction < capacity:
+                    exclude = list([0])
 
-            async with self.pool.acquire() as connection:
                 async with connection.transaction():
                     q = '''
-                        select * from
-                        (
-                        select 
-                        row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_social2informer.rating desc) AS range_number,
-                        count(id) OVER() as all_count,
-                        mv_offer_social2informer.*,
-                        ofrs.*
-                        FROM mv_offer_social AS ofrs
-                        left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
-                        WHERE
-                        campaign_range_number < 30
-                        AND ofrs.id_cam IN (%(campaigns)s)
-                        AND ofrs.id NOT IN (%(exclude)s)
-                        ) sub
-                        order by sub.range_number, sub.rating desc
-                        LIMIT %(capacity)d;
-                    ''' % {
+                            select * from
+                            (
+                            select 
+                            row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_social2informer.rating desc) AS range_number,
+                            count(id) OVER() as all_count,
+                            mv_offer_social2informer.*,
+                            ofrs.*
+                            FROM mv_offer_social AS ofrs
+                            left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
+                            WHERE
+                            campaign_range_number < 30
+                            AND ofrs.id_cam IN (%(campaigns)s)
+                            AND ofrs.id NOT IN (%(exclude)s)
+                            ) sub
+                            order by sub.range_number, sub.rating desc
+                            LIMIT %(capacity)d;
+                        ''' % {
                         'inf': block_id,
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
@@ -352,12 +351,12 @@ class Query(object):
                         item['recommended'] = offer['recommended']
                         item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                         result.append(item)
-            if counter_prediction < capacity:
-                clean = True
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_social_offer')
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
+                if counter_prediction < capacity:
+                    clean = True
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_social_offer')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
         return result, clean
 
     async def get_dynamic_retargeting_offer(self, processor, block_id, campaigns, capacity, index, offer_count,
@@ -366,35 +365,39 @@ class Query(object):
             return [], None
         result = []
         clean = True
-        try:
-            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-            counter_prediction = offer_count - len(exclude)
-            retargeting = ' or '.join(["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in raw_retargeting])
-            if counter_prediction < capacity:
-                index = 0
-            async with self.pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
+            try:
+                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+                counter_prediction = offer_count - len(exclude)
+                retargeting = ' or '.join(
+                    ["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in
+                     raw_retargeting])
+                if counter_prediction < capacity:
+                    index = 0
+
                 async with connection.transaction():
                     q = '''
-                        select * from
-                        (
-                        select 
-                        row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
-                        count(id) OVER() as all_count,
-                        ofrs.*
-                        FROM mv_offer_dynamic_retargeting AS ofrs
-                        WHERE
-                        ofrs.id_cam IN (%(campaigns)s)
-                        AND ofrs.id NOT IN (%(exclude)s)
-                        AND (%(retargeting)s)
-                        ) sub
-                        where %(campaign_unique)s
-                        order by sub.range_number
-                        LIMIT %(capacity)d OFFSET %(offset)d;
-                    ''' % {
+                            select * from
+                            (
+                            select 
+                            row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
+                            count(id) OVER() as all_count,
+                            ofrs.*
+                            FROM mv_offer_dynamic_retargeting AS ofrs
+                            WHERE
+                            ofrs.id_cam IN (%(campaigns)s)
+                            AND ofrs.id NOT IN (%(exclude)s)
+                            AND (%(retargeting)s)
+                            ) sub
+                            where %(campaign_unique)s
+                            order by sub.range_number
+                            LIMIT %(capacity)d OFFSET %(offset)d;
+                        ''' % {
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
                         'retargeting': retargeting,
-                        'campaign_unique': ' or '.join(['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                        'campaign_unique': ' or '.join(
+                            ['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
                         'capacity': capacity,
                         'offset': index * capacity
                     }
@@ -415,10 +418,10 @@ class Query(object):
                         item['recommended'] = offer['recommended']
                         item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                         result.append(item)
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_dynamic_retargeting_offer')
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_dynamic_retargeting_offer')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
         return result, clean
 
     async def get_account_retargeting_offer(self, processor, block_id, campaigns, capacity, index,
@@ -427,12 +430,12 @@ class Query(object):
             return [], None
         result = []
         clean = True
-        try:
-            campaigns_ids = ','.join([str(x[0]) for x in campaigns])
-            counter_prediction = offer_count - len(exclude)
-            if counter_prediction < capacity:
-                index = 0
-            async with self.pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
+            try:
+                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+                counter_prediction = offer_count - len(exclude)
+                if counter_prediction < capacity:
+                    index = 0
                 async with connection.transaction():
                     q = '''
                         select * from
@@ -475,18 +478,18 @@ class Query(object):
                         item['recommended'] = offer['recommended']
                         item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                         result.append(item)
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_account_retargeting_offer')
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
-        return result, clean
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_account_retargeting_offer')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
+            return result, clean
 
     async def get_recomendet_offer(self, view, offer_ids, block_id, capacity):
         if not offer_ids:
             return []
         result = []
-        try:
-            async with self.pool.acquire() as connection:
+        async with self.pool.acquire() as connection:
+            try:
                 async with connection.transaction():
                     q = '''
                     select * 
@@ -514,8 +517,8 @@ class Query(object):
                         item['recommended'] = []
                         item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
                         result.append(item)
-        except asyncio.CancelledError as ex:
-            logger.error('CancelledError get_recomendet_offer')
-        except Exception as ex:
-            logger.error(exception_message(exc=str(ex)))
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_recomendet_offer')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
         return result
