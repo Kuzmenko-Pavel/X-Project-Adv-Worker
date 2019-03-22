@@ -308,7 +308,6 @@ class Query(object):
                 counter_prediction = offer_count - len(exclude)
                 if counter_prediction < capacity:
                     exclude = list([0])
-
                 async with connection.transaction():
                     q = '''
                             select * from
