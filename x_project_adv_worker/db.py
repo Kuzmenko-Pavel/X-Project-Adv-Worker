@@ -3,7 +3,6 @@ import asyncpg
 import asyncio
 import ujson
 from datetime import datetime
-from collections import defaultdict
 import time
 
 from x_project_adv_worker.logger import logger, exception_message
@@ -18,11 +17,10 @@ async def init_db(app):
     app.query = Query(app.pool)
     # TODO зашита от переполнения и утечек
     app.block_cache = {}
-    app.cat_to_int_cache = {}
     app.campaign_view_count = {
         'all': 0,
-        'place': defaultdict(int),
-        'thematic': defaultdict(int),
+        'place': {},
+        'thematic': {},
     }
 
 

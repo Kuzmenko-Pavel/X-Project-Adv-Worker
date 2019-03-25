@@ -18,7 +18,7 @@ class DataProcessor(object):
                  'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
                  'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
                  'block_button', 'block_ret_button', 'block_rec_button', 'block_rating_division',
-                 'rating_hard_limit', 'campaigns_thematic', 'offer_count_thematic', 'campaigns_count']
+                 'rating_hard_limit', 'campaigns_thematic', 'offer_count_thematic']
 
     def __init__(self, request, data):
         self.data = dict({
@@ -53,18 +53,12 @@ class DataProcessor(object):
         self.block_button = ''
         self.block_ret_button = ''
         self.block_rec_button = ''
-        self.campaigns_count = {
-            'place': set(),
-            'thematic': set()
-        }
 
     def cat_to_int_range(self, cat):
         start = 0
         end = 0
         try:
             if len(cat) > 0:
-                if cat in self.app.cat_to_int_cache:
-                    return self.app.cat_to_int_cache[cat]
                 max_size = 1024
                 cats = [int(x) for x in cat.split('.')][:6]
                 cats = [i if i else j for i, j in zip_longest(cats, [None, None, None, None, None, None], fillvalue=0)]
@@ -80,7 +74,6 @@ class DataProcessor(object):
                             break
                 start = sum([y * (max_size ** x) for x, y in enumerate(reversed(start_cats))])
                 end = sum([y * (max_size ** x) for x, y in enumerate(reversed(end_cats))])
-                self.app.cat_to_int_cache[cat] = (start, end)
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), cat=str(cat)))
         return start, end
@@ -292,17 +285,11 @@ class DataProcessor(object):
             *tasks)
         await self.union_offers(place_offer, thematic_offer, social_offer, account_retargeting_offer,
                                 dynamic_retargeting_offer)
-        for cam_id in self.campaigns_count['thematic']:
-            self.app.campaign_view_count['all'] += 1
-            self.app.campaign_view_count['thematic'][cam_id] += 1
 
-        for cam_id in self.campaigns_count['place']:
-            self.app.campaign_view_count['all'] += 1
-            self.app.campaign_view_count['place'][cam_id] += 1
-
-        if not bool(self.app.campaign_view_count['all'] % 10000):
-            self.app.campaign_view_count['thematic'] = defaultdict(int)
-            self.app.campaign_view_count['place'] = defaultdict(int)
+        if self.app.campaign_view_count['all'] > 10000:
+            self.app.campaign_view_count['thematic'].clear()
+            self.app.campaign_view_count['place'].clear()
+            self.app.campaign_view_count['all'] = 0
 
     async def find_recomendet(self, offer, loop_counter, capacity):
         views = [('mv_offer_dynamic_retargeting', self.params.retargeting_dynamic_exclude),
@@ -526,10 +513,16 @@ class DataProcessor(object):
             branch = 'NL32'
             unique_impression_lot = 1
 
+        # if offer['campaign']['thematic']:
+        key = offer['campaign']['id']
         if offer.get('logic_name') == 'thematic':
-            self.campaigns_count['thematic'].add(offer['campaign']['id'])
+            self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
+            count = self.app.campaign_view_count['thematic'].get(key, 0) + 1
+            self.app.campaign_view_count['thematic'][offer['campaign']['id']] = count
         elif offer.get('logic_name') == 'place':
-            self.campaigns_count['place'].add(offer['campaign']['id'])
+            self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
+            count = self.app.campaign_view_count['place'].get(key, 0) + 1
+            self.app.campaign_view_count['place'][offer['campaign']['id']] = count
 
         self.data['offers'].append({
             'title': offer['title'],

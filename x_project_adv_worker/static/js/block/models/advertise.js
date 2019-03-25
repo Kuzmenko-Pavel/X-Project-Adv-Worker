@@ -22,7 +22,9 @@ define([
         var app = this.app;
         var uh = app.uh;
         if (server_obj.block.id === undefined){
-            this.app.render.not_found();
+            if (!this.app.adsparams.test) {
+                this.app.render.not_found();
+            }
         }
         else{
             app.logger.offer_status = 'initial';

@@ -14,13 +14,14 @@ class Params(object):
     __slots__ = ['width', 'height', 'block_id', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
                  'exclude', 'is_webp', 'host', 'token', 'thematics', 'thematics_exclude',
                  'retargeting_account_exclude', 'retargeting_dynamic_exclude',
-                 'raw_retargeting', 'retargeting', 'time_start']
+                 'raw_retargeting', 'retargeting', 'time_start', 'test']
 
     def __init__(self, request, data):
         self.width = 0
         self.height = 0
         self.block_id = ''
         self.auto = False
+        self.test = False
         self.country = ''
         self.region = ''
         self.device = '**'
@@ -48,6 +49,7 @@ class Params(object):
         self.height = int(float(data.get('h', self.height)))
         self.block_id = str(data.get('block_id', self.block_id))
         self.auto = bool(data.get('auto', self.auto))
+        self.test = bool(data.get('test', self.test))
         self.country = str(data.get('country', self.country)).strip()
         self.region = str(data.get('region', self.region)).strip()
         self.device = str(data.get('device', self.device))

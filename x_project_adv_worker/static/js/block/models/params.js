@@ -45,6 +45,7 @@ define([
             data.region = this[app][adsparams].region;
             data.ip = this[app][adsparams].ip;
             data.is_webp = this[app][adsparams].is_webp;
+            data.test = this[app][adsparams].test;
             data.time_start = this[app].time_start;
             data.cost = this[app].uh.cost_user.get();
             data.gender = this[app].uh.gender_user.get();
