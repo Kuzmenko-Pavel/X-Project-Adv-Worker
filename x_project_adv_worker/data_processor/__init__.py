@@ -513,16 +513,16 @@ class DataProcessor(object):
             branch = 'NL32'
             unique_impression_lot = 1
 
-        # if offer['campaign']['thematic']:
-        key = offer['campaign']['id']
-        if offer.get('logic_name') == 'thematic':
-            self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
-            count = self.app.campaign_view_count['thematic'].get(key, 0) + 1
-            self.app.campaign_view_count['thematic'][offer['campaign']['id']] = count
-        elif offer.get('logic_name') == 'place':
-            self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
-            count = self.app.campaign_view_count['place'].get(key, 0) + 1
-            self.app.campaign_view_count['place'][offer['campaign']['id']] = count
+        if offer['campaign']['thematic']:
+            key = offer['campaign']['id']
+            if offer.get('logic_name') == 'thematic':
+                self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
+                count = self.app.campaign_view_count['thematic'].get(key, 0) + 1
+                self.app.campaign_view_count['thematic'][offer['campaign']['id']] = count
+            elif offer.get('logic_name') == 'place':
+                self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
+                count = self.app.campaign_view_count['place'].get(key, 0) + 1
+                self.app.campaign_view_count['place'][offer['campaign']['id']] = count
 
         self.data['offers'].append({
             'title': offer['title'],
