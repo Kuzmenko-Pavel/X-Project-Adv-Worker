@@ -11,6 +11,11 @@ from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.data_processor.params import Params
 from x_project_adv_worker.styler import Styler
 
+parther_disable_hosts = ('95.69.249.86', '31.202.102.69', '46.96.41.87', '178.150.140.80', '178.151.44.122',
+                         '178.133.46.212', '193.70.46.140', '217.20.169.197', '85.90.199.33', '82.207.109.122',
+                         '194.6.232.174', '217.112.216.74', '194.6.233.163', '159.224.41.1', '79.171.124.172',
+                         '93.76.209.138', '85.90.202.248', '82.117.232.89', '82.117.233.83',)
+
 
 class DataProcessor(object):
     __slots__ = ['app', 'params', 'data', 'styler', 'block', 'campaigns', 'block_id', 'place_branch',
@@ -185,6 +190,10 @@ class DataProcessor(object):
         # TODO check in db retargeting_account_branch = retargeting_branch
         self.social_branch = block.get('social_branch', True)
         self.data['parther'] = not self.social_branch
+        if self.data['parther']:
+            if self.params.test or self.params.host in parther_disable_hosts:
+                self.social_branch = True
+                self.data['parther'] = False
         if not self.params.auto and not block.get('dynamic', False):
             self.styler.merge(ujson.loads(block.get('ad_style')))
         self.block_button = self.styler.block.default_button.block
