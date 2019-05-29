@@ -14,7 +14,8 @@ from x_project_adv_worker.styler import Styler
 parther_disable_hosts = ('95.69.249.86', '31.202.102.69', '46.96.41.87', '178.150.140.80', '178.151.44.122',
                          '178.133.46.212', '193.70.46.140', '217.20.169.197', '85.90.199.33', '82.207.109.122',
                          '194.6.232.174', '217.112.216.74', '194.6.233.163', '159.224.41.1', '79.171.124.172',
-                         '93.76.209.138', '85.90.202.248', '82.117.232.89', '82.117.233.83',)
+                         '93.76.209.138', '85.90.202.248', '82.117.232.89', '82.117.233.83', '77.111.244',
+                         '77.111.245', '77.111.246', '77.111.247')
 
 
 class DataProcessor(object):
@@ -191,7 +192,13 @@ class DataProcessor(object):
         self.social_branch = block.get('social_branch', True)
         self.data['parther'] = not self.social_branch
         if self.data['parther']:
-            if self.params.test or self.params.host in parther_disable_hosts:
+            try:
+                if self.params.test or any(
+                        [parther_disable in self.params.host for parther_disable in parther_disable_hosts]):
+                    self.social_branch = True
+                    self.data['parther'] = False
+            except Exception as e:
+                print(e)
                 self.social_branch = True
                 self.data['parther'] = False
         if not self.params.auto and not block.get('dynamic', False):
