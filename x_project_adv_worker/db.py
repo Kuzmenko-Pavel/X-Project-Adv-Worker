@@ -6,6 +6,8 @@ from datetime import datetime
 import time
 
 from x_project_adv_worker.logger import logger, exception_message
+from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
+                                              CampaignRemarketingType, CampaignRecommendedAlgorithmType)
 
 
 async def init_db(app):
@@ -32,10 +34,8 @@ class Query(object):
         async with self.pool.acquire() as connection:
             try:
                 async with connection.transaction():
-                    q = '''SELECT mv_informer.*,
-                                  mv_accounts.blocked 
-                          FROM public.mv_informer 
-                          LEFT JOIN public.mv_accounts ON public.mv_informer.account = public.mv_accounts.id 
+                    q = '''SELECT * 
+                          FROM public.mv_block 
                           where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                     # stmt = await connection.prepare(q)
                     # block = await stmt.fetchrow()
@@ -49,13 +49,8 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
         return None
 
-    async def get_campaigns(self, block_id, block_domain, block_account, country, region, device,
-                            gender, cost, capacity):
+    async def get_campaigns(self, block_id, country, region, device, capacity):
         result = []
-        gender_list = set('0')
-        cost_list = set('0')
-        gender_list.add(str(gender))
-        cost_list.add(str(cost))
         date = datetime.now()
         d = date.weekday() + 1
         h = date.hour
@@ -78,52 +73,7 @@ class Query(object):
                    SELECT dt.id_cam AS id
                    FROM mv_campaign2device AS dt
                      INNER JOIN mv_device AS d ON dt.id_dev = d.id
-                   WHERE d.name = '%(device)s' OR d.name = '**'
-    
-                   INTERSECT
-                   SELECT t.id AS id
-                   FROM mv_campaign AS t
-                   WHERE t.gender in (%(gender)s) and t.cost in (%(cost)s) and t.capacity <= %(capacity)d
-    
-                   INTERSECT
-                   SELECT ct.id
-                   FROM
-                     (SELECT cau.id
-                      FROM
-                        (
-                          SELECT c2c.id_cam AS id
-                          FROM mv_campaign2categories AS c2c
-                            INNER JOIN mv_categories2domain AS ct2d ON c2c.id_cat = ct2d.id_cat AND ct2d.id_dom = %(id_dom)s
-                          UNION
-                          SELECT c2da.id_cam AS id
-                          FROM mv_campaign2domains_allowed AS c2da
-                          WHERE c2da.id_dom = %(id_dom)s OR c2da.id_dom = 1
-                          UNION
-                          SELECT c2aa.id_cam AS id
-                          FROM mv_campaign2accounts_allowed AS c2aa
-                          WHERE c2aa.id_acc = %(id_acc)s OR c2aa.id_acc = 1
-                          UNION
-                          SELECT c2ia.id_cam AS id
-                          FROM mv_campaign2informer_allowed AS c2ia
-                          WHERE c2ia.id_inf = %(id_inf)s OR c2ia.id_inf = 1
-                        ) AS cau
-                      EXCEPT
-                      SELECT caud.id
-                      FROM
-                        (
-                          SELECT c2dd.id_cam AS id
-                          FROM mv_campaign2domains_disallowed AS c2dd
-                          WHERE c2dd.id_dom = %(id_dom)s OR c2dd.id_dom = 1
-                          UNION
-                          SELECT c2ad.id_cam AS id
-                          FROM mv_campaign2accounts_disallowed AS c2ad
-                          WHERE c2ad.id_acc = %(id_acc)s OR c2ad.id_acc = 1
-                          UNION
-                          SELECT c2id.id_cam AS id
-                          FROM mv_campaign2informer_disallowed AS c2id
-                          WHERE c2id.id_inf = %(id_inf)s OR c2id.id_inf = 1
-                        ) AS caud
-                     ) AS ct
+                   WHERE d.code = '%(device)s' OR d.code = '**'
     
                    INTERSECT
                    SELECT crc.id AS id
@@ -135,11 +85,11 @@ class Query(object):
                              AND
                              (
                                (
-                                 crcs.hour = %(hour)d AND crcs.min <= %(min)d AND crcs.start_stop = TRUE
+                                 crcs.hour = %(hour)d AND range = 0 AND crcs.min <= %(min)d AND crcs.start_stop = TRUE
                                )
                                OR
                                (
-                                 crcs.hour < %(hour)d AND crcs.start_stop = TRUE
+                                 crcs.hour < %(hour)d AND range = 0 AND crcs.start_stop = TRUE
                                )
                              )
                        EXCEPT
@@ -149,25 +99,53 @@ class Query(object):
                              AND
                              (
                                (
-                                 crcd.hour = %(hour)d AND crcd.min <= %(min)d AND crcd.start_stop = FALSE
+                                 crcd.hour = %(hour)d AND range = 0 AND crcd.min <= %(min)d AND crcd.start_stop = FALSE
                                )
                                OR
                                (
-                                 crcd.hour < %(hour)d AND crcd.start_stop = FALSE
+                                 crcd.hour < %(hour)d AND range = 0 AND crcd.start_stop = FALSE
                                )
                              )
                      ) AS crc
+                     UNION 
+                     SELECT crc1.id AS id
+                       FROM
+                         (
+                           SELECT crcs.id_cam AS id
+                           FROM mv_cron AS crcs
+                           WHERE crcs.day = %(day)d
+                                 AND
+                                 (
+                                   (
+                                     crcs.hour = %(hour)d AND range = 1 AND crcs.min <= %(min)d AND crcs.start_stop = TRUE
+                                   )
+                                   OR
+                                   (
+                                     crcs.hour < %(hour)d AND range = 1 AND crcs.start_stop = TRUE
+                                   )
+                                 )
+                           EXCEPT
+                           SELECT crcd.id_cam AS id
+                           FROM mv_cron AS crcd
+                           WHERE crcd.day = %(day)d
+                                 AND
+                                 (
+                                   (
+                                     crcd.hour = %(hour)d AND range = 1 AND crcd.min <= %(min)d AND crcd.start_stop = FALSE
+                                   )
+                                   OR
+                                   (
+                                     crcd.hour < %(hour)d AND range = 1 AND crcd.start_stop = FALSE
+                                   )
+                                 )
+                         ) AS crc1
                  ) AS c ON ca.id = c.id
                       
                     ''' % {
                         'country': country.replace("'", "''"),
                         'region': region.replace("'", "''"),
                         'device': device.replace("'", "''"),
-                        'gender': ','.join(gender_list),
-                        'cost': ','.join(cost_list),
                         'id_inf': str(block_id),
-                        'id_dom': str(block_domain),
-                        'id_acc': str(block_account),
                         'day': d,
                         'hour': h,
                         'min': m,
@@ -178,26 +156,30 @@ class Query(object):
                     campaigns = await connection.fetch(q)
                     for item in campaigns:
                         campaign = {}
-                        campaign['account'] = item['account']
-                        campaign['brending'] = item['brending']
-                        campaign['guid'] = item['guid']
-                        campaign['html_notification'] = item['html_notification']
                         campaign['id'] = item['id']
-                        campaign['offer_by_campaign_unique'] = item['offer_by_campaign_unique']
-                        campaign['recomendet_count'] = item['recomendet_count']
-                        campaign['recomendet_type'] = item['recomendet_type']
-                        campaign['retargeting'] = item['retargeting']
-                        campaign['retargeting_type'] = item['retargeting_type']
-                        campaign['social'] = item['social']
-                        campaign['style_type'] = item['style_type']
-                        campaign['style_class'] = item['style_class']
-                        campaign['style_class_recommendet'] = item['style_class_recommendet']
-                        campaign['style_data'] = ujson.loads(item['style_data'])
-                        campaign['styling'] = item['styling']
-                        campaign['unique_impression_lot'] = item['unique_impression_lot']
-                        campaign['thematic'] = item['thematic']
-                        campaign['thematics'] = item['thematics']
+                        campaign['id_account'] = item['id_account']
+                        campaign['guid'] = item['guid']
+                        campaign['name'] = item.get('name', '')
+                        campaign['campaign_type'] = CampaignType(item['campaign_type'])
+                        campaign['campaign_style'] = CampaignStylingType(item['campaign_style'])
+                        campaign['campaign_style_logo'] = item['campaign_style_logo']
+                        campaign['campaign_style_head_title'] = item['campaign_style_head_title']
+                        campaign['campaign_style_button_title'] = item['campaign_style_button_title']
+                        campaign['campaign_style_class'] = item['campaign_style_class']
+                        campaign['campaign_style_class_recommendet'] = item['campaign_style_class_recommendet']
+                        campaign['utm'] = item['utm']
+                        campaign['utm_human_data'] = item['utm_human_data']
+                        campaign['disable_filter'] = item['disable_filter']
+                        campaign['time_filter'] = item['time_filter']
+                        campaign['payment_model'] = CampaignPaymentModel(item['payment_model'])
+                        campaign['lot_concurrency'] = item['lot_concurrency']
+                        campaign['remarketing_type'] = CampaignRemarketingType(item['remarketing_type'])
+                        campaign['recommended_algorithm'] = CampaignRecommendedAlgorithmType(
+                            item['recommended_algorithm'])
+                        campaign['recommended_count'] = item['recommended_count']
                         campaign['thematic_range'] = item['thematic_range']
+                        campaign['click_cost'] = item['click_cost']
+                        campaign['impression_cost'] = item['impression_cost']
                         offer_count = item['offer_count']
                         campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
                         result.append(campaign)
@@ -224,25 +206,25 @@ class Query(object):
                 if -10 < counter_prediction < capacity:
                     index = 0
                 campaign_unique = ' or '.join(
-                    ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in campaigns])
+                    ['(sub.id_cam = %d and sub.campaign_range_number <= %d)' % (x[0], x[1] * range_number) for x in
+                     campaigns])
                 async with connection.transaction():
                     q = '''
                         select * from
                         (
                         select 
-                        row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_place2informer.rating desc) AS range_number,
                         count(id) OVER() as all_count,
-                        mv_offer_place2informer.*,
+                        mv_offer2block_rating.*,
                         ofrs.*
                         FROM mv_offer_place AS ofrs
-                        left join mv_offer_place2informer on mv_offer_place2informer.offer = ofrs.id and mv_offer_place2informer.inf = %(inf)s
+                        left join mv_offer2block_rating on mv_offer2block_rating.id_offer = ofrs.id and mv_offer2block_rating.id_block = %(inf)s
                         WHERE
                         campaign_range_number < 30
                         AND ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
                         where %(campaign_unique)s
-                        order by sub.range_number, sub.rating desc
+                        order by sub.campaign_range_number, sub.rating desc
                         LIMIT %(capacity)d OFFSET %(offset)d;
                     ''' % {
                         'inf': str(block_id),
@@ -268,7 +250,6 @@ class Query(object):
                             clean = True
                         item = {}
                         item['id'] = offer['id']
-                        item['guid'] = offer['guid']
                         item['id_cam'] = offer['id_cam']
                         item['images'] = offer['images']
                         item['description'] = offer['description']
@@ -311,18 +292,17 @@ class Query(object):
                             select * from
                             (
                             select 
-                            row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer_social2informer.rating desc) AS range_number,
                             count(id) OVER() as all_count,
-                            mv_offer_social2informer.*,
+                            offer_social2block_rating.*,
                             ofrs.*
                             FROM mv_offer_social AS ofrs
-                            left join mv_offer_social2informer on mv_offer_social2informer.offer = ofrs.id and mv_offer_social2informer.inf = %(inf)d
+                            left join offer_social2block_rating on offer_social2block_rating.id_offer = ofrs.id and offer_social2block_rating.id_block = %(inf)d
                             WHERE
                             campaign_range_number < 30
                             AND ofrs.id_cam IN (%(campaigns)s)
                             AND ofrs.id NOT IN (%(exclude)s)
                             ) sub
-                            order by sub.range_number, sub.rating desc
+                            order by sub.campaign_range_number, sub.rating desc
                             LIMIT %(capacity)d;
                         ''' % {
                         'inf': block_id,
@@ -338,7 +318,6 @@ class Query(object):
                             clean = False
                         item = {}
                         item['id'] = offer['id']
-                        item['guid'] = offer['guid']
                         item['id_cam'] = offer['id_cam']
                         item['images'] = offer['images']
                         item['description'] = offer['description']
@@ -367,7 +346,7 @@ class Query(object):
                 campaigns_ids = ','.join([str(x[0]) for x in campaigns])
                 counter_prediction = offer_count - len(exclude)
                 retargeting = ' or '.join(
-                    ["(ofrs.accounts_cam='%s' AND ofrs.retid='%s' )" % (str(x[1]).lower(), x[0]) for x in
+                    ["ofrs.id_ret='%s'" % (str(x[1]).lower(), x[0]) for x in
                      raw_retargeting])
                 if counter_prediction < capacity:
                     index = 0
@@ -377,7 +356,6 @@ class Query(object):
                             select * from
                             (
                             select 
-                            row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
                             count(id) OVER() as all_count,
                             ofrs.*
                             FROM mv_offer_dynamic_retargeting AS ofrs
@@ -394,7 +372,7 @@ class Query(object):
                         'exclude': ','.join([str(x) for x in exclude]),
                         'retargeting': retargeting,
                         'campaign_unique': ' or '.join(
-                            ['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                            ['sub.id_cam = %d and sub.campaign_range_number <= %d' % (x[0], x[1]) for x in campaigns]),
                         'capacity': capacity,
                         'offset': index * capacity
                     }
@@ -405,7 +383,6 @@ class Query(object):
                         clean = False
                         item = {}
                         item['id'] = offer['id']
-                        item['guid'] = offer['guid']
                         item['id_cam'] = offer['id_cam']
                         item['images'] = offer['images']
                         item['description'] = offer['description']
@@ -438,7 +415,6 @@ class Query(object):
                         select * from
                         (
                         select 
-                        row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
                         count(id) OVER() as all_count,
                         ofrs.*
                         FROM mv_offer_account_retargeting AS ofrs
@@ -453,7 +429,9 @@ class Query(object):
                     ''' % {
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
-                        'campaign_unique': ' or '.join(['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in campaigns]),
+                        'campaign_unique': ' or '.join(
+                            ['(sub.id_cam = %d and sub.campaign_range_number <= %d) ' % (x[0], x[1]) for x in
+                             campaigns]),
                         'capacity': capacity,
                         'offset': index * capacity
                     }
@@ -465,7 +443,6 @@ class Query(object):
                             clean = False
                         item = {}
                         item['id'] = offer['id']
-                        item['guid'] = offer['guid']
                         item['id_cam'] = offer['id_cam']
                         item['images'] = offer['images']
                         item['description'] = offer['description']

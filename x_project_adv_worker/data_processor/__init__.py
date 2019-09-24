@@ -10,6 +10,8 @@ from collections import defaultdict
 from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.data_processor.params import Params
 from x_project_adv_worker.styler import Styler
+from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
+                                              CampaignRemarketingType, CampaignRecommendedAlgorithmType)
 
 parther_disable_hosts = ('95.69.249.86', '31.202.102.69', '46.96.41.87', '178.150.140.80', '178.151.44.122',
                          '178.133.46.212', '193.70.46.140', '217.20.169.197', '85.90.199.33', '82.207.109.122',
@@ -121,58 +123,39 @@ class DataProcessor(object):
 
     async def find_block(self):
         tasks = []
-        block_cache = self.app.block_cache.get(self.params.block_id)
-        if block_cache:
-            block_id, block_domain, block_account, block_width, block_height = block_cache
+        block_id = self.app.block_cache.get(self.params.block_id)
+        if block_id:
 
             tasks.append(ensure_future(self.app.query.get_block(block_src=self.params.block_id)))
 
             tasks.append(ensure_future(self.app.query.get_campaigns(block_id=block_id,
-                                                                    block_domain=block_domain,
-                                                                    block_account=block_account,
                                                                     country=self.params.country,
                                                                     region=self.params.region,
                                                                     device=self.params.device,
-                                                                    cost=self.params.cost,
-                                                                    gender=self.params.gender,
                                                                     capacity=self.styler.min_capacity
                                                                     )))
             block, campaigns = await gather(*tasks)
-            if not block or block.get('blocked', False):
+            if not block:
                 try:
                     del self.app.block_cache[self.params.block_id]
                 except Exception:
                     pass
                 return False
             block_id = block.get('id', 0)
-            block_domain = block.get('domain', 0)
-            block_account = block.get('account', 0)
-            # TODO add width, height in db
-            block_width = block.get('width')
-            block_height = block.get('height')
         else:
             block = await self.app.query.get_block(block_src=self.params.block_id)
-            if not block or block.get('blocked', False):
+            if not block:
                 return False
 
             block_id = block.get('id', 0)
-            block_domain = block.get('domain', 0)
-            block_account = block.get('account', 0)
-            # TODO add width, height in db
-            block_width = block.get('width')
-            block_height = block.get('height')
 
             campaigns = await  self.app.query.get_campaigns(block_id=block_id,
-                                                            block_domain=block_domain,
-                                                            block_account=block_account,
                                                             country=self.params.country,
                                                             region=self.params.region,
                                                             device=self.params.device,
-                                                            cost=self.params.cost,
-                                                            gender=self.params.gender,
                                                             capacity=self.styler.min_capacity
                                                             )
-        self.app.block_cache[self.params.block_id] = (block_id, block_domain, block_account, block_width, block_height)
+        self.app.block_cache[self.params.block_id] = block_id
         await self.block_processing(block)
         await self.campaigns_processing(campaigns)
         return True
@@ -210,12 +193,14 @@ class DataProcessor(object):
     async def campaigns_processing(self, campaigns):
         for campaign in campaigns:
             self.campaigns[campaign['id']] = campaign
-            social = campaign['social']
-            retargeting = campaign['retargeting']
-            thematic = campaign['thematic']
+            social = campaign['campaign_type'] == CampaignType.social
+            retargeting = campaign['campaign_type'] == CampaignType.remarketing
+            retargeting_offer = campaign['remarketing_type'] == CampaignRemarketingType.offer
+            retargeting_account = campaign['remarketing_type'] == CampaignRemarketingType.account
+            thematic = campaign['campaign_type'] == CampaignType.thematic
 
             if social and self.social_branch:
-                self.campaigns_socia.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                self.campaigns_socia.append((campaign['id'], campaign['lot_concurrency']))
                 self.offer_count_socia += campaign['offer_count']
 
             elif not social and not retargeting and thematic and self.place_branch:
@@ -224,29 +209,28 @@ class DataProcessor(object):
                 thematic_range = campaign['thematic_range']
                 if thematic_range > 0:
                     if count_thematic > ((count_place + count_thematic) / 100) * thematic_range:
-                        self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                        self.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
                         self.offer_count_place += campaign['offer_count']
                     else:
                         if self.thematics_intersection(campaign['thematics']):
-                            self.campaigns_thematic.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                            self.campaigns_thematic.append((campaign['id'], campaign['lot_concurrency']))
                             self.offer_count_thematic += campaign['offer_count']
                 else:
-                    self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                    self.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
                     self.offer_count_place += campaign['offer_count']
 
             elif not social and not retargeting and not thematic and self.place_branch:
-                self.campaigns_place.append((campaign['id'], campaign['offer_by_campaign_unique']))
+                self.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
                 self.offer_count_place += campaign['offer_count']
 
-            elif not social and retargeting and campaign['retargeting_type'] == 'offer' and self.retargeting_branch:
-                if campaign['account'] in self.params.retargeting:
-                    self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['offer_by_campaign_unique']))
+            elif not social and retargeting and retargeting_offer and self.retargeting_branch:
+                if campaign['guid'] in self.params.retargeting:
+                    self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['lot_concurrency']))
                     self.offer_count_retargeting_dynamic += campaign['offer_count']
 
-            elif not social and retargeting and campaign[
-                'retargeting_type'] == 'account' and self.retargeting_account_branch:
-                if campaign['account'] in self.params.retargeting:
-                    self.campaigns_retargeting_account.append((campaign['id'], campaign['offer_by_campaign_unique']))
+            elif not social and retargeting and retargeting_account and self.retargeting_account_branch:
+                if campaign['guid'] in self.params.retargeting:
+                    self.campaigns_retargeting_account.append((campaign['id'], campaign['lot_concurrency']))
                     self.offer_count_retargeting_account += campaign['offer_count']
 
     async def find_offers(self):
