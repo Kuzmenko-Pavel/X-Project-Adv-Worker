@@ -2,7 +2,7 @@ __all__ = ['DataProcessor']
 import ujson
 import base64
 import time
-import random
+from random import randint, choice
 from asyncio import ensure_future, gather
 from itertools import zip_longest
 from collections import defaultdict
@@ -166,6 +166,7 @@ class DataProcessor(object):
         self.data['block']['header_html'] = block.get('headerHtml', '')
         self.data['block']['footer_html'] = block.get('footerHtml', '')
         self.block_id = block.get('id', 0)
+        self.block = block
         self.block_rating_division = block.get('rating_division', 1000)
         self.rating_hard_limit = block.get('rating_hard_limit', False)
         self.place_branch = block.get('place_branch', True)
@@ -431,29 +432,34 @@ class DataProcessor(object):
             else:
                 for x in range(int(capacity) - len(self.data['offers'])):
                     if 0 < len(self.data['offers']) < capacity:
-                        self.data['offers'].append(random.choice(self.data['offers']))
+                        self.data['offers'].append(choice(self.data['offers']))
                     else:
                         break
 
     def change_image(self, images):
         if self.params.is_webp:
             images = list(map(lambda x: x.replace('.png', '.webp'), images))
+            images = list(map(lambda x: x.replace('http://', 'https://'), images))
         if len(images) == 2:
             images = images + images
         return images
 
     def change_link(self, offer):
         offer_url = offer['url']
-        base64_url = base64.urlsafe_b64encode(str('id=%s\ninf=%s\ntoken=%s\nurl=%s\nrand=%s\ncamp=%s\ntr=%d' % (
+        base64_url = base64.urlsafe_b64encode(str('o=%s\nb=%s\nc=%s\ns=%s\nal=%s\nar=%s\nto=%s\nu=%s\nra=%s\ntr=%d' % (
             offer['id'],
-            self.params.block_id,
+            self.block['id'],
+            offer['campaign']['id'],
+            self.block['id_site'],
+            offer['campaign']['id_account'],
+            self.block['id_account'],
             offer['token'],
             offer_url,
             self.params.token,
-            offer['campaign']['id'],
             int(time.time()*1000)
         )).encode('utf-8'))
-        return b'/click?' + base64_url
+        params = 'a=%s&b=%s&c=%s' % (randint(1, 9), base64_url.decode('utf-8'), randint(1, 9))
+        return 'https://click.yottos.com/click/rg?%s' % params
 
     async def create_logo(self, offer):
         if len(self.data['offers']) >= self.styler.styling_capacity:
