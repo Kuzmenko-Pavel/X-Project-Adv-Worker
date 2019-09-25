@@ -340,8 +340,6 @@ class DataProcessor(object):
                            dynamic_retargeting_offer):
         styling_block = None
         styling_predictive = False
-        brending_block = None
-        brending_predictive = False
         loop_break = False
         loop_counter = 0
 
@@ -352,11 +350,6 @@ class DataProcessor(object):
                                     summary_offer))
         if count_not_styling < self.styler.default_capacity and count_not_styling < len_summary_offer:
             styling_predictive = True
-
-        count_not_brending = sum(map(lambda x: 0 if self.campaigns.get(x['id_cam'], {}).get('brending', False) else 1,
-                                     summary_offer))
-        if count_not_brending < self.styler.default_capacity and count_not_brending < len_summary_offer:
-            brending_predictive = True
 
         if not place_offer[1]:
             self.data['clean']['place'] = place_offer[1]
@@ -388,7 +381,6 @@ class DataProcessor(object):
 
                 camp = self.campaigns.get(offer['id_cam'])
                 offer_styling_block = camp['styling']
-                offer_brending_block = camp['brending']
                 if offer_styling_block:
                     if styling_block is None or styling_block == offer['id_cam']:
                         styling_block = offer['id_cam']
@@ -400,23 +392,14 @@ class DataProcessor(object):
                     elif styling_block is None:
                         styling_block = False
 
-                if offer_brending_block:
-                    if brending_block is None or brending_block == offer['id_cam']:
-                        brending_block = offer['id_cam']
-                    else:
-                        continue
+                if camp['campaign_style'] == CampaignStylingType.style_1:
+                    self.styler.add(str(camp['id']), 'Style_1')
+                elif camp['campaign_style'] == CampaignStylingType.style_2:
+                    self.styler.add(str(camp['id']), 'Style_2')
+                elif camp['campaign_style'] == CampaignStylingType.style_3:
+                    self.styler.add(str(camp['id']), 'Style_3')
                 else:
-                    if brending_block or brending_predictive:
-                        continue
-                    elif brending_block is None:
-                        brending_block = False
-
-                if camp['style_type'] not in ['default', 'Block', 'RetBlock', 'RecBlock']:
-                    self.styler.add(str(camp['id']), camp['style_type'])
-                else:
-                    self.styler.add(camp['style_class'], camp['style_class'])
-                    if offer_brending_block:
-                        self.styler.add(camp['style_class_recommendet'], camp['style_class_recommendet'])
+                    self.styler.add(camp['campaign_style_class'], camp['campaign_style_class'])
 
                 offer['campaign'] = camp
                 offer['logic_name'] = name
@@ -427,9 +410,6 @@ class DataProcessor(object):
                     capacity = self.styler.block.default_adv.count_adv
 
                 await self.create_offer(offer, False, capacity)
-
-                if offer_styling_block or offer_brending_block:
-                    await self.find_recomendet(offer, loop_counter, capacity)
 
                 if offer_styling_block and len(self.data['offers']) >= self.styler.block.styling_adv.count_adv:
                     loop_break = True
@@ -465,12 +445,12 @@ class DataProcessor(object):
     def change_link(self, offer):
         offer_url = offer['url']
         base64_url = base64.urlsafe_b64encode(str('id=%s\ninf=%s\ntoken=%s\nurl=%s\nrand=%s\ncamp=%s\ntr=%d' % (
-            offer['guid'],
+            offer['id'],
             self.params.block_id,
             offer['token'],
             offer_url,
             self.params.token,
-            offer['campaign']['guid'],
+            offer['campaign']['id'],
             int(time.time()*1000)
         )).encode('utf-8'))
         return b'/click?' + base64_url
@@ -479,41 +459,36 @@ class DataProcessor(object):
         if len(self.data['offers']) >= self.styler.styling_capacity:
             return
         self.data['offers'].append({
-            'title': offer['campaign']['style_data']['head_title'],
+            'title': offer['campaign']['campaign_style_head_title'],
             'description': None,
             'price': None,
             'url': self.change_link(offer),
-            'images': [offer['campaign']['style_data']['img']],
-            'style_class': 'logo%s' % offer['campaign']['style_class'],
+            'images': [offer['campaign']['campaign_style_logo']],
+            'style_class': 'logo%s' % offer['campaign']['campaign_style_class'],
             'id': None,
-            'guid': None,
             'id_cam': None,
-            'guid_cam': None,
             'campaign_social': None,
             'retargeting': None,
             'unique_impression_lot': None,
             'token': None,
             'branch': None,
-            'button':  offer['campaign']['style_data']['button_title']
+            'button': offer['campaign']['campaign_style_button_title']
         })
 
     async def create_offer(self, offer, recomendet=False, capacity=0):
         if len(self.data['offers']) >= capacity:
             return
-        style_class = offer['campaign']['style_class']
+        style_class = offer['campaign']['campaign_style_class']
         button = self.block_button
-        branch = 'NL30'
         unique_impression_lot = offer['campaign']['unique_impression_lot']
-        if offer['campaign']['retargeting']:
+        if offer['campaign']['campaign_type'] == CampaignType.remarketing:
             button = self.block_ret_button
-            branch = 'NL31'
         if recomendet:
-            style_class = offer['campaign']['style_class_recommendet']
+            style_class = offer['campaign']['campaign_style_class_recommendet']
             button = self.block_rec_button
-            branch = 'NL32'
             unique_impression_lot = 1
 
-        if offer['campaign']['thematic']:
+        if offer['campaign']['campaign_type'] == CampaignType.thematic:
             key = offer['campaign']['id']
             if offer.get('logic_name') == 'thematic':
                 self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
@@ -532,15 +507,12 @@ class DataProcessor(object):
             'images': self.change_image(offer['images']),
             'style_class': 'adv%s' % style_class,
             'id': str(offer['id']),
-            'guid': offer['guid'],
             'id_cam': str(offer['id_cam']),
-            'guid_cam': offer['campaign']['guid'],
-            'campaign_social': offer['campaign']['social'],
-            'thematic': offer['campaign']['thematic'],
-            'retargeting': offer['campaign']['retargeting'],
+            'campaign_social': offer['campaign']['campaign_type'] == CampaignType.social,
+            'thematic': offer['campaign']['campaign_type'] == CampaignType.thematic,
+            'retargeting': offer['campaign']['campaign_type'] == CampaignType.remarketing,
             'unique_impression_lot': unique_impression_lot,
             'token': offer['token'],
-            'branch': branch,
             'thematics': offer['campaign']['thematics'],
             'button': button
         })

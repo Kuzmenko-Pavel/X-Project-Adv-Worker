@@ -55,12 +55,40 @@ class Query(object):
         d = date.weekday() + 1
         h = date.hour
         m = date.minute
+        t = (h * 60) + m
         async with self.pool.acquire() as connection:
             try:
                 async with connection.transaction():
                     q = '''
                     SELECT
-                ca.*
+                       ca.id,
+                       ca.id_account,
+                       ca.guid,
+                       ca.name,
+                       ca.campaign_type,
+                       ca.campaign_style,
+                       ca.campaign_style_logo,
+                       ca.campaign_style_head_title,
+                       ca.campaign_style_button_title,
+                       ca.campaign_style_class,
+                       ca.campaign_style_class_recommendet,
+                       ca.unique_impression_lot,
+                       ca.styling,
+                       ca.utm,
+                       ca.capacity,
+                       ca.utm_human_data,
+                       ca.disable_filter,
+                       ca.time_filter,
+                       ca.payment_model,
+                       ca.lot_concurrency,
+                       ca.remarketing_type,
+                       ca.recommended_algorithm,
+                       ca.recommended_count,
+                       ca.thematic_range,
+                       ca.offer_count,
+                       COALESCE(cp.click_cost, ca.click_cost) as click_cost,
+                       COALESCE(cp.impression_cost, ca.impression_cost) as impression_cost,
+                       ct.path
                 FROM mv_campaign AS ca
                   INNER JOIN (
                    SELECT gt.id_cam AS id
@@ -74,81 +102,31 @@ class Query(object):
                    FROM mv_campaign2device AS dt
                      INNER JOIN mv_device AS d ON dt.id_dev = d.id
                    WHERE d.code = '%(device)s' OR d.code = '**'
-    
+                   
                    INTERSECT
-                   SELECT crc.id AS id
-                   FROM
-                     (
-                       SELECT crcs.id_cam AS id
+                   SELECT t.id AS id
+                   FROM mv_campaign AS t
+                   WHERE t.capacity <= %(capacity)d
+                   
+                   INTERSECT
+                   SELECT crcs.id_cam AS id
                        FROM mv_cron AS crcs
-                       WHERE crcs.day = %(day)d
-                             AND
-                             (
-                               (
-                                 crcs.hour = %(hour)d AND range = 0 AND crcs.min <= %(min)d AND crcs.start_stop = TRUE
-                               )
-                               OR
-                               (
-                                 crcs.hour < %(hour)d AND range = 0 AND crcs.start_stop = TRUE
-                               )
-                             )
-                       EXCEPT
-                       SELECT crcd.id_cam AS id
-                       FROM mv_cron AS crcd
-                       WHERE crcd.day = %(day)d
-                             AND
-                             (
-                               (
-                                 crcd.hour = %(hour)d AND range = 0 AND crcd.min <= %(min)d AND crcd.start_stop = FALSE
-                               )
-                               OR
-                               (
-                                 crcd.hour < %(hour)d AND range = 0 AND crcd.start_stop = FALSE
-                               )
-                             )
-                     ) AS crc
-                     UNION 
-                     SELECT crc1.id AS id
-                       FROM
-                         (
-                           SELECT crcs.id_cam AS id
-                           FROM mv_cron AS crcs
-                           WHERE crcs.day = %(day)d
-                                 AND
-                                 (
-                                   (
-                                     crcs.hour = %(hour)d AND range = 1 AND crcs.min <= %(min)d AND crcs.start_stop = TRUE
-                                   )
-                                   OR
-                                   (
-                                     crcs.hour < %(hour)d AND range = 1 AND crcs.start_stop = TRUE
-                                   )
-                                 )
-                           EXCEPT
-                           SELECT crcd.id_cam AS id
-                           FROM mv_cron AS crcd
-                           WHERE crcd.day = %(day)d
-                                 AND
-                                 (
-                                   (
-                                     crcd.hour = %(hour)d AND range = 1 AND crcd.min <= %(min)d AND crcd.start_stop = FALSE
-                                   )
-                                   OR
-                                   (
-                                     crcd.hour < %(hour)d AND range = 1 AND crcd.start_stop = FALSE
-                                   )
-                                 )
-                         ) AS crc1
+                       WHERE crcs.day = %(day)d AND  crcs.time @> %(time)d
+                   EXCEPT
+                   SELECT DISTINCT(cbb.id_cam) AS id
+                   FROM mv_campaigns_by_blocking_block AS cbb
+                   WHERE cbb.id_block = %(block_id)d
                  ) AS c ON ca.id = c.id
+                 LEFT JOIN mv_campaign_thematics AS ct ON ca.id = ct.id_cam
+                 LEFT JOIN mv_campaigns_by_block_price AS cp ON ca.id = cp.id_cam and cp.id_block = %(block_id)d
                       
                     ''' % {
                         'country': country.replace("'", "''"),
                         'region': region.replace("'", "''"),
                         'device': device.replace("'", "''"),
-                        'id_inf': str(block_id),
+                        'block_id': block_id,
                         'day': d,
-                        'hour': h,
-                        'min': m,
+                        'time': t,
                         'capacity': capacity
                     }
                     # stmt = await connection.prepare(q)
@@ -167,10 +145,12 @@ class Query(object):
                         campaign['campaign_style_button_title'] = item['campaign_style_button_title']
                         campaign['campaign_style_class'] = item['campaign_style_class']
                         campaign['campaign_style_class_recommendet'] = item['campaign_style_class_recommendet']
+                        campaign['styling'] = item['styling']
                         campaign['utm'] = item['utm']
                         campaign['utm_human_data'] = item['utm_human_data']
                         campaign['disable_filter'] = item['disable_filter']
                         campaign['time_filter'] = item['time_filter']
+                        campaign['unique_impression_lot'] = item['unique_impression_lot']
                         campaign['payment_model'] = CampaignPaymentModel(item['payment_model'])
                         campaign['lot_concurrency'] = item['lot_concurrency']
                         campaign['remarketing_type'] = CampaignRemarketingType(item['remarketing_type'])
@@ -178,6 +158,7 @@ class Query(object):
                             item['recommended_algorithm'])
                         campaign['recommended_count'] = item['recommended_count']
                         campaign['thematic_range'] = item['thematic_range']
+                        campaign['thematics'] = item['path']
                         campaign['click_cost'] = item['click_cost']
                         campaign['impression_cost'] = item['impression_cost']
                         offer_count = item['offer_count']
