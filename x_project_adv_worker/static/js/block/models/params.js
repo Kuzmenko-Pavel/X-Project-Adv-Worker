@@ -28,7 +28,7 @@ define([
     };
     Params.prototype.generateRequestData = function (req_type) {
         var data = {};
-        var params = 'params';
+        var params = 'p';
         var adsparams = 'adsparams';
         var retargeting = 'retargeting';
         var exclude = 'exclude';
@@ -76,7 +76,7 @@ define([
             data[params]['request'] = this[app][adsparams].request;
             data[params]['active'] = this[app].logger.logging;
             data[params]['test'] = this[app][adsparams].test;
-            data.items = [];
+            data.i = [];
             if (complite) {
                 this[app].uh.load(key);
             }
@@ -91,7 +91,7 @@ define([
                     item.campaign_id = offer.id_cam;
                     item.retargeting = offer.retargeting;
                     item.branch = offer.branch;
-                    this.data.items.push(item);
+                    this.data.i.push(item);
                     if (complite) {
                         if (offer.retargeting) {
                             this[app].uh[key[1]].add(offer.id, offer.unique_impression_lot);

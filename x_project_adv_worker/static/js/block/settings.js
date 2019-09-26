@@ -6,14 +6,14 @@ define(function () {
         requiredData: {
             advertises: {
                 param: 'advertises',
-                url: '/v1/items'
+                url: '/v2/items'
             },
             offer_log: {
                 param: 'log',
-                url: '/logger.json'
+                url: '/v2/logger.json'
             }
         },
-        partners: '/v1/partners',
-        not_found: '/v1/not_found'
+        partners: '/v2/partners',
+        not_found: '/v2/not_found'
     };
 });
