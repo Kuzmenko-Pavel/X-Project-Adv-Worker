@@ -170,8 +170,8 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
         return [dict(x) for x in result]
 
-    async def get_place_offer(self, processor,
-                              block_id, campaigns, capacity, index, offer_count, exclude, recursion=False):
+    async def get_place_offer(self, processor, block_id, block_categoryes, campaigns, capacity,
+                              index, offer_count, exclude, recursion=False):
         if not campaigns:
             return [], None
         result = []
@@ -199,9 +199,11 @@ class Query(object):
                         mv_offer2block_rating.*,
                         ofrs.*
                         FROM mv_offer_place AS ofrs
-                        left join mv_offer2block_rating on mv_offer2block_rating.id_offer = ofrs.id and mv_offer2block_rating.id_block = %(inf)s
+                        left join mv_offer2block_rating on mv_offer2block_rating.id_offer = ofrs.id and mv_offer2block_rating.id_block = %(block_id)d
+                        left join mv_offer_categories on mv_offer_categories.id_offer = ofrs.id and mv_offer_categories.path ? %(lquery)s
                         WHERE
                         campaign_range_number < 30
+                        AND mv_offer_categories.id_offer is NULL
                         AND ofrs.id_cam IN (%(campaigns)s)
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
@@ -209,7 +211,10 @@ class Query(object):
                         order by sub.range_number, sub.rating desc
                         LIMIT %(capacity)d OFFSET %(offset)d;
                     ''' % {
-                        'inf': str(block_id),
+                        'block_id': block_id,
+                        'lquery': "ARRAY[%s]::lquery[]" % ','.join([
+                            "'%s.*'" % x for x in block_categoryes
+                        ]),
                         'campaigns': campaigns_ids,
                         'exclude': exclude_ids,
                         'campaign_unique': campaign_unique,
@@ -246,7 +251,8 @@ class Query(object):
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
                         rec_exclude.extend([x['id'] for x in result])
-                        rec_res, rec_clean = await self.get_place_offer(processor, block_id, campaigns, capacity, 0,
+                        rec_res, rec_clean = await self.get_place_offer(processor, block_id, block_categoryes,
+                                                                        campaigns, capacity, 0,
                                                                         offer_count, rec_exclude, True)
                         for item in rec_res:
                             result.append(item)
@@ -259,7 +265,8 @@ class Query(object):
                     clean = True
         return result, clean
 
-    async def get_social_offer(self, processor, block_id, campaigns, capacity, index, offer_count, exclude):
+    async def get_social_offer(self, processor, block_id, block_categoryes, campaigns, capacity,
+                               index, offer_count, exclude):
         if not campaigns:
             return [], None
         result = []
@@ -280,16 +287,21 @@ class Query(object):
                             offer_social2block_rating.*,
                             ofrs.*
                             FROM mv_offer_social AS ofrs
-                            left join offer_social2block_rating on offer_social2block_rating.id_offer = ofrs.id and offer_social2block_rating.id_block = %(inf)d
+                            left join offer_social2block_rating on offer_social2block_rating.id_offer = ofrs.id and offer_social2block_rating.id_block = %(block_id)d
+                            left join mv_offer_categories on mv_offer_categories.id_offer = ofrs.id and mv_offer_categories.path ? %(lquery)s
                             WHERE
                             campaign_range_number < 30
+                            AND mv_offer_categories.id_offer is NULL
                             AND ofrs.id_cam IN (%(campaigns)s)
                             AND ofrs.id NOT IN (%(exclude)s)
                             ) sub
                             order by sub.range_number, sub.rating desc
                             LIMIT %(capacity)d;
                         ''' % {
-                        'inf': block_id,
+                        'block_id': block_id,
+                        'lquery': "ARRAY[%s]::lquery[]" % ','.join([
+                            "'%s.*'" % x for x in block_categoryes
+                        ]),
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
                         'capacity': capacity

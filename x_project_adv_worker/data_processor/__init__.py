@@ -240,6 +240,7 @@ class DataProcessor(object):
         tasks.append(ensure_future(self.app.query.get_place_offer(
             processor=self,
             block_id=self.block_id,
+            block_categoryes=self.block.get('block_adv_category', []),
             campaigns=self.campaigns_place,
             capacity=self.styler.max_capacity,
             index=self.params.index,
@@ -249,6 +250,7 @@ class DataProcessor(object):
         tasks.append(ensure_future(self.app.query.get_place_offer(
             processor=self,
             block_id=self.block_id,
+            block_categoryes=self.block.get('block_adv_category', []),
             campaigns=self.campaigns_thematic,
             capacity=self.styler.max_capacity,
             index=self.params.index,
@@ -258,6 +260,7 @@ class DataProcessor(object):
         tasks.append(ensure_future(self.app.query.get_social_offer(
             processor=self,
             block_id=self.block_id,
+            block_categoryes=self.block.get('block_adv_category', []),
             campaigns=self.campaigns_socia,
             capacity=self.styler.max_capacity,
             index=self.params.index,
