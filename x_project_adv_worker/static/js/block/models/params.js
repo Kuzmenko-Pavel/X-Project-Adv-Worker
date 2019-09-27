@@ -90,6 +90,7 @@ define([
                     item.s = offer.campaign_social;
                     item.icr = offer.icr;
                     item.icl = offer.icl;
+                    item.t = offer.token;
                     this.data.i.push(item);
                     if (complite) {
                         if (offer.retargeting) {
