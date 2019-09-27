@@ -223,7 +223,6 @@ class Query(object):
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
-                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         rating = offer['rating']
@@ -308,7 +307,6 @@ class Query(object):
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
-                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         if clean and offer['all_count'] > capacity:
@@ -374,7 +372,6 @@ class Query(object):
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
-                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         clean = False
@@ -435,7 +432,6 @@ class Query(object):
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
-                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         if clean and offer['all_count'] > capacity:
