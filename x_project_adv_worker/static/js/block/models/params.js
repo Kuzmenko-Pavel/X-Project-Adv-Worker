@@ -72,7 +72,7 @@ define([
             data.i = [];
             data.b.id = this[app].advertise.id;
             data.b.aid = this[app].advertise.aid;
-            data.b.cid = this[app].advertise.cid;
+            data.b.sid = this[app].advertise.sid;
             data.p.c = this[app][adsparams].cookie;
             data.p.r = this[app][adsparams].request;
             data.p.a = this[app].logger.logging;
