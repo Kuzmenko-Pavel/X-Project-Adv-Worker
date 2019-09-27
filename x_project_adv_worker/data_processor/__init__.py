@@ -226,6 +226,7 @@ class DataProcessor(object):
 
             elif not social and retargeting and retargeting_offer and self.retargeting_branch:
                 if campaign['guid'] in self.params.retargeting:
+                    self.params.add_retargeting(campaign['guid'], campaign['id'])
                     self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['lot_concurrency']))
                     self.offer_count_retargeting_dynamic += campaign['offer_count']
 
@@ -280,7 +281,7 @@ class DataProcessor(object):
             index=self.params.index,
             offer_count=self.offer_count_retargeting_dynamic,
             exclude=self.params.retargeting_dynamic_exclude,
-            raw_retargeting=self.params.raw_retargeting)))
+            retargeting_list=self.params.retargeting_list)))
 
         place_offer, thematic_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(
             *tasks)

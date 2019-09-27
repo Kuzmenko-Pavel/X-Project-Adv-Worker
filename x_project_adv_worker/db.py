@@ -136,7 +136,7 @@ class Query(object):
                         campaign = {}
                         campaign['id'] = item['id']
                         campaign['id_account'] = item['id_account']
-                        campaign['guid'] = item['guid']
+                        campaign['guid'] = str(item['guid'])
                         campaign['name'] = item.get('name', '')
                         campaign['campaign_type'] = CampaignType(item['campaign_type'])
                         campaign['campaign_style'] = CampaignStylingType(item['campaign_style'])
@@ -187,13 +187,14 @@ class Query(object):
                 if -10 < counter_prediction < capacity:
                     index = 0
                 campaign_unique = ' or '.join(
-                    ['(sub.id_cam = %d and sub.campaign_range_number <= %d)' % (x[0], x[1] * range_number) for x in
+                    ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in
                      campaigns])
                 async with connection.transaction():
                     q = '''
                         select * from
                         (
                         select 
+                        row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer2block_rating.rating desc) AS range_number,
                         count(id) OVER() as all_count,
                         mv_offer2block_rating.*,
                         ofrs.*
@@ -205,7 +206,7 @@ class Query(object):
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
                         where %(campaign_unique)s
-                        order by sub.campaign_range_number, sub.rating desc
+                        order by sub.range_number, sub.rating desc
                         LIMIT %(capacity)d OFFSET %(offset)d;
                     ''' % {
                         'inf': str(block_id),
@@ -217,6 +218,7 @@ class Query(object):
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
+                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         rating = offer['rating']
@@ -273,6 +275,7 @@ class Query(object):
                             select * from
                             (
                             select 
+                            row_number() OVER (PARTITION BY ofrs.id_cam order by offer_social2block_rating.rating desc) AS range_number,
                             count(id) OVER() as all_count,
                             offer_social2block_rating.*,
                             ofrs.*
@@ -283,7 +286,7 @@ class Query(object):
                             AND ofrs.id_cam IN (%(campaigns)s)
                             AND ofrs.id NOT IN (%(exclude)s)
                             ) sub
-                            order by sub.campaign_range_number, sub.rating desc
+                            order by sub.range_number, sub.rating desc
                             LIMIT %(capacity)d;
                         ''' % {
                         'inf': block_id,
@@ -293,6 +296,7 @@ class Query(object):
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
+                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         if clean and offer['all_count'] > capacity:
@@ -317,7 +321,7 @@ class Query(object):
         return result, clean
 
     async def get_dynamic_retargeting_offer(self, processor, block_id, campaigns, capacity, index, offer_count,
-                                            exclude, raw_retargeting):
+                                            exclude, retargeting_list):
         if not campaigns:
             return [], None
         result = []
@@ -326,9 +330,7 @@ class Query(object):
             try:
                 campaigns_ids = ','.join([str(x[0]) for x in campaigns])
                 counter_prediction = offer_count - len(exclude)
-                retargeting = ' or '.join(
-                    ["ofrs.id_ret='%s'" % (str(x[1]).lower(), x[0]) for x in
-                     raw_retargeting])
+                retargeting = ' or '.join(["ofrs.id_ret='%s'" % str(x) for x in retargeting_list])
                 if counter_prediction < capacity:
                     index = 0
 
@@ -337,6 +339,7 @@ class Query(object):
                             select * from
                             (
                             select 
+                            row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
                             count(id) OVER() as all_count,
                             ofrs.*
                             FROM mv_offer_dynamic_retargeting AS ofrs
@@ -353,12 +356,13 @@ class Query(object):
                         'exclude': ','.join([str(x) for x in exclude]),
                         'retargeting': retargeting,
                         'campaign_unique': ' or '.join(
-                            ['sub.id_cam = %d and sub.campaign_range_number <= %d' % (x[0], x[1]) for x in campaigns]),
+                            ['sub.id_cam = %d and sub.range_number <= %d' % (x[0], x[1]) for x in campaigns]),
                         'capacity': capacity,
                         'offset': index * capacity
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
+                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         clean = False
@@ -396,6 +400,7 @@ class Query(object):
                         select * from
                         (
                         select 
+                        row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
                         count(id) OVER() as all_count,
                         ofrs.*
                         FROM mv_offer_account_retargeting AS ofrs
@@ -411,13 +416,14 @@ class Query(object):
                         'campaigns': campaigns_ids,
                         'exclude': ','.join([str(x) for x in exclude]),
                         'campaign_unique': ' or '.join(
-                            ['(sub.id_cam = %d and sub.campaign_range_number <= %d) ' % (x[0], x[1]) for x in
+                            ['(sub.id_cam = %d and sub.range_number <= %d) ' % (x[0], x[1]) for x in
                              campaigns]),
                         'capacity': capacity,
                         'offset': index * capacity
                     }
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
+                    print(q)
                     offers = await connection.fetch(q)
                     for offer in offers:
                         if clean and offer['all_count'] > capacity:

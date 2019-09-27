@@ -14,7 +14,7 @@ class Params(object):
     __slots__ = ['width', 'height', 'block_id', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
                  'exclude', 'is_webp', 'host', 'token', 'thematics', 'thematics_exclude',
                  'retargeting_account_exclude', 'retargeting_dynamic_exclude',
-                 'raw_retargeting', 'retargeting', 'time_start', 'test']
+                 'raw_retargeting', 'retargeting', 'time_start', 'test', 'retargeting_list']
 
     def __init__(self, request, data):
         self.width = 0
@@ -39,6 +39,7 @@ class Params(object):
         self.raw_retargeting = list()
         self.thematics = list()
         self.retargeting = dict()
+        self.retargeting_list = list()
         try:
             self.__loads__(request, data)
         except Exception as ex:
@@ -124,3 +125,8 @@ class Params(object):
                     self.region = not_found
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
+
+    def add_retargeting(self, guid, id):
+        for ret_el in self.raw_retargeting:
+            if guid == ret_el[1].lower():
+                self.retargeting_list.append('%s::%s' % (id, ret_el[0]))
