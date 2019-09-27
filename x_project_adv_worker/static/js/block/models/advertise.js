@@ -11,8 +11,10 @@ define([
     var Advertise = function (app) {
         this.recall = 0;
         this.app = app;
-        this.informer_id = '';
-        this.informer_id_int = '0';
+        this.guid = '';
+        this.id = '0';
+        this.aid = '0';
+        this.sid = '0';
         this.footer_html = "";
         this.header_html = "";
         this.offers = [];
@@ -28,8 +30,10 @@ define([
         }
         else{
             app.logger.offer_status = 'initial';
-            this.informer_id = server_obj.block.guid;
-            this.informer_id_int = server_obj.block.id;
+            this.guid = server_obj.block.guid;
+            this.id = server_obj.block.id;
+            this.aid = server_obj.block.aid;
+            this.sid = server_obj.block.sid;
             this.footer_html = server_obj.block.footer_html;
             this.header_html = server_obj.block.header_html;
             this.css = server_obj.css;

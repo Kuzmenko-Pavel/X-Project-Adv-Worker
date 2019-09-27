@@ -162,6 +162,8 @@ class DataProcessor(object):
 
     async def block_processing(self, block):
         self.data['block']['id'] = str(block.get('id', 0))
+        self.data['block']['ida'] = str(block.get('id_account', 0))
+        self.data['block']['ids'] = str(block.get('id_site', 0))
         self.data['block']['guid'] = self.params.block_id
         self.data['block']['header_html'] = block.get('headerHtml', '')
         self.data['block']['footer_html'] = block.get('footerHtml', '')
@@ -517,7 +519,10 @@ class DataProcessor(object):
             'images': self.change_image(offer['images']),
             'style_class': 'adv%s' % style_class,
             'id': str(offer['id']),
-            'id_cam': str(offer['id_cam']),
+            'cid': str(offer['campaign']['id']),
+            'aid': str(offer['campaign']['id_account']),
+            'icr': 0,
+            'icl': 0,
             'campaign_social': offer['campaign']['campaign_type'] == CampaignType.social,
             'thematic': offer['campaign']['campaign_type'] == CampaignType.thematic,
             'retargeting': offer['campaign']['campaign_type'] == CampaignType.remarketing,

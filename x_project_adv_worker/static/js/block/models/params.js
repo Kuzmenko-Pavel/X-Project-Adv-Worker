@@ -28,12 +28,10 @@ define([
     };
     Params.prototype.generateRequestData = function (req_type) {
         var data = {};
-        var params = 'p';
         var adsparams = 'adsparams';
         var retargeting = 'retargeting';
         var exclude = 'exclude';
         var index = 'index';
-        var informer = 'informer';
         var app = 'app';
         if (req_type === 'advertises'){
             this[app].uh.load();
@@ -69,28 +67,29 @@ define([
                 'time',
                 'thematic_exclude'
             ];
-            data[params] = {};
-            data[params][informer + '_id'] = this[app].advertise[informer + '_id'];
-            data[params][informer + '_id_int'] = this[app].advertise[informer + '_id_int'];
-            data[params]['cookie'] = this[app][adsparams].cookie;
-            data[params]['request'] = this[app][adsparams].request;
-            data[params]['active'] = this[app].logger.logging;
-            data[params]['test'] = this[app][adsparams].test;
+            data.p = {};
+            data.b = {};
             data.i = [];
+            data.b.id = this[app].advertise.id;
+            data.b.aid = this[app].advertise.aid;
+            data.b.cid = this[app].advertise.cid;
+            data.p.c = this[app][adsparams].cookie;
+            data.p.r = this[app][adsparams].request;
+            data.p.a = this[app].logger.logging;
+            data.p.t = this[app][adsparams].test;
             if (complite) {
                 this[app].uh.load(key);
             }
             _.each(this.app.advertise.offers, function (offer) {
                 if (offer.id !== null) {
                     var item = {};
-                    item.guid = offer.guid;
                     item.id = offer.id;
-                    item.campaign_social = offer.campaign_social;
-                    item.token = offer.token;
-                    item.campaign_guid = offer.guid_cam;
-                    item.campaign_id = offer.id_cam;
-                    item.retargeting = offer.retargeting;
-                    item.branch = offer.branch;
+                    item.cid = offer.cid;
+                    item.aid = offer.aid;
+                    item.ib = 1 / this.app.advertise.offers.length;
+                    item.s = offer.campaign_social;
+                    item.icr = offer.icr;
+                    item.icl = offer.icl;
                     this.data.i.push(item);
                     if (complite) {
                         if (offer.retargeting) {
