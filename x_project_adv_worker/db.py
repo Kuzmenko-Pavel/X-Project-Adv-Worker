@@ -199,6 +199,15 @@ class Query(object):
         return result
 
     async def get_place_offer(self, processing_data, recursion=False):
+        rating_hard_limit = processing_data.rating_hard_limit
+        block_rating_division = processing_data.block_rating_division
+        block_id = processing_data.id_block
+        block_categoryes = processing_data.block.get('block_adv_category', [])
+        campaigns = processing_data.campaigns_place
+        capacity = processing_data.styler.max_capacity
+        index = processing_data.params.index
+        offer_count = processing_data.offer_count_place
+        exclude = processing_data.params.exclude
         if not campaigns:
             return [], None
         result = []
@@ -255,7 +264,7 @@ class Query(object):
                         rating = offer['rating']
                         if rating is None:
                             rating = 12500.0
-                        if processor.rating_hard_limit and rating < processor.block_rating_division:
+                        if rating_hard_limit and rating < block_rating_division:
                             continue
 
                         if offer['all_count'] > capacity and rating > 0:
@@ -277,9 +286,7 @@ class Query(object):
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
                         rec_exclude.extend([x['id'] for x in result])
-                        rec_res, rec_clean = await self.get_place_offer(processor, block_id, block_categoryes,
-                                                                        campaigns, capacity, 0,
-                                                                        offer_count, rec_exclude, True)
+                        rec_res, rec_clean = await self.get_place_offer(processing_data, True)
                         for item in rec_res:
                             result.append(item)
             except asyncio.CancelledError as ex:
@@ -287,14 +294,117 @@ class Query(object):
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex)))
             if not clean:
-                if all([item['rating'] < processor.block_rating_division for item in result]):
+                if all([item['rating'] < block_rating_division for item in result]):
                     clean = True
         return result, clean
 
-    async def get_thematic_offer(self, processing_data):
-        pass
+    async def get_thematic_offer(self, processing_data, recursion=False):
+        rating_hard_limit = processing_data.rating_hard_limit
+        block_rating_division = processing_data.block_rating_division
+        block_id = processing_data.id_block
+        block_categoryes = processing_data.block.get('block_adv_category', [])
+        campaigns = processing_data.campaigns_thematic
+        capacity = processing_data.styler.max_capacity
+        index = processing_data.params.index
+        offer_count = processing_data.offer_count_thematic
+        exclude = processing_data.params.thematics_exclude
+        if not campaigns:
+            return [], None
+        result = []
+        clean = True
+        async with self.pool.acquire() as connection:
+            try:
+                campaigns_ids = ','.join([str(x[0]) for x in campaigns])
+                counter_prediction = offer_count - len(exclude)
+                exclude_ids = ','.join([str(x) for x in exclude])
+                range_number = 1
+                if counter_prediction < capacity * 2:
+                    range_number = capacity
+                if -10 < counter_prediction < capacity:
+                    index = 0
+                campaign_unique = ' or '.join(
+                    ['(sub.id_cam = %d and sub.range_number <= %d)' % (x[0], x[1] * range_number) for x in
+                     campaigns])
+                async with connection.transaction():
+                    q = '''
+                                select * from
+                                (
+                                select 
+                                row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer2block_rating.rating desc) AS range_number,
+                                count(id) OVER() as all_count,
+                                mv_offer2block_rating.*,
+                                ofrs.*
+                                FROM mv_offer_place AS ofrs
+                                left join mv_offer2block_rating on mv_offer2block_rating.id_offer = ofrs.id and mv_offer2block_rating.id_block = %(block_id)d
+                                left join mv_offer_categories on mv_offer_categories.id_offer = ofrs.id and mv_offer_categories.path ? %(lquery)s
+                                WHERE
+                                campaign_range_number < 30
+                                AND mv_offer_categories.id_offer is NULL
+                                AND ofrs.id_cam IN (%(campaigns)s)
+                                AND ofrs.id NOT IN (%(exclude)s)
+                                ) sub
+                                where %(campaign_unique)s
+                                order by sub.range_number, sub.rating desc
+                                LIMIT %(capacity)d OFFSET %(offset)d;
+                            ''' % {
+                        'block_id': block_id,
+                        'lquery': "ARRAY[%s]::lquery[]" % ','.join([
+                            "'%s.*'" % x for x in block_categoryes
+                        ]),
+                        'campaigns': campaigns_ids,
+                        'exclude': exclude_ids,
+                        'campaign_unique': campaign_unique,
+                        'capacity': capacity * 2,
+                        'offset': index * capacity
+                    }
+                    # stmt = await connection.prepare(q)
+                    # offers = await stmt.fetch()
+                    offers = await connection.fetch(q)
+                    for offer in offers:
+                        rating = offer['rating']
+                        if rating is None:
+                            rating = 12500.0
+                        if rating_hard_limit and rating < block_rating_division:
+                            continue
+
+                        if offer['all_count'] > capacity and rating > 0:
+                            clean = False
+                        else:
+                            clean = True
+                        item = {}
+                        item['id'] = offer['id']
+                        item['id_cam'] = offer['id_cam']
+                        item['images'] = offer['images']
+                        item['description'] = offer['description']
+                        item['url'] = offer['url']
+                        item['title'] = offer['title']
+                        item['price'] = offer['price']
+                        item['recommended'] = offer['recommended']
+                        item['rating'] = rating
+                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        result.append(item)
+                    if len(result) < capacity and not recursion:
+                        rec_exclude = [0]
+                        rec_exclude.extend([x['id'] for x in result])
+                        rec_res, rec_clean = await self.get_place_offer(processing_data, True)
+                        for item in rec_res:
+                            result.append(item)
+            except asyncio.CancelledError as ex:
+                logger.error('CancelledError get_place_offer')
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex)))
+            if not clean:
+                if all([item['rating'] < block_rating_division for item in result]):
+                    clean = True
+        return result, clean
 
     async def get_social_offer(self, processing_data):
+        block_id = processing_data.id_block
+        block_categoryes = processing_data.block.get('block_adv_category', [])
+        campaigns = processing_data.campaigns_socia
+        capacity = processing_data.styler.max_capacity
+        offer_count = processing_data.offer_count_socia
+        exclude = processing_data.params.exclude
         if not campaigns:
             return [], None
         result = []
@@ -360,6 +470,13 @@ class Query(object):
         return result, clean
 
     async def get_dynamic_retargeting_offer(self, processing_data):
+        block_id = processing_data.id_block
+        campaigns = processing_data.campaigns_retargeting_dynamic
+        capacity = processing_data.styler.max_capacity
+        index = processing_data.params.index
+        offer_count = processing_data.offer_count_retargeting_dynamic
+        exclude = processing_data.params.retargeting_dynamic_exclude
+        retargeting_list = processing_data.params.retargeting_list
         if not campaigns:
             return [], None
         result = []
@@ -421,6 +538,12 @@ class Query(object):
         return result, clean
 
     async def get_account_retargeting_offer(self, processing_data):
+        block_id = processing_data.id_block
+        campaigns = processing_data.campaigns_retargeting_account
+        capacity = processing_data.styler.max_capacity
+        index = processing_data.params.index
+        offer_count = processing_data.offer_count_retargeting_account
+        exclude = processing_data.params.retargeting_account_exclude
         if not campaigns:
             return [], None
         result = []
