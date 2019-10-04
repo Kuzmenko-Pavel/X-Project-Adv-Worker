@@ -1,6 +1,7 @@
 __all__ = ['Params']
 import time
 import re
+from uuid import uuid4
 
 from x_project_adv_worker.utils import encryptDecrypt
 from x_project_adv_worker.logger import logger, exception_message
@@ -19,7 +20,7 @@ class Params(object):
     def __init__(self, request, data):
         self.width = 0
         self.height = 0
-        self.guid_block = ''
+        self.guid_block = str(uuid4())
         self.auto = False
         self.test = False
         self.country = ''
