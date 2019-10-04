@@ -1,5 +1,6 @@
 __all__ = ['UtmConverter']
-from urllib.parse import urlparse, urlencode, parse_qsl, urlunparse, unquote
+from trans import trans
+from urllib.parse import urlparse, urlencode, parse_qsl, urlunparse, quote
 import random
 
 
@@ -9,7 +10,7 @@ class UtmConverter:
     utm_source = 'yottos'
     utm_campaign = 'yottos'
     utm_content = 'yottos'
-    utm_medium = 'yottos'
+    utm_medium = 'cpc_yottos'
     utm_term = 'yottos'
     utm_rand = str(random.randint(0, 1000000))
 
@@ -19,27 +20,64 @@ class UtmConverter:
     def __init__(self, offer):
         print(offer)
         self.raw_url = offer['url']
-        # self.id_offer
-        # self.id_block
-        # self.id_campaign
-        # self.id_site
-        # self.id_account_left
-        # self.id_account_rite
+        self.id_offer = str(offer['id'])
+        self.id_block = str(offer['block']['id'])
+        self.guid_block = str(offer['block']['guid'])
+        self.id_campaign = str(offer['campaign']['id'])
+        self.id_site = str(offer['block']['id_site'])
+        self.offer_name = self.trans(str(offer['title']))
+        self.site_name = self.trans(str(offer['block']['site_name']))
+        self.campaign_name = self.trans(str(offer['campaign']['name']))
+        self.utm = bool(offer['campaign']['utm'])
+        self.utm_human_data = bool(offer['campaign']['utm_human_data'])
+
+    @staticmethod
+    def trans(text):
+        try:
+            return trans(text.replace(' ', '-').lower())
+        except Exception:
+            return text
+
+    async def get_source(self):
+        if self.utm_human_data:
+            return self.site_name
+        return self.id_block
+
+    async def get_source_id(self):
+        return self.id_block
+
+    async def get_campaign(self):
+        return self.campaign_name
+
+    async def get_campaign_id(self):
+        return self.id_campaign
+
+    async def get_offer(self):
+        return self.offer_name
+
+    async def get_offer_id(self):
+        return self.id_offer
+
+    async def get_rand(self):
+        return self.utm_rand
 
     async def get_utm_source(self):
-        return self.utm_source
+        return await self.get_source()
 
     async def get_utm_campaign(self):
-        return self.utm_campaign
+        return await self.get_campaign()
+
+    async def get_utm_content(self):
+        return await self.get_offer()
 
     async def get_utm_medium(self):
         return self.utm_medium
 
     async def get_utm_term(self):
-        return self.utm_term
+        return await self.get_source_id()
 
     async def get_utm_rand(self):
-        return self.utm_rand
+        return await self.get_rand()
 
     async def get_default_utm(self, name):
         return self.utm_default
@@ -49,7 +87,7 @@ class UtmConverter:
             for i in self.makros:
                 value = value.replace(i, values.get(i, await self.get_default_utm(i)))
             params[key] = value
-        return urlencode(params)
+        return urlencode(params, quote_via=quote)
 
     def utm_exist(self, key, params):
         return key in params
@@ -58,13 +96,17 @@ class UtmConverter:
         for key, value in keys.items():
             if not self.utm_exist(key, params):
                 params[key] = value
-        return urlencode(params)
+        return urlencode(params, quote_via=quote)
 
     async def get_makros_values(self):
         return {
-            '{source}': await self.get_utm_source(),
-            '{campaign}': await self.get_utm_campaign(),
-            '{medium}': await self.get_utm_medium()
+            '{source}': await self.get_source(),
+            '{source_id}': await self.get_source_id(),
+            '{campaign}': await self.get_campaign(),
+            '{campaign_id}': await self.get_campaign_id(),
+            '{offer}': await self.get_offer(),
+            '{offer_id}': await self.get_offer_id(),
+            '{rand}': await self.get_rand()
         }
 
     async def get_utm_keys(self):
@@ -72,7 +114,7 @@ class UtmConverter:
             'utm_medium': await self.get_utm_medium(),
             'utm_source': await self.get_utm_source(),
             'utm_campaign': await self.get_utm_campaign(),
-            'utm_content': await self.get_utm_medium(),
+            'utm_content': await self.get_utm_content(),
             'utm_term': await self.get_utm_term(),
         }
 
@@ -80,6 +122,7 @@ class UtmConverter:
         try:
             values = await self.get_makros_values()
             url_parts = list(urlparse(url))
+
             params = dict(parse_qsl(url_parts[3]))
             if len(params) > 0:
                 url_parts[3] = await self.__add_makros(params, values)
@@ -87,6 +130,7 @@ class UtmConverter:
             query = dict(parse_qsl(url_parts[4]))
             if len(query) > 0:
                 url_parts[4] = await self.__add_makros(query, values)
+
             url = urlunparse(url_parts)
         except Exception as e:
             print(e)
@@ -96,6 +140,7 @@ class UtmConverter:
         try:
             keys = await self.get_utm_keys()
             url_parts = list(urlparse(url))
+
             params = dict(parse_qsl(url_parts[3]))
             if len(params) > 0:
                 url_parts[3] = await self.__add_utm(params, keys)
@@ -103,6 +148,7 @@ class UtmConverter:
             query = dict(parse_qsl(url_parts[4]))
             if len(query) > 0:
                 url_parts[4] = await self.__add_utm(query, keys)
+
             url = urlunparse(url_parts)
         except Exception as e:
             print(e)

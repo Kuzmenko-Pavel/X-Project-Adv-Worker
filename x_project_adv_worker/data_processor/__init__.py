@@ -115,10 +115,10 @@ class DataProcessor(object):
                 return False
 
             self.processing_data.campaigns = await  self.app.query.get_campaigns(
-                block_id=self.processing_data.block.get('id', 0),
+                id_block=self.processing_data.block.get('id', 0),
                 processing_data=self.processing_data
             )
-        self.app.block_cache[self.processing_data.block.id_block] = self.processing_data.guid_block
+        self.app.block_cache[self.processing_data.guid_block] = self.processing_data.block.get('id', 0)
         await self.block_processing()
         await self.campaigns_processing()
         return True
@@ -144,7 +144,7 @@ class DataProcessor(object):
         self.processing_data.block_rec_button = self.processing_data.styler.block.default_button.rec_block
 
     async def campaigns_processing(self):
-        for campaign in self.processing_data.campaigns:
+        for campaign in self.processing_data.campaigns.values():
             social = campaign['campaign_type'] == CampaignType.social
             retargeting = campaign['campaign_type'] == CampaignType.remarketing
             retargeting_offer = campaign['remarketing_type'] == CampaignRemarketingType.offer
@@ -365,7 +365,7 @@ class DataProcessor(object):
             images = images + images
         return images
 
-    async def click_cost_calc(self, offer):
+    def click_cost_calc(self, offer):
         cost_percent = offer['block']['cost_percent']
         click_cost_proportion = offer['block']['click_cost_proportion']
         cost_min = offer['block']['click_cost_min']
@@ -380,7 +380,7 @@ class DataProcessor(object):
         return ccr, ccl
 
     def change_link(self, offer):
-        ccr, ccl = self.impression_calc(offer)
+        ccr, ccl = self.click_cost_calc(offer)
         utm = UtmConverter(offer)
         offer_url = utm.url
         base64_url = base64.urlsafe_b64encode(str('\n'.join([
