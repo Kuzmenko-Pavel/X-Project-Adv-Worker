@@ -37,7 +37,7 @@ define([
             this[app].uh.load();
             data.w = this.w_w;
             data.h = this.w_h;
-            data.block_id = this[app][adsparams].block_id;
+            data.guid_block = this[app][adsparams].guid_block;
             data.auto = this[app][adsparams].auto;
             data.country = this[app][adsparams].country;
             data.region = this[app][adsparams].region;

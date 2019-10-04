@@ -5,63 +5,33 @@ import time
 from random import randint, choice
 from asyncio import ensure_future, gather
 from itertools import zip_longest
-from collections import defaultdict
 
 from x_project_adv_worker.logger import logger, exception_message
-from x_project_adv_worker.data_processor.params import Params
+from x_project_adv_worker.data_processor.processing_data import ProcessingData
 from x_project_adv_worker.data_processor.utm_converter import UtmConverter
-from x_project_adv_worker.styler import Styler
+
 from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
                                               CampaignRemarketingType, CampaignRecommendedAlgorithmType)
 
-parther_disable_hosts = ('95.69.249.86', '31.202.102.69', '46.96.41.87', '178.150.140.80', '178.151.44.122',
-                         '178.133.46.212', '193.70.46.140', '217.20.169.197', '85.90.199.33', '82.207.109.122',
-                         '194.6.232.174', '217.112.216.74', '194.6.233.163', '159.224.41.1', '79.171.124.172',
-                         '93.76.209.138', '85.90.202.248', '82.117.232.89', '82.117.233.83', '77.111.244',
-                         '77.111.245', '77.111.246', '77.111.247')
-
 
 class DataProcessor(object):
-    __slots__ = ['app', 'params', 'data', 'styler', 'block', 'campaigns', 'block_id', 'place_branch',
-                 'retargeting_branch', 'retargeting_account_branch', 'social_branch', 'campaigns_place',
-                 'offer_count_place', 'campaigns_socia', 'offer_count_socia', 'campaigns_retargeting_account',
-                 'offer_count_retargeting_account', 'campaigns_retargeting_dynamic', 'offer_count_retargeting_dynamic',
-                 'block_button', 'block_ret_button', 'block_rec_button', 'block_rating_division',
-                 'rating_hard_limit', 'campaigns_thematic', 'offer_count_thematic']
+    __slots__ = ['data', 'app', 'processing_data']
 
     def __init__(self, request, data):
         self.data = dict({
             'css': '',
             'block': dict(),
             'offers': list(),
-            'clean': {'place': None, 'social': None, 'account_retargeting': None, 'dynamic_retargeting': None},
+            'clean': {
+                'place': None,
+                'social': None,
+                'account_retargeting': None,
+                'dynamic_retargeting': None
+            },
             'parther': False
         })
         self.app = request.app
-        self.params = Params(request, data)
-        self.styler = Styler(self.params.width, self.params.height)
-        self.block = dict()
-        self.campaigns = dict()
-        self.block_id = 0
-        self.block_rating_division = 1000
-        self.rating_hard_limit = False
-        self.place_branch = True
-        self.retargeting_branch = True
-        self.retargeting_account_branch = True
-        self.social_branch = True
-        self.campaigns_place = list()
-        self.offer_count_place = 0
-        self.campaigns_thematic = list()
-        self.offer_count_thematic = 0
-        self.campaigns_socia = list()
-        self.offer_count_socia = 0
-        self.campaigns_retargeting_account = list()
-        self.offer_count_retargeting_account = 0
-        self.campaigns_retargeting_dynamic = list()
-        self.offer_count_retargeting_dynamic = 0
-        self.block_button = ''
-        self.block_ret_button = ''
-        self.block_rec_button = ''
+        self.processing_data = ProcessingData(request, data)
 
     def cat_to_int_range(self, cat):
         start = 0
@@ -94,7 +64,7 @@ class DataProcessor(object):
         return end1 >= start2 and end2 >= start1
 
     def thematics_intersection(self, thematics):
-        u_thematics_range = [self.cat_to_int_range(x) for x in self.params.thematics]
+        u_thematics_range = [self.cat_to_int_range(x) for x in self.processing_data.params.thematics]
         if u_thematics_range:
             c_thematics_range = [self.cat_to_int_range(x) for x in thematics]
             if c_thematics_range:
@@ -102,10 +72,10 @@ class DataProcessor(object):
         return False
 
     async def get_userCode(self):
-        block = await self.app.query.get_block(block_src=self.params.block_id)
+        self.processing_data.block = await self.app.query.get_block(block_src=self.processing_data.guid_block)
         userCode = ''
-        if block:
-            userCode = block.get('userCode', '')
+        if self.processing_data.block:
+            userCode = self.processing_data.block.get('userCode', '')
         if not userCode:
             userCode = '''
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -124,170 +94,113 @@ class DataProcessor(object):
 
     async def find_block(self):
         tasks = []
-        block_id = self.app.block_cache.get(self.params.block_id)
-        if block_id:
+        id_block = self.app.block_cache.get(self.processing_data.guid_block)
+        if id_block:
 
-            tasks.append(ensure_future(self.app.query.get_block(block_src=self.params.block_id)))
+            tasks.append(ensure_future(self.app.query.get_block(block_src=self.processing_data.guid_block)))
 
-            tasks.append(ensure_future(self.app.query.get_campaigns(block_id=block_id,
-                                                                    country=self.params.country,
-                                                                    region=self.params.region,
-                                                                    device=self.params.device,
-                                                                    capacity=self.styler.min_capacity
+            tasks.append(ensure_future(self.app.query.get_campaigns(id_block=id_block,
+                                                                    processing_data=self.processing_data
                                                                     )))
-            block, campaigns = await gather(*tasks)
-            if not block:
+            self.processing_data.block, self.processing_data.campaigns = await gather(*tasks)
+            if not self.processing_data.block:
                 try:
-                    del self.app.block_cache[self.params.block_id]
+                    del self.app.block_cache[self.processing_data.guid_block]
                 except Exception:
                     pass
                 return False
-            block_id = block.get('id', 0)
         else:
-            block = await self.app.query.get_block(block_src=self.params.block_id)
-            if not block:
+            self.processing_data.block = await self.app.query.get_block(block_src=self.processing_data.guid_block)
+            if not self.processing_data.block:
                 return False
 
-            block_id = block.get('id', 0)
-
-            campaigns = await  self.app.query.get_campaigns(block_id=block_id,
-                                                            country=self.params.country,
-                                                            region=self.params.region,
-                                                            device=self.params.device,
-                                                            capacity=self.styler.min_capacity
-                                                            )
-        self.app.block_cache[self.params.block_id] = block_id
-        await self.block_processing(block)
-        await self.campaigns_processing(campaigns)
+            self.processing_data.campaigns = await  self.app.query.get_campaigns(
+                block_id=self.processing_data.block.get('id', 0),
+                processing_data=self.processing_data
+            )
+        self.app.block_cache[self.processing_data.block.id_block] = self.processing_data.guid_block
+        await self.block_processing()
+        await self.campaigns_processing()
         return True
 
-    async def block_processing(self, block):
-        self.data['block']['id'] = str(block.get('id', 0))
-        self.data['block']['aid'] = str(block.get('id_account', 0))
-        self.data['block']['sid'] = str(block.get('id_site', 0))
-        self.data['block']['guid'] = self.params.block_id
-        self.data['block']['header_html'] = block.get('headerHtml', '')
-        self.data['block']['footer_html'] = block.get('footerHtml', '')
-        self.block_id = block.get('id', 0)
-        self.block = block
-        self.block_rating_division = block.get('rating_division', 1000)
-        self.rating_hard_limit = block.get('rating_hard_limit', False)
-        self.place_branch = block.get('place_branch', True)
-        self.retargeting_branch = block.get('retargeting_branch', True)
-        self.retargeting_account_branch = block.get('retargeting_branch', True)
-        # TODO check in db retargeting_account_branch = retargeting_branch
-        self.social_branch = block.get('social_branch', True)
-        self.data['parther'] = not self.social_branch
-        if self.data['parther']:
-            try:
-                if self.params.test or any(
-                        [parther_disable in self.params.host for parther_disable in parther_disable_hosts]):
-                    self.social_branch = True
-                    self.data['parther'] = False
-            except Exception as e:
-                print(e)
-                self.social_branch = True
-                self.data['parther'] = False
-        if not self.params.auto and not block.get('dynamic', False):
-            self.styler.merge(ujson.loads(block.get('ad_style')))
-        self.block_button = self.styler.block.default_button.block
-        self.block_ret_button = self.styler.block.default_button.ret_block
-        self.block_rec_button = self.styler.block.default_button.rec_block
+    async def block_processing(self):
+        self.processing_data.id_block = self.processing_data.block.get('id', 0)
+        self.data['block']['id'] = str(self.processing_data.id_block)
+        self.data['block']['aid'] = str(self.processing_data.block.get('id_account', 0))
+        self.data['block']['sid'] = str(self.processing_data.block.get('id_site', 0))
+        self.data['block']['header_html'] = self.processing_data.block.get('headerHtml', '')
+        self.data['block']['footer_html'] = self.processing_data.block.get('footerHtml', '')
+        self.processing_data.block_rating_division = self.processing_data.block.get('rating_division', 1000)
+        self.processing_data.rating_hard_limit = self.processing_data.block.get('rating_hard_limit', False)
+        self.processing_data.place_branch = self.processing_data.block.get('place_branch', True)
+        self.processing_data.retargeting_branch = self.processing_data.block.get('retargeting_branch', True)
+        self.processing_data.retargeting_account_branch = self.processing_data.block.get('retargeting_branch', True)
+        self.processing_data.social_branch = self.processing_data.block.get('social_branch', True)
+        self.data['parther'] = not self.processing_data.parther
+        if not self.processing_data.params.auto and not self.processing_data.block.get('dynamic', False):
+            self.processing_data.styler.merge(ujson.loads(self.processing_data.block.get('ad_style')))
+        self.processing_data.block_button = self.processing_data.styler.block.default_button.block
+        self.processing_data.block_ret_button = self.processing_data.styler.block.default_button.ret_block
+        self.processing_data.block_rec_button = self.processing_data.styler.block.default_button.rec_block
 
-    async def campaigns_processing(self, campaigns):
-        for campaign in campaigns:
-            self.campaigns[campaign['id']] = campaign
+    async def campaigns_processing(self):
+        for campaign in self.processing_data.campaigns:
             social = campaign['campaign_type'] == CampaignType.social
             retargeting = campaign['campaign_type'] == CampaignType.remarketing
             retargeting_offer = campaign['remarketing_type'] == CampaignRemarketingType.offer
             retargeting_account = campaign['remarketing_type'] == CampaignRemarketingType.account
             thematic = campaign['campaign_type'] == CampaignType.thematic
 
-            if social and self.social_branch:
-                self.campaigns_socia.append((campaign['id'], campaign['lot_concurrency']))
-                self.offer_count_socia += campaign['offer_count']
+            if social and self.processing_data.social_branch:
+                self.processing_data.campaigns_socia.append((campaign['id'], campaign['lot_concurrency']))
+                self.processing_data.offer_count_socia += campaign['offer_count']
 
-            elif not social and not retargeting and thematic and self.place_branch:
+            elif not social and not retargeting and thematic and self.processing_data.place_branch:
                 count_place = self.app.campaign_view_count['place'][campaign['id']]
                 count_thematic = self.app.campaign_view_count['thematic'][campaign['id']]
                 thematic_range = campaign['thematic_range']
                 if thematic_range > 0:
                     if count_thematic > ((count_place + count_thematic) / 100) * thematic_range:
-                        self.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
-                        self.offer_count_place += campaign['offer_count']
+                        self.processing_data.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
+                        self.processing_data.offer_count_place += campaign['offer_count']
                     else:
                         if self.thematics_intersection(campaign['thematics']):
-                            self.campaigns_thematic.append((campaign['id'], campaign['lot_concurrency']))
-                            self.offer_count_thematic += campaign['offer_count']
+                            self.processing_data.campaigns_thematic.append(
+                                (campaign['id'], campaign['lot_concurrency']))
+                            self.processing_data.offer_count_thematic += campaign['offer_count']
                 else:
-                    self.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
-                    self.offer_count_place += campaign['offer_count']
+                    self.processing_data.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
+                    self.processing_data.offer_count_place += campaign['offer_count']
 
-            elif not social and not retargeting and not thematic and self.place_branch:
-                self.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
-                self.offer_count_place += campaign['offer_count']
+            elif not social and not retargeting and not thematic and self.processing_data.place_branch:
+                self.processing_data.campaigns_place.append((campaign['id'], campaign['lot_concurrency']))
+                self.processing_data.offer_count_place += campaign['offer_count']
 
-            elif not social and retargeting and retargeting_offer and self.retargeting_branch:
-                if campaign['guid'] in self.params.retargeting:
-                    self.params.add_retargeting(campaign['guid'], campaign['id'])
-                    self.campaigns_retargeting_dynamic.append((campaign['id'], campaign['lot_concurrency']))
-                    self.offer_count_retargeting_dynamic += campaign['offer_count']
+            elif not social and retargeting and retargeting_offer and self.processing_data.retargeting_branch:
+                if campaign['guid'] in self.processing_data.params.retargeting:
+                    self.processing_data.params.add_retargeting(campaign['guid'], campaign['id'])
+                    self.processing_data.campaigns_retargeting_dynamic.append(
+                        (campaign['id'], campaign['lot_concurrency']))
+                    self.processing_data.offer_count_retargeting_dynamic += campaign['offer_count']
 
-            elif not social and retargeting and retargeting_account and self.retargeting_account_branch:
-                if campaign['guid'] in self.params.retargeting:
-                    self.campaigns_retargeting_account.append((campaign['id'], campaign['lot_concurrency']))
-                    self.offer_count_retargeting_account += campaign['offer_count']
+            elif not social and retargeting and retargeting_account and self.processing_data.retargeting_account_branch:
+                if campaign['guid'] in self.processing_data.params.retargeting:
+                    self.processing_data.campaigns_retargeting_account.append(
+                        (campaign['id'], campaign['lot_concurrency']))
+                    self.processing_data.offer_count_retargeting_account += campaign['offer_count']
 
     async def find_offers(self):
         tasks = list()
-        tasks.append(ensure_future(self.app.query.get_place_offer(
-            processor=self,
-            block_id=self.block_id,
-            block_categoryes=self.block.get('block_adv_category', []),
-            campaigns=self.campaigns_place,
-            capacity=self.styler.max_capacity,
-            index=self.params.index,
-            offer_count=self.offer_count_place,
-            exclude=self.params.exclude)))
 
-        tasks.append(ensure_future(self.app.query.get_place_offer(
-            processor=self,
-            block_id=self.block_id,
-            block_categoryes=self.block.get('block_adv_category', []),
-            campaigns=self.campaigns_thematic,
-            capacity=self.styler.max_capacity,
-            index=self.params.index,
-            offer_count=self.offer_count_thematic,
-            exclude=self.params.thematics_exclude)))
+        tasks.append(ensure_future(self.app.query.get_place_offer(processing_data=self.processing_data)))
 
-        tasks.append(ensure_future(self.app.query.get_social_offer(
-            processor=self,
-            block_id=self.block_id,
-            block_categoryes=self.block.get('block_adv_category', []),
-            campaigns=self.campaigns_socia,
-            capacity=self.styler.max_capacity,
-            index=self.params.index,
-            offer_count=self.offer_count_socia,
-            exclude=self.params.exclude)))
+        tasks.append(ensure_future(self.app.query.get_thematic_offer(processing_data=self.processing_data)))
 
-        tasks.append(ensure_future(self.app.query.get_account_retargeting_offer(
-            processor=self,
-            block_id=self.block_id,
-            campaigns=self.campaigns_retargeting_account,
-            capacity=self.styler.max_capacity,
-            index=self.params.index,
-            offer_count=self.offer_count_retargeting_account,
-            exclude=self.params.retargeting_account_exclude)))
+        tasks.append(ensure_future(self.app.query.get_social_offer(processing_data=self.processing_data)))
 
-        tasks.append(ensure_future(self.app.query.get_dynamic_retargeting_offer(
-            processor=self,
-            block_id=self.block_id,
-            campaigns=self.campaigns_retargeting_dynamic,
-            capacity=self.styler.max_capacity,
-            index=self.params.index,
-            offer_count=self.offer_count_retargeting_dynamic,
-            exclude=self.params.retargeting_dynamic_exclude,
-            retargeting_list=self.params.retargeting_list)))
+        tasks.append(ensure_future(self.app.query.get_account_retargeting_offer(processing_data=self.processing_data)))
+
+        tasks.append(ensure_future(self.app.query.get_dynamic_retargeting_offer(processing_data=self.processing_data)))
 
         place_offer, thematic_offer, social_offer, account_retargeting_offer, dynamic_retargeting_offer = await gather(
             *tasks)
@@ -300,11 +213,11 @@ class DataProcessor(object):
             self.app.campaign_view_count['all'] = 0
 
     async def find_recomendet(self, offer, loop_counter, capacity):
-        views = [('mv_offer_dynamic_retargeting', self.params.retargeting_dynamic_exclude),
-                 ('mv_offer_account_retargeting', self.params.retargeting_account_exclude),
-                 ('mv_offer_place', self.params.exclude),
-                 ('mv_offer_place', self.params.exclude),
-                 ('mv_offer_social', self.params.exclude)
+        views = [('mv_offer_dynamic_retargeting', self.processing_data.params.retargeting_dynamic_exclude),
+                 ('mv_offer_account_retargeting', self.processing_data.params.retargeting_account_exclude),
+                 ('mv_offer_place', self.processing_data.params.exclude),
+                 ('mv_offer_place', self.processing_data.params.exclude),
+                 ('mv_offer_social', self.processing_data.params.exclude)
                  ]
         if len(views) < loop_counter:
             return
@@ -319,7 +232,7 @@ class DataProcessor(object):
             recomendet = await self.app.query.get_recomendet_offer(
                 view=view,
                 offer_ids=offer_ids,
-                block_id=self.block_id,
+                block_id=self.processing_data.id_block,
                 capacity=select_capacity)
 
             for x in range(int(capacity) + 1):
@@ -354,9 +267,10 @@ class DataProcessor(object):
         summary_offer = dynamic_retargeting_offer[0] + account_retargeting_offer[0] + place_offer[0]
         len_summary_offer = len(summary_offer)
 
-        count_not_styling = sum(map(lambda x: 0 if self.campaigns.get(x['id_cam'], {}).get('styling', False) else 1,
-                                    summary_offer))
-        if count_not_styling < self.styler.default_capacity and count_not_styling < len_summary_offer:
+        count_not_styling = sum(
+            map(lambda x: 0 if self.processing_data.campaigns.get(x['id_cam'], {}).get('styling', False) else 1,
+                summary_offer))
+        if count_not_styling < self.processing_data.styler.default_capacity and count_not_styling < len_summary_offer:
             styling_predictive = True
 
         if not place_offer[1]:
@@ -387,7 +301,7 @@ class DataProcessor(object):
                 if loop_break:
                     break
 
-                camp = self.campaigns.get(offer['id_cam'])
+                camp = self.processing_data.campaigns.get(offer['id_cam'])
                 offer_styling_block = camp['styling']
                 if offer_styling_block:
                     if styling_block is None or styling_block == offer['id_cam']:
@@ -401,34 +315,36 @@ class DataProcessor(object):
                         styling_block = False
 
                 if camp['campaign_style'] == CampaignStylingType.style_1:
-                    self.styler.add(str(camp['id']), 'Style_1')
+                    self.processing_data.styler.add(str(camp['id']), 'Style_1')
                 elif camp['campaign_style'] == CampaignStylingType.style_2:
-                    self.styler.add(str(camp['id']), 'Style_2')
+                    self.processing_data.styler.add(str(camp['id']), 'Style_2')
                 elif camp['campaign_style'] == CampaignStylingType.style_3:
-                    self.styler.add(str(camp['id']), 'Style_3')
+                    self.processing_data.styler.add(str(camp['id']), 'Style_3')
                 else:
-                    self.styler.add(camp['campaign_style_class'], camp['campaign_style_class'])
+                    self.processing_data.styler.add(camp['campaign_style_class'], camp['campaign_style_class'])
 
                 offer['campaign'] = camp
                 offer['logic_name'] = name
-                offer['block'] = self.block
+                offer['block'] = self.processing_data.block
 
                 if offer_styling_block:
-                    capacity = self.styler.block.styling_adv.count_adv
+                    capacity = self.processing_data.styler.block.styling_adv.count_adv
                 else:
-                    capacity = self.styler.block.default_adv.count_adv
+                    capacity = self.processing_data.styler.block.default_adv.count_adv
 
                 await self.create_offer(offer, False, capacity)
 
-                if offer_styling_block and len(self.data['offers']) >= self.styler.block.styling_adv.count_adv:
+                if offer_styling_block and len(
+                        self.data['offers']) >= self.processing_data.styler.block.styling_adv.count_adv:
                     loop_break = True
-                elif not offer_styling_block and len(self.data['offers']) >= self.styler.block.default_adv.count_adv:
+                elif not offer_styling_block and len(
+                        self.data['offers']) >= self.processing_data.styler.block.default_adv.count_adv:
                     loop_break = True
 
         if styling_block:
-            capacity = self.styler.block.styling_adv.count_adv
+            capacity = self.processing_data.styler.block.styling_adv.count_adv
         else:
-            capacity = self.styler.block.default_adv.count_adv
+            capacity = self.processing_data.styler.block.default_adv.count_adv
 
         if len(self.data['offers']) < capacity:
             if self.data['parther']:
@@ -445,7 +361,7 @@ class DataProcessor(object):
                         break
 
     def change_image(self, images):
-        if self.params.is_webp:
+        if self.processing_data.params.is_webp:
             images = list(map(lambda x: x.replace('.png', '.webp'), images))
             images = list(map(lambda x: x.replace('http://', 'https://'), images))
         if len(images) == 2:
@@ -474,19 +390,19 @@ class DataProcessor(object):
             'tf=%d'
         ]) % (
                                                       offer['id'],
-                                                      self.block['id'],
+                                                      self.processing_data.block['id'],
                                                       offer['campaign']['id'],
-                                                      self.block['id_site'],
+                                                      self.processing_data.block['id_site'],
                                                       offer['campaign']['id_account'],
-                                                      self.block['id_account'],
-                                                      1 if self.params.test else 0,
+                                                      self.processing_data.block['id_account'],
+                                                      1 if self.processing_data.params.test else 0,
                                                       offer['token'],
                                                       0,
                                                       0,
                                                       1 if offer['campaign'][
                                                                'campaign_type'] == CampaignType.social else 0,
                                                       offer_url,
-                                                      self.params.token,
+                                                      self.processing_data.params.token,
                                                       int(time.time() * 1000),
                                                       0,
                                                       0
@@ -495,7 +411,7 @@ class DataProcessor(object):
         return 'https://click.yottos.com/click/rg?%s' % params
 
     async def create_logo(self, offer):
-        if len(self.data['offers']) >= self.styler.styling_capacity:
+        if len(self.data['offers']) >= self.processing_data.styler.styling_capacity:
             return
         self.data['offers'].append({
             'title': offer['campaign']['campaign_style_head_title'],
@@ -518,13 +434,13 @@ class DataProcessor(object):
         if len(self.data['offers']) >= capacity:
             return
         style_class = offer['campaign']['campaign_style_class']
-        button = self.block_button
+        button = self.processing_data.block_button
         unique_impression_lot = offer['campaign']['unique_impression_lot']
         if offer['campaign']['campaign_type'] == CampaignType.remarketing:
-            button = self.block_ret_button
+            button = self.processing_data.block_ret_button
         if recomendet:
             style_class = offer['campaign']['campaign_style_class_recommendet']
-            button = self.block_rec_button
+            button = self.processing_data.block_rec_button
             unique_impression_lot = 1
 
         if offer['campaign']['campaign_type'] == CampaignType.thematic:
@@ -560,7 +476,7 @@ class DataProcessor(object):
         })
 
     async def css(self):
-        self.data['css'] = await self.styler.calculate()
+        self.data['css'] = await self.processing_data.styler.calculate()
 
     async def __call__(self):
         if await self.find_block():

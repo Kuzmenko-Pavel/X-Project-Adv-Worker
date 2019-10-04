@@ -34,7 +34,31 @@ class Query(object):
         async with self.pool.acquire() as connection:
             try:
                 async with connection.transaction():
-                    q = '''SELECT * 
+                    q = '''SELECT id, 
+                              guid, 
+                              id_account, 
+                              id_site, 
+                              block_type, 
+                              "headerHtml", 
+                              "footerHtml", 
+                              "userCode",
+                              ad_style,
+                              place_branch,
+                              retargeting_branch,
+                              social_branch, 
+                              rating_division,
+                              rating_hard_limit,
+                              site_name,
+                              block_adv_category, 
+                              click_cost_min,
+                              click_cost_proportion,
+                              click_cost_max,
+                              impression_cost_min, 
+                              impression_cost_proportion,
+                              impression_cost_max,
+                              cost_percent, 
+                              disable_filter,
+                              time_filter
                           FROM public.mv_block 
                           where guid='%(guid)s' LIMIT 1 OFFSET 0;''' % {'guid': block_src}
                     # stmt = await connection.prepare(q)
@@ -49,8 +73,12 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
         return None
 
-    async def get_campaigns(self, block_id, country, region, device, capacity):
-        result = []
+    async def get_campaigns(self, id_block, processing_data):
+        result = {}
+        country = processing_data.params.country.replace("'", "''")
+        region = processing_data.params.region.replace("'", "''")
+        device = processing_data.params.device.replace("'", "''")
+        capacity = processing_data.styler.min_capacity
         date = datetime.now()
         d = date.weekday() + 1
         h = date.hour
@@ -115,16 +143,16 @@ class Query(object):
                    EXCEPT
                    SELECT DISTINCT(cbb.id_cam) AS id
                    FROM mv_campaigns_by_blocking_block AS cbb
-                   WHERE cbb.id_block = %(block_id)d
+                   WHERE cbb.id_block = %(id_block)d
                  ) AS c ON ca.id = c.id
                  LEFT JOIN mv_campaign_thematics AS ct ON ca.id = ct.id_cam
-                 LEFT JOIN mv_campaigns_by_block_price AS cp ON ca.id = cp.id_cam and cp.id_block = %(block_id)d
+                 LEFT JOIN mv_campaigns_by_block_price AS cp ON ca.id = cp.id_cam and cp.id_block = %(id_block)d
                       
                     ''' % {
-                        'country': country.replace("'", "''"),
-                        'region': region.replace("'", "''"),
-                        'device': device.replace("'", "''"),
-                        'block_id': block_id,
+                        'country': country,
+                        'region': region,
+                        'device': device,
+                        'id_block': id_block,
                         'day': d,
                         'time': t,
                         'capacity': capacity
@@ -163,15 +191,14 @@ class Query(object):
                         campaign['impression_cost'] = item['impression_cost']
                         offer_count = item['offer_count']
                         campaign['offer_count'] = int(offer_count) if offer_count <= 30 else 30
-                        result.append(campaign)
+                        result[campaign['id']] = campaign
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_campaigns')
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex)))
-        return [dict(x) for x in result]
+        return result
 
-    async def get_place_offer(self, processor, block_id, block_categoryes, campaigns, capacity,
-                              index, offer_count, exclude, recursion=False):
+    async def get_place_offer(self, processing_data, recursion=False):
         if not campaigns:
             return [], None
         result = []
@@ -264,8 +291,10 @@ class Query(object):
                     clean = True
         return result, clean
 
-    async def get_social_offer(self, processor, block_id, block_categoryes, campaigns, capacity,
-                               index, offer_count, exclude):
+    async def get_thematic_offer(self, processing_data):
+        pass
+
+    async def get_social_offer(self, processing_data):
         if not campaigns:
             return [], None
         result = []
@@ -330,8 +359,7 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_dynamic_retargeting_offer(self, processor, block_id, campaigns, capacity, index, offer_count,
-                                            exclude, retargeting_list):
+    async def get_dynamic_retargeting_offer(self, processing_data):
         if not campaigns:
             return [], None
         result = []
@@ -392,8 +420,7 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
         return result, clean
 
-    async def get_account_retargeting_offer(self, processor, block_id, campaigns, capacity, index,
-                                            offer_count, exclude):
+    async def get_account_retargeting_offer(self, processing_data):
         if not campaigns:
             return [], None
         result = []

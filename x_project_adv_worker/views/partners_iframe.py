@@ -14,7 +14,7 @@ class PartnersIframeView(web.View):
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query
-        block_id = post.get('scr', query.get('scr', ''))
+        guid_block = post.get('scr', query.get('scr', ''))
         try:
             h = int(float(post.get('h', query.get('h'))))
         except Exception:
@@ -25,13 +25,13 @@ class PartnersIframeView(web.View):
             w = ''
         userCode = ''
         try:
-            data_processor = DataProcessor(self.request, {'block_id': block_id})
+            data_processor = DataProcessor(self.request, {'block_id': guid_block})
             userCode = await data_processor.get_userCode()
         except asyncio.CancelledError as ex:
             logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
                                            request=str(self.request.message)))
         data = {
-            'block_id': block_id,
+            'guid_block': guid_block,
             'style': reset_css,
             'userCode': userCode,
             'w': w,

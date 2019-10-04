@@ -30,7 +30,6 @@ define([
         }
         else{
             app.logger.offer_status = 'initial';
-            this.guid = server_obj.block.guid;
             this.id = server_obj.block.id;
             this.aid = server_obj.block.aid;
             this.sid = server_obj.block.sid;

@@ -17,7 +17,8 @@ class UtmConverter:
               '{offer}', '{offer_id}', '{offer_guid}', '{rand}']
 
     def __init__(self, offer):
-        self.url = offer['url']
+        print(offer)
+        self.raw_url = offer['url']
         # self.id_offer
         # self.id_block
         # self.id_campaign
@@ -109,7 +110,6 @@ class UtmConverter:
 
     @property
     async def url(self):
-        url = self.url
-        url = await self.__add_dynamic_param(url)
+        url = await self.__add_dynamic_param(self.raw_url)
         url = await self.__add_utm_param(url)
         return url

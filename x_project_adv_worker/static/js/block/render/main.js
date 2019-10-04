@@ -49,7 +49,7 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
             };
             render_obj.not_found = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
-                    src: this.app.settings.not_found + '?scr=' + this.app.adsparams.block_id +
+                    src: this.app.settings.not_found + '?scr=' + this.app.adsparams.guid_block +
                     '&w=' + this.app.params.w_w + '&h=' + this.app.params.w_h,
                     h: this.app.params.w_h,
                     w: this.app.params.w_w
@@ -57,7 +57,7 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
             };
             render_obj.parther = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
-                    src: this.app.settings.partners + '?scr=' + this.app.adsparams.block_id +
+                    src: this.app.settings.partners + '?scr=' + this.app.adsparams.guid_block +
                     '&w=' + this.app.params.w_w + '&h=' + this.app.params.w_h,
                     h: this.app.params.w_h,
                     w: this.app.params.w_w

@@ -21,7 +21,7 @@ class IframesView(web.View):
         country = post.get('country', query.get('country', ''))
         region = post.get('region', query.get('region', ''))
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
-        block_id = post.get('scr', query.get('scr', ''))
+        guid_block = post.get('scr', query.get('scr', ''))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
         index = post.get('index', query.get('index', 0))
         rand = post.get('rand', query.get('rand', 0))
@@ -45,7 +45,7 @@ class IframesView(web.View):
         data = {
             'js': ujson.dumps({
                 'rend_id': rend_id,
-                'block_id': block_id,
+                'guid_block': guid_block,
                 'index': index,
                 'rand': rand,
                 'auto': auto,

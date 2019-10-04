@@ -10,7 +10,7 @@ class NotFoundView(web.View):
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query
-        block_id = post.get('scr', query.get('scr', ''))
+        guid_block = post.get('scr', query.get('scr', ''))
         try:
             h = int(float(post.get('h', query.get('h'))))
         except Exception:
@@ -20,7 +20,7 @@ class NotFoundView(web.View):
         except Exception:
             w = ''
         data = {
-            'block_id': block_id,
+            'guid_block': guid_block,
             'style': reset_css,
             'w': w,
             'h': h
