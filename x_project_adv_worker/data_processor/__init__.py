@@ -301,9 +301,7 @@ class DataProcessor(object):
                 if loop_break:
                     break
 
-                camp = self.processing_data.campaigns.get(offer['id_cam'])
-                offer_styling_block = camp['styling']
-                if offer_styling_block:
+                if offer['campaign']['styling']:
                     if styling_block is None or styling_block == offer['id_cam']:
                         styling_block = offer['id_cam']
                     else:
@@ -314,30 +312,29 @@ class DataProcessor(object):
                     elif styling_block is None:
                         styling_block = False
 
-                if camp['campaign_style'] == CampaignStylingType.style_1:
-                    self.processing_data.styler.add(str(camp['id']), 'Style_1')
-                elif camp['campaign_style'] == CampaignStylingType.style_2:
-                    self.processing_data.styler.add(str(camp['id']), 'Style_2')
-                elif camp['campaign_style'] == CampaignStylingType.style_3:
-                    self.processing_data.styler.add(str(camp['id']), 'Style_3')
+                if offer['campaign']['campaign_style'] == CampaignStylingType.style_1:
+                    self.processing_data.styler.add(str(offer['campaign']['id']), 'Style_1')
+                elif offer['campaign']['campaign_style'] == CampaignStylingType.style_2:
+                    self.processing_data.styler.add(str(offer['campaign']['id']), 'Style_2')
+                elif offer['campaign']['campaign_style'] == CampaignStylingType.style_3:
+                    self.processing_data.styler.add(str(offer['campaign']['id']), 'Style_3')
                 else:
-                    self.processing_data.styler.add(camp['campaign_style_class'], camp['campaign_style_class'])
+                    self.processing_data.styler.add(offer['campaign']['campaign_style_class'],
+                                                    offer['campaign']['campaign_style_class'])
 
-                offer['campaign'] = camp
                 offer['logic_name'] = name
-                offer['block'] = self.processing_data.block
 
-                if offer_styling_block:
+                if offer['campaign']['styling']:
                     capacity = self.processing_data.styler.block.styling_adv.count_adv
                 else:
                     capacity = self.processing_data.styler.block.default_adv.count_adv
 
                 await self.create_offer(offer, False, capacity)
 
-                if offer_styling_block and len(
+                if offer['campaign']['styling'] and len(
                         self.data['offers']) >= self.processing_data.styler.block.styling_adv.count_adv:
                     loop_break = True
-                elif not offer_styling_block and len(
+                elif not offer['campaign']['styling'] and len(
                         self.data['offers']) >= self.processing_data.styler.block.default_adv.count_adv:
                     loop_break = True
 
@@ -368,7 +365,22 @@ class DataProcessor(object):
             images = images + images
         return images
 
+    async def click_cost_calc(self, offer):
+        cost_percent = offer['block']['cost_percent']
+        click_cost_proportion = offer['block']['click_cost_proportion']
+        cost_min = offer['block']['click_cost_min']
+        cost_max = offer['block']['click_cost_max']
+        ccl = offer['campaign']['click_cost']
+        ccl = round(ccl * cost_percent / 100, 4)
+        ccr = round(ccl * click_cost_proportion / 100, 4)
+        if cost_min and ccr < cost_min:
+            ccr = cost_min
+        if cost_max and ccr > cost_max:
+            ccr = cost_max
+        return ccr, ccl
+
     def change_link(self, offer):
+        ccr, ccl = self.impression_calc(offer)
         utm = UtmConverter(offer)
         offer_url = utm.url
         base64_url = base64.urlsafe_b64encode(str('\n'.join([
@@ -390,22 +402,24 @@ class DataProcessor(object):
             'tf=%d'
         ]) % (
                                                       offer['id'],
-                                                      self.processing_data.block['id'],
+                                                      offer['block']['id'],
                                                       offer['campaign']['id'],
-                                                      self.processing_data.block['id_site'],
+                                                      offer['block']['id_site'],
                                                       offer['campaign']['id_account'],
-                                                      self.processing_data.block['id_account'],
+                                                      offer['block']['id_account'],
                                                       1 if self.processing_data.params.test else 0,
                                                       offer['token'],
-                                                      0,
-                                                      0,
+                                                      ccr,
+                                                      ccl,
                                                       1 if offer['campaign'][
                                                                'campaign_type'] == CampaignType.social else 0,
                                                       offer_url,
                                                       self.processing_data.params.token,
                                                       int(time.time() * 1000),
-                                                      0,
-                                                      0
+                                                      offer['block']['disable_filter'] or offer['campaign'][
+                                                          'disable_filter'],
+                                                      max(offer['block']['time_filter'],
+                                                          offer['campaign']['time_filter'])
         )).encode('utf-8'))
         params = 'a=%s&b=%s&c=%s' % (randint(1, 9), base64_url.decode('utf-8'), randint(1, 9))
         return 'https://click.yottos.com/click/rg?%s' % params
@@ -421,14 +435,21 @@ class DataProcessor(object):
             'images': [offer['campaign']['campaign_style_logo']],
             'style_class': 'logo%s' % offer['campaign']['campaign_style_class'],
             'id': None,
-            'id_cam': None,
+            'cid': None,
+            'aid': None,
+            'icr': 0,
+            'icl': 0,
             'campaign_social': None,
+            'thematic': None,
             'retargeting': None,
             'unique_impression_lot': None,
             'token': None,
-            'branch': None,
-            'button': offer['campaign']['campaign_style_button_title']
+            'thematics': None,
+            'button': offer['campaign']['campaign_style_button_title'],
         })
+
+    def impression_cost_calc(self, offer):
+        return 0, 0
 
     async def create_offer(self, offer, recomendet=False, capacity=0):
         if len(self.data['offers']) >= capacity:
@@ -453,7 +474,7 @@ class DataProcessor(object):
                 self.app.campaign_view_count['all'] = self.app.campaign_view_count.get('all', 0) + 1
                 count = self.app.campaign_view_count['place'].get(key, 0) + 1
                 self.app.campaign_view_count['place'][offer['campaign']['id']] = count
-
+        icr, icl = self.impression_cost_calc(offer)
         self.data['offers'].append({
             'title': offer['title'],
             'description': offer['description'],
@@ -464,8 +485,8 @@ class DataProcessor(object):
             'id': str(offer['id']),
             'cid': str(offer['campaign']['id']),
             'aid': str(offer['campaign']['id_account']),
-            'icr': 0,
-            'icl': 0,
+            'icr': icr,
+            'icl': icl,
             'campaign_social': offer['campaign']['campaign_type'] == CampaignType.social,
             'thematic': offer['campaign']['campaign_type'] == CampaignType.thematic,
             'retargeting': offer['campaign']['campaign_type'] == CampaignType.remarketing,

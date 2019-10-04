@@ -201,7 +201,7 @@ class Query(object):
     async def get_place_offer(self, processing_data, recursion=False):
         rating_hard_limit = processing_data.rating_hard_limit
         block_rating_division = processing_data.block_rating_division
-        block_id = processing_data.id_block
+        id_block = processing_data.id_block
         block_categoryes = processing_data.block.get('block_adv_category', [])
         campaigns = processing_data.campaigns_place
         capacity = processing_data.styler.max_capacity
@@ -247,7 +247,7 @@ class Query(object):
                         order by sub.range_number, sub.rating desc
                         LIMIT %(capacity)d OFFSET %(offset)d;
                     ''' % {
-                        'block_id': block_id,
+                        'block_id': id_block,
                         'lquery': "ARRAY[%s]::lquery[]" % ','.join([
                             "'%s.*'" % x for x in block_categoryes
                         ]),
@@ -281,7 +281,9 @@ class Query(object):
                         item['price'] = offer['price']
                         item['recommended'] = offer['recommended']
                         item['rating'] = rating
-                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
+                        item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
+                        item['block'] = processing_data.block
                         result.append(item)
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
@@ -301,7 +303,7 @@ class Query(object):
     async def get_thematic_offer(self, processing_data, recursion=False):
         rating_hard_limit = processing_data.rating_hard_limit
         block_rating_division = processing_data.block_rating_division
-        block_id = processing_data.id_block
+        id_block = processing_data.id_block
         block_categoryes = processing_data.block.get('block_adv_category', [])
         campaigns = processing_data.campaigns_thematic
         capacity = processing_data.styler.max_capacity
@@ -347,7 +349,7 @@ class Query(object):
                                 order by sub.range_number, sub.rating desc
                                 LIMIT %(capacity)d OFFSET %(offset)d;
                             ''' % {
-                        'block_id': block_id,
+                        'block_id': id_block,
                         'lquery': "ARRAY[%s]::lquery[]" % ','.join([
                             "'%s.*'" % x for x in block_categoryes
                         ]),
@@ -381,7 +383,9 @@ class Query(object):
                         item['price'] = offer['price']
                         item['recommended'] = offer['recommended']
                         item['rating'] = rating
-                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
+                        item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
+                        item['block'] = processing_data.block
                         result.append(item)
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
@@ -399,7 +403,7 @@ class Query(object):
         return result, clean
 
     async def get_social_offer(self, processing_data):
-        block_id = processing_data.id_block
+        id_block = processing_data.id_block
         block_categoryes = processing_data.block.get('block_adv_category', [])
         campaigns = processing_data.campaigns_socia
         capacity = processing_data.styler.max_capacity
@@ -436,7 +440,7 @@ class Query(object):
                             order by sub.range_number, sub.rating desc
                             LIMIT %(capacity)d;
                         ''' % {
-                        'block_id': block_id,
+                        'block_id': id_block,
                         'lquery': "ARRAY[%s]::lquery[]" % ','.join([
                             "'%s.*'" % x for x in block_categoryes
                         ]),
@@ -459,7 +463,9 @@ class Query(object):
                         item['title'] = offer['title']
                         item['price'] = offer['price']
                         item['recommended'] = offer['recommended']
-                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
+                        item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
+                        item['block'] = processing_data.block
                         result.append(item)
                 if counter_prediction < capacity:
                     clean = True
@@ -470,7 +476,7 @@ class Query(object):
         return result, clean
 
     async def get_dynamic_retargeting_offer(self, processing_data):
-        block_id = processing_data.id_block
+        id_block = processing_data.id_block
         campaigns = processing_data.campaigns_retargeting_dynamic
         capacity = processing_data.styler.max_capacity
         index = processing_data.params.index
@@ -529,7 +535,9 @@ class Query(object):
                         item['title'] = offer['title']
                         item['price'] = offer['price']
                         item['recommended'] = offer['recommended']
-                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
+                        item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
+                        item['block'] = processing_data.block
                         result.append(item)
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_dynamic_retargeting_offer')
@@ -538,7 +546,7 @@ class Query(object):
         return result, clean
 
     async def get_account_retargeting_offer(self, processing_data):
-        block_id = processing_data.id_block
+        id_block = processing_data.id_block
         campaigns = processing_data.campaigns_retargeting_account
         capacity = processing_data.styler.max_capacity
         index = processing_data.params.index
@@ -595,7 +603,9 @@ class Query(object):
                         item['title'] = offer['title']
                         item['price'] = offer['price']
                         item['recommended'] = offer['recommended']
-                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
+                        item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
+                        item['block'] = processing_data.block
                         result.append(item)
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_account_retargeting_offer')
@@ -603,7 +613,7 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
             return result, clean
 
-    async def get_recomendet_offer(self, view, offer_ids, block_id, capacity):
+    async def get_recomendet_offer(self, view, offer_ids, id_block, capacity):
         if not offer_ids:
             return []
         result = []
@@ -634,7 +644,7 @@ class Query(object):
                         item['title'] = offer['title']
                         item['price'] = offer['price']
                         item['recommended'] = []
-                        item['token'] = str(item['id']) + str(block_id) + str(time.time()).replace('.', '')
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         result.append(item)
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_recomendet_offer')
