@@ -18,7 +18,6 @@ class UtmConverter:
               '{offer}', '{offer_id}', '{offer_guid}', '{rand}']
 
     def __init__(self, offer):
-        print(offer)
         self.raw_url = offer['url']
         self.id_offer = str(offer['id'])
         self.id_block = str(offer['block']['id'])
@@ -32,16 +31,26 @@ class UtmConverter:
         self.utm_human_data = bool(offer['campaign']['utm_human_data'])
 
     @staticmethod
-    def trans(text):
+    def char_replace(string, chars=None, to_char=None):
+        if chars is None:
+            chars = [' ', '.', ',', ';', '!', '?']
+        if to_char is None:
+            to_char = '_'
+        for ch in chars:
+            if ch in string:
+                string = string.replace(ch, to_char)
+        return string.lower()
+
+    def trans(self, string):
         try:
-            return trans(text.replace(' ', '-').lower())
+            return trans(self.char_replace(string))
         except Exception:
-            return text
+            return string
 
     async def get_source(self):
         if self.utm_human_data:
             return self.site_name
-        return self.id_block
+        return self.guid_block
 
     async def get_source_id(self):
         return self.id_block

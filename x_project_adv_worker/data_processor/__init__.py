@@ -379,10 +379,10 @@ class DataProcessor(object):
             ccr = cost_max
         return ccr, ccl
 
-    def change_link(self, offer):
+    async def change_link(self, offer):
         ccr, ccl = self.click_cost_calc(offer)
         utm = UtmConverter(offer)
-        offer_url = utm.url
+        offer_url = await utm.url
         base64_url = base64.urlsafe_b64encode(str('\n'.join([
             'oid=%d',
             'bid=%d',
@@ -431,7 +431,7 @@ class DataProcessor(object):
             'title': offer['campaign']['campaign_style_head_title'],
             'description': None,
             'price': None,
-            'url': self.change_link(offer),
+            'url': await self.change_link(offer),
             'images': [offer['campaign']['campaign_style_logo']],
             'style_class': 'logo%s' % offer['campaign']['campaign_style_class'],
             'id': None,
@@ -479,7 +479,7 @@ class DataProcessor(object):
             'title': offer['title'],
             'description': offer['description'],
             'price': offer['price'],
-            'url': self.change_link(offer),
+            'url': await self.change_link(offer),
             'images': self.change_image(offer['images']),
             'style_class': 'adv%s' % style_class,
             'id': str(offer['id']),
