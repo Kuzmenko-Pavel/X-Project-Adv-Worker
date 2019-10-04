@@ -9,6 +9,7 @@ from collections import defaultdict
 
 from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.data_processor.params import Params
+from x_project_adv_worker.data_processor.utm_converter import UtmConverter
 from x_project_adv_worker.styler import Styler
 from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
                                               CampaignRemarketingType, CampaignRecommendedAlgorithmType)
@@ -410,6 +411,7 @@ class DataProcessor(object):
 
                 offer['campaign'] = camp
                 offer['logic_name'] = name
+                offer['block'] = self.block
 
                 if offer_styling_block:
                     capacity = self.styler.block.styling_adv.count_adv
@@ -451,18 +453,43 @@ class DataProcessor(object):
         return images
 
     def change_link(self, offer):
-        offer_url = offer['url']
-        base64_url = base64.urlsafe_b64encode(str('o=%s\nb=%s\nc=%s\ns=%s\nal=%s\nar=%s\nto=%s\nu=%s\nra=%s\ntr=%d' % (
-            offer['id'],
-            self.block['id'],
-            offer['campaign']['id'],
-            self.block['id_site'],
-            offer['campaign']['id_account'],
-            self.block['id_account'],
-            offer['token'],
-            offer_url,
-            self.params.token,
-            int(time.time()*1000)
+        utm = UtmConverter(offer)
+        offer_url = utm.url
+        base64_url = base64.urlsafe_b64encode(str('\n'.join([
+            'oid=%d',
+            'bid=%d',
+            'cid=%d',
+            'sid=%d',
+            'aidl=%d',
+            'aidr=%d',
+            't=%d',
+            'to=%s',
+            'ccr=%s',
+            'ccl=%s',
+            's=%d',
+            'u=%s',
+            'ra=%s',
+            'tr=%d',
+            'f=%d',
+            'tf=%d'
+        ]) % (
+                                                      offer['id'],
+                                                      self.block['id'],
+                                                      offer['campaign']['id'],
+                                                      self.block['id_site'],
+                                                      offer['campaign']['id_account'],
+                                                      self.block['id_account'],
+                                                      1 if self.params.test else 0,
+                                                      offer['token'],
+                                                      0,
+                                                      0,
+                                                      1 if offer['campaign'][
+                                                               'campaign_type'] == CampaignType.social else 0,
+                                                      offer_url,
+                                                      self.params.token,
+                                                      int(time.time() * 1000),
+                                                      0,
+                                                      0
         )).encode('utf-8'))
         params = 'a=%s&b=%s&c=%s' % (randint(1, 9), base64_url.decode('utf-8'), randint(1, 9))
         return 'https://click.yottos.com/click/rg?%s' % params
