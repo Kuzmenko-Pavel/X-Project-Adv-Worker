@@ -366,18 +366,20 @@ class DataProcessor(object):
         return images
 
     def click_cost_calc(self, offer):
-        cost_percent = offer['block']['cost_percent']
-        click_cost_proportion = offer['block']['click_cost_proportion']
-        cost_min = offer['block']['click_cost_min']
-        cost_max = offer['block']['click_cost_max']
-        ccl = offer['campaign']['click_cost']
-        ccl = round(ccl * cost_percent / 100, 4)
-        ccr = round(ccl * click_cost_proportion / 100, 4)
-        if cost_min and ccr < cost_min:
-            ccr = cost_min
-        if cost_max and ccr > cost_max:
-            ccr = cost_max
-        return ccr, ccl
+        if offer['campaign']['payment_model'] in [CampaignPaymentModel.ppc, CampaignPaymentModel.auto]:
+            cost_percent = offer['block']['cost_percent']
+            cost_proportion = offer['block']['click_cost_proportion']
+            cost_min = offer['block']['click_cost_min']
+            cost_max = offer['block']['click_cost_max']
+            ccl = offer['campaign']['click_cost']
+            ccl = round(ccl * cost_percent / 100, 4)
+            ccr = round(ccl * cost_proportion / 100, 4)
+            if cost_min and ccr < cost_min:
+                ccr = cost_min
+            if cost_max and ccr > cost_max:
+                ccr = cost_max
+            return ccr, ccl
+        return 0, 0
 
     async def change_link(self, offer):
         ccr, ccl = self.click_cost_calc(offer)
@@ -449,6 +451,19 @@ class DataProcessor(object):
         })
 
     def impression_cost_calc(self, offer):
+        if offer['campaign']['payment_model'] == CampaignPaymentModel.ppi:
+            cost_percent = offer['block']['cost_percent']
+            cost_proportion = offer['block']['impression_cost_proportion']
+            cost_min = offer['block']['impression_cost_min']
+            cost_max = offer['block']['impression_cost_max']
+            ccl = offer['campaign']['impression_cost']
+            ccl = round(ccl * cost_percent / 100, 4)
+            ccr = round(ccl * cost_proportion / 100, 4)
+            if cost_min and ccr < cost_min:
+                ccr = cost_min
+            if cost_max and ccr > cost_max:
+                ccr = cost_max
+            return ccr, ccl
         return 0, 0
 
     async def create_offer(self, offer, recomendet=False, capacity=0):
