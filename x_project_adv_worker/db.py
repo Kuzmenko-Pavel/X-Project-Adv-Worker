@@ -639,9 +639,17 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
             return result, clean
 
-    async def get_recomendet_offer(self, view, id_offer, offer_ids, id_block, capacity):
+    async def get_recomendet_offer(self, view, id_offer, id_cam, offer_ids, id_block, capacity):
         if not offer_ids:
-            offer_ids = ''
+            offer_ids = '''select sub.id 
+                           from %(view)s AS sub 
+                           where  sub.id_cam = %(id_cam)s and sub.id != %(id_offer)s
+                           LIMIT %(capacity)d''' % {
+                'view': view,
+                'id_offer': id_offer,
+                'id_cam': id_cam,
+                'capacity': capacity * 2
+            }
         else:
             offer_ids = ','.join([str(x) for x in offer_ids])
         result = []
@@ -658,14 +666,12 @@ class Query(object):
                         'offer_ids': offer_ids,
                         'capacity': capacity * 2
                     }
-                    print(q)
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
                     offers = await connection.fetch(q)
                     for offer in offers:
                         item = {}
                         item['id'] = offer['id']
-                        item['guid'] = offer['guid']
                         item['id_cam'] = offer['id_cam']
                         item['images'] = offer['images']
                         item['description'] = offer['description']
@@ -673,6 +679,7 @@ class Query(object):
                         item['title'] = offer['title']
                         item['price'] = offer['price']
                         item['recommended'] = []
+                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         result.append(item)
             except asyncio.CancelledError as ex:

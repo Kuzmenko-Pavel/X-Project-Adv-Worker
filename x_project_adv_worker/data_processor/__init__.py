@@ -213,6 +213,7 @@ class DataProcessor(object):
         view = views[loop_counter - 1][0]
         offer_ids = offer.get('recommended', [])
         id_offer = offer.get('id', 0)
+        id_cam = offer.get('id_cam', 0)
         offer_styling_block = offer['campaign']['styling']
         select_capacity = int(capacity - len(self.data['offers']))
         exclude = views[loop_counter - 1][1]
@@ -222,6 +223,7 @@ class DataProcessor(object):
             recomendet = await self.app.query.get_recomendet_offer(
                 view=view,
                 id_offer=id_offer,
+                id_cam=id_cam,
                 offer_ids=offer_ids,
                 id_block=self.processing_data.id_block,
                 capacity=select_capacity,
@@ -234,6 +236,7 @@ class DataProcessor(object):
                     if x == 0 and str(recomendet_offer['id']) in exclude:
                         continue
                     recomendet_offer['campaign'] = offer['campaign']
+                    recomendet_offer['block'] = offer['block']
                     if len(self.data['offers']) < capacity:
                         await self.create_offer(recomendet_offer, True, capacity)
                     else:
