@@ -639,9 +639,11 @@ class Query(object):
                 logger.error(exception_message(exc=str(ex)))
             return result, clean
 
-    async def get_recomendet_offer(self, view, offer_ids, id_block, capacity):
+    async def get_recomendet_offer(self, view, id_offer, offer_ids, id_block, capacity):
         if not offer_ids:
-            return []
+            offer_ids = ''
+        else:
+            offer_ids = ','.join([str(x) for x in offer_ids])
         result = []
         async with self.pool.acquire() as connection:
             try:
@@ -653,9 +655,10 @@ class Query(object):
                     LIMIT %(capacity)d;
                     ''' % {
                         'view': view,
-                        'offer_ids': ','.join([str(x) for x in offer_ids]),
+                        'offer_ids': offer_ids,
                         'capacity': capacity * 2
                     }
+                    print(q)
                     # stmt = await connection.prepare(q)
                     # offers = await stmt.fetch()
                     offers = await connection.fetch(q)
