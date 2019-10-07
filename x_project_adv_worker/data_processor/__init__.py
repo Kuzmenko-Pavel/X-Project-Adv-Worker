@@ -125,7 +125,7 @@ class DataProcessor(object):
         self.processing_data.retargeting_branch = self.processing_data.block.get('retargeting_branch', True)
         self.processing_data.retargeting_account_branch = self.processing_data.block.get('retargeting_branch', True)
         self.processing_data.social_branch = self.processing_data.block.get('social_branch', True)
-        self.data['parther'] = not self.processing_data.parther
+        self.data['parther'] = self.processing_data.parther
         if not self.processing_data.params.auto and self.processing_data.block['block_type'] == BlockType.static:
             self.processing_data.styler.merge(ujson.loads(self.processing_data.block.get('ad_style')))
         self.processing_data.block_button = self.processing_data.styler.block.default_button.block
