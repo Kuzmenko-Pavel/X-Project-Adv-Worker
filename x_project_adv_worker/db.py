@@ -6,7 +6,7 @@ from datetime import datetime
 import time
 
 from x_project_adv_worker.logger import logger, exception_message
-from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
+from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType, BlockType,
                                               CampaignRemarketingType, CampaignRecommendedAlgorithmType)
 
 
@@ -65,7 +65,33 @@ class Query(object):
                     # block = await stmt.fetchrow()
                     block = await connection.fetchrow(q)
                     if block:
-                        return dict(block)
+                        return {
+                            'id': block['id'],
+                            'guid': str(block['guid']),
+                            'id_account': block['id_account'],
+                            'id_site': block['id_site'],
+                            'block_type': BlockType(block['block_type']),
+                            'headerHtml': block['headerHtml'],
+                            'footerHtml': block['footerHtml'],
+                            'userCode': block['userCode'],
+                            'ad_style': block['ad_style'],
+                            'iplace_branchd': block['place_branch'],
+                            'retargeting_branch': block['retargeting_branch'],
+                            'social_branch': block['social_branch'],
+                            'rating_division': block['rating_division'],
+                            'rating_hard_limit': block['rating_hard_limit'],
+                            'site_name': block['site_name'],
+                            'block_adv_category': block['block_adv_category'],
+                            'click_cost_min': block['click_cost_min'],
+                            'click_cost_proportion': block['click_cost_proportion'],
+                            'click_cost_max': block['click_cost_max'],
+                            'impression_cost_min': block['impression_cost_min'],
+                            'impression_cost_proportion': block['impression_cost_proportion'],
+                            'impression_cost_max': block['impression_cost_max'],
+                            'cost_percent': block['cost_percent'],
+                            'disable_filter': block['disable_filter'],
+                            'time_filter': block['time_filter']
+                        }
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_block')
                 # logger.error(exception_message(exc=str(ex)))

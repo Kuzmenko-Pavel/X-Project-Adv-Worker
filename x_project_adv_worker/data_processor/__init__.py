@@ -11,7 +11,7 @@ from x_project_adv_worker.data_processor.processing_data import ProcessingData
 from x_project_adv_worker.data_processor.utm_converter import UtmConverter
 
 from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
-                                              CampaignRemarketingType, CampaignRecommendedAlgorithmType)
+                                              CampaignRemarketingType, BlockType)
 
 
 class DataProcessor(object):
@@ -78,17 +78,6 @@ class DataProcessor(object):
             userCode = self.processing_data.block.get('userCode', '')
         if not userCode:
             userCode = '''
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- инвистигейшин -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-7005100774217586"
-                 data-ad-slot="3052658814"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
             '''
         return userCode
 
@@ -137,7 +126,7 @@ class DataProcessor(object):
         self.processing_data.retargeting_account_branch = self.processing_data.block.get('retargeting_branch', True)
         self.processing_data.social_branch = self.processing_data.block.get('social_branch', True)
         self.data['parther'] = not self.processing_data.parther
-        if not self.processing_data.params.auto and not self.processing_data.block.get('dynamic', False):
+        if not self.processing_data.params.auto and self.processing_data.block['block_type'] == BlockType.static:
             self.processing_data.styler.merge(ujson.loads(self.processing_data.block.get('ad_style')))
         self.processing_data.block_button = self.processing_data.styler.block.default_button.block
         self.processing_data.block_ret_button = self.processing_data.styler.block.default_button.ret_block
