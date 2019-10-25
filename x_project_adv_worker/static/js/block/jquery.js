@@ -45,6 +45,9 @@ define([
             dataType: 'json',
             type: "POST",
             contentType: 'application/json; charset=utf-8',
+            xhrFields: {
+                withCredentials: true
+            },
             cache: false,
             timeout: 0,
             beforeSend: function (xhr, settings) {
@@ -57,7 +60,7 @@ define([
                 status,
                 error
             ) {
-                var url = '/v1/error';
+                var url = '/v2/error';
                 if (this.url !== url) {
                     jQuery.ajax({
                         url: url,

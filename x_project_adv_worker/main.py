@@ -4,6 +4,13 @@ import asyncio
 import os
 import sys
 
+try:
+    from http.cookies import Morsel
+
+    Morsel._reserved['samesite'] = 'SameSite'
+except Exception:
+    pass
+
 from aiohttp import web
 import aiohttp_debugtoolbar
 from trafaret_config import commandline
@@ -34,8 +41,7 @@ def init(loop, argv):
     app = web.Application(loop=loop)
     app['config'] = config
     app.on_startup.append(init_db)
-    #require-sri
-    #app.on_startup.append(static_hash)
+    app.on_startup.append(static_hash)
     if app['config']['debug']['console']:
         aiohttp_debugtoolbar.setup(app)
     init_templates(app)

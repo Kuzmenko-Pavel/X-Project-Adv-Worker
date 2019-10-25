@@ -9,15 +9,15 @@
 <html><!--<![endif]-->
 <head>
     <script nonce="{{ nonce }}">window.adsparams = {{ js|safe }};</script>
-    <script async defer src="/v2/static/js/block.js?v=4.4"></script>
-    {#    <script integrity="{{ integrity }}" async defer src="/v2/static/js/block.js"></script>#}
+    {#    <script nonce="{{ nonce }}" integrity="{{ static_hash['static/js/block.js'] }}" async defer src="/v2/static/js/block.js" crossorigin="anonymous"></script>#}
+    <script async defer src="/v2/static/js/block.js?v=4.5"></script>
     <meta name="referrer" content="origin"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1"/>
     <meta name=viewport content="width=device-width, initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
-{#    <link rel="icon" href="data:;base64,iVBORw0KGgo=">#}
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <style type="text/css" nonce="{{ nonce }}">{{style}}</style>
 </head>
 <body>

@@ -9,7 +9,7 @@ define(['./../jquery', './../underscore'], function (jQuery, _) {
         _.each(items, function(element, index, list) {
             jQuery(element).click(function (event) {
                 var item = jQuery(event.currentTarget);
-                app.advertise.click(item.data('id'));
+                app.advertise.click('' + item.data('id'));
             });
         }, this);
     };

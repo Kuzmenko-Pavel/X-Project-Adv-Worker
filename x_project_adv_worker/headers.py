@@ -1,4 +1,4 @@
-__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_device', 'cache']
+__all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_device', 'cache', 'http2_push_preload']
 import asyncio
 import functools
 from datetime import datetime, timedelta
@@ -38,7 +38,12 @@ def cookie(name='yottos_unique_id', domain='.yottos.com', days=365):
                 context.set_cookie(name, user_cookie,
                                    expires=user_cookie_expires,
                                    domain=domain,
+                                   secure=True,
                                    max_age=user_cookie_max_age)
+                try:
+                    context._cookies[name]['samesite'] = None
+                except Exception:
+                    pass
             return context
         return wrapped
     return wrapper
@@ -81,6 +86,7 @@ def csp():
                 'object-src': [],
                 'sandbox': ['allow-scripts', 'allow-same-origin', 'allow-forms', 'allow-popups',
                             'allow-popups-to-escape-sandbox'],
+                # 'require-sri-for': ['script']
 
             }
             if request.app['config']['debug']['console']:
@@ -147,7 +153,43 @@ def xml_http_request():
     return wrapper
 
 
-def cors():
+def cors(allow_origin=None, allow_headers=None):
+    def wrapper(func):
+        @asyncio.coroutine
+        @functools.wraps(func)
+        def wrapped(*args):
+            ao = allow_origin
+            ah = allow_headers
+            if isinstance(args[0], AbstractView):
+                request = args[0].request
+            else:
+                request = args[-1]
+
+            if ao is None:
+                host = request.host
+                scheme = request.scheme
+                if 'yottos.com' in host:
+                    scheme = 'https'
+                ao = '%s//:%s' % (scheme, host)
+            if ah is None:
+                ah = request.method
+
+            if asyncio.iscoroutinefunction(func):
+                coro = func
+            else:
+                coro = asyncio.coroutine(func)
+            context = yield from coro(*args)
+            if isinstance(context, web.StreamResponse):
+                context.headers[hdrs.ACCESS_CONTROL_ALLOW_ORIGIN] = ao
+                context.headers[hdrs.ACCESS_CONTROL_ALLOW_HEADERS] = ah
+                context.headers[hdrs.ACCESS_CONTROL_ALLOW_CREDENTIALS] = 'true'
+                context.headers[hdrs.ACCESS_CONTROL_ALLOW_METHODS] = '%s %s' % (hdrs.METH_GET, hdrs.METH_POST)
+            return context
+        return wrapped
+    return wrapper
+
+
+def http2_push_preload(links=None):
     def wrapper(func):
         @asyncio.coroutine
         @functools.wraps(func)
@@ -158,12 +200,12 @@ def cors():
                 coro = asyncio.coroutine(func)
             context = yield from coro(*args)
             if isinstance(context, web.StreamResponse):
-                context.headers[hdrs.ACCESS_CONTROL_ALLOW_ORIGIN] = '*'
-                context.headers[hdrs.ACCESS_CONTROL_ALLOW_HEADERS] = '*'
-                context.headers[hdrs.ACCESS_CONTROL_ALLOW_CREDENTIALS] = 'true'
-                context.headers[hdrs.ACCESS_CONTROL_ALLOW_METHODS] = '%s %s' % (hdrs.METH_GET, hdrs.METH_POST)
+                if links:
+                    context.headers[hdrs.LINK] = '%s' % ','.join(links)
             return context
+
         return wrapped
+
     return wrapper
 
 

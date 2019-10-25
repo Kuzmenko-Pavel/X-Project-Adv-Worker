@@ -358,7 +358,7 @@ class DataProcessor(object):
     def change_image(self, images):
         if self.processing_data.params.is_webp:
             images = list(map(lambda x: x.replace('.png', '.webp'), images))
-            images = list(map(lambda x: x.replace('http://', 'https://'), images))
+        images = list(map(lambda x: x.replace('http://', 'https://'), images))
         if len(images) == 2:
             images = images + images
         return images

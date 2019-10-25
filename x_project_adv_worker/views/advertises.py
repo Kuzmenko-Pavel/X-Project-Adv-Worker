@@ -12,6 +12,8 @@ from x_project_adv_worker.data_processor import DataProcessor
 class AdvertisesView(web.View):
 
     @xml_http_request()
+    @cookie()
+    @cors()
     @detect_device()
     async def post(self):
         result = dict({

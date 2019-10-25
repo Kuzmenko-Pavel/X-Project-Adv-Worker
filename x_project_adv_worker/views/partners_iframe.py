@@ -11,6 +11,7 @@ from x_project_adv_worker.data_processor import DataProcessor
 
 class PartnersIframeView(web.View):
     @cache(expire=3600)
+    @cookie()
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query

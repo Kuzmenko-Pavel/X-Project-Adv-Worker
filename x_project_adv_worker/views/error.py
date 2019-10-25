@@ -3,12 +3,16 @@ import ujson
 
 from aiohttp import web
 
+from x_project_adv_worker.headers import *
 from x_project_adv_worker.logger import logger, exception_message
 
 ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 
 class ErrorView(web.View):
+    @xml_http_request()
+    @cookie()
+    @cors()
     async def post(self):
         host = '127.0.0.1'
         result = dict({

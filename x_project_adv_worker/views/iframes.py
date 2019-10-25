@@ -13,6 +13,8 @@ class IframesView(web.View):
     @cookie()
     @detect_webp()
     @csp()
+    @cors()
+    @http2_push_preload(['</v2/static/js/block.js?v=4.5>; as=script; rel=preload;'])
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query
@@ -21,7 +23,7 @@ class IframesView(web.View):
         country = post.get('country', query.get('country', ''))
         region = post.get('region', query.get('region', ''))
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
-        guid_block = post.get('scr', query.get('scr', ''))
+        guid_block = post.get('scr', query.get('scr', '9200beb4-b468-11e5-a497-00e081bad802'))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
         index = post.get('index', query.get('index', 0))
         rand = post.get('rand', query.get('rand', 0))
@@ -63,7 +65,8 @@ class IframesView(web.View):
             }),
             'rend_id': rend_id,
             'style': reset_css,
-            'nonce': self.request.nonce
+            'nonce': self.request.nonce,
+            'static_hash': self.request.app.static_hash
         }
         response = aiohttp_jinja2.render_template('block.html', self.request, data)
         return response
