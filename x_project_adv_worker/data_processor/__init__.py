@@ -51,6 +51,15 @@ class DataProcessor(object):
                             end_cats[l - (x + 1)] = max_size
                         else:
                             break
+                sl = len(start_cats)
+                for x, y in enumerate(reversed(start_cats)):
+                    if y is None:
+                        start_cats[sl - (x + 1)] = 1
+
+                el = len(end_cats)
+                for x, y in enumerate(reversed(end_cats)):
+                    if y is None:
+                        end_cats[el - (x + 1)] = 1
                 start = sum([y * (max_size ** x) for x, y in enumerate(reversed(start_cats))])
                 end = sum([y * (max_size ** x) for x, y in enumerate(reversed(end_cats))])
         except Exception as ex:
