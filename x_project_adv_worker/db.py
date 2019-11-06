@@ -259,10 +259,12 @@ class Query(object):
                         row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer2block_rating.rating desc) AS range_number,
                         count(id) OVER() as all_count,
                         mv_offer2block_rating.*,
-                        ofrs.*
+                        ofrs.*,
+                        thematics.path as thematics
                         FROM mv_offer_place AS ofrs
                         left join mv_offer2block_rating on mv_offer2block_rating.id_offer = ofrs.id and mv_offer2block_rating.id_block = %(block_id)d
                         left join mv_offer_categories on mv_offer_categories.id_offer = ofrs.id and mv_offer_categories.path ? %(lquery)s
+                        left join mv_offer_categories as thematics on thematics.id_offer = ofrs.id
                         WHERE
                         campaign_range_number < 30
                         AND mv_offer_categories.id_offer is NULL
@@ -310,6 +312,7 @@ class Query(object):
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
                         item['block'] = processing_data.block
+                        item['thematics'] = offer.get('thematics', [])
                         result.append(item)
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
@@ -361,10 +364,12 @@ class Query(object):
                                 row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer2block_rating.rating desc) AS range_number,
                                 count(id) OVER() as all_count,
                                 mv_offer2block_rating.*,
-                                ofrs.*
+                                ofrs.*,
+                                thematics.path as thematics
                                 FROM mv_offer_place AS ofrs
                                 left join mv_offer2block_rating on mv_offer2block_rating.id_offer = ofrs.id and mv_offer2block_rating.id_block = %(block_id)d
                                 left join mv_offer_categories on mv_offer_categories.id_offer = ofrs.id and mv_offer_categories.path ? %(lquery)s
+                                left join mv_offer_categories as thematics on thematics.id_offer = ofrs.id
                                 WHERE
                                 campaign_range_number < 30
                                 AND mv_offer_categories.id_offer is NULL
@@ -412,6 +417,7 @@ class Query(object):
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
                         item['block'] = processing_data.block
+                        item['thematics'] = offer.get('thematics', [])
                         result.append(item)
                     if len(result) < capacity and not recursion:
                         rec_exclude = [0]
@@ -453,10 +459,12 @@ class Query(object):
                             row_number() OVER (PARTITION BY ofrs.id_cam order by offer_social2block_rating.rating desc) AS range_number,
                             count(id) OVER() as all_count,
                             offer_social2block_rating.*,
-                            ofrs.*
+                            ofrs.*,
+                            thematics.path as thematics
                             FROM mv_offer_social AS ofrs
                             left join offer_social2block_rating on offer_social2block_rating.id_offer = ofrs.id and offer_social2block_rating.id_block = %(block_id)d
                             left join mv_offer_categories on mv_offer_categories.id_offer = ofrs.id and mv_offer_categories.path ? %(lquery)s
+                            left join mv_offer_categories as thematics on thematics.id_offer = ofrs.id
                             WHERE
                             campaign_range_number < 30
                             AND mv_offer_categories.id_offer is NULL
@@ -492,6 +500,7 @@ class Query(object):
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
                         item['block'] = processing_data.block
+                        item['thematics'] = offer.get('thematics', [])
                         result.append(item)
                 if counter_prediction < capacity:
                     clean = True
@@ -528,8 +537,10 @@ class Query(object):
                             select 
                             row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
                             count(id) OVER() as all_count,
-                            ofrs.*
+                            ofrs.*,
+                            thematics.path as thematics
                             FROM mv_offer_dynamic_retargeting AS ofrs
+                            left join mv_offer_categories as thematics on thematics.id_offer = ofrs.id
                             WHERE
                             ofrs.id_cam IN (%(campaigns)s)
                             AND ofrs.id NOT IN (%(exclude)s)
@@ -564,6 +575,7 @@ class Query(object):
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
                         item['block'] = processing_data.block
+                        item['thematics'] = offer.get('thematics', [])
                         result.append(item)
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_dynamic_retargeting_offer')
@@ -595,8 +607,10 @@ class Query(object):
                         select 
                         row_number() OVER (PARTITION BY ofrs.id_cam) AS range_number,
                         count(id) OVER() as all_count,
-                        ofrs.*
+                        ofrs.*,
+                        thematics.path as thematics
                         FROM mv_offer_account_retargeting AS ofrs
+                        left join mv_offer_categories as thematics on thematics.id_offer = ofrs.id
                         WHERE
                         campaign_range_number < 30
                         AND ofrs.id_cam IN (%(campaigns)s)
@@ -632,6 +646,7 @@ class Query(object):
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
                         item['campaign'] = processing_data.campaigns.get(offer['id_cam'])
                         item['block'] = processing_data.block
+                        item['thematics'] = offer.get('thematics', [])
                         result.append(item)
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_account_retargeting_offer')
@@ -657,8 +672,11 @@ class Query(object):
             try:
                 async with connection.transaction():
                     q = '''
-                    select * 
+                    select
+                    ofrs.*,
+                    thematics.path as thematics
                     from %(view)s AS ofrs
+                    left join mv_offer_categories as thematics on thematics.id_offer = ofrs.id
                     WHERE ofrs.id IN (%(offer_ids)s)
                     LIMIT %(capacity)d;
                     ''' % {
@@ -680,7 +698,7 @@ class Query(object):
                         item['price'] = offer['price']
                         item['recommended'] = []
                         item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
-                        item['token'] = str(item['id']) + str(id_block) + str(time.time()).replace('.', '')
+                        item['thematics'] = offer.get('thematics', [])
                         result.append(item)
             except asyncio.CancelledError as ex:
                 logger.error('CancelledError get_recomendet_offer')

@@ -33,7 +33,7 @@ class UtmConverter:
     @staticmethod
     def char_replace(string, chars=None, to_char=None):
         if chars is None:
-            chars = [' ', '.', ',', ';', '!', '?']
+            chars = [' ', '.', ',', ';', '!', '?', ':']
         if to_char is None:
             to_char = '_'
         for ch in chars:
@@ -149,15 +149,12 @@ class UtmConverter:
         try:
             keys = await self.get_utm_keys()
             url_parts = list(urlparse(url))
-
             params = dict(parse_qsl(url_parts[3]))
             if len(params) > 0:
                 url_parts[3] = await self.__add_utm(params, keys)
 
             query = dict(parse_qsl(url_parts[4]))
-            if len(query) > 0:
-                url_parts[4] = await self.__add_utm(query, keys)
-
+            url_parts[4] = await self.__add_utm(query, keys)
             url = urlunparse(url_parts)
         except Exception as e:
             print(e)
@@ -166,5 +163,6 @@ class UtmConverter:
     @property
     async def url(self):
         url = await self.__add_dynamic_param(self.raw_url)
-        url = await self.__add_utm_param(url)
+        if self.utm:
+            url = await self.__add_utm_param(url)
         return url

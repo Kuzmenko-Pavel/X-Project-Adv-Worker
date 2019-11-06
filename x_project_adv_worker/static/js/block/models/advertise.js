@@ -20,7 +20,11 @@ define([
         this.offers = [];
         this.css = "";
     };
-    Advertise.prototype.parse = function (server_obj) {
+    Advertise.prototype.parse = function (
+        server_obj,
+        textStatus,
+        jqXHR
+    ) {
         var app = this.app;
         var uh = app.uh;
         if (server_obj.block.id === undefined){
@@ -64,6 +68,9 @@ define([
                     return app.render.parther();
                 }
                 else if (this.recall++ < 3) {
+                    if (jqXHR && jqXHR.status === 200) {
+                        app.adsparams.index = 0;
+                    }
                     return app.loader();
                 }
             }

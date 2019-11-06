@@ -7,8 +7,12 @@ define(['./../jquery', './../underscore', './advertise'],
             this.params.size();
             if (this.params.w_w + this.params.w_h > 120 && this.params.w_w > 30 && this.params.w_h > 30) {
                 var advertise_defferr = jQuery.when(advertise(this));
-                advertise_defferr.then(_.bind(function (data) {
-                    this.advertise.parse(data);
+                advertise_defferr.then(_.bind(function (
+                    data,
+                    textStatus,
+                    jqXHR
+                ) {
+                    this.advertise.parse(data, textStatus, jqXHR);
                 }, this));
                 return true;
             }

@@ -145,8 +145,8 @@ class DataProcessor(object):
                 self.processing_data.offer_count_socia += campaign['offer_count']
 
             elif not social and not retargeting and thematic and self.processing_data.place_branch:
-                count_place = self.app.campaign_view_count['place'][campaign['id']]
-                count_thematic = self.app.campaign_view_count['thematic'][campaign['id']]
+                count_place = self.app.campaign_view_count['place'].get(campaign['id'], 0)
+                count_thematic = self.app.campaign_view_count['thematic'].get(campaign['id'], 0)
                 thematic_range = campaign['thematic_range']
                 if thematic_range > 0:
                     if count_thematic > ((count_place + count_thematic) / 100) * thematic_range:
@@ -437,14 +437,14 @@ class DataProcessor(object):
             'id': None,
             'cid': None,
             'aid': None,
-            'icr': 0,
-            'icl': 0,
+            'icr': None,
+            'icl': None,
             'campaign_social': None,
             'thematic': None,
             'retargeting': None,
             'unique_impression_lot': None,
             'token': None,
-            'thematics': None,
+            'thematics': offer['thematics'],
             'button': offer['campaign']['campaign_style_button_title'],
         })
 
@@ -505,7 +505,7 @@ class DataProcessor(object):
             'retargeting': offer['campaign']['campaign_type'] == CampaignType.remarketing,
             'unique_impression_lot': unique_impression_lot,
             'token': offer['token'],
-            'thematics': offer['campaign']['thematics'],
+            'thematics': offer['thematics'],
             'button': button
         })
 
