@@ -256,9 +256,9 @@ class Query(object):
                         select * from
                         (
                         select 
-                        row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer2block_rating.rating desc) AS range_number,
+                        row_number() OVER (PARTITION BY ofrs.id_cam order by coalesce(mv_offer2block_rating.rating, 50000) desc nulls last) AS range_number,
                         count(id) OVER() as all_count,
-                        mv_offer2block_rating.*,
+                        coalesce(mv_offer2block_rating.rating, 50000) as rating,
                         ofrs.*,
                         thematics.path as thematics
                         FROM mv_offer_place AS ofrs
@@ -272,7 +272,7 @@ class Query(object):
                         AND ofrs.id NOT IN (%(exclude)s)
                         ) sub
                         where %(campaign_unique)s
-                        order by sub.range_number, sub.rating desc
+                        order by sub.range_number, sub.rating desc nulls last
                         LIMIT %(capacity)d OFFSET %(offset)d;
                     ''' % {
                         'block_id': id_block,
@@ -361,9 +361,9 @@ class Query(object):
                                 select * from
                                 (
                                 select 
-                                row_number() OVER (PARTITION BY ofrs.id_cam order by mv_offer2block_rating.rating desc) AS range_number,
+                                row_number() OVER (PARTITION BY ofrs.id_cam order by coalesce(mv_offer2block_rating.rating, 50000) desc nulls last) AS range_number,
                                 count(id) OVER() as all_count,
-                                mv_offer2block_rating.*,
+                                coalesce(mv_offer2block_rating.rating, 50000) as rating,
                                 ofrs.*,
                                 thematics.path as thematics
                                 FROM mv_offer_place AS ofrs
@@ -377,7 +377,7 @@ class Query(object):
                                 AND ofrs.id NOT IN (%(exclude)s)
                                 ) sub
                                 where %(campaign_unique)s
-                                order by sub.range_number, sub.rating desc
+                                order by sub.range_number, sub.rating desc nulls last
                                 LIMIT %(capacity)d OFFSET %(offset)d;
                             ''' % {
                         'block_id': id_block,
@@ -456,9 +456,9 @@ class Query(object):
                             select * from
                             (
                             select 
-                            row_number() OVER (PARTITION BY ofrs.id_cam order by offer_social2block_rating.rating desc) AS range_number,
+                            row_number() OVER (PARTITION BY ofrs.id_cam order by coalesce(offer_social2block_rating.rating, 50000) desc nulls last) AS range_number,
                             count(id) OVER() as all_count,
-                            offer_social2block_rating.*,
+                            coalesce(offer_social2block_rating.rating, 50000) as rating,
                             ofrs.*,
                             thematics.path as thematics
                             FROM mv_offer_social AS ofrs
@@ -471,7 +471,7 @@ class Query(object):
                             AND ofrs.id_cam IN (%(campaigns)s)
                             AND ofrs.id NOT IN (%(exclude)s)
                             ) sub
-                            order by sub.range_number, sub.rating desc
+                            order by sub.range_number, sub.rating desc nulls last
                             LIMIT %(capacity)d;
                         ''' % {
                         'block_id': id_block,
