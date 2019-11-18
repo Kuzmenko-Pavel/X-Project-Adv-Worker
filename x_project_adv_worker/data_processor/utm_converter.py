@@ -113,6 +113,7 @@ class UtmConverter:
             '{source_id}': await self.get_source_id(),
             '{campaign}': await self.get_campaign(),
             '{campaign_id}': await self.get_campaign_id(),
+            '{name}': await self.get_offer(),
             '{offer}': await self.get_offer(),
             '{offer_id}': await self.get_offer_id(),
             '{rand}': await self.get_rand()
