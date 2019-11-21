@@ -2,7 +2,7 @@ host: 0.0.0.0
 port: 8001
 postgres:
   #  uri: postgresql://ad_worker:ad_worker@srv-6.yottos.com:5432/ad_worker_v2
-  uri: postgresql://ad_worker:ad_worker@localhost:5432/ad_worker_v2
+  uri: postgresql://ad_worker:ad_worker@localhost:5432/ad_worker
 
 debug:
   status: False
