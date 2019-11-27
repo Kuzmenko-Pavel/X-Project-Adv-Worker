@@ -77,7 +77,7 @@ def csp():
                 'connect-src': [host],
                 'style-src': ["'unsafe-inline'"],
                 'worker-src': [host],
-                'frame-src': [host],
+                'frame-src': [host, '*.yottos.com'],
                 'manifest-src': [host],
                 'media-src': [],
                 'font-src': [],

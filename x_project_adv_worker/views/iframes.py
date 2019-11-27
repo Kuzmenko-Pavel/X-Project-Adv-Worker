@@ -25,7 +25,10 @@ class IframesView(web.View):
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
         guid_block = post.get('scr', query.get('scr', '9200beb4-b468-11e5-a497-00e081bad802'))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
-        index = post.get('index', query.get('index', 0))
+        try:
+            index = int(post.get('index', query.get('index', 0)))
+        except Exception:
+            index = 0
         rand = post.get('rand', query.get('rand', 0))
         origin = post.get('origin', query.get('origin', '*'))
         ip = post.get('ip', query.get('ip', ''))
@@ -63,6 +66,7 @@ class IframesView(web.View):
                 'h': h,
                 'request': 'initial'
             }),
+            'index': index,
             'rend_id': rend_id,
             'style': reset_css,
             'nonce': self.request.nonce,

@@ -22,5 +22,9 @@
 </head>
 <body>
 <div id="{{ rend_id|safe }}"></div>
+{% if index == 0 %}
+    <iframe src="https://partner.yottos.com/" marginheight="0px" marginwidth="0px" scrolling="no"
+            style="width: 0px; height: 0px; border: 0px; margin: 0px; display: none; visibility: hidden; position: absolute;"></iframe>
+{% endif %}
 </body>
 </html>
