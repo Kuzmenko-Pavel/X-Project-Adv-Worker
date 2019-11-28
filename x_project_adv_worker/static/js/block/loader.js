@@ -54,7 +54,7 @@ define([
         this.mouse_move = function () {
         };
         this.cd_open = function () {
-            if (this.adsparams.debug) {
+            if (!this.adsparams.debug) {
                 this.adsparams.console_detect = true;
                 this.render.console_detect();
             }
