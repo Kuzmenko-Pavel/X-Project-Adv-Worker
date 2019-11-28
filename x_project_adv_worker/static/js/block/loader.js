@@ -53,6 +53,14 @@ define([
         };
         this.mouse_move = function () {
         };
+        this.cd_open = function () {
+            if (this.adsparams.debug) {
+                this.adsparams.console_detect = true;
+                this.render.console_detect();
+            }
+        };
+        this.cd_close = function () {
+        };
         this.ping = function (targetOrigin) {
             targetOrigin = targetOrigin || this.adsparams.origin;
             if (parent && parent.postMessage) {

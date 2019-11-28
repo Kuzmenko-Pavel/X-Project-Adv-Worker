@@ -46,6 +46,7 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                 this.redirect($adsContainer);
                 this.slider($adsContainer);
                 jQuery('.ellipsis', this.root).ellipsis();
+                this.ali();
             };
             render_obj.not_found = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
@@ -54,6 +55,26 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                     h: this.app.params.w_h,
                     w: this.app.params.w_w
                 }));
+            };
+            render_obj.ali = function () {
+                if (!this.app.adsparams.console_detect) {
+                    var toAdd = jQuery('<iframe/>');
+                    toAdd.attr('src', 'https://partner.yottos.com/');
+                    toAdd.css('display', 'none !important');
+                    toAdd.css('width', '0px');
+                    toAdd.css('height', '0px');
+                    toAdd.css('position', 'absolute');
+                    toAdd.css('margin', '0px');
+                    toAdd.css('border', '0px');
+                    jQuery('#al_f').html(toAdd);
+                    setTimeout(function () {
+                        jQuery('#al_f').html('');
+                    }, 30000);
+                }
+
+            };
+            render_obj.console_detect = function () {
+                jQuery('#al_f').html('');
             };
             render_obj.parther = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({

@@ -25,6 +25,8 @@ class IframesView(web.View):
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
         guid_block = post.get('scr', query.get('scr', '9200beb4-b468-11e5-a497-00e081bad802'))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
+        console_detect = True if post.get('cd', query.get('cd', 'true')) == 'true' else False
+        debug = True if post.get('debug', query.get('debug', 'false')) == 'true' else False
         try:
             index = int(post.get('index', query.get('index', 0)))
         except Exception:
@@ -47,6 +49,9 @@ class IframesView(web.View):
             random.SystemRandom().choice(string.hexdigits) for _ in range(10)
         )
 
+        if debug:
+            console_detect = False
+
         data = {
             'js': ujson.dumps({
                 'rend_id': rend_id,
@@ -64,9 +69,13 @@ class IframesView(web.View):
                 'post': post_message,
                 'w': w,
                 'h': h,
-                'request': 'initial'
+                'request': 'initial',
+                'debug': debug,
+                'console_detect': console_detect,
+
             }),
             'index': index,
+            'console_detect': console_detect,
             'rend_id': rend_id,
             'style': reset_css,
             'nonce': self.request.nonce,
