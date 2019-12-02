@@ -11,6 +11,7 @@ from x_project_adv_worker.data_processor import DataProcessor
 
 class AdvertisesView(web.View):
 
+    @not_robot()
     @xml_http_request()
     @cookie()
     @cors()

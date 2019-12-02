@@ -22,7 +22,7 @@
 </head>
 <body>
 <div id="{{ rend_id|safe }}"></div>
-{% if index == 0 and not console_detect %}
+{% if index == 0 and not console_detect and not is_customer %}
     <div id="al_f"></div>
 {% endif %}
 </body>

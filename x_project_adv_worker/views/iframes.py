@@ -9,6 +9,8 @@ import string
 
 class IframesView(web.View):
 
+    @detect_bot()
+    @not_robot()
     @cache(expire=3600)
     @cookie()
     @detect_webp()
@@ -26,6 +28,8 @@ class IframesView(web.View):
         guid_block = post.get('scr', query.get('scr', '9200beb4-b468-11e5-a497-00e081bad802'))
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
         console_detect = True if post.get('cd', query.get('cd', 'true')) == 'true' else False
+        is_customer = self.request.is_customer
+        is_bot = self.request.bot
         debug = True if post.get('debug', query.get('debug', 'false')) == 'true' else False
         try:
             index = int(post.get('index', query.get('index', 0)))
@@ -51,6 +55,8 @@ class IframesView(web.View):
 
         if debug:
             console_detect = False
+            is_customer = False
+            is_bot = False
 
         data = {
             'js': ujson.dumps({
@@ -72,10 +78,13 @@ class IframesView(web.View):
                 'request': 'initial',
                 'debug': debug,
                 'console_detect': console_detect,
-
+                'is_customer': is_customer,
+                'is_bot': is_bot,
             }),
             'index': index,
             'console_detect': console_detect,
+            'is_customer': is_customer,
+            'is_bot': is_bot,
             'rend_id': rend_id,
             'style': reset_css,
             'nonce': self.request.nonce,
