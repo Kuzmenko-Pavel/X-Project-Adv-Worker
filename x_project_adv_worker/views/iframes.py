@@ -16,7 +16,7 @@ class IframesView(web.View):
     @detect_webp()
     @csp()
     @cors()
-    @http2_push_preload(['</v2/static/js/block.js?v=5.0>; as=script; rel=preload;'])
+    @http2_push_preload(['</v2/static/js/block.js?v=5.1>; as=script; rel=preload;'])
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query
