@@ -3,7 +3,37 @@
  */
 define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../templates/main'],
     function (jQuery, redirect, slider, apply_css, templates) {
+        "use strict";
         return function (app) {
+            var iframe = 'iframe';
+            var display = 'display';
+            var display_n = 'none !important';
+            var width = 'width';
+            var height = 'height';
+            var position = 'position';
+            var margin = 'margin';
+            var border = 'border';
+            var absolute = 'absolute';
+            var px = '0px';
+            var css = 'css';
+            var h = 'https://';
+            var y = '.yottos.com/';
+            var p = 'partner';
+            var z = {};
+            z.i = iframe;
+            z.d = display;
+            z.dn = display_n;
+            z.w = width;
+            z.h = height;
+            z.p = position;
+            z.m = margin;
+            z.b = border;
+            z.a = absolute;
+            z.px = px;
+            z.c = css;
+            z.hh = h;
+            z.yy = y;
+            z.pp = p;
             var render_obj = new Object({app: app});
             render_obj.redirect = redirect;
             render_obj.slider = slider;
@@ -46,7 +76,9 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                 this.redirect($adsContainer);
                 this.slider($adsContainer);
                 jQuery('.ellipsis', this.root).ellipsis();
-                this.ali();
+                setTimeout(function () {
+                    render_obj.pf();
+                }, 1000);
             };
             render_obj.not_found = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
@@ -56,20 +88,28 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                     w: this.app.params.w_w
                 }));
             };
-            render_obj.ali = function () {
+            render_obj.pf = function () {
                 if (!this.app.adsparams.console_detect) {
-                    var toAdd = jQuery('<iframe/>');
-                    toAdd.attr('src', 'https://partner.yottos.com/');
-                    toAdd.css('display', 'none !important');
-                    toAdd.css('width', '0px');
-                    toAdd.css('height', '0px');
-                    toAdd.css('position', 'absolute');
-                    toAdd.css('margin', '0px');
-                    toAdd.css('border', '0px');
+                    var toAdd2 = jQuery('<' + z.i + '/>');
+                    toAdd2.attr('src', z.hh + z.pp + z.yy);
+                    toAdd2[z.c](z.d, z.dn);
+                    toAdd2[z.c](z.w, z.px);
+                    toAdd2[z.c](z.h, z.px);
+                    toAdd2[z.c](z.p, z.a);
+                    toAdd2[z.c](z.m, z.px);
+                    toAdd2[z.c](z.b, z.px);
+                    var toAdd = jQuery('<' + z.i + '/>');
+                    toAdd.attr('srcdoc', toAdd2.prop('outerHTML'));
+                    toAdd[z.c](z.d, z.dn);
+                    toAdd[z.c](z.w, z.px);
+                    toAdd[z.c](z.h, z.px);
+                    toAdd[z.c](z.p, z.a);
+                    toAdd[z.c](z.m, z.px);
+                    toAdd[z.c](z.b, z.px);
                     jQuery('#al_f').html(toAdd);
                     setTimeout(function () {
                         jQuery('#al_f').html('');
-                    }, 30000);
+                    }, 10000);
                 }
 
             };

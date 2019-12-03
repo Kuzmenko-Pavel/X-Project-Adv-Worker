@@ -1,17 +1,19 @@
-from ipaddress import IPv4Network
+import socket
 from os import path
 import json
+import re
 
 res = []
 json_path = path.join(path.dirname(path.abspath(__file__)), "customer_ips.json")
 with open(json_path) as json_file:
     data = json.load(json_file)
     for item in data:
-        res.append(IPv4Network(item))
+        res.append(item)
 
 # PROM.UA
-res.append(IPv4Network('193.34.169.0/24'))
+res.append('193.34.169')
 # META.UA
-res.append(IPv4Network('194.0.131.0/24'))
+res.append('194.0.131')
 
-customer_ips = set(res)
+res = sorted(res, key=lambda item: socket.inet_aton(item))
+ip_pattern = re.compile('|'.join(x.replace('.', '\.') for x in res))

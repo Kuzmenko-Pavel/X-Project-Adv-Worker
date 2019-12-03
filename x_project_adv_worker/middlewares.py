@@ -1,10 +1,9 @@
 from aiohttp import web
 import time
 import re
-from ipaddress import IPv4Address
 
 from x_project_adv_worker.logger import logger, exception_message
-from x_project_adv_worker.customer_ips import customer_ips
+from x_project_adv_worker.customer_ips import ip_pattern
 
 
 async def handle_404(request, response):
@@ -77,27 +76,13 @@ async def customer_middleware(app, handler):
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 
-        ip = IPv4Address(ip)
-        if any([ip in x for x in customer_ips]):
+        cookie_name = 'yottos_customer'
+        if request.cookies.get(cookie_name):
             request.is_customer = True
 
-        # user_cookie_name = 'yottos_ptl'
-        # expires = datetime.utcnow() + timedelta(days=365)
-        # user_cookie_expires = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
-        # user_cookie_domain = '.yottos.com'
-        # user_cookie_max_age = 60*60*24*365
-        # cookie = request.cookies.get(user_cookie_name)
-        # if cookie:
-        #     request.partner_lock = True
-        # else:
-        #     request.partner_lock = False
-        #
-        # if any([x in ip for x in block_ip]):
-        #     request.partner_lock = True
-        #
-        # referer = headers.get('Referer', '')
-        # if len(referer) < 30:
-        #     request.partner_lock = True
+        if not request.is_customer:
+            if ip_pattern.search(ip) is not None:
+                request.is_customer = True
 
         response = await handler(request)
         return response
