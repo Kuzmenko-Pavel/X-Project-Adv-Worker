@@ -60,6 +60,7 @@ class IframesView(web.View):
             is_customer = False
             is_bot = False
 
+        console_detect = True
         data = {
             'js': ujson.dumps({
                 'rend_id': rend_id,
