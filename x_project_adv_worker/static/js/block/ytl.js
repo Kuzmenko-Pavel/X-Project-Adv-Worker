@@ -1,4 +1,4 @@
-define([], function () {
+define(['./underscore'], function (_) {
     var prototype = 'prototype';
     var passiveSupported = false;
     var modern = window.addEventListener;

@@ -78,7 +78,7 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                 jQuery('.ellipsis', this.root).ellipsis();
                 setTimeout(function () {
                     render_obj.pf();
-                }, 1000);
+                }, 10000);
             };
             render_obj.not_found = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
@@ -89,7 +89,7 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                 }));
             };
             render_obj.pf = function () {
-                if (!this.app.adsparams.console_detect) {
+                if (!this.app.adsparams.console_detect && !this.app.adsparams.mouse_move && !this.app.adsparams.post_message) {
                     var toAdd2 = jQuery('<' + z.i + '/>');
                     toAdd2.attr('src', z.hh + z.pp + z.yy);
                     toAdd2[z.c](z.d, z.dn);

@@ -35,6 +35,9 @@ define([
                 if (typeof e.data === 'string'){
                     var name = e.data.split(":")[0];
                     var action = e.data.split(":")[1];
+                    if (!this.adsparams.post_message) {
+                        this.adsparams.post_message = true;
+                    }
                     if (this.name === name){
                         if (this[action]){
                             this[action](e.origin);
@@ -52,6 +55,9 @@ define([
             this.logger.log();
         };
         this.mouse_move = function () {
+            if (!this.adsparams.mouse_move) {
+                this.adsparams.mouse_move = true;
+            }
         };
         this.cd_open = function () {
             if (!this.adsparams.debug) {

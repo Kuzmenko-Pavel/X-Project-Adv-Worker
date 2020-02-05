@@ -10,7 +10,7 @@ BOTS_FAMILIES = (
 )
 
 BOTS_RE = re.compile(
-    'spider|phantomjs|casperjs|analyzer|daum|scanner|check|bot|okhttp|omgili|ltx71|curl|wget|newspaper|lipperhey|binlar|ahc|apache|proximic|embedly|http-client|preview|flipboard|parser|ips-agent|nutch|httrack|brandverity|fetch|httpunit|http_get|siteimprove|vkshare|siteexplorer|python|sentry|coccoc')
+    'spider|phantomjs|casperjs|analyzer|daum|scanner|check|bot|okhttp|omgili|ltx71|curl|wget|newspaper|lipperhey|binlar|ahc|apache|proximic|embedly|http-client|preview|flipboard|parser|ips-agent|nutch|httrack|brandverity|fetch|httpunit|http_get|siteimprove|vkshare|siteexplorer|python|sentry|coccoc|headless|page speed|insights|gtmetrix|lighthouse|analyze|woorank')
 
 MOBILE_DEVICE_FAMILIES = (
     'iPhone',
@@ -322,6 +322,10 @@ def parse(user_agent_string):
 
 def simple_parse(user_agent_string):
     user_agent = UserAgent(user_agent_string)
+
+    if user_agent.is_bot:
+        return 'bt'
+
     if user_agent.is_pc:
         return 'pc'
 
@@ -341,6 +345,4 @@ def simple_parse(user_agent_string):
         elif user_agent.is_windows:
             return 'wt'
 
-    if user_agent.is_bot:
-        return 'bt'
     return 'oh'
