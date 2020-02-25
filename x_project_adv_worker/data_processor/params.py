@@ -150,6 +150,12 @@ class Params(object):
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 
+        if not self.country:
+            self.country = not_found
+
+        if not self.region:
+            self.region = not_found
+
     def add_retargeting(self, guid, id):
         for ret_el in self.raw_retargeting:
             if guid == ret_el[1].lower():
