@@ -60,5 +60,13 @@
       "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1 (compatible; woorankreview/2.0; +https://www.woorank.com/)"
     ],
     "url": "https://www.woorank.com/"
+  },
+  {
+    "pattern": "Cloudsystemnetworks",
+    "addition_date": "2020/02/06",
+    "instances": [
+      "Mozilla/5.0 (compatible; Nimbostratus-Bot/v1.3.2; http://cloudsystemnetworks.com)"
+    ],
+    "url": "http://cloudsystemnetworks.com"
   }
 ]

@@ -2,6 +2,7 @@ __all__ = ['Params']
 import time
 import re
 from uuid import uuid4
+from geoip2.errors import AddressNotFoundError
 
 from x_project_adv_worker.utils import encryptDecrypt
 from x_project_adv_worker.logger import logger, exception_message
@@ -108,11 +109,33 @@ class Params(object):
 
         if not self.country:
             try:
+                country_by_ip = request.app.GeoIPCountry2.country(self.host)
+                if country_by_ip and country_by_ip.country:
+                    self.country = country_by_ip.country.iso_code
+            except AddressNotFoundError:
+                pass
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex), request=str(request._message)))
+
+        if not self.country:
+            try:
                 country_by_ip = request.app.GeoIPCountry.country_code_by_addr(self.host)
                 if country_by_ip:
                     self.country = country_by_ip
                 if not self.country:
                     self.country = not_found
+            except Exception as ex:
+                logger.error(exception_message(exc=str(ex), request=str(request._message)))
+
+        if not self.region:
+            try:
+                region_by_ip = request.app.GeoIPCity2.city(self.host)
+                if region_by_ip and region_by_ip.country:
+                    self.country = region_by_ip.country.iso_code
+                if region_by_ip and region_by_ip.subdivisions:
+                    self.region = region_by_ip.subdivisions[0].name
+            except AddressNotFoundError:
+                pass
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 

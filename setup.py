@@ -32,7 +32,8 @@ install_requires = ['aiohttp',
                     'cchardet',
                     'aiohttp_debugtoolbar',
                     'ua-parser>=0.9.0',
-                    'trans'
+                    'trans',
+                    'geoip2',
                     ]
 
 setup(
