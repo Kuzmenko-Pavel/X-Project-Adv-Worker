@@ -16,7 +16,8 @@ class IframesView(web.View):
     @detect_webp()
     @csp()
     @cors()
-    @http2_push_preload(['</v2/static/js/block.js?v=5.1>; as=script; rel=preload;'])
+    @console_detect_log()
+    @http2_push_preload(['</v2/static/js/block.js?v=5.2>; as=script; rel=preload;'])
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query
@@ -53,7 +54,9 @@ class IframesView(web.View):
             random.SystemRandom().choice(string.hexdigits) for _ in range(10)
         )
 
-        is_bot = True
+        if self.request.console_detect:
+            console_detect = True
+
         if debug:
             console_detect = False
             is_customer = False
@@ -80,6 +83,7 @@ class IframesView(web.View):
                 'debug': debug,
                 'console_detect': console_detect,
                 'mouse_move': False,
+                'touch': False,
                 'post_message': False,
                 'is_customer': is_customer,
                 'is_bot': is_bot,

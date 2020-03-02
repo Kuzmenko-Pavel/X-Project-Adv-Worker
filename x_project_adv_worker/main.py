@@ -39,6 +39,7 @@ def init(loop, argv):
     config['socket'] = options.socket
     config['dir_path'] = dir_path
     app = web.Application(loop=loop)
+    app.block_ip_cache = {}
     app['config'] = config
     app.on_startup.append(init_db)
     app.on_startup.append(static_hash)

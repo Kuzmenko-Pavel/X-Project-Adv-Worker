@@ -57,12 +57,25 @@ define([
         this.mouse_move = function () {
             if (!this.adsparams.mouse_move) {
                 this.adsparams.mouse_move = true;
+                this.render.other();
+            }
+        };
+        this.move_shake = function () {
+        };
+        this.touch = function () {
+            if (!this.adsparams.touch) {
+                this.adsparams.touch = true;
+                this.render.other();
             }
         };
         this.cd_open = function () {
             if (!this.adsparams.debug) {
                 this.adsparams.console_detect = true;
                 this.render.console_detect();
+                YottosLib.setCook('yt_cd', 1, {
+                    'max-age': 86400,
+                    'domain': '.yottos.com'
+                });
             }
         };
         this.cd_close = function () {

@@ -56,7 +56,8 @@ def error_pages(overrides):
 async def customer_middleware(app, handler):
     async def middleware(request):
         request.is_customer = False
-        ip = '127.0.0.1'
+        request.console_detect = False
+        request.ip = '127.0.0.1'
         ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
         headers = request.headers
         x_real_ip = headers.get('X-Real-IP', headers.get('X-Forwarded-For', ''))
@@ -67,12 +68,12 @@ async def customer_middleware(app, handler):
             x_real_ip = None
 
         if x_real_ip is not None:
-            ip = x_real_ip
+            request.ip = x_real_ip
         else:
             try:
                 peername = request.transport.get_extra_info('peername')
                 if peername is not None and isinstance(peername, tuple):
-                    ip, _ = peername
+                    request.ip, _ = peername
             except Exception as ex:
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 
@@ -80,8 +81,12 @@ async def customer_middleware(app, handler):
         if request.cookies.get(cookie_name):
             request.is_customer = True
 
-        if not request.is_customer:
-            if ip_pattern.search(ip) is not None:
+        cookie_name = 'yt_cd'
+        if request.cookies.get(cookie_name):
+            request.console_detect = True
+
+        if not request.is_customer and not request.console_detect:
+            if ip_pattern.search(request.ip) is not None:
                 request.is_customer = True
 
         response = await handler(request)

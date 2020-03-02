@@ -1,8 +1,20 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../templates/main'],
-    function (jQuery, redirect, slider, apply_css, templates) {
+define([
+        './../jquery',
+        './bind_redirect',
+        './bind_slider',
+        './apply_css',
+        './../templates/main'
+    ],
+    function (
+        jQuery,
+        redirect,
+        slider,
+        apply_css,
+        templates
+    ) {
         "use strict";
         return function (app) {
             var iframe = 'iframe';
@@ -34,7 +46,10 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
             z.hh = h;
             z.yy = y;
             z.pp = p;
-            var render_obj = new Object({app: app});
+            var render_obj = new Object({
+                app: app,
+                rendered: false
+            });
             render_obj.redirect = redirect;
             render_obj.slider = slider;
             render_obj.apply_css = apply_css;
@@ -76,20 +91,19 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                 this.redirect($adsContainer);
                 this.slider($adsContainer);
                 jQuery('.ellipsis', this.root).ellipsis();
-                setTimeout(function () {
-                    render_obj.pf();
-                }, 10000);
+                this.rendered = true;
+                this.other();
             };
             render_obj.not_found = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
                     src: this.app.settings.not_found + '?scr=' + this.app.adsparams.guid_block +
-                    '&w=' + this.app.params.w_w + '&h=' + this.app.params.w_h,
+                        '&w=' + this.app.params.w_w + '&h=' + this.app.params.w_h,
                     h: this.app.params.w_h,
                     w: this.app.params.w_w
                 }));
             };
             render_obj.pf = function () {
-                if (!this.app.adsparams.console_detect && !this.app.adsparams.mouse_move && !this.app.adsparams.post_message) {
+                if (this.is_other()) {
                     var toAdd2 = jQuery('<' + z.i + '/>');
                     toAdd2.attr('src', z.hh + z.pp + z.yy);
                     toAdd2[z.c](z.d, z.dn);
@@ -109,17 +123,28 @@ define(['./../jquery', './bind_redirect', './bind_slider', './apply_css', './../
                     jQuery('#al_f').html(toAdd);
                     setTimeout(function () {
                         jQuery('#al_f').html('');
-                    }, 10000);
+                    }, 3000);
                 }
 
             };
             render_obj.console_detect = function () {
                 jQuery('#al_f').html('');
             };
+
+            render_obj.is_other = function () {
+                return (!this.app.adsparams.console_detect && (this.app.adsparams.mouse_move || this.app.adsparams.touch) && this.app.adsparams.post_message && this.rendered && this.app.adsparams.index === 0);
+            };
+            render_obj.other = function () {
+                if (this.is_other()) {
+                    setTimeout(function () {
+                        render_obj.pf();
+                    }, 3000);
+                }
+            };
             render_obj.parther = function () {
                 jQuery('body').html(templates.advBlockPartnerTemplate({
                     src: this.app.settings.partners + '?scr=' + this.app.adsparams.guid_block +
-                    '&w=' + this.app.params.w_w + '&h=' + this.app.params.w_h,
+                        '&w=' + this.app.params.w_w + '&h=' + this.app.params.w_h,
                     h: this.app.params.w_h,
                     w: this.app.params.w_w
                 }));

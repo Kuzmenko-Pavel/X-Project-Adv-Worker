@@ -91,5 +91,36 @@ define(['./underscore'], function (_) {
         }
         return post;
     };
+    YottosLib[prototype].setCook = function (
+        name,
+        value,
+        options
+    ) {
+        var defaults = {
+            path: '/'
+        };
+        if (window.location.protocol === "https:") {
+            defaults.secure = true;
+            defaults.same_site = 'None';
+        }
+        options = _.extend(options || {}, defaults);
+
+        if (options.expires && options.expires.toUTCString) {
+            options.expires = options.expires.toUTCString();
+        }
+        var updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        for (var optionKey in options) {
+            if (options.hasOwnProperty(optionKey)) {
+                var optionValue = options[optionKey];
+                if (optionValue !== '') {
+                    updatedCookie += "; " + optionKey;
+                    updatedCookie += "=" + optionValue;
+                }
+            }
+        }
+        console.log(updatedCookie);
+        document.cookie = updatedCookie;
+
+    };
     return new YottosLib();
 });

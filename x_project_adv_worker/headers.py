@@ -1,5 +1,5 @@
 __all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_device', 'cache', 'http2_push_preload',
-           'not_robot', 'detect_bot']
+           'not_robot', 'detect_bot', 'console_detect_log']
 import asyncio
 import functools
 from datetime import datetime, timedelta
@@ -277,6 +277,44 @@ def detect_bot():
                 args[0].request.bot = simple_parse(args[0].request.headers[hdrs.USER_AGENT]) == 'bt'
             else:
                 args[-1].bot = simple_parse(args[-1].headers[hdrs.USER_AGENT]) == 'bt'
+
+            if asyncio.iscoroutinefunction(func):
+                coro = func
+            else:
+                coro = asyncio.coroutine(func)
+
+            context = yield from coro(*args)
+            return context
+
+        return wrapped
+
+    return wrapper
+
+
+def console_detect_log():
+    def wrapper(func):
+        @asyncio.coroutine
+        @functools.wraps(func)
+        def wrapped(*args):
+            if isinstance(args[0], AbstractView):
+                request = args[0].request
+                if request.console_detect:
+                    if len(args[0].request.app.block_ip_cache) > 0:
+                        args[0].request.app.block_ip_cache = {}
+                    args[0].request.app.block_ip_cache[request.ip] = True
+                else:
+                    if args[0].request.app.block_ip_cache.get(request.ip):
+                        args[0].request.console_detect = True
+
+            else:
+                request = args[-1]
+                if request.console_detect:
+                    if len(args[-1].app.block_ip_cache) > 0:
+                        args[-1].app.block_ip_cache = {}
+                    args[-1].app.block_ip_cache[request.ip] = True
+                else:
+                    if args[-1].app.block_ip_cache.get(request.ip):
+                        args[-1].console_detect = True
 
             if asyncio.iscoroutinefunction(func):
                 coro = func
