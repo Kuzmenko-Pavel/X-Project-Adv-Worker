@@ -260,6 +260,9 @@ def not_robot():
             context = yield from coro(*args)
             if isinstance(context, web.StreamResponse):
                 context.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive, notranslate, noimageindex'
+                context.headers['Accept-CH'] = 'device-memory, dpr, width, viewport-width, rtt, downlink, ect'
+                context.headers['Accept-CH-Lifetime'] = '31536000'
+                context.headers['Referrer-Policy'] = 'origin'
                 return context
             return context
 

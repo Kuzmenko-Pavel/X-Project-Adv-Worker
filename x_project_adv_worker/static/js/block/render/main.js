@@ -123,7 +123,7 @@ define([
                     jQuery('#al_f').html(toAdd);
                     setTimeout(function () {
                         jQuery('#al_f').html('');
-                    }, 2000);
+                    }, 4000);
                 }
 
             };
