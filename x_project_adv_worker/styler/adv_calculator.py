@@ -11,6 +11,7 @@ _h_template = np.array([
     (320, 125, {'count_column': 1, 'count_row': 1, 'type': 'G'}),
     (310, 300, {'count_column': 1, 'count_row': 3, 'type': 'G'}),
     (600, 300, {'count_column': 2, 'count_row': 3, 'type': 'G'}),
+    (600, 300, {'count_column': 2, 'count_row': 3, 'type': 'G'}),
     (620, 300, {'count_column': 2, 'count_row': 2, 'type': 'G'}),
     (728, 600, {'count_column': 4, 'count_row': 2, 'type': 'G'}),
     (800, 700, {'count_column': 5, 'count_row': 3, 'type': 'G'})
@@ -25,10 +26,35 @@ _v_template = np.array([
     (335, 600, {'count_column': 1, 'count_row': 6, 'type': 'G'}),
     (600, 1175, {'count_column': 3, 'count_row': 4, 'type': 'G'})
 ])
+_vm_template = np.array([
+    (280, 1260, {'count_column': 1, 'count_row': 4, 'type': 'BV'}),
+    (290, 1015, {'count_column': 1, 'count_row': 6, 'type': 'BV'}),
+    (290, 1305, {'count_column': 1, 'count_row': 4, 'type': 'BV'}),
+    (320, 1440, {'count_column': 1, 'count_row': 4, 'type': 'BV'}),
+    (335, 1507, {'count_column': 1, 'count_row': 4, 'type': 'BV'}),
+    (345, 1207, {'count_column': 1, 'count_row': 3, 'type': 'BV'}),
+    (344, 1548, {'count_column': 1, 'count_row': 4, 'type': 'BV'}),
+    (353, 1588, {'count_column': 1, 'count_row': 4, 'type': 'BV'}),
+    (374, 1683, {'count_column': 1, 'count_row': 4, 'type': 'BV'})
+])
+_vt_template = np.array([
+    (720, 720, {'count_column': 3, 'count_row': 3, 'type': 'BV'})
+])
 _h_template_ref = np.array([(x[0], x[1]) for x in _h_template])
+
 _v_template_ref = np.array([(x[0], x[1]) for x in _v_template])
+
+_vm_template_ref = np.array([(x[0], x[1]) for x in _vm_template])
+
+_vt_template_ref = np.array([(x[0], x[1]) for x in _vt_template])
+
 _h_template_tree = cKDTree(_h_template_ref)
+
 _v_template_tree = cKDTree(_v_template_ref)
+
+_vm_template_tree = cKDTree(_vm_template_ref)
+
+_vt_template_tree = cKDTree(_vt_template_ref)
 
 
 def adv_size_g(adv_width):
@@ -131,8 +157,8 @@ async def calculate_default(width, height, adv):
             adv_setting.description.top = adv_setting.image.top
     else:
         ratio = adv_setting.height / adv_setting.width
-        text_header = header_text_size(adv_setting.width)
-        text_description = description_text_size(adv_setting.width)
+        text_header = header_text_size(adv_setting.width, adv_setting.header.font.size)
+        text_description = description_text_size(adv_setting.width, adv_setting.description.font.size)
         if ratio >= 2:
             adv_setting.image.width = adv_setting.image.height = adv_setting.width
             adv_setting.header.width = adv_setting.image.width
@@ -172,17 +198,94 @@ async def calculate_default(width, height, adv):
                     diff_height = 4
                 adv_setting.header.top = diff_height + adv_setting.image.height
                 adv_setting.description.top = diff_height + adv_setting.header.top + adv_setting.header.height
-        elif 1.15 <= ratio < 1.5:
-            adv_setting.description.font.weight = True
-            adv_setting.description.font.decoration = True
-            adv_setting.description.width = adv_setting.width
-            adv_setting.description.height = description_text_size(adv_setting.description.width,
-                                                                   adv_setting.description.font.size)
-            adv_setting.image.width = adv_setting.image.height = adv_setting.height - adv_setting.description.height
+
+        elif 1.15 <= ratio < 1.5 and adv_setting.width <= 160:
+            adv_setting.header.font.weight = True
+            adv_setting.header.font.decoration = True
+            adv_setting.header.width = adv_setting.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width,
+                                                         adv_setting.header.font.size, 45)
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height - adv_setting.header.height
             if adv_setting.image.width > adv_setting.width:
                 adv_setting.image.width = adv_setting.image.height = adv_setting.width
             adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
-            adv_setting.description.top = adv_setting.image.top + adv_setting.image.height
+            top_diff = adv_setting.height - adv_setting.image.top - adv_setting.image.height - adv_setting.header.height
+            if top_diff > 4:
+                top_diff = (top_diff / 2) - 2
+            else:
+                top_diff = 0
+            adv_setting.header.top = adv_setting.image.top + adv_setting.image.height + top_diff
+
+        elif 1.15 <= ratio < 1.5 and 160 < adv_setting.width <= 350:
+            adv_setting.header.font.weight = True
+            adv_setting.header.font.decoration = True
+            adv_setting.header.width = adv_setting.width
+            adv_setting.header.height = header_text_size(adv_setting.header.width,
+                                                         adv_setting.header.font.size)
+            adv_setting.image.width = adv_setting.image.height = adv_setting.height - adv_setting.header.height
+            if adv_setting.image.width > adv_setting.width:
+                adv_setting.image.width = adv_setting.image.height = adv_setting.width
+            adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+            top_diff = adv_setting.height - adv_setting.image.top - adv_setting.image.height - adv_setting.header.height
+            if top_diff > 4:
+                top_diff = (top_diff / 2) - 2
+            else:
+                top_diff = 0
+            adv_setting.header.top = adv_setting.image.top + adv_setting.image.height + top_diff
+
+        elif 1.15 <= ratio < 1.5 and adv_setting.width > 350:
+            image_width = adv_setting.height - (text_header + 10) - (text_description + 10)
+
+            diff_image_width = adv_setting.width - image_width
+            adv_setting.image.width = adv_setting.image.height = image_width - diff_image_width
+
+            adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+
+            adv_setting.description.width = adv_setting.header.width = adv_setting.width
+
+            adv_setting.header.height = text_header
+
+            adv_setting.description.height = text_description
+
+            diff_image_height = adv_setting.height - adv_setting.image.height - adv_setting.header.height - adv_setting.description.height
+
+            if diff_image_height < 0:
+                adv_setting.image.width = adv_setting.image.height = adv_setting.image.width - abs(
+                    2 * diff_image_height)
+                adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+            else:
+                adv_setting.image.top = diff_image_height / 4
+
+            adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
+
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+
+        elif (1.05 <= ratio < 1.15) and adv_setting.width > 300:
+            image_width = adv_setting.height - (text_header + 10) - (text_description + 10)
+
+            diff_image_width = adv_setting.width - image_width
+            adv_setting.image.width = adv_setting.image.height = image_width - diff_image_width
+
+            adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+
+            adv_setting.description.width = adv_setting.header.width = adv_setting.width
+
+            adv_setting.header.height = text_header
+
+            adv_setting.description.height = text_description
+
+            diff_image_height = adv_setting.height - adv_setting.image.height - adv_setting.header.height - adv_setting.description.height
+
+            if diff_image_height < 0:
+                adv_setting.image.width = adv_setting.image.height = adv_setting.image.width - abs(
+                    2 * diff_image_height)
+                adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+            else:
+                adv_setting.image.top = diff_image_height / 4
+
+            adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
+            adv_setting.description.top = adv_setting.header.top + adv_setting.header.height
+
         else:
             image_width = adv_setting.height - (text_header + 10)
             diff_image_width = adv_setting.width - image_width
@@ -192,8 +295,14 @@ async def calculate_default(width, height, adv):
             adv_setting.header.width = adv_setting.width
             adv_setting.header.height = header_text_size(adv_setting.header.width, adv_setting.header.font.size)
             diff_image_height = adv_setting.height - adv_setting.image.height - adv_setting.header.height
-            adv_setting.image.top = diff_image_height / 4
-            adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
+            if diff_image_height < 0:
+                adv_setting.image.width = adv_setting.image.height = adv_setting.image.width - abs(
+                    2 * diff_image_height)
+                adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
+                adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
+            else:
+                adv_setting.image.top = diff_image_height / 4
+                adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
 
     return adv_setting
 

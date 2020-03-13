@@ -16,7 +16,7 @@ class Params(object):
     __slots__ = ['width', 'height', 'guid_block', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
                  'exclude', 'is_webp', 'host', 'token', 'thematics', 'thematics_exclude',
                  'retargeting_account_exclude', 'retargeting_dynamic_exclude',
-                 'raw_retargeting', 'retargeting', 'time_start', 'test', 'retargeting_list']
+                 'raw_retargeting', 'retargeting', 'time_start', 'test', 'retargeting_list', 'mediaQ', 'lc', 'vw', 'vh']
 
     def __init__(self, request, data):
         self.width = 0
@@ -42,6 +42,10 @@ class Params(object):
         self.thematics = list()
         self.retargeting = dict()
         self.retargeting_list = list()
+        self.mediaQ = 'd'
+        self.lc = 0
+        self.vw = 0
+        self.vh = 0
         try:
             self.__loads__(request, data)
         except Exception as ex:
@@ -61,6 +65,12 @@ class Params(object):
         self.index = int(data.get('index', self.index))
         self.is_webp = bool(data.get('is_webp', self.is_webp))
         self.time_start = int(data.get('time_start', self.time_start))
+        self.mediaQ = str(data.get('mediaQ', self.mediaQ))
+        if self.mediaQ not in ['d', 'm', 't']:
+            self.mediaQ = 'd'
+        self.lc = int(float(data.get('w', self.lc)))
+        self.vw = int(float(data.get('w', self.vw)))
+        self.vh = int(float(data.get('w', self.vh)))
 
         self.exclude = [str(x) for x in data.get('exclude', []) if str(x).strip()]
         if not self.exclude:

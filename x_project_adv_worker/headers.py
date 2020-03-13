@@ -10,6 +10,7 @@ from aiohttp import web, hdrs
 from aiohttp.abc import AbstractView
 
 from x_project_adv_worker.user_agents import simple_parse
+from x_project_adv_worker import __version__
 
 
 def cookie(name='yottos_unique_id', domain='.yottos.com', days=365):
@@ -195,14 +196,35 @@ def http2_push_preload(links=None):
         @asyncio.coroutine
         @functools.wraps(func)
         def wrapped(*args):
+            name = 'bhpp'
+            domain = 'rg.yottos.com'
+            days = 30
+            expires = datetime.utcnow() + timedelta(days=days)
+            user_cookie_expires = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
+            user_cookie_max_age = 60 * 60 * 24 * days
+            if isinstance(args[0], AbstractView):
+                request = args[0].request
+            else:
+                request = args[-1]
+            user_cookie = request.cookies.get(name)
             if asyncio.iscoroutinefunction(func):
                 coro = func
             else:
                 coro = asyncio.coroutine(func)
             context = yield from coro(*args)
             if isinstance(context, web.StreamResponse):
-                if links:
+                if links and user_cookie != __version__:
                     context.headers[hdrs.LINK] = '%s' % ','.join(links)
+
+                context.set_cookie(name, __version__,
+                                   expires=user_cookie_expires,
+                                   domain=domain,
+                                   secure=True,
+                                   max_age=user_cookie_max_age)
+                try:
+                    context._cookies[name]['samesite'] = None
+                except Exception:
+                    pass
             return context
 
         return wrapped
@@ -242,7 +264,7 @@ def cache(expire):
                 coro = asyncio.coroutine(func)
             context = yield from coro(*args)
             if isinstance(context, web.StreamResponse):
-                context.headers[hdrs.CACHE_CONTROL] = 'max-age'
+                context.headers[hdrs.CACHE_CONTROL] = 'max-age=%s' % str(expire)
             return context
         return wrapped
     return wrapper

@@ -48,6 +48,10 @@ define([
             data.cost = this[app].uh.cost_user.get();
             data.gender = this[app].uh.gender_user.get();
             data.thematics = this[app].uh.thematics.get();
+            data.mediaQ = this[app][adsparams].mediaQ;
+            data.lc = this[app][adsparams].lc;
+            data.vw = this[app][adsparams].vw;
+            data.vh = this[app][adsparams].vh;
             data[retargeting] = this[app].uh.retargeting.get();
             data[index] = parseInt(this[app][adsparams].index);
             if (!_.isNumber(data[index])) {

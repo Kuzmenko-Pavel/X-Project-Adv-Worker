@@ -1,7 +1,9 @@
 from math import ceil
 from x_project_adv_worker.utils import Map
 from .adv_calculator import (adv_calculator, adv_size_calculator, style_type, _h_template, _v_template,
-                             _h_template_ref, _v_template_ref, _h_template_tree, _v_template_tree)
+                             _h_template_ref, _v_template_ref, _h_template_tree, _v_template_tree,
+                             _vm_template, _vm_template_ref, _vm_template_tree,
+                             _vt_template, _vt_template_ref, _vt_template_tree)
 from .adv_settings import AdvSetting
 from .block_settings import BlockSetting
 from .resetter import reset_css
@@ -9,10 +11,10 @@ from .styles import full
 
 
 class Styler(object):
-    __slots__ = ['adv_style', 'adv_data', 'block']
+    __slots__ = ['adv_style', 'adv_data', 'block', 'mediaQ', 'lc', 'vw', 'vh']
     style_type = style_type
 
-    def __init__(self, width, height):
+    def __init__(self, params):
         self.adv_style = {
             'Block': 'Block',
             'RetBlock': 'RetBlock',
@@ -20,8 +22,12 @@ class Styler(object):
         }
         self.adv_data = {}
         self.block = BlockSetting()
-        self.block.width = width
-        self.block.height = height
+        self.block.width = params.width
+        self.block.height = params.height
+        self.mediaQ = params.mediaQ
+        self.lc = params.lc
+        self.vw = params.vw
+        self.vh = params.vh
         self._default_size_calculate(True)
 
     def merge(self, data=None):
@@ -91,8 +97,15 @@ class Styler(object):
         try:
             block_width = int(self.block.get_width())
             block_height = int(self.block.get_height())
-            idx = _v_template_tree.query_ball_point((block_width, block_height), 10)
-            points = _v_template[idx]
+            if self.mediaQ == 'm':
+                idx = _vm_template_tree.query_ball_point((block_width, block_height), 10)
+                points = _vm_template[idx]
+            elif self.mediaQ == 't':
+                idx = _vt_template_tree.query_ball_point((block_width, block_height), 10)
+                points = _vt_template[idx]
+            else:
+                idx = _v_template_tree.query_ball_point((block_width, block_height), 10)
+                points = _v_template[idx]
             if points.size > 0:
                 self.block.styling_adv.count_column = points[0][2]['count_column']
                 self.block.styling_adv.count_row = points[0][2]['count_row']
@@ -154,25 +167,43 @@ class Styler(object):
             self.block.default_adv = Map(self.block.styling_adv)
 
     def _v_default_size_calculate(self, default=None):
+        block_width_border = 300.0
+        if self.mediaQ == 'm':
+            block_width_border = 600.0
+
         if self._v_template_calculate(default):
             return
         adv_type = self.block.styling_adv.type
         block_width = self.block.get_width()
         block_height = self.block.get_height()
-        count_column = ceil(block_width / 300.0)
+        count_column = ceil(block_width / block_width_border)
         if count_column < 1:
             count_column = 1
         adv_width = block_width / count_column
         adv_count_by_width = round(block_height / (adv_width + ((round(320 / adv_width) * 14) * 2)))
-        if adv_width > 200 and adv_count_by_width < 4:
+
+        # print(adv_width, adv_count_by_width)
+        if adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
             adv_type = 'G'
             adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif 160 <= adv_width <= 200 and adv_count_by_width < 4:
+        elif 160 <= adv_width <= 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
             adv_type = 'GV'
             adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif adv_width < 160 and adv_count_by_width < 4:
+        elif adv_width < 160 and adv_count_by_width < 4 and self.mediaQ == 'd':
+            adv_type = 'V'
+            adv_height = adv_size_calculator[adv_type](adv_width)
+
+        elif adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 't':
+            adv_type = 'G'
+            adv_height = adv_size_calculator[adv_type](adv_width)
+
+        elif 160 <= adv_width <= 200 and adv_count_by_width < 4 and self.mediaQ == 't':
+            adv_type = 'GV'
+            adv_height = adv_size_calculator[adv_type](adv_width)
+
+        elif adv_width < 160 and adv_count_by_width < 4 and self.mediaQ == 't':
             adv_type = 'V'
             adv_height = adv_size_calculator[adv_type](adv_width)
 
@@ -180,11 +211,12 @@ class Styler(object):
             adv_type = 'BV'
             adv_height = adv_size_calculator[adv_type](adv_width)
         count_row = round(block_height / adv_height)
-
+        # print(count_column, count_row)
         while True:
             if count_row < 1:
                 count_row = 1
             new_height = count_row * adv_height
+            # print('new_height > block_height', new_height > block_height, new_height, block_height)
             if new_height > block_height:
                 difference = (new_height - block_height) / count_row
                 if round(difference) < 4:
@@ -234,9 +266,11 @@ class Styler(object):
                 if key in self.adv_data.keys():
                     variable['adv_style'][key] = self.adv_data[key]
                 else:
-                    variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.default_adv))
+                    tmp_adv_setting = await adv_calculator[value](width, height, self.block.default_adv)
+                    variable['adv_style'][key] = dict(tmp_adv_setting)
             else:
-                variable['adv_style'][key] = dict(await adv_calculator[value](width, height, self.block.styling_adv))
+                tmp_adv_setting = await adv_calculator[value](width, height, self.block.styling_adv)
+                variable['adv_style'][key] = dict(tmp_adv_setting)
 
         return variable
 

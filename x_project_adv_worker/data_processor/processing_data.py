@@ -19,7 +19,7 @@ class ProcessingData(object):
 
     def __init__(self, request, data):
         self.params = Params(request, data)
-        self.styler = Styler(self.params.width, self.params.height)
+        self.styler = Styler(self.params)
         self.block = dict()
         self.campaigns = dict()
         self.id_block = 0

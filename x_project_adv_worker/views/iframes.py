@@ -3,6 +3,7 @@ import ujson
 import aiohttp_jinja2
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.headers import *
+from x_project_adv_worker import __version__
 import random
 import string
 
@@ -17,12 +18,13 @@ class IframesView(web.View):
     @csp()
     @cors()
     @console_detect_log()
-    @http2_push_preload(['</v2/static/js/block.js?v=5.3>; as=script; rel=preload;'])
+    @http2_push_preload(['</v2/static/js/block.js?v=' + __version__ + '>; as=script; rel=preload;'])
     async def get_data(self):
         post = await self.request.post()
         query = self.request.query
         is_webp = self.request.is_webp
         cookie = self.request.user_cookie
+        mediaQ = post.get('m', query.get('m', 'd'))
         country = post.get('country', query.get('country', ''))
         region = post.get('region', query.get('region', ''))
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
@@ -39,6 +41,18 @@ class IframesView(web.View):
         rand = post.get('rand', query.get('rand', 0))
         origin = post.get('origin', query.get('origin', '*'))
         ip = post.get('ip', query.get('ip', ''))
+        try:
+            lc = post.get('lc', query.get('lc', 0))
+        except Exception:
+            lc = 0
+        try:
+            vw = post.get('vw', query.get('vw', 0))
+        except Exception:
+            vw = 0
+        try:
+            vh = post.get('vh', query.get('vh', 0))
+        except Exception:
+            vh = 0
         try:
             h = int(float(post.get('h', query.get('h'))))
         except Exception:
@@ -87,8 +101,13 @@ class IframesView(web.View):
                 'post_message': False,
                 'is_customer': is_customer,
                 'is_bot': is_bot,
+                'mediaQ': mediaQ,
+                'lc': lc,
+                'vw': vw,
+                'vh': vh
             }),
             'index': index,
+            'version': __version__,
             'console_detect': console_detect,
             'is_customer': is_customer,
             'is_bot': is_bot,
@@ -100,8 +119,13 @@ class IframesView(web.View):
         response = aiohttp_jinja2.render_template('block.html', self.request, data)
         return response
 
+    @not_robot()
+    @cache(expire=3600)
+    @csp()
+    @console_detect_log()
     async def get(self):
-        return await self.get_data()
+        response = aiohttp_jinja2.render_template('empty.html', self.request, {})
+        return response
 
     async def post(self):
         return await self.get_data()
