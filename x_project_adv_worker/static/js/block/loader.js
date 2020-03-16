@@ -40,6 +40,7 @@ define([
                     }
                     if (this.name === name){
                         if (this[action]){
+                            console.log(action);
                             this[action](e.origin);
                         }
                     }

@@ -77,6 +77,12 @@ define([
             data.b.id = this[app].advertise.id;
             data.b.aid = this[app].advertise.aid;
             data.b.sid = this[app].advertise.sid;
+            data.b.vw = this[app][adsparams].vw;
+            data.b.vh = this[app][adsparams].vh;
+            data.b.w = this.w_w;
+            data.b.h = this.w_h;
+            data.b.loc = this[app][adsparams].location;
+            data.b.ref = this[app][adsparams].referrer;
             data.p.c = this[app][adsparams].cookie;
             data.p.r = this[app][adsparams].request;
             data.p.a = this[app].logger.logging;

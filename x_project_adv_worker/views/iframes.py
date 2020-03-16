@@ -40,6 +40,8 @@ class IframesView(web.View):
             index = 0
         rand = post.get('rand', query.get('rand', 0))
         origin = post.get('origin', query.get('origin', '*'))
+        location = post.get('location', query.get('location', '*'))
+        referrer = post.get('referrer', query.get('referrer', '*'))
         ip = post.get('ip', query.get('ip', ''))
         try:
             lc = post.get('lc', query.get('lc', 0))
@@ -56,11 +58,11 @@ class IframesView(web.View):
         try:
             h = int(float(post.get('h', query.get('h'))))
         except Exception:
-            h = ''
+            h = 0
         try:
             w = int(float(post.get('w', query.get('w'))))
         except Exception:
-            w = ''
+            w = 0
         post_message = True if post.get('post', 'false') == 'true' else False
         rend_id = ''.join(
             random.SystemRandom().choice(string.ascii_lowercase) for _ in range(1)
@@ -90,6 +92,8 @@ class IframesView(web.View):
                 'cookie': cookie,
                 'is_webp': is_webp,
                 'origin': origin,
+                'location': location,
+                'referrer': referrer,
                 'post': post_message,
                 'w': w,
                 'h': h,
