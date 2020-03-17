@@ -82,7 +82,7 @@ class HTMLCompress(Extension):
             return
         for idx, other_tag in enumerate(reversed(ctx.stack)):
             if other_tag == tag:
-                for num in xrange(idx + 1):
+                for num in range(idx + 1):
                     ctx.stack.pop()
             elif not self.breaking_rules.get(other_tag):
                 break
@@ -147,10 +147,10 @@ class SelectiveHTMLCompress(HTMLCompress):
                 yield Token(stream.current.lineno, 'data', value)
             else:
                 yield stream.current
-            stream.next()
+            next(stream)
 
 
-def test():
+def testHTMLCompress():
     from jinja2 import Environment
     env = Environment(extensions=[HTMLCompress])
     tmpl = env.from_string('''
@@ -171,6 +171,9 @@ def test():
     ''')
     print(tmpl.render(title=42, href='index.html'))
 
+
+def testSelectiveHTMLCompress():
+    from jinja2 import Environment
     env = Environment(extensions=[SelectiveHTMLCompress])
     tmpl = env.from_string('''
         Normal   <span>  unchanged </span> stuff
@@ -189,4 +192,5 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    testHTMLCompress()
+    testSelectiveHTMLCompress()

@@ -11,8 +11,8 @@ from x_project_adv_worker.data_processor import DataProcessor
 
 class AdvertisesView(web.View):
 
-    @not_robot()
     @xml_http_request()
+    @not_robot()
     @cookie()
     @cors()
     @detect_device()
@@ -24,11 +24,17 @@ class AdvertisesView(web.View):
         })
         data = {}
         try:
-            data = await self.request.json(loads=ujson.loads)
-            if isinstance(data, dict):
+            try:
+                data = await self.request.json(loads=ujson.loads)
+            except ValueError:
+                logger.error('JSON Fail %s' % await self.request.text())
+
+            if isinstance(data, dict) and data:
                 data['device'] = self.request.device
                 data_processor = DataProcessor(self.request, data)
                 result = await data_processor()
+            else:
+                logger.error('Empty Data')
         except asyncio.CancelledError:
             logger.error('CancelledError DataProcessor %s' % str(time.time() - self.request.start_time))
         except Exception as ex:
