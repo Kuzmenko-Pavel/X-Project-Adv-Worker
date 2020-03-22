@@ -28,9 +28,7 @@ define([
         var app = this.app;
         var uh = app.uh;
         if (server_obj.block.id === undefined){
-            if (!this.app.adsparams.test) {
-                this.app.render.not_found();
-            }
+            return this.app.render.not_found();
         }
         else{
             app.logger.offer_status = 'initial';
@@ -41,6 +39,9 @@ define([
             this.header_html = server_obj.block.header_html;
             this.css = server_obj.css;
             this.offers = server_obj.offers;
+            if (server_obj.test) {
+                this.app.adsparams.test = true;
+            }
             if (server_obj.clean.thematic) {
                 uh.thematic_clean(true);
             }
@@ -73,6 +74,9 @@ define([
                     }
                     return app.loader();
                 }
+                else if (this.recall++ >= 3) {
+                    return this.app.render.not_found();
+                }
             }
             app.render.render();
             app.logger.offer_status = 'complite';
@@ -88,12 +92,13 @@ define([
         }
         return offer;
     };
-    Advertise.prototype.click = function (id) {
+    Advertise.prototype.click = function (item) {
         var key = [
             'exclude_click',
             'retargeting_exclude_click',
             'thematics'
         ];
+        var id = '' + item.data('id');
         var app = this.app;
         app.logger.block_initial();
         app.logger.log();
@@ -101,10 +106,7 @@ define([
         app.logger.log();
         var uh = app.uh;
         var offer = this.get(id);
-        var popup = window.open(offer.url, '_blank');
-        // if (popup) {
-        //     popup.moveTo(0, 0);
-        // }
+        item.attr("href", offer.url + '&r=1');
         uh.load(key);
         if (offer.retargeting) {
             uh[key[1]].add(offer.id, 1);

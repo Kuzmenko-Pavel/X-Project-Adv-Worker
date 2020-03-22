@@ -6,6 +6,7 @@ from random import randint, choice
 from asyncio import ensure_future, gather
 from itertools import zip_longest
 
+from x_project_adv_worker import __dummy_block__
 from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.data_processor.processing_data import ProcessingData
 from x_project_adv_worker.data_processor.utm_converter import UtmConverter
@@ -28,7 +29,8 @@ class DataProcessor(object):
                 'account_retargeting': None,
                 'dynamic_retargeting': None
             },
-            'parther': False
+            'parther': False,
+            'test': False
         })
         self.app = request.app
         self.processing_data = ProcessingData(request, data)
@@ -110,13 +112,17 @@ class DataProcessor(object):
         else:
             self.processing_data.block = await self.app.query.get_block(block_src=self.processing_data.guid_block)
             if not self.processing_data.block:
-                return False
+                self.processing_data.params.test = True
+                self.processing_data.block = await self.app.query.get_block(block_src=__dummy_block__)
+                if not self.processing_data.block:
+                    return False
 
             self.processing_data.campaigns = await  self.app.query.get_campaigns(
                 id_block=self.processing_data.block.get('id', 0),
                 processing_data=self.processing_data
             )
-        self.app.block_cache[self.processing_data.guid_block] = self.processing_data.block.get('id', 0)
+        if not self.processing_data.params.test:
+            self.app.block_cache[self.processing_data.guid_block] = self.processing_data.block.get('id', 0)
         await self.block_processing()
         await self.campaigns_processing()
         return True
@@ -373,6 +379,9 @@ class DataProcessor(object):
         return images
 
     def click_cost_calc(self, offer):
+        if self.processing_data.params.test:
+            return 0, 0
+
         if offer['campaign']['payment_model'] in [CampaignPaymentModel.ppc, CampaignPaymentModel.auto]:
             cost_percent = offer['block']['cost_percent']
             cost_proportion = offer['block']['click_cost_proportion']
@@ -458,6 +467,8 @@ class DataProcessor(object):
         })
 
     def impression_cost_calc(self, offer):
+        if self.processing_data.params.test:
+            return 0, 0
         if offer['campaign']['payment_model'] == CampaignPaymentModel.ppi:
             cost_percent = offer['block']['cost_percent']
             cost_proportion = offer['block']['impression_cost_proportion']
@@ -470,7 +481,7 @@ class DataProcessor(object):
                 ccr = cost_min
             if cost_max and ccr > cost_max:
                 ccr = cost_max
-            return ccr, ccl
+            return ccr / 1000, ccl / 1000
         return 0, 0
 
     async def create_offer(self, offer, recomendet=False, capacity=0):

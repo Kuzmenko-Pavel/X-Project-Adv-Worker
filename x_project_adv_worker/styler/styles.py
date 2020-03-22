@@ -196,6 +196,20 @@ white-space: normal;
 image-rendering: -webkit-optimize-contrast;
 behavior: url(./PIE.htc);
 }
+a, a:hover, a:focus, a:active {
+padding: 0;
+margin: 0;
+border: 0;
+outline: 0;
+color: transparent;
+background-color: transparent;
+text-decoration: none;
+cursor: unset;
+display: inline;
+font-size: 0;
+line-height: 0;
+border-style: none;
+}
 .ellipsis {
     white-space: nowrap;
     overflow: hidden;

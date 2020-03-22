@@ -48,6 +48,7 @@ class ProcessingData(object):
     def parther(self):
         if not self.social_branch:
             try:
+                # TODO переделать в regexp
                 if self.params.test or any(
                         [parther_disable in self.params.host for parther_disable in parther_disable_hosts]):
                     self.social_branch = True

@@ -3,7 +3,7 @@ import ujson
 import aiohttp_jinja2
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.headers import *
-from x_project_adv_worker import __version__
+from x_project_adv_worker import __version__, __dummy_block__
 import random
 import string
 
@@ -28,7 +28,13 @@ class IframesView(web.View):
         country = post.get('country', query.get('country', ''))
         region = post.get('region', query.get('region', ''))
         test = True if post.get('test', query.get('test', 'false')) == 'true' else False
-        guid_block = post.get('scr', query.get('scr', '9200beb4-b468-11e5-a497-00e081bad802'))
+        guid_block = post.get('scr', query.get('scr'))
+
+        # For not valid block
+        if guid_block is None:
+            guid_block = __dummy_block__
+            test = True
+
         auto = True if post.get('auto', query.get('auto', 'false')) == 'true' else False
         console_detect = True if post.get('cd', query.get('cd', 'true')) == 'true' else False
         is_customer = self.request.is_customer

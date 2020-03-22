@@ -1,5 +1,7 @@
 <% for(var offer in offers) { %>
-<div data-id='<%= offers[offer].id %>' class='<%= offers[offer].style_class %>'>
+<a data-id='<%= offers[offer].id %>' referrerpolicy="origin" rel="nofollow dns-prefetch noopener sponsored noindex"
+   href="<%= offers[offer].url %>" target="_blank">
+    <div class='<%= offers[offer].style_class %>'>
 <div class='ellipsis multiline header'><%= offers[offer].title %></div>
 <div class='ellipsis multiline description'><%= offers[offer].description %></div>
 <div class='ellipsis cost'><%= offers[offer].price %></div>
@@ -14,4 +16,5 @@
 </div>
 <div class="ellipsis button"><%= offers[offer].button %></div>
 </div>
+</a>
 <% } %>

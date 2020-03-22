@@ -15,8 +15,8 @@ define([
         _.each(items, function(element, index, list) {
             var el = jQuery(element);
             var slideCount = el.find('img').length;
-            var slideWidth = el.find('img').width();
-            var slideHeight = el.find('img').height();
+            var slideWidth = el.find('img').outerWidth(true);
+            var slideHeight = el.find('img').outerHeight(true);
             var sliderUlWidth = slideCount * slideWidth;
             if (slideHeight <=0){
                 slideHeight = 'auto';
@@ -32,7 +32,6 @@ define([
                 el.find('div.control_next').unbind();
 
                 el.find('div.control_prev').click(function (event) {
-                    event.stopPropagation();
                     var el = jQuery(event.target).parent();
                     var slideWidth = el.find('img').width();
                     el.find('ul').animate({
@@ -41,9 +40,12 @@ define([
                         el.find('li:last-child').prependTo(el.find('ul'));
                         el.find('ul').css({'left': '',zoom: 1});
                     });
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    return false;
                 });
                 el.find('div.control_next').click(function (event) {
-                    event.stopPropagation();
                     var el = jQuery(event.target).parent();
                     var slideWidth = el.find('img').width();
                     el.find('ul').animate({
@@ -52,6 +54,10 @@ define([
                         el.find('li:first-child').appendTo(el.find('ul'));
                         el.find('ul').css({'left': '',zoom: 1});
                     });
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    return false;
                 });
             }
             else

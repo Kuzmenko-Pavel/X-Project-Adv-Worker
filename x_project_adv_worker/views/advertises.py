@@ -19,8 +19,16 @@ class AdvertisesView(web.View):
     async def post(self):
         result = dict({
             'css': '',
-            'block': {},
-            'offers': {},
+            'block': dict(),
+            'offers': list(),
+            'clean': {
+                'place': True,
+                'social': True,
+                'account_retargeting': True,
+                'dynamic_retargeting': True
+            },
+            'parther': False,
+            'test': False
         })
         data = {}
         try:
