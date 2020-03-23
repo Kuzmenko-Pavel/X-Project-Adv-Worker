@@ -45,6 +45,7 @@ class AdvertisesView(web.View):
                 logger.error('Empty Data')
         except asyncio.CancelledError:
             logger.error('CancelledError DataProcessor %s' % str(time.time() - self.request.start_time))
+            logger.error(exception_message(request=str(self.request.message), data=data))
         except Exception as ex:
             logger.error(exception_message(time=str(time.time() - self.request.start_time),
                                            exc=str(ex), request=str(self.request.message), data=data))
