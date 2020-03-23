@@ -325,7 +325,7 @@ def console_detect_log():
             if isinstance(args[0], AbstractView):
                 request = args[0].request
                 if request.console_detect:
-                    if len(args[0].request.app.block_ip_cache) > 0:
+                    if len(args[0].request.app.block_ip_cache) > 1000:
                         args[0].request.app.block_ip_cache = {}
                     args[0].request.app.block_ip_cache[request.ip] = True
                 else:
@@ -335,7 +335,7 @@ def console_detect_log():
             else:
                 request = args[-1]
                 if request.console_detect:
-                    if len(args[-1].app.block_ip_cache) > 0:
+                    if len(args[-1].app.block_ip_cache) > 1000:
                         args[-1].app.block_ip_cache = {}
                     args[-1].app.block_ip_cache[request.ip] = True
                 else:
