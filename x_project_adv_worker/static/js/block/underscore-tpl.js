@@ -15,48 +15,63 @@
  * https://github.com/dciccale/requirejs-underscore-tpl/blob/master/LICENSE-MIT
  */
 
-define(['./underscore', 'text'], function (_, text) {
+define([
+    './underscore',
+    'text'
+], function (
+    _,
+    text
+) {
 
-  'use strict';
+    'use strict';
 
-  var buildMap = {};
+    var buildMap = {};
 
-  var tpl = {
-    version: '0.1.0',
+    var tpl = {
+        version: '0.1.0',
 
-    load: function (name, req, onLoadNative, config) {
-      var onLoad = function (content) {
+        load: function (
+            name,
+            req,
+            onLoadNative,
+            config
+        ) {
+            var onLoad = function (content) {
 
-        // Merge settings
-        _.extend(_.templateSettings, config.underscoreTemplateSettings || {});
+                // Merge settings
+                _.extend(_.templateSettings, config.underscoreTemplateSettings || {});
 
-        // compile the template
-        content = _.template(content);
+                // compile the template
+                content = _.template(content);
 
-        /* jshint ignore:start */
-        if (config.isBuild) {
-          content = buildMap[name] = content.source;
-        } else {
-          content = new Function('obj', 'return ' + content.source)();
+                /* jshint ignore:start */
+                if (config.isBuild) {
+                    content = buildMap[name] = content.source;
+                } else {
+                    content = new Function('obj', 'return ' + content.source)();
+                }
+                /* jshint ignore:end */
+
+                onLoadNative(content);
+            };
+
+            // load template using the text plugin
+            text.load(name, req, onLoad, config);
+        },
+
+        write: function (
+            pluginName,
+            moduleName,
+            write
+        ) {
+            if (buildMap.hasOwnProperty(moduleName)) {
+                write('define("' + pluginName + '!' + moduleName + '", ["underscore"], function(_) { ' +
+                    'return ' + buildMap[moduleName] + ';' +
+                    '});\n'
+                );
+            }
         }
-        /* jshint ignore:end */
+    };
 
-        onLoadNative(content);
-      };
-
-      // load template using the text plugin
-      text.load(name, req, onLoad, config);
-    },
-
-    write: function (pluginName, moduleName, write) {
-      if (buildMap.hasOwnProperty(moduleName)) {
-        write('define("' + pluginName + '!' + moduleName + '", ["underscore"], function(_) { ' +
-          'return ' + buildMap[moduleName] + ';' +
-        '});\n'
-        );
-      }
-    }
-  };
-
-  return tpl;
+    return tpl;
 });

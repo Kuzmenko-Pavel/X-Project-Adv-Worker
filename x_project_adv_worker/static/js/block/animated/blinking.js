@@ -2,6 +2,7 @@
  * Created by kuzmenko-pavel on 14.04.17.
  */
 define(['./../jquery'], function (jQuery) {
+    "use strict";
     return function (elements) {
         if (this.mouseInBlock) {
             return;
@@ -13,7 +14,7 @@ define(['./../jquery'], function (jQuery) {
             ) {
                 setTimeout(function () {
                     jQuery(el).stop().fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-                }, 500 + ( i * 500 ));
+                }, 500 + (i * 500));
             });
         }
     };

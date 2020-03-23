@@ -118,9 +118,48 @@ define(['./underscore'], function (_) {
                 }
             }
         }
-        console.log(updatedCookie);
         document.cookie = updatedCookie;
 
+    };
+    YottosLib[prototype].setUrlParameter = function (
+        url,
+        key,
+        value
+    ) {
+        var urlQueryString;
+        key = encodeURIComponent(key);
+        value = encodeURIComponent(value);
+
+        var baseUrl = url.split('?')[0],
+            newParam = key + '=' + value,
+            params = '?' + newParam;
+
+        if (url.split('?')[1] === undefined) {
+            urlQueryString = '';
+        } else {
+            urlQueryString = '?' + url.split('?')[1];
+        }
+
+        if (urlQueryString) {
+            var updateRegex = new RegExp('([\?&])' + key + '=[^&]*');
+            var removeRegex = new RegExp('([\?&])' + key + '=[^&;]+[&;]?');
+
+            if (value === undefined || value === null || value === '') {
+                params = urlQueryString.replace(removeRegex, "$1");
+                params = params.replace(/[&;]$/, "");
+
+            } else if (urlQueryString.match(updateRegex) !== null) {
+                params = urlQueryString.replace(updateRegex, "$1" + newParam);
+
+            } else if (urlQueryString === '') {
+                params = '?' + newParam;
+            } else {
+                params = urlQueryString + '&' + newParam;
+            }
+        }
+        params = params === '?' ? '' : params;
+
+        return baseUrl + params;
     };
     return new YottosLib();
 });

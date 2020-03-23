@@ -2,6 +2,7 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../underscore'], function (_) {
+    "use strict";
     var prototype = 'prototype';
     var GenderUser = function () {
         this.gender = void 0;

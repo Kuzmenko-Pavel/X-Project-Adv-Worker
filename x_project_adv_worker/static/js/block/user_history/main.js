@@ -29,6 +29,7 @@ define([
         // ActivityAccount,
         // ActivityUser
     ) {
+        "use strict";
         var prototype = 'prototype';
         var UserHistory = function () {
             // this.searchengines = new FixedQueue(3);

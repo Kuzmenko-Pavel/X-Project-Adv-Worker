@@ -2,19 +2,19 @@
 <a data-id='<%= offers[offer].id %>' referrerpolicy="origin" rel="nofollow dns-prefetch noopener sponsored noindex"
    href="<%= offers[offer].url %>" target="_blank">
     <div class='<%= offers[offer].style_class %>'>
-<div class='ellipsis multiline header'><%= offers[offer].title %></div>
-<div class='ellipsis multiline description'><%= offers[offer].description %></div>
-<div class='ellipsis cost'><%= offers[offer].price %></div>
-<div class='imageCon' data-image-id='<%= offers[offer].id %>' data-image-index='<%= offer %>'>
-<div class='control_next'>>></div>
-<div class='control_prev'><<</div>
-<ul>
-<% for(var image in offers[offer].images) { %>
-<li><img src="<%= offers[offer].images[image] %>" alt=""/></li>
-<% } %>
-</ul>
-</div>
-<div class="ellipsis button"><%= offers[offer].button %></div>
-</div>
+        <div class='ellipsis multiline header'><%= offers[offer].title %></div>
+        <div class='ellipsis multiline description'><%= offers[offer].description %></div>
+        <div class='ellipsis cost'><%= offers[offer].price %></div>
+        <div class='imageCon' data-image-id='<%= offers[offer].id %>' data-image-index='<%= offer %>'>
+            <div class='control_next'>>></div>
+            <div class='control_prev'><<</div>
+            <ul>
+                <% for(var image in offers[offer].images) { %>
+                <li><img src="<%= offers[offer].images[image] %>" alt=""/></li>
+                <% } %>
+            </ul>
+        </div>
+        <div class="ellipsis button"><%= offers[offer].button %></div>
+    </div>
 </a>
 <% } %>

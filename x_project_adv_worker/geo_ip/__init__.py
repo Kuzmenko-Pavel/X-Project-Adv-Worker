@@ -1,5 +1,6 @@
-import os
 import GeoIP
+import os
+
 from geoip2.database import Reader, MODE_MEMORY
 
 

@@ -1,8 +1,9 @@
 import argparse
-import uvloop
 import asyncio
 import os
 import sys
+
+import uvloop
 
 try:
     from http.cookies import Morsel
@@ -15,7 +16,7 @@ from aiohttp import web
 import aiohttp_debugtoolbar
 from trafaret_config import commandline
 
-from x_project_adv_worker.logger import logger, exception_message
+from x_project_adv_worker.logger import logger
 from x_project_adv_worker.db import init_db
 from x_project_adv_worker.static_hash import static_hash
 from x_project_adv_worker.templates import init_templates

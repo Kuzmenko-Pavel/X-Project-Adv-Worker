@@ -34,7 +34,7 @@ define([
     JSON,
     jQuery
     ) {
-
+    "use strict";
         if (!Date.now) {
             Date.now = function now() {
                 return new Date().getTime();
@@ -50,7 +50,10 @@ define([
             },
             cache: false,
             timeout: 0,
-            beforeSend: function (xhr, settings) {
+            beforeSend: function (
+                xhr,
+                settings
+            ) {
                 if (settings.params && settings.param) {
                     settings.data = settings.params.generateRequestData(settings.param);
                 }
@@ -79,15 +82,24 @@ define([
         });
 
         jQuery.fn.ellipsis = function () {
-            var height = function (t, el) {
+            var height = function (
+                t,
+                el
+            ) {
                 return t.height() > el.height();
             };
 
-            var width = function (t, el) {
+            var width = function (
+                t,
+                el
+            ) {
                 return t.width() > el.width();
             };
 
-            var wordwrap = function (str, width) {
+            var wordwrap = function (
+                str,
+                width
+            ) {
                 return str;
                 // width = (width ? width : 75);
                 // if (!str) { return str; }

@@ -14,6 +14,6 @@ async def static_hash(app):
 async def sha256_checksum(filename):
     sha256 = hashlib.sha256()
     with open(filename, 'rb') as f:
-        for block in iter(lambda: f.read(2**10), b''):
+        for block in iter(lambda: f.read(2 ** 10), b''):
             sha256.update(block)
     return sha256.digest()

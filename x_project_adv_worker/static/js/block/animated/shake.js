@@ -6,6 +6,7 @@ define([
     './jquery.easing',
     './jquery.transform2d'
 ], function (jQuery) {
+    "use strict";
     return function (elements) {
         if (this.mouseInBlock) {
             return;

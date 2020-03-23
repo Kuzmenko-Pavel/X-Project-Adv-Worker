@@ -191,7 +191,7 @@ async def calculate_default(width, height, adv):
                 adv_setting.description.height = description_text_size(adv_setting.description.width,
                                                                        adv_setting.description.font.size)
                 diff_height = (adv_setting.height - (
-                adv_setting.image.height + adv_setting.image.top + adv_setting.header.height + adv_setting.description.height)) / 2
+                        adv_setting.image.height + adv_setting.image.top + adv_setting.header.height + adv_setting.description.height)) / 2
                 if diff_height <= 0:
                     diff_height = 0
                 elif 4 < diff_height:
@@ -429,17 +429,20 @@ async def calculate_style_1(width, height, adv):
             adv_setting.description.height = description_text_size(adv_setting.description.width,
                                                                    adv_setting.description.font.size)
             adv_setting.header.z = 1
-            diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (adv_setting.description.height / 2)
+            diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (
+                    adv_setting.description.height / 2)
             if diff_description_center < 0:
                 adv_setting.image.top = 0
                 adv_setting.description.top = adv_setting.height - adv_setting.description.height
                 adv_setting.header.top = (adv_setting.image.top + adv_setting.image.height) - (
-                adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
+                        adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
             else:
                 adv_setting.image.top = diff_description_center / 2
                 adv_setting.header.top = (adv_setting.image.top + adv_setting.image.height) - (
-                adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
-                adv_setting.description.top = adv_setting.header.top + (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0]) + diff_description_center
+                        adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
+                adv_setting.description.top = adv_setting.header.top + (
+                        adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[
+                    0]) + diff_description_center
 
 
         else:
@@ -456,14 +459,19 @@ async def calculate_style_1(width, height, adv):
             # if diff < adv_setting.description.height:
             #     adv_setting.description.height = diff
             adv_setting.header.z = 1
-            diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (adv_setting.description.height / 2)
+            diff_description_center = ((adv_setting.height - adv_setting.image.width) / 2) - (
+                    adv_setting.description.height / 2)
             if diff_description_center < 0:
                 adv_setting.description.z = 1
                 adv_setting.description.top = adv_setting.height - adv_setting.description.height
-                adv_setting.header.top = adv_setting.description.top - (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
+                adv_setting.header.top = adv_setting.description.top - (
+                        adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
             else:
-                adv_setting.header.top = adv_setting.image.height - (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
-                adv_setting.description.top = adv_setting.header.top + (adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0]) + diff_description_center
+                adv_setting.header.top = adv_setting.image.height - (
+                        adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[0])
+                adv_setting.description.top = adv_setting.header.top + (
+                        adv_setting.header.height + adv_setting.header.padding[2] + adv_setting.header.padding[
+                    0]) + diff_description_center
 
     cost_size = adv_setting.image.width / (12 * 0.6)
     if cost_size < adv_setting.cost.font.size:
@@ -506,7 +514,7 @@ async def calculate_style_1(width, height, adv):
         adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height + diff_button_logo_block
         if (adv_setting.logo.button.top + adv_setting.logo.button.height) > adv_setting.logo.height:
             adv_setting.logo.button.top = adv_setting.logo.height - (
-            adv_setting.logo.button.height + (adv_setting.logo.button.border * 2))
+                    adv_setting.logo.button.height + (adv_setting.logo.button.border * 2))
     else:
         logo_block_height = adv_setting.logo.height / 3
         diff_img_logo_block = (logo_block_height - 50)
@@ -525,7 +533,7 @@ async def calculate_style_1(width, height, adv):
             adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height
             if adv_setting.logo.button.top + adv_setting.logo.button.height + 2 > adv_setting.logo.height:
                 adv_setting.logo.button.top = adv_setting.logo.button.top - (
-                (adv_setting.logo.button.top + adv_setting.logo.button.height + 2) - adv_setting.logo.height)
+                        (adv_setting.logo.button.top + adv_setting.logo.button.height + 2) - adv_setting.logo.height)
 
     return adv_setting
 
@@ -628,7 +636,7 @@ async def calculate_style_2(width, height, adv):
                                                                adv_setting.description.font.size, 22)
 
         diff_top = (adv_setting.height - (
-        adv_setting.description.height + adv_setting.header.height + adv_setting.image.height + 20)) / 3
+                adv_setting.description.height + adv_setting.header.height + adv_setting.image.height + 20)) / 3
 
         if diff_top < 0:
             diff_top = 0
@@ -678,7 +686,7 @@ async def calculate_style_2(width, height, adv):
             adv_setting.logo.button.top = adv_setting.logo.header.top + adv_setting.logo.header.height
             if adv_setting.logo.button.top + adv_setting.logo.button.height + 2 > adv_setting.logo.height:
                 adv_setting.logo.button.top = adv_setting.logo.button.top - (
-                (adv_setting.logo.button.top + adv_setting.logo.button.height + 2) - adv_setting.logo.height)
+                        (adv_setting.logo.button.top + adv_setting.logo.button.height + 2) - adv_setting.logo.height)
 
     return adv_setting
 

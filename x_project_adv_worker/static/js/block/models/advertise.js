@@ -3,11 +3,14 @@
  */
 define([
     './../jquery',
-    './../underscore'
+    './../underscore',
+    './../ytl'
 ], function (
     jQuery,
-    _
+    _,
+    YottosLib
 ) {
+    "use strict";
     var Advertise = function (app) {
         this.recall = 0;
         this.app = app;
@@ -27,10 +30,10 @@ define([
     ) {
         var app = this.app;
         var uh = app.uh;
-        if (server_obj.block.id === undefined){
+        if (server_obj.block.id === undefined) {
             return this.app.render.not_found();
         }
-        else{
+        else {
             app.logger.offer_status = 'initial';
             this.id = server_obj.block.id;
             this.aid = server_obj.block.aid;
@@ -59,7 +62,7 @@ define([
                 uh.exclude_click_clean(true);
                 uh.retargeting_click_clean(true);
             }
-            if (this.offers.length === 0){
+            if (this.offers.length === 0) {
                 uh.exclude_clean(true);
                 uh.retargeting_clean(true);
                 uh.retargeting_account_clean(true);
@@ -93,12 +96,17 @@ define([
         return offer;
     };
     Advertise.prototype.click = function (item) {
+        var ti = this.app.adsparams.ti || 0;
+        var href = item.attr("href");
+        item.attr("href", YottosLib.setUrlParameter(href, 'r', ti));
+        setTimeout(_.bind(this.click_post, this), 0, item.data('id'));
+    };
+    Advertise.prototype.click_post = function (id) {
         var key = [
             'exclude_click',
             'retargeting_exclude_click',
             'thematics'
         ];
-        var id = '' + item.data('id');
         var app = this.app;
         app.logger.block_initial();
         app.logger.log();
@@ -106,7 +114,6 @@ define([
         app.logger.log();
         var uh = app.uh;
         var offer = this.get(id);
-        item.attr("href", offer.url + '&r=1');
         uh.load(key);
         if (offer.retargeting) {
             uh[key[1]].add(offer.id, 1);
@@ -120,6 +127,7 @@ define([
         uh.save(key);
         app.adsparams.request = 'rotate';
         app.loader();
+
     };
     return Advertise;
 });

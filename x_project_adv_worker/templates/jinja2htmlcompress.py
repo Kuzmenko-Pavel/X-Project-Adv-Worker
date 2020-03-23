@@ -10,10 +10,10 @@
     :license: BSD, see LICENSE for more details.
 """
 import re
+
+from jinja2 import TemplateSyntaxError
 from jinja2.ext import Extension
 from jinja2.lexer import Token, describe_token
-from jinja2 import TemplateSyntaxError
-
 
 _tag_re = re.compile(r'(?:<(/?)([a-zA-Z0-9_-]+)\s*|(>\s*))(?s)')
 _ws_normalize_re = re.compile(r'[ \t\r\n]+')
@@ -65,7 +65,7 @@ class HTMLCompress(Extension):
     def is_breaking(self, tag, other_tag):
         breaking = self.breaking_rules.get(other_tag)
         return breaking and (tag in breaking or
-            ('#block' in breaking and tag in self.block_elements))
+                             ('#block' in breaking and tag in self.block_elements))
 
     def enter_tag(self, tag, ctx):
         while ctx.stack and self.is_breaking(tag, ctx.stack[-1]):
@@ -90,6 +90,7 @@ class HTMLCompress(Extension):
     def normalize(self, ctx):
         pos = 0
         buffer = []
+
         def write_data(value):
             if not self.is_isolated(ctx.stack):
                 value = _ws_normalize_re.sub(' ', value.strip())
@@ -128,7 +129,7 @@ class SelectiveHTMLCompress(HTMLCompress):
         while 1:
             if stream.current.type == 'block_begin':
                 if stream.look().test('name:strip') or \
-                   stream.look().test('name:endstrip'):
+                        stream.look().test('name:endstrip'):
                     stream.skip()
                     if stream.current.value == 'strip':
                         strip_depth += 1

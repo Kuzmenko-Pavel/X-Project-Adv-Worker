@@ -4,9 +4,9 @@ import ujson
 
 from aiohttp import web
 
+from x_project_adv_worker.data_processor import DataProcessor
 from x_project_adv_worker.headers import *
 from x_project_adv_worker.logger import logger, exception_message
-from x_project_adv_worker.data_processor import DataProcessor
 
 
 class AdvertisesView(web.View):
@@ -35,7 +35,10 @@ class AdvertisesView(web.View):
             try:
                 data = await self.request.json(loads=ujson.loads)
             except ValueError:
-                logger.error('JSON Fail %s' % await self.request.text())
+                logger.error(exception_message(msg='JSON Fail %s' % await self.request.text(),
+                                               request=str(self.request.message)
+                                               )
+                             )
 
             if isinstance(data, dict) and data:
                 data['device'] = self.request.device
@@ -45,7 +48,12 @@ class AdvertisesView(web.View):
                 logger.error('Empty Data')
         except asyncio.CancelledError:
             logger.error('CancelledError DataProcessor %s' % str(time.time() - self.request.start_time))
-            logger.error(exception_message(request=str(self.request.message), data=data))
+            if (time.time() - self.request.start_time) > 1:
+                logger.error(exception_message(
+                    msg='CancelledError DataProcessor %s' % str(time.time() - self.request.start_time),
+                    request=str(self.request.message),
+                    data=data)
+                )
         except Exception as ex:
             logger.error(exception_message(time=str(time.time() - self.request.start_time),
                                            exc=str(ex), request=str(self.request.message), data=data))

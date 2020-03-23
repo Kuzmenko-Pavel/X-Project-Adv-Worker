@@ -1,7 +1,8 @@
 __all__ = ['UtmConverter']
-from trans import trans
-from urllib.parse import urlparse, urlencode, parse_qsl, urlunparse, quote
 import random
+from urllib.parse import urlparse, urlencode, parse_qsl, urlunparse, quote
+
+from trans import trans
 
 
 class UtmConverter:

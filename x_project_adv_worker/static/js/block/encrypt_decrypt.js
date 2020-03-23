@@ -2,7 +2,11 @@
  * Created by kuzmenko-pavel on 18.04.17.
  */
 define(function () {
-    return function encryptDecrypt(key, input) {
+    "use strict";
+    return function encryptDecrypt(
+        key,
+        input
+    ) {
         key = key.split('');
         var output = [];
 

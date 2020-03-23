@@ -8,6 +8,7 @@ define([
     JSON,
     _
 ) {
+    "use strict";
     var Params = function (app) {
         this.app = app;
         this.w_h = 0;
@@ -33,10 +34,11 @@ define([
         var exclude = 'exclude';
         var index = 'index';
         var app = 'app';
-        if (req_type === 'advertises'){
+        if (req_type === 'advertises') {
             this[app].uh.load();
             data.w = this.w_w;
             data.h = this.w_h;
+            data.ti = this[app][adsparams].ti;
             data.guid_block = this[app][adsparams].guid_block;
             data.auto = this[app][adsparams].auto;
             data.country = this[app][adsparams].country;
@@ -63,7 +65,7 @@ define([
             data[retargeting + '_dynamic_' + exclude] = this[app].uh.retargeting_exclude_get();
             data[retargeting] = this[app].uh.retargeting.get();
         }
-        else if (req_type === 'log'){
+        else if (req_type === 'log') {
             var complite = this[app].logger.logging === 'complite';
             var key = [
                 'exclude',

@@ -1,4 +1,5 @@
 from jinja2 import Template
+
 from x_project_adv_worker.utils import css_minifier
 
 macro_template = """

@@ -3,9 +3,9 @@ import os
 import unittest
 
 from ua_parser import user_agent_parser
+
 from . import compat
 from .parsers import parse, simple_parse
-
 
 iphone_ua_string = 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B179 Safari/7534.48.3'
 ipad_ua_string = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10'
@@ -56,7 +56,6 @@ simple_android_firefox_aurora_ua = simple_parse(android_firefox_aurora_ua_string
 simple_thunderbird_ua = simple_parse(thunderbird_ua_string)
 simple_outlook_ua = simple_parse(outlook_usa_string)
 simple_chromebook_ua = simple_parse(chromebook_ua_string)
-
 
 iphone_ua = parse(iphone_ua_string)
 ipad_ua = parse(ipad_ua_string)
@@ -423,7 +422,8 @@ class UserAgentsTest(unittest.TestCase):
         self.assertEqual(str(windows_rt_ua), "PC / Windows RT / IE 10.0")
         self.assertEqual(str(blackberry_torch_ua), "BlackBerry 9800 / BlackBerry OS 6.0.0 / BlackBerry WebKit 6.0.0")
         self.assertEqual(str(blackberry_bold_ua), "BlackBerry 9700 / BlackBerry OS 5.0.0 / BlackBerry 9700")
-        self.assertEqual(str(blackberry_bold_touch_ua), "BlackBerry 9930 / BlackBerry OS 7.0.0 / BlackBerry WebKit 7.0.0")
+        self.assertEqual(str(blackberry_bold_touch_ua),
+                         "BlackBerry 9930 / BlackBerry OS 7.0.0 / BlackBerry WebKit 7.0.0")
         self.assertEqual(str(j2me_opera_ua), "Generic Feature Phone / Other / Opera Mini 9.80")
         self.assertEqual(str(ie_ua), "PC / Windows 8 / IE 10.0")
         self.assertEqual(str(ie_touch_ua), "PC / Windows 8 / IE 10.0")

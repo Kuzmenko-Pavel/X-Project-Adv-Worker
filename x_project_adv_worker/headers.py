@@ -2,15 +2,15 @@ __all__ = ['cookie', 'csp', 'detect_webp', 'xml_http_request', 'cors', 'detect_d
            'not_robot', 'detect_bot', 'console_detect_log']
 import asyncio
 import functools
-from datetime import datetime, timedelta
 import time
+from datetime import datetime, timedelta
 from uuid import uuid4
 
 from aiohttp import web, hdrs
 from aiohttp.abc import AbstractView
 
-from x_project_adv_worker.user_agents import simple_parse
 from x_project_adv_worker import __version__
+from x_project_adv_worker.user_agents import simple_parse
 
 
 def cookie(name='yottos_unique_id', domain='.yottos.com', days=365):
@@ -47,7 +47,9 @@ def cookie(name='yottos_unique_id', domain='.yottos.com', days=365):
                 except Exception:
                     pass
             return context
+
         return wrapped
+
     return wrapper
 
 
@@ -110,7 +112,9 @@ def csp():
                 context.headers['content-security-policy'] = '; '.join(csp)
                 return context
             return context
+
         return wrapped
+
     return wrapper
 
 
@@ -129,7 +133,9 @@ def detect_webp():
                 coro = asyncio.coroutine(func)
             context = yield from coro(*args)
             return context
+
         return wrapped
+
     return wrapper
 
 
@@ -152,7 +158,9 @@ def xml_http_request():
                 return context
             else:
                 raise web.HTTPForbidden()
+
         return wrapped
+
     return wrapper
 
 
@@ -188,7 +196,9 @@ def cors(allow_origin=None, allow_headers=None):
                 context.headers[hdrs.ACCESS_CONTROL_ALLOW_CREDENTIALS] = 'true'
                 context.headers[hdrs.ACCESS_CONTROL_ALLOW_METHODS] = '%s %s' % (hdrs.METH_GET, hdrs.METH_POST)
             return context
+
         return wrapped
+
     return wrapper
 
 
@@ -250,7 +260,9 @@ def detect_device():
 
             context = yield from coro(*args)
             return context
+
         return wrapped
+
     return wrapper
 
 
@@ -267,7 +279,9 @@ def cache(expire):
             if isinstance(context, web.StreamResponse):
                 context.headers[hdrs.CACHE_CONTROL] = 'max-age=%s' % str(expire)
             return context
+
         return wrapped
+
     return wrapper
 
 

@@ -1,7 +1,7 @@
-import socket
-from os import path
 import json
 import re
+import socket
+from os import path
 
 res = []
 json_path = path.join(path.dirname(path.abspath(__file__)), "customer_ips.json")

@@ -1,11 +1,14 @@
-from aiohttp import web
-import ujson
-import aiohttp_jinja2
-from x_project_adv_worker.styler import reset_css
-from x_project_adv_worker.headers import *
-from x_project_adv_worker import __version__, __dummy_block__
 import random
 import string
+import ujson
+
+import aiohttp_jinja2
+from aiohttp import web
+
+from x_project_adv_worker import __version__, __dummy_block__
+from x_project_adv_worker.headers import *
+from x_project_adv_worker.styler import reset_css
+from x_project_adv_worker.utils import encryptDecrypt
 
 
 class IframesView(web.View):
@@ -86,6 +89,7 @@ class IframesView(web.View):
 
         data = {
             'js': ujson.dumps({
+                'ti': encryptDecrypt('valid', ip),
                 'rend_id': rend_id,
                 'guid_block': guid_block,
                 'index': index,

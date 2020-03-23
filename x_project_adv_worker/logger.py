@@ -1,9 +1,9 @@
 import linecache
-import sys
-import traceback
 import logging
 import os
 import pprint
+import sys
+import traceback
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 logger = logging.getLogger('x_project_adv_worker_db_watcher')
@@ -14,7 +14,7 @@ consoleHandler.setFormatter(f)
 logger.addHandler(consoleHandler)
 
 
-def exception_message(*args, **kwargs):
+def exception_message(msg=None, *args, **kwargs):
     params = {'args': args, 'kwargs': kwargs}
     exc_type, exc_obj, tb = sys.exc_info()
     if exc_type and exc_obj and tb:
@@ -24,7 +24,10 @@ def exception_message(*args, **kwargs):
         filename = f.f_code.co_filename
         linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
-        return 'EXCEPTION IN {} LINE {} \n"{}": {} {} \nPARAMS:\n {}\n\n'.format(
+        return 'EXCEPTION IN {} LINE {} \n"{}": {} {} \nPARAMS:\n{}\n\n'.format(
             filename, lineno, line.strip(), exc_obj, trace, pprint.pformat(params))
     else:
-        return 'PARAMS:\n {}\n\n'.format(pprint.pformat(params))
+        if msg:
+            return 'MSG:{}\nPARAMS:\n{}\n\n'.format(msg, pprint.pformat(params))
+
+        return 'PARAMS:\n{}\n\n'.format(pprint.pformat(params))

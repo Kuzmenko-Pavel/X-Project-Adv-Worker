@@ -1,8 +1,8 @@
-from aiohttp import web
-import ujson
 import aiohttp_jinja2
-from x_project_adv_worker.styler import reset_css
+from aiohttp import web
+
 from x_project_adv_worker.headers import *
+from x_project_adv_worker.styler import reset_css
 
 
 class NotFoundView(web.View):

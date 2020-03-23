@@ -2,6 +2,7 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../json3'], function (JSON) {
+    "use strict";
     return function () {
         var storageTest = function (test) {
             JSON.parse("{}");

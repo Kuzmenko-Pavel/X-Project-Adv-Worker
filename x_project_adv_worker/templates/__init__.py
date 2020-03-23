@@ -1,5 +1,6 @@
 import aiohttp_jinja2
 import jinja2
+
 from x_project_adv_worker.templates.jinja2htmlcompress import HTMLCompress
 
 
@@ -12,4 +13,3 @@ def init_templates(app):
         enable_async=True,
         extensions=[HTMLCompress]
     )
-

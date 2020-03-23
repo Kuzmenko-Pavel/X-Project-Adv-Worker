@@ -12,6 +12,7 @@ define([
     advBlockNotFoundTemplate,
     advBlockPartnerTemplate
 ) {
+    "use strict";
     return {
         advBlockTemplate: advBlockTemplate,
         advTemplate: advTemplate,

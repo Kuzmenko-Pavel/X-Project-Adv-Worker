@@ -1,7 +1,14 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['./../jquery', './../settings'], function (jQuery, settings) {
+define([
+    './../jquery',
+    './../settings'
+], function (
+    jQuery,
+    settings
+) {
+    "use strict";
     var initial = 'initial';
     var complite = 'complite';
     var Logger = function (app) {
@@ -69,7 +76,7 @@ define(['./../jquery', './../settings'], function (jQuery, settings) {
                 params: this.app.params,
                 param: settings.requiredData.offer_log.param
             }
-            );
+        );
     };
     return Logger;
 });

@@ -1,6 +1,6 @@
 import linecache
-import sys
 import re
+import sys
 
 import trafaret as T
 

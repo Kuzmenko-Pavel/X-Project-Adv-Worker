@@ -1,8 +1,17 @@
 /**
  * Created by kuzmenko-pavel on 18.04.17.
  */
-define(['./../jquery', './../underscore', './advertise'],
-    function (jQuery, _, advertise) {
+define([
+        './../jquery',
+        './../underscore',
+        './advertise'
+    ],
+    function (
+        jQuery,
+        _,
+        advertise
+    ) {
+        "use strict";
         return function () {
             this.params.size();
             if (this.params.w_w + this.params.w_h > 120 && this.params.w_w > 30 && this.params.w_h > 30) {

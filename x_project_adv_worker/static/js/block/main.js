@@ -6,5 +6,6 @@ require([
 ], function (
     Loader
 ) {
+    "use strict";
     (window.adsbyyottos = window.adsbyyottos || Loader).loader();
 });

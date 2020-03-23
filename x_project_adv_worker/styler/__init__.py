@@ -1,4 +1,7 @@
+from asyncio import CancelledError
 from math import ceil
+
+from x_project_adv_worker.logger import logger, exception_message
 from x_project_adv_worker.utils import Map
 from .adv_calculator import (adv_calculator, adv_size_calculator, style_type, _h_template, _v_template,
                              _h_template_ref, _v_template_ref, _h_template_tree, _v_template_tree,
@@ -121,140 +124,167 @@ class Styler(object):
         return False
 
     def _h_default_size_calculate(self, default=None):
-        if self._h_template_calculate(default):
-            return
+        try:
+            if self._h_template_calculate(default):
+                return
 
-        adv_type = self.block.styling_adv.type
-        block_width = self.block.get_width()
-        block_height = self.block.get_height()
-        count_column = 1.0
-        count_row = 1.0
-        if 150 < block_height < 200:
-            adv_height = block_height
-            count_column = round(block_width / (block_height - (round(320 / block_height) * 14)))
-            adv_width = block_width / count_column
-            adv_type = 'V'
-        else:
-            if block_width >=300 and block_height < 190:
-                count_column = ceil(block_width / 300.0)
-            elif block_width >= 300 and block_height >= 190:
-                count_column = round(block_width / 150.0)
-
-            if count_column == 1.0:
-                if block_height >= 300:
-                    count_row = ceil(block_height / 300.0)
-                elif 200 < block_height < 300:
-                    count_row = round(block_height / 100.0)
+            adv_type = self.block.styling_adv.type
+            block_width = self.block.get_width()
+            block_height = self.block.get_height()
+            count_column = 1.0
+            count_row = 1.0
+            if 150 < block_height < 200:
+                adv_height = block_height
+                count_column = round(block_width / (block_height - (round(320 / block_height) * 14)))
+                adv_width = block_width / count_column
+                adv_type = 'V'
             else:
-                if block_height >= 300:
-                    count_row = int(block_height / 150.0)
+                if block_width >= 300 and block_height < 190:
+                    count_column = ceil(block_width / 300.0)
+                elif block_width >= 300 and block_height >= 190:
+                    count_column = round(block_width / 150.0)
 
-            adv_height = block_height / count_row
-            adv_width = block_width / count_column
+                if count_column == 1.0:
+                    if block_height >= 300:
+                        count_row = ceil(block_height / 300.0)
+                    elif 200 < block_height < 300:
+                        count_row = round(block_height / 100.0)
+                else:
+                    if block_height >= 300:
+                        count_row = int(block_height / 150.0)
 
-        if adv_height >= adv_width:
-            adv_type = 'V'
-        else:
-            adv_type = 'G'
+                adv_height = block_height / count_row
+                adv_width = block_width / count_column
 
-        self.block.styling_adv.count_column = count_column
-        self.block.styling_adv.count_row = count_row
-        self.block.styling_adv.count_adv = count_row * count_column
-        self.block.styling_adv.type = adv_type
-        self.block.styling_adv.width = adv_width
-        self.block.styling_adv.height = adv_height
-        if default:
-            self.block.default_adv = Map(self.block.styling_adv)
+            if adv_height >= adv_width:
+                adv_type = 'V'
+            else:
+                adv_type = 'G'
+
+            self.block.styling_adv.count_column = count_column
+            self.block.styling_adv.count_row = count_row
+            self.block.styling_adv.count_adv = count_row * count_column
+            self.block.styling_adv.type = adv_type
+            self.block.styling_adv.width = adv_width
+            self.block.styling_adv.height = adv_height
+            if default:
+                self.block.default_adv = Map(self.block.styling_adv)
+        except CancelledError:
+            logger.error('CancelledError CSS _h_default_size_calculate')
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
 
     def _v_default_size_calculate(self, default=None):
-        block_width_border = 300.0
-        if self.mediaQ == 'm':
-            block_width_border = 600.0
+        try:
+            block_width_border = 300.0
+            if self.mediaQ == 'm':
+                block_width_border = 600.0
 
-        if self._v_template_calculate(default):
-            return
-        adv_type = self.block.styling_adv.type
-        block_width = self.block.get_width()
-        block_height = self.block.get_height()
-        count_column = ceil(block_width / block_width_border)
-        if count_column < 1:
-            count_column = 1
-        adv_width = block_width / count_column
-        adv_count_by_width = round(block_height / (adv_width + ((round(320 / adv_width) * 14) * 2)))
+            if self._v_template_calculate(default):
+                return
+            adv_type = self.block.styling_adv.type
+            block_width = self.block.get_width()
+            block_height = self.block.get_height()
+            count_column = ceil(block_width / block_width_border)
+            if count_column < 1:
+                count_column = 1
+            adv_width = block_width / count_column
+            adv_count_by_width = round(block_height / (adv_width + ((round(320 / adv_width) * 14) * 2)))
 
-        # print(adv_width, adv_count_by_width)
-        if adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
-            adv_type = 'G'
-            adv_height = adv_size_calculator[adv_type](adv_width)
+            # print(adv_width, adv_count_by_width)
+            if adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
+                adv_type = 'G'
+                adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif 160 <= adv_width <= 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
-            adv_type = 'GV'
-            adv_height = adv_size_calculator[adv_type](adv_width)
+            elif 160 <= adv_width <= 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
+                adv_type = 'GV'
+                adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif adv_width < 160 and adv_count_by_width < 4 and self.mediaQ == 'd':
-            adv_type = 'V'
-            adv_height = adv_size_calculator[adv_type](adv_width)
+            elif adv_width < 160 and adv_count_by_width < 4 and self.mediaQ == 'd':
+                adv_type = 'V'
+                adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 't':
-            adv_type = 'G'
-            adv_height = adv_size_calculator[adv_type](adv_width)
+            elif adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 't':
+                adv_type = 'G'
+                adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif 160 <= adv_width <= 200 and adv_count_by_width < 4 and self.mediaQ == 't':
-            adv_type = 'GV'
-            adv_height = adv_size_calculator[adv_type](adv_width)
+            elif 160 <= adv_width <= 200 and adv_count_by_width < 4 and self.mediaQ == 't':
+                adv_type = 'GV'
+                adv_height = adv_size_calculator[adv_type](adv_width)
 
-        elif adv_width < 160 and adv_count_by_width < 4 and self.mediaQ == 't':
-            adv_type = 'V'
-            adv_height = adv_size_calculator[adv_type](adv_width)
+            elif adv_width < 160 and adv_count_by_width < 4 and self.mediaQ == 't':
+                adv_type = 'V'
+                adv_height = adv_size_calculator[adv_type](adv_width)
 
-        else:
-            adv_type = 'BV'
-            adv_height = adv_size_calculator[adv_type](adv_width)
-        count_row = round(block_height / adv_height)
-        # print(count_column, count_row)
-        while True:
-            if count_row < 1:
-                count_row = 1
-            new_height = count_row * adv_height
-            # print('new_height > block_height', new_height > block_height, new_height, block_height)
-            if new_height > block_height:
-                difference = (new_height - block_height) / count_row
-                if round(difference) < 4:
-                    adv_height = adv_height - difference
-                    break
-                else:
-                    if adv_type in ['G', 'GV'] and (adv_height - difference > 80):
+            else:
+                adv_type = 'BV'
+                adv_height = adv_size_calculator[adv_type](adv_width)
+            count_row = round(block_height / adv_height)
+
+            while_counter = 0
+            while True:
+                if count_row < 1:
+                    count_row = 1
+                new_height = count_row * adv_height
+                if new_height > block_height:
+                    difference = (new_height - block_height) / count_row
+                    if round(difference) < 4:
                         adv_height = adv_height - difference
                         break
                     else:
-                        if count_row > 1:
-                            adv_height = block_height / count_row
-                        else:
-                            adv_height = block_height
+                        if adv_type in ['G', 'GV'] and (adv_height - difference > 80):
+                            adv_height = adv_height - difference
                             break
-                        count_row -= 1
-            else:
-                difference = (block_height - new_height) / count_row
-                if round(difference):
-                    adv_height = adv_height + difference
-                    break
+                        else:
+                            if count_row > 1:
+                                adv_height = block_height / count_row
+                            else:
+                                adv_height = block_height
+                                break
+                            count_row -= 1
                 else:
-                    if adv_type in ['GV'] and (adv_width > (adv_height + difference)):
+                    difference = (block_height - new_height) / count_row
+                    if round(difference):
                         adv_height = adv_height + difference
                         break
-                    if adv_type in ['V', 'BV'] and difference < (round(320 / adv_width) * 14):
-                        adv_height = adv_height + difference
+                    else:
+                        if adv_type in ['GV'] and (adv_width > (adv_height + difference)):
+                            adv_height = adv_height + difference
+                            break
+                        if adv_type in ['V', 'BV'] and difference < (round(320 / adv_width) * 14):
+                            adv_height = adv_height + difference
+                            break
                         break
+                while_counter += 1
+                if while_counter > 50:
+                    logger.error(exception_message(msg='CancelledError CSS _v_default_size_calculate while counter BIG',
+                                                   data={
+                                                       'count_row': count_row,
+                                                       'block_width': block_width,
+                                                       'block_height': block_height,
+                                                       'mediaQ': self.mediaQ,
+                                                       'lc': self.lc,
+                                                       'vw': self.vw,
+                                                       'vh': self.vh,
+                                                       'new_height': new_height,
+                                                       'adv_height': adv_height,
+                                                   }
+                                                   ))
                     break
 
-        self.block.styling_adv.count_column = count_column
-        self.block.styling_adv.count_row = count_row
-        self.block.styling_adv.count_adv = count_row * count_column
-        self.block.styling_adv.type = adv_type
-        self.block.styling_adv.width = adv_width
-        self.block.styling_adv.height = adv_height
-        if default:
-            self.block.default_adv = Map(self.block.styling_adv)
+            self.block.styling_adv.count_column = count_column
+            self.block.styling_adv.count_row = count_row
+            self.block.styling_adv.count_adv = count_row * count_column
+            self.block.styling_adv.type = adv_type
+            self.block.styling_adv.width = adv_width
+            self.block.styling_adv.height = adv_height
+            if default:
+                self.block.default_adv = Map(self.block.styling_adv)
+
+        except CancelledError:
+            logger.error('CancelledError CSS _v_default_size_calculate')
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
 
     async def _create_variable(self):
         variable = dict({'main': {}, 'adv_style': {}})

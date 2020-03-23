@@ -2,6 +2,7 @@
  * Created by kuzmenko-pavel on 13.04.17.
  */
 define(['./../underscore'], function (_) {
+    "use strict";
     var FixedQueue = function (size) {
         var queue = [];
         queue.fixedSize = size;
@@ -64,7 +65,7 @@ define(['./../underscore'], function (_) {
 
     };
     FixedQueue.clear = function () {
-        _.each(this || {}, function (
+        _.each(this || [], function (
             value,
             key,
             uh
@@ -75,10 +76,20 @@ define(['./../underscore'], function (_) {
         });
     };
     FixedQueue.get = function () {
+        var res = [];
+        _.each(this || [], function (
+            value,
+            key,
+            uh
+        ) {
+            if (!_.isUndefined(value) && !_.isFunction(value)) {
+                res.push(value);
+            }
+        });
         Array.prototype.splice.call(
-            this,
+            res,
             0,
-            (this.length - this.fixedSize)
+            (res.length - this.fixedSize)
         );
         return this;
     };

@@ -1,11 +1,13 @@
 (function (factory) {
     define(['./../jquery'], function (jQuery) {
+        "use strict";
         return factory(jQuery);
     });
 })(function (jQuery) {
     /*
      * Feature tests and global variables
      */
+    "use strict";
     var div = document.createElement("div"),
         divStyle = div.style,
         suffix = "Transform",
@@ -266,7 +268,7 @@
             case _scale:
 
                 value = value ?
-                    ( value = value.split(",") ) && [
+                    (value = value.split(",")) && [
                         parseFloat(value[0]),
                         parseFloat(value.length > 1 ? value[1] : type === _scale ? scaleX || value[0] : defaultValue + "")
                     ] :
@@ -359,7 +361,7 @@
                 if (end[i]) {
                     currEnd = end[i].split("(");
                 }
-                currType = jQuery.trim(( currStart || currEnd )[0]);
+                currType = jQuery.trim((currStart || currEnd)[0]);
 
                 append(list.start, parseFunction(currType, currStart ? currStart[1] : 0));
                 append(list.end, parseFunction(currType, currEnd ? currEnd[1] : 0));
@@ -456,7 +458,7 @@
                 computed,
                 asArray
             ) {
-                var elemStyle = ( computed && elem.currentStyle ? elem.currentStyle : elem.style ),
+                var elemStyle = (computed && elem.currentStyle ? elem.currentStyle : elem.style),
                     matrix, data;
 
                 if (elemStyle && rMatrix.test(elemStyle.filter)) {
@@ -514,7 +516,7 @@
                     "M22=" + value[3],
                     "SizingMethod='auto expand'"
                 ].join();
-                filter = ( currentStyle = elem.currentStyle ) && currentStyle.filter || elemStyle.filter || "";
+                filter = (currentStyle = elem.currentStyle) && currentStyle.filter || elemStyle.filter || "";
 
                 elemStyle.filter = rMatrix.test(filter) ?
                     filter.replace(rMatrix, Matrix) :

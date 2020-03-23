@@ -1,4 +1,5 @@
 define([], function () {
+    "use strict";
     var JSON = window.JSON || {};
     JSON.stringify = JSON.stringify || function (obj) {
         var t = typeof (obj);
@@ -15,7 +16,7 @@ define([], function () {
                 v = obj[n];
                 t = typeof (v);
 
-                if (t === "string"){
+                if (t === "string") {
                     v = '"' + v + '"';
                 }
                 else if (t === "object" && v !== null) {
@@ -27,11 +28,11 @@ define([], function () {
         }
     };
     JSON.parse = JSON.parse || function (str) {
-        if (str === ""){
+        if (str === "") {
             str = '""';
         }
         eval("var p=" + str + ";");
         return p;
     };
-    return  JSON;
+    return JSON;
 });

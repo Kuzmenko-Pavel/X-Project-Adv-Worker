@@ -1,4 +1,5 @@
 from x_project_adv_worker.utils import css_minifier
+
 reset_css = css_minifier('''
 html, body, div{
 padding: 0;

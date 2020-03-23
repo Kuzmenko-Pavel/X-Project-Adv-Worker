@@ -1,12 +1,17 @@
-define(['./../jquery', './../underscore'], function (jQuery, _) {
+define([
+    './../jquery',
+    './../underscore'
+], function (
+    jQuery,
+    _
+) {
+    "use strict";
     return function (el) {
-        if (document.createStyleSheet)
-        {
+        if (document.createStyleSheet) {
             var styleSheet = document.createStyleSheet("");
             styleSheet.cssText = this.app.advertise.css;
         }
-        else
-        {
+        else {
             jQuery('<style type="text/css">' + this.app.advertise.css + '</style>').appendTo(el);
         }
     };

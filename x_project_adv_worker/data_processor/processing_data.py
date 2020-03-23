@@ -1,6 +1,6 @@
 __all__ = ['ProcessingData']
-from x_project_adv_worker.styler import Styler
 from x_project_adv_worker.data_processor.params import Params
+from x_project_adv_worker.styler import Styler
 
 parther_disable_hosts = ('95.69.249.86', '31.202.102.69', '46.96.41.87', '178.150.140.80', '178.151.44.122',
                          '178.133.46.212', '193.70.46.140', '217.20.169.197', '85.90.199.33', '82.207.109.122',

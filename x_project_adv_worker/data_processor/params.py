@@ -1,12 +1,13 @@
 __all__ = ['Params']
-import time
 import re
+import time
+from asyncio import CancelledError
 from uuid import uuid4
+
 from geoip2.errors import AddressNotFoundError
 
-from x_project_adv_worker.utils import encryptDecrypt
 from x_project_adv_worker.logger import logger, exception_message
-
+from x_project_adv_worker.utils import encryptDecrypt
 
 ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 not_found = 'NOT FOUND'
@@ -15,7 +16,7 @@ not_found = 'NOT FOUND'
 class Params(object):
     __slots__ = ['width', 'height', 'guid_block', 'auto', 'country', 'region', 'device', 'cost', 'gender', 'index',
                  'exclude', 'is_webp', 'host', 'token', 'thematics', 'thematics_exclude',
-                 'retargeting_account_exclude', 'retargeting_dynamic_exclude',
+                 'retargeting_account_exclude', 'retargeting_dynamic_exclude', 'ti',
                  'raw_retargeting', 'retargeting', 'time_start', 'test', 'retargeting_list', 'mediaQ', 'lc', 'vw', 'vh']
 
     def __init__(self, request, data):
@@ -33,6 +34,7 @@ class Params(object):
         self.is_webp = False
         self.host = '127.0.0.1'
         self.token = ''
+        self.ti = ''
         self.time_start = int(time.time() * 1000)
         self.exclude = list([0])
         self.thematics_exclude = list([0])
@@ -48,6 +50,8 @@ class Params(object):
         self.vh = 0
         try:
             self.__loads__(request, data)
+        except CancelledError:
+            logger.error('CancelledError Params loads %s' % str(time.time() - request.start_time))
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), data=data))
 
@@ -66,6 +70,7 @@ class Params(object):
         self.is_webp = bool(data.get('is_webp', self.is_webp))
         self.time_start = int(data.get('time_start', self.time_start))
         self.mediaQ = str(data.get('mediaQ', self.mediaQ))
+        self.ti = str(data.get('ti', self.ti))
         if self.mediaQ not in ['d', 'm', 't']:
             self.mediaQ = 'd'
         self.lc = int(float(data.get('w', self.lc)))

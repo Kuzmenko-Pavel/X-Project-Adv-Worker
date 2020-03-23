@@ -1,22 +1,21 @@
 __all__ = ['DataProcessor']
-import ujson
 import base64
 import time
-from random import randint, choice
-from asyncio import ensure_future, gather
+import ujson
+from asyncio import ensure_future, gather, CancelledError
 from itertools import zip_longest
+from random import randint, choice
 
 from x_project_adv_worker import __dummy_block__
-from x_project_adv_worker.logger import logger, exception_message
-from x_project_adv_worker.data_processor.processing_data import ProcessingData
-from x_project_adv_worker.data_processor.utm_converter import UtmConverter
-
 from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
                                               CampaignRemarketingType, BlockType)
+from x_project_adv_worker.data_processor.processing_data import ProcessingData
+from x_project_adv_worker.data_processor.utm_converter import UtmConverter
+from x_project_adv_worker.logger import logger, exception_message
 
 
 class DataProcessor(object):
-    __slots__ = ['data', 'app', 'processing_data']
+    __slots__ = ['data', 'app', 'processing_data', 'request']
 
     def __init__(self, request, data):
         self.data = dict({
@@ -32,6 +31,7 @@ class DataProcessor(object):
             'parther': False,
             'test': False
         })
+        self.request = request
         self.app = request.app
         self.processing_data = ProcessingData(request, data)
 
@@ -530,7 +530,12 @@ class DataProcessor(object):
         })
 
     async def css(self):
-        self.data['css'] = await self.processing_data.styler.calculate()
+        try:
+            self.data['css'] = await self.processing_data.styler.calculate()
+        except CancelledError:
+            logger.error('CancelledError CSS calculate %s' % str(time.time() - self.request.start_time))
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
 
     async def __call__(self):
         if await self.find_block():
