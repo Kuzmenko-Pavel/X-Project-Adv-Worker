@@ -29,12 +29,13 @@ def exception_message():
     return 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
 
 
-def encryptDecrypt(input, ip):
+def encryptDecrypt(k, ip):
+    if len(ip) < 1:
+        return '0'
     key = list(ip)
     output = []
-
-    for i in range(len(input)):
-        xor_num = ord(input[i]) ^ ord(key[i % len(key)])
+    for i in range(len(k)):
+        xor_num = ord(k[i]) ^ ord(key[i % len(key)])
         output.append(chr(xor_num))
 
     return ''.join(output)
