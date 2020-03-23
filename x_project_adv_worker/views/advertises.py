@@ -35,7 +35,8 @@ class AdvertisesView(web.View):
             try:
                 data = await self.request.json(loads=ujson.loads)
             except ValueError:
-                logger.error(exception_message(msg='JSON Fail %s' % await self.request.text(),
+                logger.error(exception_message(msg='JSON Fail',
+                                               text=await self.request.text(),
                                                request=str(self.request.message)
                                                )
                              )
@@ -56,6 +57,7 @@ class AdvertisesView(web.View):
                 )
         except Exception as ex:
             logger.error(exception_message(time=str(time.time() - self.request.start_time),
-                                           exc=str(ex), request=str(self.request.message), data=data))
+                                           exc=str(ex), request=str(self.request.message), data=data,
+                                           text=await self.request.text()))
 
         return web.json_response(result, dumps=ujson.dumps)

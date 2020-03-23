@@ -400,6 +400,7 @@ class DataProcessor(object):
     async def change_link(self, offer):
         ccr, ccl = self.click_cost_calc(offer)
         utm = UtmConverter(offer)
+        rev_token = self.processing_data.params.token[::-1]
         offer_url = await utm.url
         base64_url = base64.urlsafe_b64encode(str('\n'.join([
             'oid=%d',
@@ -439,7 +440,7 @@ class DataProcessor(object):
                                                       max(offer['block']['time_filter'],
                                                           offer['campaign']['time_filter'])
         )).encode('utf-8'))
-        params = 'a=%s&b=%s&c=%s' % (randint(1, 9), base64_url.decode('utf-8'), randint(1, 9))
+        params = 'a=%s&b=%s&c=%s&r=%s' % (randint(1, 9), base64_url.decode('utf-8'), randint(1, 9), rev_token)
         return 'https://click.yottos.com/click/rg?%s' % params
 
     async def create_logo(self, offer):
