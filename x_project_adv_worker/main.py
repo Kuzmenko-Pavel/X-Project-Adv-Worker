@@ -25,7 +25,7 @@ from x_project_adv_worker.middlewares import setup_middlewares
 from x_project_adv_worker.routes import setup_routes
 from x_project_adv_worker.utils import TRAFARET_CONF
 
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+uvloop.install()
 
 
 def init(loop, argv):
