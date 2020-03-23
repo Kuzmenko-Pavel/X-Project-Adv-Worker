@@ -1,4 +1,5 @@
 import random
+import re
 import string
 import ujson
 
@@ -9,6 +10,8 @@ from x_project_adv_worker import __version__, __dummy_block__
 from x_project_adv_worker.headers import *
 from x_project_adv_worker.styler import reset_css
 from x_project_adv_worker.utils import encryptDecrypt
+
+ip_regex = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 
 class IframesView(web.View):
@@ -51,7 +54,7 @@ class IframesView(web.View):
         origin = post.get('origin', query.get('origin', '*'))
         location = post.get('location', query.get('location', '*'))
         referrer = post.get('referrer', query.get('referrer', '*'))
-        ip = post.get('ip', query.get('ip', ''))
+        ip = post.get('ip', query.get('ip', self.request.ip))
         try:
             lc = post.get('lc', query.get('lc', 0))
         except Exception:
