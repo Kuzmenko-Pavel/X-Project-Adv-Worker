@@ -91,7 +91,7 @@ define(['./../underscore'], function (_) {
             0,
             (res.length - this.fixedSize)
         );
-        return this;
+        return res;
     };
     return FixedQueue;
 });
