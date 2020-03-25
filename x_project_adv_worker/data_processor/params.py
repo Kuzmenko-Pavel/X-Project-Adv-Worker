@@ -2,6 +2,7 @@ __all__ = ['Params']
 import re
 import time
 from asyncio import CancelledError
+from urllib.parse import unquote_plus
 from uuid import uuid4
 
 from geoip2.errors import AddressNotFoundError
@@ -70,7 +71,7 @@ class Params(object):
         self.is_webp = bool(data.get('is_webp', self.is_webp))
         self.time_start = int(data.get('time_start', self.time_start))
         self.mediaQ = str(data.get('mediaQ', self.mediaQ))
-        self.ti = str(data.get('ti', self.ti))
+        self.ti = unquote_plus(str(data.get('ti', self.ti)))
         if self.mediaQ not in ['d', 'm', 't']:
             self.mediaQ = 'd'
         self.lc = int(float(data.get('w', self.lc)))
@@ -121,7 +122,6 @@ class Params(object):
                 logger.error(exception_message(exc=str(ex), request=str(request._message)))
 
         self.token = encryptDecrypt('valid', self.host)
-
         if not self.country:
             try:
                 country_by_ip = request.app.GeoIPCountry2.country(self.host)

@@ -5,6 +5,7 @@ import ujson
 from asyncio import ensure_future, gather, CancelledError
 from itertools import zip_longest
 from random import randint, choice
+from urllib.parse import quote_plus
 
 from x_project_adv_worker import __dummy_block__
 from x_project_adv_worker.choiceTypes import (CampaignType, CampaignPaymentModel, CampaignStylingType,
@@ -400,7 +401,7 @@ class DataProcessor(object):
     async def change_link(self, offer):
         ccr, ccl = self.click_cost_calc(offer)
         utm = UtmConverter(offer)
-        rev_token = self.processing_data.params.token[::-1]
+        rev_token = quote_plus(self.processing_data.params.token[::-1])
         offer_url = await utm.url
         base64_url = base64.urlsafe_b64encode(str('\n'.join([
             'oid=%d',
