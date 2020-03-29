@@ -1,4 +1,5 @@
 import asyncio
+import json
 import time
 import ujson
 
@@ -33,22 +34,22 @@ class AdvertisesView(web.View):
         data = {}
         try:
             try:
-                data = await self.request.json(loads=ujson.loads)
-            except ValueError:
-                logger.error(exception_message(msg='JSON Fail',
-                                               text=await self.request.text(),
-                                               request=str(self.request.message)
-                                               )
-                             )
+                data = await self.request.json(loads=json.loads)
+            except json.decoder.JSONDecodeError:
+                logger.warning(exception_message(msg='JSON Fail',
+                                                 text=await self.request.text(),
+                                                 request=str(self.request.message)
+                                                 )
+                               )
 
             if isinstance(data, dict) and data:
                 data['device'] = self.request.device
                 data_processor = DataProcessor(self.request, data)
                 result = await data_processor()
             else:
-                logger.error('Empty Data')
+                logger.warning('Empty Data')
         except asyncio.CancelledError:
-            logger.error('CancelledError DataProcessor %s' % str(time.time() - self.request.start_time))
+            logger.warning('CancelledError DataProcessor %s' % str(time.time() - self.request.start_time))
             if (time.time() - self.request.start_time) > 1:
                 logger.error(exception_message(
                     msg='CancelledError DataProcessor %s' % str(time.time() - self.request.start_time),

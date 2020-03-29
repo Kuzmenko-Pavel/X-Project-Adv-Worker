@@ -249,9 +249,9 @@ def detect_device():
         @functools.wraps(func)
         def wrapped(*args):
             if isinstance(args[0], AbstractView):
-                args[0].request.device = simple_parse(args[0].request.headers[hdrs.USER_AGENT])
+                args[0].request.device = simple_parse(args[0].request.headers.get(hdrs.USER_AGENT, ''))
             else:
-                args[-1].device = simple_parse(args[-1].headers[hdrs.USER_AGENT])
+                args[-1].device = simple_parse(args[-1].headers.get(hdrs.USER_AGENT, ''))
 
             if asyncio.iscoroutinefunction(func):
                 coro = func
