@@ -18,6 +18,7 @@ define([
             list
         ) {
             jQuery(element).click(function (event) {
+                // event.isTrusted надо добавить
                 var item = jQuery(event.currentTarget);
                 app.advertise.click(item);
             });
