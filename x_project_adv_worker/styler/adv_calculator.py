@@ -172,11 +172,18 @@ async def calculate_default(width, height, adv):
             if adv_setting.height < 150:
                 image_width = adv_setting.height - text_header
                 diff_image_width = adv_setting.width - image_width
+
                 if 0 < diff_image_width < 10:
                     image_width = image_width - diff_image_width
                     adv_setting.image.width = adv_setting.image.height = image_width
                     adv_setting.image.left = (adv_setting.width - adv_setting.image.width) / 2
                     adv_setting.header.height = text_header
+                elif diff_image_width < 0:
+                    adv_setting.image.width = adv_setting.image.height = adv_setting.width
+                    adv_setting.header.height = adv_setting.height - adv_setting.image.height
+                    adv_setting.header.top = adv_setting.image.height
+                    adv_setting.header.font.size = 12
+
                 diff_image_height = adv_setting.height - adv_setting.image.height - adv_setting.header.height
                 if 0 < diff_image_height < 10:
                     adv_setting.image.top = diff_image_height / 4
@@ -303,7 +310,6 @@ async def calculate_default(width, height, adv):
             else:
                 adv_setting.image.top = diff_image_height / 4
                 adv_setting.header.top = adv_setting.image.height + (adv_setting.image.top * 2)
-
     return adv_setting
 
 

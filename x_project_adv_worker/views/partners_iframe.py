@@ -30,7 +30,9 @@ class PartnersIframeView(web.View):
             data_processor = DataProcessor(self.request, {'block_id': guid_block})
             userCode = await data_processor.get_userCode()
         except asyncio.CancelledError as ex:
-            logger.error(exception_message(time=time.time() - self.request.start_time, exc=str(ex),
+            logger.error(exception_message(msg="PartnersIframeView CancelledError",
+                                           time=time.time() - self.request.start_time,
+                                           exc=str(ex),
                                            request=str(self.request.message)))
         data = {
             'guid_block': guid_block,

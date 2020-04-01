@@ -191,7 +191,6 @@ class Styler(object):
             adv_width = block_width / count_column
             adv_count_by_width = round(block_height / (adv_width + ((round(320 / adv_width) * 14) * 2)))
 
-            # print(adv_width, adv_count_by_width)
             if adv_width > 200 and adv_count_by_width < 4 and self.mediaQ == 'd':
                 adv_type = 'G'
                 adv_height = adv_size_calculator[adv_type](adv_width)
@@ -323,7 +322,10 @@ class Styler(object):
 
     @property
     def max_capacity(self):
-        return max([self.block.styling_adv.count_adv, self.block.default_adv.count_adv])
+        capacity = max([self.block.styling_adv.count_adv, self.block.default_adv.count_adv])
+        if capacity > 20:
+            capacity = 20
+        return capacity
 
     async def calculate(self):
         return full.render(await self._create_variable())
