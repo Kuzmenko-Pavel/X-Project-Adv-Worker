@@ -1,5 +1,4 @@
 import json
-import ujson
 
 from aiohttp import web
 
@@ -33,4 +32,4 @@ class ErrorView(web.View):
                          )
         except Exception as ex:
             logger.error(exception_message(exc=str(ex), request=str(self.request.message), data=data))
-        return web.json_response(dict({}), dumps=ujson.dumps)
+        return web.json_response(dict({}), dumps=json.dumps)

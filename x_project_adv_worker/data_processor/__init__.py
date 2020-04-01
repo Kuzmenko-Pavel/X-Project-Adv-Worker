@@ -1,7 +1,7 @@
 __all__ = ['DataProcessor']
 import base64
+import json
 import time
-import ujson
 from asyncio import ensure_future, gather, CancelledError
 from itertools import zip_longest
 from random import randint, choice
@@ -143,7 +143,7 @@ class DataProcessor(object):
         self.processing_data.social_branch = self.processing_data.block.get('social_branch', True)
         self.data['parther'] = self.processing_data.parther
         if not self.processing_data.params.auto and self.processing_data.block['block_type'] == BlockType.static:
-            self.processing_data.styler.merge(ujson.loads(self.processing_data.block.get('ad_style')))
+            self.processing_data.styler.merge(json.loads(self.processing_data.block.get('ad_style')))
         self.processing_data.block_button = self.processing_data.styler.block.default_button.block
         self.processing_data.block_ret_button = self.processing_data.styler.block.default_button.ret_block
         self.processing_data.block_rec_button = self.processing_data.styler.block.default_button.rec_block

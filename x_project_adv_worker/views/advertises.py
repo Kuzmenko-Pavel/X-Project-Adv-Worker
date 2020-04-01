@@ -1,7 +1,6 @@
 import asyncio
 import json
 import time
-import ujson
 
 from aiohttp import web
 
@@ -61,4 +60,4 @@ class AdvertisesView(web.View):
                                            exc=str(ex), request=str(self.request.message), data=data,
                                            text=await self.request.text()))
 
-        return web.json_response(result, dumps=ujson.dumps)
+        return web.json_response(result, dumps=json.dumps)

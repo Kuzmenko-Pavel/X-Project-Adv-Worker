@@ -1,7 +1,7 @@
+import json
 import random
 import re
 import string
-import ujson
 from urllib.parse import quote_plus
 
 import aiohttp_jinja2
@@ -94,7 +94,7 @@ class IframesView(web.View):
         ti = quote_plus(encryptDecrypt('valid', ip))
 
         data = {
-            'js': ujson.dumps({
+            'js': json.dumps({
                 'ti': ti,
                 'rend_id': rend_id,
                 'guid_block': guid_block,

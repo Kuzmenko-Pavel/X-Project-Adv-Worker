@@ -1,4 +1,4 @@
-import ujson
+import json
 
 from aiohttp import web
 
@@ -18,7 +18,7 @@ class SettingJs(web.View):
         script = "adsbyyottos.block_settings.cache['%(guid)s']=%(json)s;"
         body = script % {
             'guid': guid_block,
-            'json': ujson.dumps({
+            'json': json.dumps({
                 'h': height,
                 'w': width,
                 'm': last_modified,
