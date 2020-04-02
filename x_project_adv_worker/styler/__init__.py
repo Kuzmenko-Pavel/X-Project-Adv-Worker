@@ -92,8 +92,10 @@ class Styler(object):
                 if default:
                     self.block.default_adv = Map(self.block.styling_adv)
                 return True
-        except:
-            pass
+        except CancelledError:
+            logger.error('CancelledError CSS _v_template_calculate')
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
         return False
 
     def _v_template_calculate(self, default=None):
@@ -119,8 +121,10 @@ class Styler(object):
                 if default:
                     self.block.default_adv = Map(self.block.styling_adv)
                 return True
-        except:
-            pass
+        except CancelledError:
+            logger.error('CancelledError CSS _v_template_calculate')
+        except Exception as ex:
+            logger.error(exception_message(exc=str(ex)))
         return False
 
     def _h_default_size_calculate(self, default=None):

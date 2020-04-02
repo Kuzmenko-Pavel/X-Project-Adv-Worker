@@ -74,22 +74,28 @@ def adv_size_bv(adv_width):
 
 
 def header_text_size(width, size=None, count=None):
-    if size is None:
-        size = 14
-    if count is None:
-        count = 25
-    symbols = (width / (size * 0.6)) - 1
-    text_height = (round(count / symbols) * size)
+    try:
+        if size is None:
+            size = 14
+        if count is None:
+            count = 25
+        symbols = (width / (size * 0.6)) - 1
+        text_height = (round(count / symbols) * size)
+    except ZeroDivisionError:
+        text_height = 0
     return text_height
 
 
 def description_text_size(width, size=None, count=None):
-    if size is None:
-        size = 13
-    if count is None:
-        count = 70
-    symbols = (width / (size * 0.5)) - 1
-    text_height = (round(count / symbols) * size)
+    try:
+        if size is None:
+            size = 13
+        if count is None:
+            count = 70
+        symbols = (width / (size * 0.5)) - 1
+        text_height = round(count / symbols) * size
+    except ZeroDivisionError:
+        text_height = 0
     return text_height
 
 

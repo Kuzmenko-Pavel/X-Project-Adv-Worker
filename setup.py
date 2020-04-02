@@ -18,6 +18,10 @@ def read_version():
             raise RuntimeError(msg)
 
 
+# 'aiodns==1.1.1',
+# 'ujson==1.35',
+# 'multidict==4.4.2',
+# 'uvloop==0.11.3',
 install_requires = ['aiohttp==2.3.10',
                     'aiodns==2.0.0',
                     'ujson==2.0.2',
@@ -40,6 +44,9 @@ install_requires = ['aiohttp==2.3.10',
                     'trans==2.1.0',
                     'maxminddb==1.5.2',
                     'geoip2==3.0.0',
+                    'pytest-aiohttp',
+                    'pytest-asyncio',
+                    'pytest',
                     ]
 
 setup(

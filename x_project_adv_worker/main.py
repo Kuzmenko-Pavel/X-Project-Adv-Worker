@@ -1,3 +1,8 @@
+import resource
+
+lim = 1024 * 1024 * 1500
+resource.setrlimit(resource.RLIMIT_AS, (lim, lim))
+
 import argparse
 import asyncio
 import os
