@@ -217,6 +217,8 @@ class DataProcessor(object):
             self.app.campaign_view_count['place'].clear()
             self.app.campaign_view_count['all'] = 0
 
+        self.data['test'] = self.processing_data.params.test
+
     async def find_recomendet(self, offer, loop_counter, capacity):
         views = [('mv_offer_dynamic_retargeting', self.processing_data.params.retargeting_dynamic_exclude),
                  ('mv_offer_account_retargeting', self.processing_data.params.retargeting_account_exclude),

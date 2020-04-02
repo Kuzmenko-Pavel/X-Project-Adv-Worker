@@ -47,6 +47,8 @@ install_requires = ['aiohttp==2.3.10',
                     'pytest-aiohttp',
                     'pytest-asyncio',
                     'pytest',
+                    'Faker',
+                    'pytest-faker'
                     ]
 
 setup(
