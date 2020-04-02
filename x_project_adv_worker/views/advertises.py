@@ -55,6 +55,16 @@ class AdvertisesView(web.View):
                     request=str(self.request.message),
                     data=data)
                 )
+        except OverflowError as ex:
+            logger.error(exception_message(msg='Overflow Error DataProcessor',
+                                           time=str(time.time() - self.request.start_time),
+                                           exc=str(ex), request=str(self.request.message), data=data,
+                                           text=await self.request.text()))
+        except MemoryError as ex:
+            logger.error(exception_message(msg='MemoryError DataProcessor',
+                                           time=str(time.time() - self.request.start_time),
+                                           exc=str(ex), request=str(self.request.message), data=data,
+                                           text=await self.request.text()))
         except Exception as ex:
             logger.error(exception_message(time=str(time.time() - self.request.start_time),
                                            exc=str(ex), request=str(self.request.message), data=data,

@@ -26,6 +26,10 @@ async def init_db(app):
     }
 
 
+async def close_db(app):
+    await app.pool.close()
+
+
 class Query(object):
     def __init__(self, pool):
         self.pool = pool

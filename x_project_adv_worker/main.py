@@ -1,14 +1,14 @@
 import resource
 
-lim = 1024 * 1024 * 1500
-resource.setrlimit(resource.RLIMIT_AS, (lim, lim))
+lim = 1024 * 1024 * 2000
+resource.setrlimit(resource.RLIMIT_AS, (lim, lim + 5000))
 
 import argparse
 import asyncio
 import os
 import sys
 
-import uvloop
+# import uvloop
 
 try:
     from http.cookies import Morsel
@@ -21,8 +21,8 @@ from aiohttp import web
 import aiohttp_debugtoolbar
 from trafaret_config import commandline
 
-from x_project_adv_worker.logger import logger
-from x_project_adv_worker.db import init_db
+from x_project_adv_worker.logger import logger, exception_message
+from x_project_adv_worker.db import init_db, close_db
 from x_project_adv_worker.static_hash import static_hash
 from x_project_adv_worker.templates import init_templates
 from x_project_adv_worker.geo_ip import init_geo_ip
@@ -30,7 +30,8 @@ from x_project_adv_worker.middlewares import setup_middlewares
 from x_project_adv_worker.routes import setup_routes
 from x_project_adv_worker.utils import TRAFARET_CONF
 
-uvloop.install()
+
+# uvloop.install()
 
 
 def init(loop, argv):
@@ -48,6 +49,7 @@ def init(loop, argv):
     app.block_ip_cache = {}
     app['config'] = config
     app.on_startup.append(init_db)
+    app.on_cleanup.append(close_db)
     app.on_startup.append(static_hash)
     if app['config']['debug']['console']:
         aiohttp_debugtoolbar.setup(app)
@@ -62,13 +64,38 @@ def init(loop, argv):
 
 def main(argv):
     loop = asyncio.get_event_loop()
-    app = init(loop, argv)
-    app['log'] = logger
-    if app['config']['socket']:
-        os.makedirs(os.path.dirname(app['config']['socket']), exist_ok=True)
-        web.run_app(app, path=app['config']['socket'], backlog=1024, access_log=None)
-    else:
-        web.run_app(app, host=app['config']['host'], port=app['config']['port'], backlog=1024, access_log=None)
+    try:
+        app = init(loop, argv)
+        app['log'] = logger
+        if app['config']['socket']:
+            os.makedirs(os.path.dirname(app['config']['socket']), exist_ok=True)
+            web.run_app(app, path=app['config']['socket'], backlog=1024, access_log=None)
+        else:
+            web.run_app(app, host=app['config']['host'], port=app['config']['port'], backlog=1024, access_log=None)
+    except asyncio.CancelledError as ex:
+        logger.error(exception_message(
+            msg='CancelledError MAIN',
+            exc=str(ex)
+        )
+        )
+    except OverflowError as ex:
+        logger.error(exception_message(
+            msg='OverflowError MAIN',
+            exc=str(ex)
+        )
+        )
+    except MemoryError as ex:
+        logger.error(exception_message(
+            msg='MemoryError MAIN',
+            exc=str(ex)
+        )
+        )
+    except Exception as ex:
+        logger.error(exception_message(
+            msg='Exception MAIN',
+            exc=str(ex)
+        )
+        )
 
 
 if __name__ == '__main__':
