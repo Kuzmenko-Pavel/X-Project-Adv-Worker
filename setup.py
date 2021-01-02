@@ -57,8 +57,17 @@ setup(
     url="",
     packages=find_packages(),
     package_data={
-
+        'x_project_adv_worker': [
+            './../conf.yaml',
+            '*.json',
+            './**/*.json',
+            './**/*.mmdb',
+            './**/*.dat',
+            './**/*.html',
+            './**/**/*.js'
+        ]
     },
+    include_package_data=True,
     install_requires=install_requires,
     zip_safe=False,
     entry_points={

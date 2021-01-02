@@ -1,0 +1,7 @@
+conf.yaml
+x_project_adv_worker/*.json
+x_project_adv_worker/**/*.json
+x_project_adv_worker/**/*.mmdb
+x_project_adv_worker/**/*.dat
+x_project_adv_worker/**/*.html
+x_project_adv_worker/**/**/*.js
