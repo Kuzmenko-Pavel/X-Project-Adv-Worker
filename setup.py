@@ -22,7 +22,7 @@ def read_version():
 # 'ujson==1.35',
 # 'multidict==4.4.2',
 # 'uvloop==0.11.3',
-install_requires = ['aiohttp==2.3.10',
+install_requires = ['aiohttp==3.7.4',
                     'aiodns==2.0.0',
                     'ujson==2.0.2',
                     'Jinja2==2.11.1',
