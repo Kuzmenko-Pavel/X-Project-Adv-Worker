@@ -25,7 +25,7 @@ def read_version():
 install_requires = ['aiohttp==2.3.10',
                     'aiodns==2.0.0',
                     'ujson==2.0.2',
-                    'Jinja2==2.11.1',
+                    'Jinja2==2.11.3',
                     'multidict==4.7.5',
                     'aiohttp-jinja2==0.15.0',
                     'async-timeout==2.0.1',
