@@ -24,7 +24,7 @@ def read_version():
 # 'uvloop==0.11.3',
 install_requires = ['aiohttp==2.3.10',
                     'aiodns==2.0.0',
-                    'ujson==2.0.2',
+                    'ujson==5.4.0',
                     'Jinja2==2.11.1',
                     'multidict==4.7.5',
                     'aiohttp-jinja2==0.15.0',
